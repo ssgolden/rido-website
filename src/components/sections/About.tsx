@@ -1,0 +1,69 @@
+export function About() {
+  return (
+    <section id="about" className="py-24 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <p className="text-rido-coral text-sm font-semibold uppercase tracking-wider mb-3">
+              Our Story
+            </p>
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
+              Born in{" "}
+              <span className="text-gradient-coral">Spain</span>, Built for
+              Spanish Cities
+            </h2>
+            <p className="text-white/50 leading-relaxed mb-6">
+              Rido was founded with a simple belief: moving through your city
+              should be easy, affordable, and clean. We saw empty bike lanes,
+              crowded roads, and cities that deserve better air.
+            </p>
+            <p className="text-white/50 leading-relaxed">
+              So we built a fleet of shared e-scooters and e-bikes designed for
+              Spain&apos;s streets, Spain&apos;s weather, and Spain&apos;s people.
+              Every vehicle is serviced in-house, every ride is insured, and
+              every kilometre replaces a car trip.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4">
+            {[
+              {
+                title: "Freedom",
+                description:
+                  "Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go.",
+                color: "rido-coral",
+              },
+              {
+                title: "Safety",
+                description:
+                  "Beginner mode, tandem detection, brake checks, and real-time ride monitoring.",
+                color: "rido-gold",
+              },
+              {
+                title: "Sustainability",
+                description:
+                  "Zero emissions, swappable batteries, carbon-neutral operations, responsible recycling.",
+                color: "rido-green",
+              },
+            ].map((value) => (
+              <div
+                key={value.title}
+                className="glass rounded-2xl p-6 flex items-start gap-4"
+              >
+                <div
+                  className={`w-3 h-3 rounded-full mt-2 shrink-0 bg-${value.color}`}
+                />
+                <div>
+                  <h3 className="font-bold text-lg">{value.title}</h3>
+                  <p className="text-sm text-white/50 leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
