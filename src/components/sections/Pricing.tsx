@@ -10,11 +10,11 @@ export function Pricing() {
     <section id="pricing" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-rido-coral text-sm font-semibold uppercase tracking-wider mb-3">
+          <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
             Transparent Pricing
           </p>
           <h2 className="text-4xl md:text-5xl font-black">
-            No <span className="text-gradient-coral">Surprises</span>
+            No <span className="text-gradient-brand">Surprises</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto">
             See the price before every ride. No hidden fees, no minimum top-ups,
@@ -28,12 +28,12 @@ export function Pricing() {
               key={tier.name}
               className={`text-center ${
                 tier.popular
-                  ? "border-rido-coral/40 shadow-lg shadow-rido-coral/10"
+                  ? "border-rido-magenta/40 shadow-lg shadow-rido-magenta/10"
                   : ""
               }`}
             >
               {tier.popular && (
-                <Badge variant="coral" className="mb-4">
+                <Badge variant="magenta" className="mb-4">
                   Most Popular
                 </Badge>
               )}
@@ -42,13 +42,13 @@ export function Pricing() {
               <div className="space-y-3">
                 <div className="glass rounded-xl p-3">
                   <p className="text-xs text-white/40">Unlock Fee</p>
-                  <p className="text-lg font-bold text-rido-coral">
+                  <p className="text-lg font-bold text-rido-magenta">
                     {tier.unlockFee}
                   </p>
                 </div>
                 <div className="glass rounded-xl p-3">
                   <p className="text-xs text-white/40">Per Minute</p>
-                  <p className="text-lg font-bold text-rido-coral">
+                  <p className="text-lg font-bold text-rido-magenta">
                     {tier.perMinute}
                   </p>
                 </div>

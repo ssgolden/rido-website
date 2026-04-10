@@ -25,7 +25,7 @@ export function RidoLogo({ variant = "full", size = "md", className }: RidoLogoP
       className={cn("shrink-0", className)}
       aria-hidden="true"
     >
-      <rect width="32" height="32" rx="8" fill="#FF5733" />
+      <rect width="32" height="32" rx="8" fill="#DE0498" />
       <path
         d="M9 16.5L13.5 21L23 11"
         stroke="white"

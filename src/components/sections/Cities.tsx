@@ -10,11 +10,11 @@ export function Cities() {
     <section id="cities" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-rido-coral text-sm font-semibold uppercase tracking-wider mb-3">
+          <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
             {activeCityCount}+ Cities
           </p>
           <h2 className="text-4xl md:text-5xl font-black">
-            Where to <span className="text-gradient-coral">Find Us</span>
+            Where to <span className="text-gradient-brand">Find Us</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto">
             Rido operates across Spain&apos;s most vibrant cities. More locations arriving soon.
@@ -25,14 +25,14 @@ export function Cities() {
           {cities.map((city) => (
             <Card key={city.slug} className="group">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-xl bg-rido-coral/10 flex items-center justify-center shrink-0 group-hover:bg-rido-coral/20 transition-colors">
-                  <MapPin className="w-5 h-5 text-rido-coral" />
+                <div className="w-10 h-10 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0 group-hover:bg-rido-magenta/20 transition-colors">
+                  <MapPin className="w-5 h-5 text-rido-magenta" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg">{city.name}</h3>
                     {city.comingSoon && (
-                      <Badge variant="coral-light">Coming Soon</Badge>
+                      <Badge variant="magenta-light">Coming Soon</Badge>
                     )}
                   </div>
                   <p className="text-sm text-white/40">{city.region}</p>
@@ -40,7 +40,7 @@ export function Cities() {
                     {city.vehicles.map((v) => (
                       <Badge
                         key={v}
-                        variant={v === "e-scooter" ? "coral" : "green"}
+                        variant={v === "e-scooter" ? "magenta" : "green"}
                       >
                         {v === "e-scooter" ? "🛴 E-Scooter" : "🚲 E-Bike"}
                       </Badge>

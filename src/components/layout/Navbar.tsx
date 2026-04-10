@@ -41,7 +41,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-white/70 hover:text-rido-coral transition-colors"
+              className="text-sm text-white/70 hover:text-rido-magenta transition-colors"
             >
               {link.label}
             </a>
@@ -67,7 +67,7 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="block py-2 text-white/70 hover:text-rido-coral transition-colors"
+              className="block py-2 text-white/70 hover:text-rido-magenta transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}

@@ -36,11 +36,11 @@ export function Safety() {
     <section id="safety" className="py-24 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-rido-coral text-sm font-semibold uppercase tracking-wider mb-3">
+          <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
             Your Safety Matters
           </p>
           <h2 className="text-4xl md:text-5xl font-black">
-            Ride <span className="text-gradient-coral">Safely</span>
+            Ride <span className="text-gradient-brand">Safely</span>
           </h2>
           <p className="mt-4 text-white/50 max-w-xl mx-auto">
             Safety is not optional — it&apos;s the foundation of everything we do.
@@ -50,8 +50,8 @@ export function Safety() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {safetyItems.map((item) => (
             <Card key={item.title} className="flex items-start gap-5">
-              <div className="w-12 h-12 rounded-2xl bg-rido-coral/10 flex items-center justify-center shrink-0">
-                <item.icon className="w-6 h-6 text-rido-coral" />
+              <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center shrink-0">
+                <item.icon className="w-6 h-6 text-rido-magenta" />
               </div>
               <div>
                 <h3 className="font-bold text-lg mb-1">{item.title}</h3>
@@ -63,16 +63,16 @@ export function Safety() {
           ))}
         </div>
 
-        <Card className="max-w-2xl mx-auto text-center border-rido-coral/30">
+        <Card className="max-w-2xl mx-auto text-center border-rido-magenta/30">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <Gauge className="w-6 h-6 text-rido-coral-light" />
+            <Gauge className="w-6 h-6 text-rido-magenta-light" />
             <h3 className="text-xl font-bold">Beginner Mode</h3>
           </div>
           <p className="text-white/50 text-sm mb-4">
             New to e-scooters? Your first 5 rides are speed-capped at 15 km/h so
             you can build confidence safely.
           </p>
-          <Badge variant="coral-light">Automatic for new riders</Badge>
+          <Badge variant="magenta-light">Automatic for new riders</Badge>
         </Card>
       </div>
     </section>
