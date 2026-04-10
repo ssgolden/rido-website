@@ -65,14 +65,14 @@ export function Safety() {
 
         <Card className="max-w-2xl mx-auto text-center border-rido-coral/30">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <Gauge className="w-6 h-6 text-rido-gold" />
+            <Gauge className="w-6 h-6 text-rido-coral-light" />
             <h3 className="text-xl font-bold">Beginner Mode</h3>
           </div>
           <p className="text-white/50 text-sm mb-4">
             New to e-scooters? Your first 5 rides are speed-capped at 15 km/h so
             you can build confidence safely.
           </p>
-          <Badge variant="gold">Automatic for new riders</Badge>
+          <Badge variant="coral-light">Automatic for new riders</Badge>
         </Card>
       </div>
     </section>

@@ -32,7 +32,7 @@ export function Cities() {
                   <div className="flex items-center gap-2">
                     <h3 className="font-bold text-lg">{city.name}</h3>
                     {city.comingSoon && (
-                      <Badge variant="gold">Coming Soon</Badge>
+                      <Badge variant="coral-light">Coming Soon</Badge>
                     )}
                   </div>
                   <p className="text-sm text-white/40">{city.region}</p>

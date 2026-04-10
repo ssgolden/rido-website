@@ -16,6 +16,9 @@ export const metadata: Metadata = {
     "micromobility",
     "rent scooter",
   ],
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
     title: "Rido — Shared E-Scooters & E-Bikes in Spain",
     description:
@@ -43,7 +46,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

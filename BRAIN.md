@@ -104,13 +104,23 @@
 - **Honest** — Transparent pricing, no hidden fees, real sustainability
 - **Energetic** — Movement, freedom, the feeling of wind in your hair
 
-### Color Palette (From Brand Assets)
-- **Primary:** Rido Coral `#FF6B4A` (from scooter accent color — energy, warmth, unmistakable)
-- **Secondary:** Midnight Navy `#1A1F36` (trust, sophistication, contrast)
-- **Accent:** Solar Gold `#FFB84D` (optimism, premium feel)
-- **Sustainability Green:** `#2DD4BF` (eco, growth, freshness)
-- **Background:** Cloud White `#F8FAFC` / Off-Black `#0F172A`
-- **Scooter White:** `#F5F5F5` (scooter body color for light mode accents)
+### Color Palette (From Brand Assets — Updated 2026-01)
+- **Primary:** Rido Coral `#FF5733` (warm orange-coral, matches scooter accent & app UI buttons)
+- **Primary Hover:** Rido Coral Dark `#E04B20` (darker coral for hover/active states)
+- **Secondary Accent:** Rido Coral Light `#FF8A6A` (lighter coral for badges, highlights — replaces gold)
+- **Dark Background:** Rido Navy `#0F172A` (true near-black, matches app dark mode)
+- **Card Surface:** Rido Navy Light `#1E293B` (subtle surface for cards within dark bg)
+- **Sustainability Green:** `#22C55E` (standard green, matches app success states)
+- **Light Background:** Cloud White `#F8FAFC`
+- **REMOVED:** Gold `#FFB84D` (not in any brand asset)
+- **REMOVED:** Teal `#2DD4BF` (replaced with standard green)
+
+### Logo (From Brand Assets — Updated 2026-01)
+- **The Rido checkmark (✓)** is the primary brand mark — visible on scooter deck, stem, and app header
+- Checkmark is rounded/friendly (not angular), rendered in coral on a rounded square background
+- **Wordmark** is lowercase "rido" in Inter Black
+- Component: `src/components/ui/RidoLogo.tsx` with variants: `mark` (icon only), `wordmark` (text), `full` (icon + text)
+- Favicon: `public/favicon.svg` (SVG checkmark)
 
 ### Typography
 - **Headlines:** Inter (Bold/Black) — same as Bolt for 990-language support
@@ -199,6 +209,7 @@ rido/
 │   │       ├── Button.tsx
 │   │       ├── Badge.tsx
 │   │       ├── Card.tsx
+│   │       ├── RidoLogo.tsx       # Checkmark logo component
 │   │       └── AnimatedCounter.tsx
 │   ├── data/
 │   │   ├── cities.ts
@@ -207,6 +218,7 @@ rido/
 │   └── lib/
 │       └── utils.ts
 ├── public/
+│   ├── favicon.svg               # SVG checkmark favicon
 │   └── images/
 │       ├── scooter/rido-scooter-product.jpg
 │       ├── lifestyle/rido-scooter-street.jpg
@@ -228,6 +240,10 @@ rido/
 | 2026-01 | Tailwind CSS 4 | Fastest iteration, consistent design system |
 | 2026-01 | Dark-mode-first design | Cinematic, premium feel that differentiates from green-heavy competitors |
 | 2026-01 | Electric Coral primary color | Warm, Spanish, unmistakable — avoids the generic green every competitor uses |
+| 2026-01 | Coral `#FF5733` (not `#FF6B4A`) | Updated after visual audit of scooter product shots and app screenshot — real brand is warmer/more orange |
+| 2026-01 | Navy `#0F172A` (not `#1A1F36`) | True near-black matches app dark mode — old value was too desaturated |
+| 2026-01 | Checkmark logo (not "Rido.") | Brand assets show checkmark (✓) on scooter deck, stem, and app header — the period was our invention |
+| 2026-01 | Removed gold `#FFB84D` | Gold doesn't appear in any brand asset — replaced with coral-light `#FF8A6A` |
 | 2026-01 | Bilingual ES/EN | Spain market + international tourists |
 
 ---

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -31,8 +32,8 @@ export function Navbar() {
       )}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <a href="#" className="text-2xl font-black tracking-tight text-white">
-          Rido<span className="text-rido-coral">.</span>
+        <a href="#" aria-label="Rido home">
+          <RidoLogo variant="full" size="md" />
         </a>
 
         <div className="hidden md:flex items-center gap-8">

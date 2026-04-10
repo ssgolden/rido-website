@@ -6,7 +6,7 @@ import Image from "next/image";
 export function DownloadCTA() {
   return (
     <section className="py-24 px-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-rido-coral/20 via-rido-navy to-rido-gold/10" />
+      <div className="absolute inset-0 bg-gradient-to-br from-rido-coral/20 via-rido-navy to-rido-coral-light/10" />
       <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-rido-coral/10 blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto text-center">

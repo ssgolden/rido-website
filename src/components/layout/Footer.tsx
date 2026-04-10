@@ -1,3 +1,5 @@
+import { RidoLogo } from "@/components/ui/RidoLogo";
+
 const footerLinks = {
   Product: [
     { label: "E-Scooter", href: "#vehicles" },
@@ -24,9 +26,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1">
-            <p className="text-2xl font-black text-white">
-              Rido<span className="text-rido-coral">.</span>
-            </p>
+            <RidoLogo variant="full" size="md" />
             <p className="mt-3 text-sm text-white/50 leading-relaxed">
               Shared micro-mobility for Spain.
               <br />

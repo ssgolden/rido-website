@@ -37,7 +37,7 @@ export function About() {
                 title: "Safety",
                 description:
                   "Beginner mode, tandem detection, brake checks, and real-time ride monitoring.",
-                color: "rido-gold",
+                color: "rido-coral-light",
               },
               {
                 title: "Sustainability",
