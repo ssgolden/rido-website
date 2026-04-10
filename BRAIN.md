@@ -104,16 +104,28 @@
 - **Honest** — Transparent pricing, no hidden fees, real sustainability
 - **Energetic** — Movement, freedom, the feeling of wind in your hair
 
-### Color Palette (From Brand Assets — Updated 2026-01)
-- **Primary:** Rido Coral `#FF5733` (warm orange-coral, matches scooter accent & app UI buttons)
-- **Primary Hover:** Rido Coral Dark `#E04B20` (darker coral for hover/active states)
-- **Secondary Accent:** Rido Coral Light `#FF8A6A` (lighter coral for badges, highlights — replaces gold)
-- **Dark Background:** Rido Navy `#0F172A` (true near-black, matches app dark mode)
-- **Card Surface:** Rido Navy Light `#1E293B` (subtle surface for cards within dark bg)
-- **Sustainability Green:** `#22C55E` (standard green, matches app success states)
-- **Light Background:** Cloud White `#F8FAFC`
-- **REMOVED:** Gold `#FFB84D` (not in any brand asset)
-- **REMOVED:** Teal `#2DD4BF` (replaced with standard green)
+### Color Palette (From Brand Assets — Updated 2026-01-PIXELED)
+
+> **CRITICAL:** The brand color is **magenta/fuchsia (#DE0498)**, NOT orange-coral. This was confirmed by programmatic pixel extraction across all 4 brand assets. The initial visual assessment was fooled by white backgrounds making magenta appear warmer.
+
+| Token | Hex | Source | Usage |
+|-------|-----|--------|-------|
+| **Primary** | `#DE0498` | App screenshot (20,694px) | CTAs, headings, accents, logo |
+| **Primary Dark** | `#C10385` | Derived (85% brightness) | Hover/active states |
+| **Primary Light** | `#F23DB5` | Derived (35% toward white) | Badges, subtle backgrounds |
+| **Yellow Accent** | `#FDE803` | App map markers (5,270px) | Secondary accent (use sparingly) |
+| **Dark Background** | `#0F172A` | App dark mode + derived | Page background |
+| **Surface** | `#1E293B` | Derived | Card backgrounds |
+| **Green** | `#22C55E` | Standard | Eco/success/sustainability |
+| **Cloud White** | `#F8FAFC` | Standard | Light backgrounds |
+
+**Pixel extraction evidence:**
+- Scooter Product (1000508879): #FF31B7 (35,891 magenta pixels)
+- Scooter Street (1000508880): #FF4A9B (14,569 magenta pixels)
+- App Screenshot (1000508881): #DE0498 (20,694 magenta pixels) ← canonical
+- Rider Street (1000508885): #DF0B84 (39,821 magenta pixels)
+
+All 4 images consistently show magenta/pink, NOT orange-coral.
 
 ### Logo (From Brand Assets — Updated 2026-01)
 - **The Rido checkmark (✓)** is the primary brand mark — visible on scooter deck, stem, and app header
@@ -239,11 +251,11 @@ rido/
 | 2026-01 | Next.js 15 + App Router | Best DX, SSG for performance, SEO for discoverability |
 | 2026-01 | Tailwind CSS 4 | Fastest iteration, consistent design system |
 | 2026-01 | Dark-mode-first design | Cinematic, premium feel that differentiates from green-heavy competitors |
-| 2026-01 | Electric Coral primary color | Warm, Spanish, unmistakable — avoids the generic green every competitor uses |
 | 2026-01 | Coral `#FF5733` (not `#FF6B4A`) | Updated after visual audit of scooter product shots and app screenshot — real brand is warmer/more orange |
 | 2026-01 | Navy `#0F172A` (not `#1A1F36`) | True near-black matches app dark mode — old value was too desaturated |
 | 2026-01 | Checkmark logo (not "Rido.") | Brand assets show checkmark (✓) on scooter deck, stem, and app header — the period was our invention |
 | 2026-01 | Removed gold `#FFB84D` | Gold doesn't appear in any brand asset — replaced with coral-light `#FF8A6A` |
+| 2026-01 | **Magenta `#DE0498` (NOT coral)** | Programmatic pixel extraction from all 4 brand assets confirms brand color is vibrant magenta/fuchsia, not orange-coral. 20,694px in app, 35,891px in scooter, 39,821px in rider. Visual assessment was fooled by white backgrounds making magenta appear warmer. |
 | 2026-01 | Bilingual ES/EN | Spain market + international tourists |
 
 ---

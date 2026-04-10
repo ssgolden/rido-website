@@ -33,17 +33,18 @@
 | 23 | `web-architect` | Full-stack web apps with Next.js, React, TypeScript |
 | 24 | `ui-ux-pro-max` | UI/UX design — 67 styles, 161 color palettes, 57 font pairings, 99 UX guidelines |
 | 25 | `visual-forge` | Image, video, computer-vision workflows (OpenCV, PIL, Diffusers, FFmpeg) |
-| 26 | `neural-nexus` | AI/ML systems with PyTorch, TensorFlow, RAG, local model workflows |
-| 27 | `syntax-surgeon` | Debug broken code with stack traces, targeted fixes, reproducible verification |
-| 28 | `web-search` | Search web and fetch page content via Ollama |
-| 29 | `eof-prompts-installer` | Install EOF-style prompt blocks into local file paths |
-| 30 | `openclaw-connector` | Connect to / verify local OpenClaw gateway |
-| 31 | `vanguard-fleet-setup` | Inspect Vanguard fleet archive, recover OpenClaw configs |
-| 32 | `red-team-engagement-planner` | Plan authorized red-team engagements with scope and RoE |
-| 33 | `red-team-detection-validator` | Design safe detection-validation exercises for authorized environments |
-| 34 | `red-team-report-writer` | Produce clear red-team reports for authorized engagements |
-| 35 | `jeffallan-skills` | 53 specialist dev sub-skills (see Specialist Skills section below) |
-| 36 | `skills` | Deployment skills (Vercel, Netlify) |
+| 26 | `brand-palette-extractor` | Extract exact brand colors from image assets using PIL, compare to website tokens |
+| 27 | `neural-nexus` | AI/ML systems with PyTorch, TensorFlow, RAG, local model workflows |
+| 28 | `syntax-surgeon` | Debug broken code with stack traces, targeted fixes, reproducible verification |
+| 29 | `web-search` | Search web and fetch page content via Ollama |
+| 30 | `eof-prompts-installer` | Install EOF-style prompt blocks into local file paths |
+| 31 | `openclaw-connector` | Connect to / verify local OpenClaw gateway |
+| 32 | `vanguard-fleet-setup` | Inspect Vanguard fleet archive, recover OpenClaw configs |
+| 33 | `red-team-engagement-planner` | Plan authorized red-team engagements with scope and RoE |
+| 34 | `red-team-detection-validator` | Design safe detection-validation exercises for authorized environments |
+| 35 | `red-team-report-writer` | Produce clear red-team reports for authorized engagements |
+| 36 | `jeffallan-skills` | 53 specialist dev sub-skills (see Specialist Skills section below) |
+| 37 | `skills` | Deployment skills (Vercel, Netlify) |
 
 ---
 
