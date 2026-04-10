@@ -268,6 +268,7 @@ rido/
 | 2026-01 | Removed gold `#FFB84D` | Gold doesn't appear in any brand asset — replaced with coral-light `#FF8A6A` |
 | 2026-01 | Legal pages use real Go2 Place S.L. documents | sourced from Policies/ DOCX files, company NIF B01745405 |
 | 2026-01 | **Magenta `#DE0498` (NOT coral)** | Programmatic pixel extraction from all 4 brand assets confirms brand color is vibrant magenta/fuchsia, not orange-coral. 20,694px in app, 35,891px in scooter, 39,821px in rider. Visual assessment was fooled by white backgrounds making magenta appear warmer. |
+| 2026-01 | UI/UX upgrade plan created | 10 tasks: next/font, Framer Motion animations, active navbar, hero polish, HowItWorks connectors, emoji purge, pricing calculator, store badges, accessibility, responsive QA |
 | 2026-01 | Bilingual ES/EN | Spain market + international tourists |
 
 ---
