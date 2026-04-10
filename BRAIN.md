@@ -183,6 +183,10 @@ All 4 images consistently show magenta/pink, NOT orange-coral.
 | File | Content | Usage |
 |------|---------|-------|
 | `public/images/scooter/rido-scooter-product.jpg` | White e-scooter with coral accents on white bg | Vehicles section product shot |
+| `public/images/bike/rido-bike-front.jpg` | E-bike front product shot on white bg | Vehicles section (primary e-bike) |
+| `public/images/bike/rido-bike-side.jpg` | E-bike side profile on white bg | Vehicles section gallery |
+| `public/images/bike/rido-bike-detail.jpg` | E-bike detail/close-up on white bg | Vehicles section gallery |
+| `public/images/bike/rido-bike-lifestyle.jpg` | E-bike lifestyle angle on white bg | Vehicles section gallery |
 | `public/images/lifestyle/rido-scooter-street.jpg` | Scooter on Spanish street | Hero, How It Works |
 | `public/images/app/rido-app-screenshot.png` | Rido app interface (1080x2340) | How It Works, Download CTA |
 | `public/images/lifestyle/rido-rider-street.jpg` | Rider on scooter in Spanish city | Hero, About, Sustainability |
@@ -232,6 +236,11 @@ rido/
 ├── public/
 │   ├── favicon.svg               # SVG checkmark favicon
 │   └── images/
+│       ├── bike/
+│       │   ├── rido-bike-front.jpg
+│       │   ├── rido-bike-side.jpg
+│       │   ├── rido-bike-detail.jpg
+│       │   └── rido-bike-lifestyle.jpg
 │       ├── scooter/rido-scooter-product.jpg
 │       ├── lifestyle/rido-scooter-street.jpg
 │       ├── app/rido-app-screenshot.png

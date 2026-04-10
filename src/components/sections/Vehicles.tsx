@@ -9,7 +9,14 @@ import Image from "next/image";
 
 export function Vehicles() {
   const [active, setActive] = useState(0);
+  const [activeImage, setActiveImage] = useState(0);
   const v = vehicles[active];
+
+  // Reset active image when switching vehicles
+  const handleVehicleChange = (index: number) => {
+    setActive(index);
+    setActiveImage(0);
+  };
 
   return (
     <section id="vehicles" className="py-24 px-6">
@@ -27,7 +34,7 @@ export function Vehicles() {
           {vehicles.map((vehicle, i) => (
             <button
               key={vehicle.id}
-              onClick={() => setActive(i)}
+              onClick={() => handleVehicleChange(i)}
               className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all cursor-pointer ${
                 i === active
                   ? "bg-rido-magenta text-white shadow-lg shadow-rido-magenta/25"
@@ -43,13 +50,37 @@ export function Vehicles() {
           <Card className="overflow-hidden p-0">
             <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
               <Image
-                src={v.image}
+                src={v.images[activeImage]}
                 alt={v.imageAlt}
                 fill
                 className="object-cover"
                 priority
               />
             </div>
+            {/* Thumbnail gallery — show only if more than 1 image */}
+            {v.images.length > 1 && (
+              <div className="flex gap-2 p-3 bg-white/5">
+                {v.images.map((img, i) => (
+                  <button
+                    key={img}
+                    onClick={() => setActiveImage(i)}
+                    className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all cursor-pointer ${
+                      i === activeImage
+                        ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"
+                        : "opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <Image
+                      src={img}
+                      alt={`${v.name} view ${i + 1}`}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </Card>
 
           <div className="flex flex-col justify-center gap-6">
