@@ -159,6 +159,8 @@ All 4 images consistently show magenta/pink, NOT orange-coral.
 8. **About Us** — Company story, mission, team
 9. **Download CTA** — Final full-width call-to-action for app download
 10. **Footer** — Links, legal, social, language selector (ES/EN)
+11. **Privacy Policy** — `/privacy` — Full GDPR-compliant privacy policy (11 sections)
+12. **Terms of Service** — `/terms` — Full legal terms (16 sections)
 
 ---
 
@@ -264,6 +266,7 @@ rido/
 | 2026-01 | Navy `#0F172A` (not `#1A1F36`) | True near-black matches app dark mode — old value was too desaturated |
 | 2026-01 | Checkmark logo (not "Rido.") | Brand assets show checkmark (✓) on scooter deck, stem, and app header — the period was our invention |
 | 2026-01 | Removed gold `#FFB84D` | Gold doesn't appear in any brand asset — replaced with coral-light `#FF8A6A` |
+| 2026-01 | Legal pages use real Go2 Place S.L. documents | sourced from Policies/ DOCX files, company NIF B01745405 |
 | 2026-01 | **Magenta `#DE0498` (NOT coral)** | Programmatic pixel extraction from all 4 brand assets confirms brand color is vibrant magenta/fuchsia, not orange-coral. 20,694px in app, 35,891px in scooter, 39,821px in rider. Visual assessment was fooled by white backgrounds making magenta appear warmer. |
 | 2026-01 | Bilingual ES/EN | Spain market + international tourists |
 
