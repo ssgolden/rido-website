@@ -13,9 +13,9 @@ function PricingCalculator() {
   const [plan, setPlan] = useState<"paygo" | "pass" | "day">("paygo");
 
   const rates = {
-    paygo: { unlock: 0.5, perMin: 0.15, flatRate: null },
-    pass: { unlock: 0, perMin: 0.1, flatRate: null },
-    day: { unlock: 0, perMin: 0, flatRate: 9.99 },
+    paygo: { unlock: 1.0, perMin: 0.35, flatRate: null },
+    pass: { unlock: 0, perMin: 0.25, flatRate: null },
+    day: { unlock: 0, perMin: 0, flatRate: 14.99 },
   };
 
   const r = rates[plan];

@@ -10,14 +10,14 @@ export const pricingTiers: PricingTier[] = [
   {
     name: "Pay as you go",
     description: "No commitment. Ride when you need it.",
-    unlockFee: "€0.50",
-    perMinute: "€0.15/min",
+    unlockFee: "€1.00",
+    perMinute: "€0.35/min",
   },
   {
     name: "Rido Pass",
     description: "Unlimited unlocks + reduced per-minute rate.",
     unlockFee: "Free",
-    perMinute: "€0.10/min",
+    perMinute: "€0.25/min",
     popular: true,
   },
   {

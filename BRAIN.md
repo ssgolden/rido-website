@@ -107,7 +107,7 @@
 | 4 | **Cities** | `/#cities` | 9 city cards with Lucide icons, Coming Soon badges |
 | 5 | **Safety** | `/#safety` | 4 safety cards, Beginner Mode callout |
 | 6 | **Sustainability** | `/#sustainability` | Animated counters, 3 commitment cards |
-| 7 | **Pricing** | `/#pricing` | 3-tier cards, no-surprise guarantee, interactive calculator |
+| 7 | **Pricing** | `/#pricing` | 3-tier cards (€1/€0.35, Pass, Day €14.99), no-surprise guarantee, calculator |
 | 8 | **About** | `/#about` | Split layout (text + values), company story |
 | 9 | **Download CTA** | `/#download` | App Store/Google Play buttons, floating phone animation |
 | 10 | **Footer** | — | 4-column, legal links, ES/EN selector |
@@ -241,7 +241,7 @@ rido/
 │   ├── data/
 │   │   ├── cities.ts                         # 9 Spanish cities with coordinates
 │   │   ├── vehicles.ts                       # E-scooter + E-bike specs, images, features
-│   │   └── pricing.ts                        # Pay-as-you-go, Rido Pass, Day Pass
+│   │   └── pricing.ts                        # Pay-as-you-go (€1 unlock/€0.35 min), Rido Pass, Day Pass (€14.99)
 │   └── lib/
 │       └── utils.ts                          # cn() utility
 └── public/
@@ -286,6 +286,7 @@ rido/
 | 2026-01 | Mobile responsive v2 (S25) | min-h-screen+min-h-dvh fallback, section pt-14/sm:pt-20, smaller blur orbs, navbar mobile logo=sm, svh+dvh body fallback, safe-area utilities |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color, 404 page |
 | 2026-01 | Image optimization | sizes attributes on all Image components, Suspense boundary on HowItWorks, Skeleton component |
+| 2026-01 | Pricing update | €1.00 unlock / €0.35 min (was €0.50/€0.15), Pass €0.25/min (was €0.10), Day €14.99 (was €9.99) |
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
 | 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
