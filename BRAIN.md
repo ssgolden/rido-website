@@ -149,6 +149,8 @@
 | `Footer` | `src/components/layout/Footer.tsx` | 4-column, legal links to /privacy + /terms |
 | `PricingCalculator` | Inside `Pricing.tsx` | Interactive ride cost estimator |
 | `Skeleton` | `src/components/ui/Skeleton.tsx` | Loading pulse skeleton |
+| `basePath` | `src/lib/basePath.ts` | GitHub Pages `/rido-website` prefix utility |
+| `withBase()` | `src/lib/basePath.ts` | Prepends basePath for export builds |
 
 ### CSS Utilities
 
@@ -287,7 +289,7 @@ rido/
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color, 404 page |
 | 2026-01 | Image optimization | sizes attributes on all Image components, Suspense boundary on HowItWorks, Skeleton component |
 | 2026-01 | Pricing update | €1.00 unlock / €0.35 min (was €0.50/€0.15), Pass €0.25/min (was €0.10), Day €14.99 (was €9.99) |
-| 2026-01 | GitHub Pages deployment | Auto-deploy via GitHub Actions, live at ssgolden.github.io/rido-website |
+| 2026-01 | GitHub Pages deployment | Auto-deploy via GitHub Actions, live at ssgolden.github.io/rido-website, basePath fix for assets/links |
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
 | 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
