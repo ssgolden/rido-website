@@ -48,13 +48,18 @@ export function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-50 rounded-2xl px-4 py-3 sm:px-6 transition-all duration-300",
+        "fixed top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300",
         scrolled ? "glass-strong shadow-lg" : "bg-transparent"
       )}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <a href="#" aria-label="Rido home">
-          <RidoLogo variant="full" size="md" />
+        <a href="#" aria-label="Rido home" className="min-w-0 shrink-0">
+          <span className="block sm:hidden">
+            <RidoLogo variant="full" size="sm" />
+          </span>
+          <span className="hidden sm:block">
+            <RidoLogo variant="full" size="md" />
+          </span>
         </a>
 
         <div className="hidden md:flex items-center gap-8">
@@ -79,7 +84,7 @@ export function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-white cursor-pointer"
+          className="md:hidden text-white cursor-pointer p-2 -mr-2"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
@@ -97,13 +102,13 @@ export function Navbar() {
             transition={{ duration: 0.2 }}
             className="md:hidden overflow-hidden"
           >
-            <div className="mt-4 pb-4 border-t border-white/10">
+            <div className="mt-3 pb-3 border-t border-white/10">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    "block py-2 transition-colors cursor-pointer",
+                    "block py-2.5 text-base transition-colors cursor-pointer",
                     activeSection === link.href.replace("#", "")
                       ? "text-rido-magenta font-semibold"
                       : "text-white/70 hover:text-rido-magenta"
@@ -113,7 +118,7 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
-              <div className="mt-4">
+              <div className="mt-3">
                 <Button size="sm" className="w-full">
                   Download
                 </Button>

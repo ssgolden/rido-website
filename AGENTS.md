@@ -22,6 +22,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `useReducedMotion()` from framer-motion for animations that loop
 - Google Fonts loaded via `<link>` in layout.tsx (not next/font — Turbopack bug on Windows)
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
+- Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
+- Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
+- Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
+- Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
 
 ## File Conventions
 - Sections in `src/components/sections/`

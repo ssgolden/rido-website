@@ -45,7 +45,7 @@ src/
 
 - 🎨 Dark-mode-first cinematic design with **magenta (#DE0498)** brand color
 - ✨ Framer Motion scroll animations on every section
-- 📱 Responsive at 375px → 1440px
+- 📱 Responsive at 360px (Samsung S25) → 1440px, `min-h-dvh` for mobile viewport
 - ♿ Accessibility: skip-to-content, aria-labels, focus-visible, prefers-reduced-motion
 - 🧮 Interactive ride pricing calculator
 - 📄 Real legal pages (Go2 Place S.L., GDPR, Terms)

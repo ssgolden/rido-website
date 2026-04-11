@@ -32,7 +32,7 @@ export function About() {
               <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
                 Our Story
               </p>
-              <h2 className="text-4xl md:text-5xl font-black mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">
                 Born in{" "}
                 <span className="text-gradient-brand">Spain</span>, Built for
                 Spanish Cities

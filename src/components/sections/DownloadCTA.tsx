@@ -12,7 +12,7 @@ export function DownloadCTA() {
   return (
     <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-magenta/20 via-rido-navy to-rido-magenta-light/10" />
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-rido-magenta/10 blur-3xl" />
+      <div className="absolute top-0 right-0 w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] rounded-full bg-rido-magenta/10 blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto text-center">
         <ScrollReveal>

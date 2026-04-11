@@ -51,6 +51,7 @@
   body {
     @apply bg-rido-navy text-white font-sans antialiased overflow-x-hidden;
     min-height: 100vh;
+    min-height: 100svh;
     min-height: 100dvh;
   }
 
@@ -119,6 +120,14 @@
 
   section[id] {
     @apply scroll-mt-16 sm:scroll-mt-24;
+  }
+
+  /* Safe area support for Samsung S25, iPhone with notch/Dynamic Island */
+  .safe-left {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+  }
+  .safe-right {
+    padding-right: max(0.75rem, env(safe-area-inset-right));
   }
 }
 
