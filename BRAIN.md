@@ -9,90 +9,48 @@
 
 **Rido** is a shared micro-mobility business operating in **Spain**, providing **e-scooters** and **e-bikes** for rent via a mobile app. The website is a **public-facing frontend** — its purpose is brand awareness, trust, and app downloads.
 
+- **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
+- **Contact:** info@rido.bike
+- **Live site:** https://skill-deploy-ev5n5hbgck-codex-agent-deploys.vercel.app
+- **GitHub:** https://github.com/ssgolden/rido-website
+
 ---
 
 ## Business Context
 
 | Detail | Value |
 |--------|-------|
-| **Company** | Rido |
+| **Company** | Go2 Place S.L. (brand: Rido) |
+| **NIF** | B01745405 |
 | **Market** | Spain (expanding) |
 | **Vehicles** | Shared e-scooters, shared e-bikes |
 | **Business model** | App-based rental (scan → ride → park) |
 | **Target audience** | Urban commuters (18-45), tourists, students, eco-conscious riders |
 | **Website purpose** | Brand awareness → App download → Trust & credibility |
-| **Website type** | Static frontend (Next.js + React + TypeScript + Tailwind) |
+| **Website type** | Static Next.js site (SSG) on Vercel |
 
 ---
 
 ## Competitor Analysis
 
-### 1. Hoppy (behoppy.es / gethopp.com)
+### Key Competitors
 
-| Aspect | Details |
-|--------|---------|
-| **HQ** | Belgium (Hoppsharing BV), Spain entity: Hoppylectrico S.L. (Elche, Alicante) |
-| **Spain cities** | Torrevieja, Orihuela, Albir, Lanzarote, Altea, La Nucia, Fuerteventura, Tenerife |
-| **Vehicles** | Classic bike, E-Scooter, E-Moped, E-Bike, Golf Carts |
-| **Website quality** | ⭐⭐ Basic, functional, not premium |
-| **UX flow** | Download → Scan → Ride → Park |
-| **Strengths** | Multi-vehicle, city data sharing, Hoppy Hubs (charging stations) |
-| **Weaknesses** | Cheap feel, poor reviews (expensive, €10 min top-up, €3 refund fee), data privacy concerns, maintenance issues |
+| Competitor | HQ | Website Quality | Unique Strength |
+|-----------|-----|-----------------|-----------------|
+| **Hoppy** | Belgium (Spain: Elche) | ⭐⭐ Basic | Multi-vehicle, Hoppy Hubs |
+| **Bolt** | Estonia | ⭐⭐⭐⭐⭐ Enterprise | Super-app, brand refresh, safety tech |
+| **Lime** | USA | ⭐⭐⭐⭐⭐ Premium | Global scale, sustainability |
+| **Dott** | Netherlands | ⭐⭐⭐⭐ Clean | European, purpose-driven |
 
-### 2. Bolt (bolt.eu)
+### Where Rido Wins
 
-| Aspect | Details |
-|--------|---------|
-| **HQ** | Estonia, 200M+ customers, 600+ cities |
-| **Spain cities** | Madrid, Barcelona, Valencia, Málaga, Bilbao, Palma de Mallorca, Seville |
-| **Vehicles** | E-scooters, e-bikes, ride-hailing, car sharing, food delivery |
-| **Website quality** | ⭐⭐⭐⭐⭐ Enterprise-grade, recent brand refresh |
-| **Brand refresh** | New greens (accessible), Inter font (990 languages), 3D illustrations, flexible grid layout, photography library, sonic identity |
-| **Safety features** | Beginner mode (15km/h cap first 5 rides), tandem riding detection, cognitive reaction test (drunk detection), Bolt 6 scooter (90km range, 8yr lifespan) |
-| **Strengths** | Premium brand, multi-service super-app, city partnerships, charging docks (compatible with all brands), in-house creative team |
-| **Weaknesses** | No specific weakness — they're the benchmark |
-
-### 3. Lime (li.me)
-
-| Aspect | Details |
-|--------|---------|
-| **HQ** | USA, global leader, 100M+ ride milestone |
-| **Vehicles** | Gen4 E-Scooter, Gen4 E-Bike, Seated E-Scooter |
-| **Website quality** | ⭐⭐⭐⭐⭐ Premium, polished, global |
-| **Tagline** | "Ride Green" |
-| **Core principles** | Safety, Sustainability, Community, Innovation |
-| **Features** | Swappable batteries, LimePrime subscription, multi-region (35+ countries) |
-| **Strengths** | Brand recognition, premium feel, sustainability leadership, global scale |
-| **Weaknesses** | Less Europe-focused, less city partnership depth in Spain |
-
-### 4. Dott (ridedott.com)
-
-| Aspect | Details |
-|--------|---------|
-| **HQ** | Netherlands, merged with TIER in 2024 |
-| **Scale** | 400+ cities, 500M rides, first EBITDA profitability 2025 |
-| **Vehicles** | E-scooters, e-bikes (45,000 new vehicles 2025) |
-| **Website quality** | ⭐⭐⭐⭐ Clean, purposeful, European feel |
-| **Tagline** | "Change mobility for good, together" / "Moving us closer" |
-| **Features** | 2x battery capacity, phone holders with charging, adjustable saddles, complimentary insurance, city e-ebike (women-friendly) |
-| **Strengths** | European authenticity, responsible operations (in-house), purpose-driven brand, new fleet investment |
-| **Weaknesses** | Less brand recognition than Lime/Bolt |
-
----
-
-## Competitive Positioning — Where Rido Wins
-
-| Dimension | Competitor Standard | Rido's Opportunity |
-|-----------|-------------------|-------------------|
-| **Brand** | Generic green/blue | Bold Spanish identity — warm, passionate, Mediterranean |
-| **Website** | Functional or corporate | Cinematic, immersive, story-driven |
-| **Sustainability** | Talk, some action | Real transparency — live CO2 counter, routes replaced |
-| **Safety** | Basic rules page | Interactive safety course with rewards |
-| **Cities** | List of names | Interactive map with individual city stories |
-| **Vehicles** | Spec sheets | 3D rotating vehicle showcase |
-| **Pricing** | Confusing, hidden fees | Transparent pricing calculator |
-| **App download** | Small button | Impossible-to-miss CTA on every section |
-| **Trust** | Legal pages | Real rider stories, safety track record |
+| Dimension | Competitor Standard | Rido's Edge |
+|-----------|-------------------|-------------|
+| **Brand** | Generic green/blue | Bold magenta, Spanish identity |
+| **Website** | Functional/corporate | Cinematic, animated, immersive |
+| **Pricing** | Confusing, hidden fees | Transparent calculator, no-surprise guarantee |
+| **Legal** | Generic templates | Real Go2 Place S.L. legal docs |
+| **Safety** | Basic rules page | Beginner mode, tandem detection, helmet rewards |
 
 ---
 
@@ -104,63 +62,57 @@
 - **Honest** — Transparent pricing, no hidden fees, real sustainability
 - **Energetic** — Movement, freedom, the feeling of wind in your hair
 
-### Color Palette (From Brand Assets — Updated 2026-01-PIXELED)
+### Color Palette (Pixel-Extracted from Brand Assets)
 
-> **CRITICAL:** The brand color is **magenta/fuchsia (#DE0498)**, NOT orange-coral. This was confirmed by programmatic pixel extraction across all 4 brand assets. The initial visual assessment was fooled by white backgrounds making magenta appear warmer.
+> **CRITICAL:** The brand color is **magenta/fuchsia (#DE0498)**, NOT orange-coral. Programmatic pixel extraction confirmed across all 4 brand assets.
 
-| Token | Hex | Source | Usage |
-|-------|-----|--------|-------|
-| **Primary** | `#DE0498` | App screenshot (20,694px) | CTAs, headings, accents, logo |
-| **Primary Dark** | `#C10385` | Derived (85% brightness) | Hover/active states |
-| **Primary Light** | `#F23DB5` | Derived (35% toward white) | Badges, subtle backgrounds |
-| **Yellow Accent** | `#FDE803` | App map markers (5,270px) | Secondary accent (use sparingly) |
-| **Dark Background** | `#0F172A` | App dark mode + derived | Page background |
-| **Surface** | `#1E293B` | Derived | Card backgrounds |
-| **Green** | `#22C55E` | Standard | Eco/success/sustainability |
-| **Cloud White** | `#F8FAFC` | Standard | Light backgrounds |
+| Token | Hex | Usage |
+|-------|-----|-------|
+| **Primary** | `#DE0498` | CTAs, headings, accents, logo |
+| **Primary Dark** | `#C10385` | Hover/active states |
+| **Primary Light** | `#F23DB5` | Badges, subtle backgrounds |
+| **Yellow Accent** | `#FDE803` | Secondary accent (sparingly) |
+| **Dark Background** | `#0F172A` | Page background |
+| **Surface** | `#1E293B` | Card backgrounds |
+| **Green** | `#22C55E` | Eco/success/sustainability |
+| **Cloud White** | `#F8FAFC` | Light backgrounds |
 
-**Pixel extraction evidence:**
-- Scooter Product (1000508879): #FF31B7 (35,891 magenta pixels)
-- Scooter Street (1000508880): #FF4A9B (14,569 magenta pixels)
-- App Screenshot (1000508881): #DE0498 (20,694 magenta pixels) ← canonical
-- Rider Street (1000508885): #DF0B84 (39,821 magenta pixels)
-
-All 4 images consistently show magenta/pink, NOT orange-coral.
-
-### Logo (From Brand Assets — Updated 2026-01)
-- **The Rido checkmark (✓)** is the primary brand mark — visible on scooter deck, stem, and app header
-- Checkmark is rounded/friendly (not angular), rendered in coral on a rounded square background
-- **Wordmark** is lowercase "rido" in Inter Black
-- Component: `src/components/ui/RidoLogo.tsx` with variants: `mark` (icon only), `wordmark` (text), `full` (icon + text)
-- Favicon: `public/favicon.svg` (SVG checkmark)
+### Logo
+- **Rido checkmark (✓)** — primary brand mark, rendered in `#DE0498` on rounded square
+- **Wordmark** — lowercase "rido" in Inter Black
+- Component: `src/components/ui/RidoLogo.tsx` — variants: `mark`, `wordmark`, `full`
+- Favicon: `public/favicon.svg`
 
 ### Typography
-- **Headlines:** Inter (Bold/Black) — same as Bolt for 990-language support
-- **Body:** Inter (Regular) — clean, readable
+- **Headlines:** Inter (Bold/Black)
+- **Body:** Inter (Regular)
+- Loaded via Google Fonts `<link>` with `display=swap`
 
 ### UI Style
 - **Dark mode first** — cinematic, premium, tech-forward
-- **Gradient accents** — Coral → Gold for energy
-- **Glass morphism** — depth and sophistication
-- **Micro-animations** — vehicle wheels spinning, location pins bouncing
+- **Magenta gradient accents** — `from-rido-magenta to-rido-magenta-light`
+- **Glass morphism** — `glass` and `glass-strong` utilities
+- **Scroll animations** — Framer Motion `ScrollReveal` + `StaggerReveal`
 - **Full-bleed imagery** — Spanish cityscapes, riders in motion
 
 ---
 
-## Website Sections (Agreed)
+## Website Sections (12 total)
 
-1. **Hero** — Full-screen cinematic video/gradient, bold tagline, dual CTA (App Store + Google Play)
-2. **How It Works** — 3-step animated flow (Download → Scan → Ride)
-3. **Our Vehicles** — 3D card showcase for E-Scooter and E-Bike with specs
-4. **Cities** — Interactive map of Spanish cities where Rido operates
-5. **Safety** — Interactive safety principles with icons and stats
-6. **Sustainability** — Live CO2 counter, impact stats, green commitment
-7. **Pricing** — Transparent pricing calculator with no-surprise guarantee
-8. **About Us** — Company story, mission, team
-9. **Download CTA** — Final full-width call-to-action for app download
-10. **Footer** — Links, legal, social, language selector (ES/EN)
-11. **Privacy Policy** — `/privacy` — Full GDPR-compliant privacy policy (11 sections)
-12. **Terms of Service** — `/terms` — Full legal terms (16 sections)
+| # | Section | Route | Key Features |
+|---|---------|-------|-------------|
+| 1 | **Hero** | `/#` | Cinematic gradient, stats grid, dual CTA, rider bg at 7% opacity |
+| 2 | **How It Works** | `/#how-it-works` | 4-step cards, progress line, app screenshot |
+| 3 | **Vehicles** | `/#vehicles` | Tab switcher, image gallery, spec cards, features list |
+| 4 | **Cities** | `/#cities` | 9 city cards with Lucide icons, Coming Soon badges |
+| 5 | **Safety** | `/#safety` | 4 safety cards, Beginner Mode callout |
+| 6 | **Sustainability** | `/#sustainability` | Animated counters, 3 commitment cards |
+| 7 | **Pricing** | `/#pricing` | 3-tier cards, no-surprise guarantee, interactive calculator |
+| 8 | **About** | `/#about` | Split layout (text + values), company story |
+| 9 | **Download CTA** | `/#download` | App Store/Google Play buttons, floating phone animation |
+| 10 | **Footer** | — | 4-column, legal links, ES/EN selector |
+| 11 | **Privacy Policy** | `/privacy` | 11 sections, GDPR, Go2 Place S.L., legal highlight boxes |
+| 12 | **Terms of Service** | `/terms` | 16 sections, damage fees, age limits, legal warning boxes |
 
 ---
 
@@ -168,15 +120,53 @@ All 4 images consistently show magenta/pink, NOT orange-coral.
 
 | Layer | Technology |
 |-------|-----------|
-| **Framework** | Next.js 15 (App Router) |
+| **Framework** | Next.js 16 (App Router) |
 | **UI** | React 19 + TypeScript |
 | **Styling** | Tailwind CSS 4 |
-| **Animations** | Framer Motion |
+| **Animations** | Framer Motion 12 (ScrollReveal, StaggerReveal) |
 | **Icons** | Lucide React |
 | **Fonts** | Inter (Google Fonts) |
-| **Deployment** | Vercel |
-| **Analytics** | Vercel Analytics |
-| **Performance** | Next.js Image optimization, ISR, edge runtime |
+| **Deployment** | Vercel (static SSG) |
+| **Package manager** | npm |
+
+---
+
+## Key Libraries & Components
+
+### Custom Components
+
+| Component | Path | Purpose |
+|-----------|------|---------|
+| `ScrollReveal` | `src/components/ui/ScrollReveal.tsx` | Fade-in from direction on scroll |
+| `StaggerReveal` | `src/components/ui/StaggerReveal.tsx` | Staggered children reveal |
+| `StaggerItem` | `src/components/ui/StaggerReveal.tsx` | Individual stagger child |
+| `RidoLogo` | `src/components/ui/RidoLogo.tsx` | Checkmark + wordmark logo |
+| `Button` | `src/components/ui/Button.tsx` | Primary/secondary/outline variants |
+| `Badge` | `src/components/ui/Badge.tsx` | magenta/magenta-light/green/default |
+| `Card` | `src/components/ui/Card.tsx` | Glass card with hover effects |
+| `LegalPage` | `src/components/layout/LegalPage.tsx` | Shared legal page layout |
+| `Navbar` | `src/components/layout/Navbar.tsx` | Fixed, glass-strong, active section |
+| `Footer` | `src/components/layout/Footer.tsx` | 4-column, legal links to /privacy + /terms |
+| `PricingCalculator` | Inside `Pricing.tsx` | Interactive ride cost estimator |
+
+### CSS Utilities
+
+| Class | Purpose |
+|-------|---------|
+| `.text-gradient-brand` | Magenta→magenta-light gradient text |
+| `.glass` | White 5% backdrop-blur card |
+| `.glass-strong` | White 10% backdrop-blur card |
+| `.legal-*` | Legal page typography / highlight / warning |
+| `focus-visible` | Magenta outline on focus |
+
+### Accessibility
+
+- Skip-to-content link in layout
+- `aria-label` on all 8 homepage sections + legal pages
+- `prefers-reduced-motion` CSS media query + `useReducedMotion()` hook
+- `focus-visible` outline styles (magenta)
+- Lang attribute: `en` (matching English content)
+- All icons: Lucide SVG (zero emoji icons)
 
 ---
 
@@ -184,73 +174,80 @@ All 4 images consistently show magenta/pink, NOT orange-coral.
 
 | File | Content | Usage |
 |------|---------|-------|
-| `public/images/scooter/rido-scooter-product.jpg` | White e-scooter with coral accents on white bg | Vehicles section product shot |
-| `public/images/bike/rido-bike-front.jpg` | E-bike front product shot on white bg | Vehicles section (primary e-bike) |
-| `public/images/bike/rido-bike-side.jpg` | E-bike side profile on white bg | Vehicles section gallery |
-| `public/images/bike/rido-bike-detail.jpg` | E-bike detail/close-up on white bg | Vehicles section gallery |
-| `public/images/bike/rido-bike-lifestyle.jpg` | E-bike lifestyle angle on white bg | Vehicles section gallery |
+| `public/images/scooter/rido-scooter-product.jpg` | White e-scooter with magenta accents | Vehicles section (primary) |
+| `public/images/bike/rido-bike-front.jpg` | E-bike front product shot | Vehicles section gallery |
+| `public/images/bike/rido-bike-side.jpg` | E-bike side profile | Vehicles section gallery |
+| `public/images/bike/rido-bike-detail.jpg` | E-bike detail close-up | Vehicles section gallery |
+| `public/images/bike/rido-bike-lifestyle.jpg` | E-bike lifestyle angle | Vehicles section gallery |
 | `public/images/lifestyle/rido-scooter-street.jpg` | Scooter on Spanish street | Hero, How It Works |
-| `public/images/app/rido-app-screenshot.png` | Rido app interface (1080x2340) | How It Works, Download CTA |
-| `public/images/lifestyle/rido-rider-street.jpg` | Rider on scooter in Spanish city | Hero, About, Sustainability |
+| `public/images/app/rido-app-screenshot.png` | Rido app interface (1080×2340) | How It Works, Download CTA |
+| `public/images/lifestyle/rido-rider-street.jpg` | Rider on scooter in Spanish city | Hero bg (7% opacity), About, Sustainability, OG image |
+| `public/favicon.svg` | Checkmark in `#DE0498` on rounded square | Browser favicon |
+
+---
 
 ## File Structure
 
 ```
 rido/
-├── SKILLS.md                    # Skills reference
-├── BRAIN.md                     # This file
-├── images/                       # Source brand assets (original)
+├── SKILLS.md                              # Skills reference
+├── BRAIN.md                               # This file
+├── vercel.json                             # Vercel deployment config
+├── next.config.ts                          # Next.js config
+├── tsconfig.json                           # TypeScript config
+├── package.json                            # Dependencies & scripts
+├── postcss.config.mjs                      # PostCSS for Tailwind
+├── .gitignore                              # Git ignore rules
 ├── docs/
 │   └── plans/
-│       └── 2026-01-rido-website.md
+│       ├── 2026-01-rido-website.md         # Original website plan
+│       ├── 2026-01-brand-upgrade.md        # Coral alignment (superseded)
+│       ├── 2026-01-brand-color-correction.md # Coral→magenta correction
+│       ├── 2026-01-ebike-upgrade.md         # E-bike gallery
+│       ├── 2026-01-legal-pages-upgrade.md   # Privacy + Terms pages
+│       └── 2026-01-ui-ux-upgrade.md        # UI/UX animation + accessibility plan
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── globals.css
-│   │   └── not-found.tsx
+│   │   ├── globals.css                     # Tailwind config, theme tokens, utilities
+│   │   ├── layout.tsx                      # Root layout (Google Fonts, skip link, meta)
+│   │   ├── page.tsx                        # Homepage (9 sections + Navbar + Footer)
+│   │   ├── privacy/page.tsx                # Privacy Policy (11 sections)
+│   │   └── terms/page.tsx                  # Terms of Service (16 sections)
 │   ├── components/
 │   │   ├── layout/
-│   │   │   ├── Navbar.tsx
-│   │   │   └── Footer.tsx
+│   │   │   ├── Navbar.tsx                   # Fixed glass navbar, active section tracking
+│   │   │   ├── Footer.tsx                   # 4-column footer, legal links
+│   │   │   └── LegalPage.tsx                # Shared legal page layout
 │   │   ├── sections/
-│   │   │   ├── Hero.tsx
-│   │   │   ├── HowItWorks.tsx
-│   │   │   ├── Vehicles.tsx
-│   │   │   ├── Cities.tsx
-│   │   │   ├── Safety.tsx
-│   │   │   ├── Sustainability.tsx
-│   │   │   ├── Pricing.tsx
-│   │   │   ├── About.tsx
-│   │   │   └── DownloadCTA.tsx
+│   │   │   ├── Hero.tsx                     # Full-screen hero with stats, CTAs
+│   │   │   ├── HowItWorks.tsx               # 4-step cards + progress line + app screenshot
+│   │   │   ├── Vehicles.tsx                  # Tabbed vehicle gallery + specs
+│   │   │   ├── Cities.tsx                    # City cards with Lucide icons
+│   │   │   ├── Safety.tsx                    # Safety cards + Beginner Mode
+│   │   │   ├── Sustainability.tsx            # Animated counters + commitments
+│   │   │   ├── Pricing.tsx                   # Tiers + no-surprise + calculator
+│   │   │   ├── About.tsx                     # Split layout, company story
+│   │   │   └── DownloadCTA.tsx              # Store badges + floating phone
 │   │   └── ui/
-│   │       ├── Button.tsx
-│   │       ├── Badge.tsx
-│   │       ├── Card.tsx
-│   │       ├── RidoLogo.tsx       # Checkmark logo component
-│   │       └── AnimatedCounter.tsx
+│   │       ├── Badge.tsx                     # Badge variants (magenta/green/default)
+│   │       ├── Button.tsx                    # Button variants (primary/secondary/outline)
+│   │       ├── Card.tsx                      # Glass card with hover
+│   │       ├── RidoLogo.tsx                  # Checkmark + wordmark logo
+│   │       ├── ScrollReveal.tsx              # Framer Motion scroll fade-in
+│   │       └── StaggerReveal.tsx             # Staggered children animation
 │   ├── data/
-│   │   ├── cities.ts
-│   │   ├── vehicles.ts
-│   │   └── pricing.ts
+│   │   ├── cities.ts                         # 9 Spanish cities with coordinates
+│   │   ├── vehicles.ts                       # E-scooter + E-bike specs, images, features
+│   │   └── pricing.ts                        # Pay-as-you-go, Rido Pass, Day Pass
 │   └── lib/
-│       └── utils.ts
-├── public/
-│   ├── favicon.svg               # SVG checkmark favicon
-│   └── images/
-│       ├── bike/
-│       │   ├── rido-bike-front.jpg
-│       │   ├── rido-bike-side.jpg
-│       │   ├── rido-bike-detail.jpg
-│       │   └── rido-bike-lifestyle.jpg
-│       ├── scooter/rido-scooter-product.jpg
-│       ├── lifestyle/rido-scooter-street.jpg
-│       ├── app/rido-app-screenshot.png
-│       └── lifestyle/rido-rider-street.jpg
-├── next.config.ts
-├── postcss.config.mjs
-├── tsconfig.json
-└── package.json
+│       └── utils.ts                          # cn() utility
+└── public/
+    ├── favicon.svg                           # SVG checkmark favicon
+    └── images/
+        ├── bike/                             # 4 e-bike images
+        ├── scooter/                          # 1 scooter image
+        ├── lifestyle/                         # 2 lifestyle images
+        └── app/                              # 1 app screenshot
 ```
 
 ---
@@ -259,19 +256,36 @@ rido/
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2026-01 | Next.js 15 + App Router | Best DX, SSG for performance, SEO for discoverability |
+| 2026-01 | Next.js 16 + App Router | Best DX, SSG for performance, SEO for discoverability |
 | 2026-01 | Tailwind CSS 4 | Fastest iteration, consistent design system |
-| 2026-01 | Dark-mode-first design | Cinematic, premium feel that differentiates from green-heavy competitors |
-| 2026-01 | Coral `#FF5733` (not `#FF6B4A`) | Updated after visual audit of scooter product shots and app screenshot — real brand is warmer/more orange |
-| 2026-01 | Navy `#0F172A` (not `#1A1F36`) | True near-black matches app dark mode — old value was too desaturated |
-| 2026-01 | Checkmark logo (not "Rido.") | Brand assets show checkmark (✓) on scooter deck, stem, and app header — the period was our invention |
-| 2026-01 | Removed gold `#FFB84D` | Gold doesn't appear in any brand asset — replaced with coral-light `#FF8A6A` |
-| 2026-01 | Legal pages use real Go2 Place S.L. documents | sourced from Policies/ DOCX files, company NIF B01745405 |
-| 2026-01 | **Magenta `#DE0498` (NOT coral)** | Programmatic pixel extraction from all 4 brand assets confirms brand color is vibrant magenta/fuchsia, not orange-coral. 20,694px in app, 35,891px in scooter, 39,821px in rider. Visual assessment was fooled by white backgrounds making magenta appear warmer. |
-| 2026-01 | UI/UX upgrade executed | Framer Motion scroll animations, active navbar, skip link, emoji purge, store badges, pricing calculator, prefers-reduced-motion, focus-visible, aria-labels |
-| 2026-01 | Responsive QA done | Hero stats grid-cols-3, navbar padding, phone max-w-[280px], range slider styling, metadataBase, motion-safe:animate-bounce |
-| 2026-01 | UI/UX upgrade plan created | 10 tasks: next/font, Framer Motion animations, active navbar, hero polish, HowItWorks connectors, emoji purge, pricing calculator, store badges, accessibility, responsive QA |
-| 2026-01 | Bilingual ES/EN | Spain market + international tourists |
+| 2026-01 | Dark-mode-first design | Cinematic, premium feel differentiating from green-heavy competitors |
+| 2026-01 | **Magenta `#DE0498` (NOT coral)** | Pixel extraction from all 4 brand assets confirms fuchsia/magenta. Visual assessment fooled by white backgrounds |
+| 2026-01 | Checkmark logo (not "Rido.") | Brand assets show checkmark on scooter deck, stem, app header |
+| 2026-01 | Legal pages use real Go2 Place S.L. docs | Sourced from Policies/ DOCX, NIF B01745405 |
+| 2026-01 | Framer Motion scroll animations | ScrollReveal + StaggerReveal on all 9 homepage sections |
+| 2026-01 | Active section tracker in Navbar | IntersectionObserver highlights current section |
+| 2026-01 | Emoji purge → Lucide icons | Replaced 🛴🚲 with Zap/Bike SVG icons throughout |
+| 2026-01 | App Store/Google Play badges | Replaced 🍎 ▶ with Lucide Apple/Play + store names |
+| 2026-01 | Interactive pricing calculator | Ride cost estimator with plan + duration slider |
+| 2026-01 | prefers-reduced-motion | CSS media query + useReducedMotion() in DownloadCTA |
+| 2026-01 | skip-to-content + focus-visible | Accessibility: skip link, magenta focus rings, aria-labels |
+| 2026-01 | lang="en" | Content is English, not Spanish |
+| 2026-01 | metadataBase https://rido.bike | Resolves OG image URLs for social sharing |
+| 2026-01 | Vercel deployment | Static SSG on Vercel via Codex deploy script |
+
+---
+
+## Known Issues & Future Work
+
+| Priority | Item | Notes |
+|----------|------|-------|
+| 🔴 High | `next/font/google` blocked by Turbopack | Windows http2 bug; using Google Fonts `<link>` as fallback. Switch when Next.js fixes |
+| 🟡 Medium | E-scooter has only 1 image | Add scooter product gallery when more images provided |
+| 🟡 Medium | No custom 404 page | Create `not-found.tsx` matching site design |
+| 🟡 Medium | Lighthouse audit not run | Target: Performance 90+, Accessibility 95+, SEO 90+ |
+| 🟢 Low | Cookie Policy is external link | Could create `/cookies` page if needed |
+| 🟢 Low | Bilingual ES/EN | Currently English only; could add i18n |
+| 🟢 Low | Vercel Analytics not configured | Add `@vercel/analytics` package for real metrics |
 
 ---
 
@@ -283,18 +297,17 @@ rido/
 | `brainstorming` | Before any new feature/section |
 | `writing-plans` | Before implementation |
 | `subagent-driven-development` | During implementation |
-| `test-driven-development` | Every component and function |
 | `ui-ux-pro-max` | Design system, color, typography, layout |
 | `web-architect` | Architecture decisions |
-| `fullstack-dev` | Patterns and best practices |
-| `web-search` | Competitor research, latest tech |
 | `verification-before-completion` | Before claiming anything works |
+| `deploy-to-vercel` | Deployment |
 
 ---
 
 ## Sources & References
 
-- **Hoppy:** https://behoppy.es, https://gethopp.com/es-us/scooters/
-- **Bolt:** https://bolt.eu/en/refresh/, https://bolt.eu/en-gb/scooters/, https://bolt.eu/es-es/scooters/
-- **Lime:** https://www.li.me/en-US/home, https://www.li.me/en-gb
-- **Dott:** https://www.ridedott.com/, https://ridedott.com/ride-with-us/, https://ridedott.com/your-best-ride-yet/
+- **Hoppy:** https://behoppy.es
+- **Bolt:** https://bolt.eu
+- **Lime:** https://www.li.me
+- **Dott:** https://www.ridedott.com
+- **Legal docs:** `Policies/RIDO_PRIVACY_POLICY.docx`, `Policies/RIDO_SERVICE_TERMS_AND_CONDITIONS.docx`

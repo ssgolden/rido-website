@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rido — Shared E-Scooters & E-Bikes in Spain
 
-## Getting Started
+Premium dark-mode website for **Rido**, a shared micro-mobility business operating e-scooters and e-bikes across Spain.
 
-First, run the development server:
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build    # Production build
+npm run lint     # ESLint check
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** Next.js 16 (App Router, Static Site Generation)
+- **UI:** React 19 + TypeScript
+- **Styling:** Tailwind CSS 4
+- **Animations:** Framer Motion 12
+- **Icons:** Lucide React
+- **Font:** Inter (Google Fonts)
+- **Deployment:** Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+src/
+├── app/
+│   ├── globals.css          # Tailwind theme, CSS utilities
+│   ├── layout.tsx          # Root layout (fonts, meta, skip link)
+│   ├── page.tsx            # Homepage (9 animated sections)
+│   ├── privacy/page.tsx    # GDPR Privacy Policy
+│   └── terms/page.tsx      # Terms & Conditions
+├── components/
+│   ├── layout/             # Navbar, Footer, LegalPage
+│   ├── sections/           # Hero, HowItWorks, Vehicles, Cities, Safety,
+│   │                         Sustainability, Pricing, About, DownloadCTA
+│   └── ui/                 # Badge, Button, Card, RidoLogo, ScrollReveal,
+│                             StaggerReveal
+├── data/                   # cities.ts, vehicles.ts, pricing.ts
+└── lib/                    # utils.ts (cn helper)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Key Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 🎨 Dark-mode-first cinematic design with **magenta (#DE0498)** brand color
+- ✨ Framer Motion scroll animations on every section
+- 📱 Responsive at 375px → 1440px
+- ♿ Accessibility: skip-to-content, aria-labels, focus-visible, prefers-reduced-motion
+- 🧮 Interactive ride pricing calculator
+- 📄 Real legal pages (Go2 Place S.L., GDPR, Terms)
+- 🏷️ Lucide SVG icons throughout (zero emoji icons)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Brand Colors
 
-## Deploy on Vercel
+| Token | Hex | Usage |
+|-------|-----|-------|
+| Primary | `#DE0498` | CTAs, headings, accents |
+| Primary Dark | `#C10385` | Hover states |
+| Primary Light | `#F23DB5` | Badges |
+| Navy | `#0F172A` | Background |
+| Green | `#22C55E` | Sustainability |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push to `master` on GitHub — Vercel auto-deploys:
+- **Repo:** https://github.com/ssgolden/rido-website
+- **Live:** https://skill-deploy-ev5n5hbgck-codex-agent-deploys.vercel.app
+
+## Legal
+
+- **Company:** Go2 Place S.L., NIF B01745405
+- **Contact:** info@rido.bike
+- **Privacy Policy:** [/privacy](/privacy)
+- **Terms & Conditions:** [/terms](/terms)
