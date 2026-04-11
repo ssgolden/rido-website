@@ -61,7 +61,7 @@ export function Vehicles() {
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
-                  priority
+                  priority={active === 0 && activeImage === 0}
                 />
               </div>
               {v.images.length > 1 && (

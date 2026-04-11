@@ -6,6 +6,8 @@ import { Cities } from "@/components/sections/Cities";
 import { Safety } from "@/components/sections/Safety";
 import { Sustainability } from "@/components/sections/Sustainability";
 import { Pricing } from "@/components/sections/Pricing";
+import { FAQ } from "@/components/sections/FAQ";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { About } from "@/components/sections/About";
 import { DownloadCTA } from "@/components/sections/DownloadCTA";
 import { Footer } from "@/components/layout/Footer";
@@ -22,6 +24,8 @@ export default function Home() {
         <Safety />
         <Sustainability />
         <Pricing />
+        <FAQ />
+        <Testimonials />
         <About />
         <DownloadCTA />
       </main>

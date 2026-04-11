@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RidoLogo } from "@/components/ui/RidoLogo";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Download } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
@@ -21,7 +21,9 @@ export function Navbar() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -79,8 +81,14 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="hidden md:block">
-          <Button size="sm">Download</Button>
+        {/* Desktop: Download CTA with icon */}
+        <div className="hidden md:flex items-center gap-3">
+          <a href="#download" className="cursor-pointer">
+            <Button size="sm" className="gap-2">
+              <Download className="w-4 h-4" />
+              <span>Get the App</span>
+            </Button>
+          </a>
         </div>
 
         <button
@@ -119,9 +127,12 @@ export function Navbar() {
                 </a>
               ))}
               <div className="mt-3">
-                <Button size="sm" className="w-full">
-                  Download
-                </Button>
+                <a href="#download" onClick={() => setMobileOpen(false)} className="cursor-pointer block">
+                  <Button size="sm" className="w-full gap-2">
+                    <Download className="w-4 h-4" />
+                    <span>Get the App</span>
+                  </Button>
+                </a>
               </div>
             </div>
           </motion.div>
