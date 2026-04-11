@@ -48,7 +48,11 @@
   }
 
   body {
-    @apply bg-rido-navy text-white font-sans antialiased;
+    @apply bg-rido-navy text-white font-sans antialiased overflow-x-hidden;
+  }
+
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-rido-magenta;
   }
 }
 
@@ -104,5 +108,17 @@
 
   .legal-section {
     @apply scroll-mt-24;
+  }
+}
+
+/* Accessibility: reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

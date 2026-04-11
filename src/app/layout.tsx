@@ -24,6 +24,14 @@ export const metadata: Metadata = {
     description:
       "Move freely across Spain with Rido's shared e-scooters and e-bikes.",
     type: "website",
+    images: [
+      {
+        url: "/images/lifestyle/rido-rider-street.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Rido — Ride Spain",
+      },
+    ],
   },
 };
 
@@ -33,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className="dark">
+    <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -46,7 +54,15 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-sans" suppressHydrationWarning>{children}</body>
+      <body className="font-sans overflow-x-hidden" suppressHydrationWarning>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:bg-rido-magenta focus:text-white focus:px-4 focus:py-2 focus:rounded-lg"
+        >
+          Skip to content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

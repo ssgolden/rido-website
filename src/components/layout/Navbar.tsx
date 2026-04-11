@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const navLinks = [
   { label: "How It Works", href: "#how-it-works" },
@@ -17,11 +18,31 @@ const navLinks = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-50% 0px" }
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -41,7 +62,12 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-white/70 hover:text-rido-magenta transition-colors"
+              className={cn(
+                "text-sm transition-colors cursor-pointer",
+                activeSection === link.href.replace("#", "")
+                  ? "text-rido-magenta font-semibold"
+                  : "text-white/70 hover:text-rido-magenta"
+              )}
             >
               {link.label}
             </a>
@@ -53,33 +79,49 @@ export function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-white cursor-pointer"
           onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileOpen}
         >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden mt-4 pb-4 border-t border-white/10">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="block py-2 text-white/70 hover:text-rido-magenta transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
-              {link.label}
-            </a>
-          ))}
-          <div className="mt-4">
-            <Button size="sm" className="w-full">
-              Download
-            </Button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden overflow-hidden"
+          >
+            <div className="mt-4 pb-4 border-t border-white/10">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={cn(
+                    "block py-2 transition-colors cursor-pointer",
+                    activeSection === link.href.replace("#", "")
+                      ? "text-rido-magenta font-semibold"
+                      : "text-white/70 hover:text-rido-magenta"
+                  )}
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {link.label}
+                </a>
+              ))}
+              <div className="mt-4">
+                <Button size="sm" className="w-full">
+                  Download
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }

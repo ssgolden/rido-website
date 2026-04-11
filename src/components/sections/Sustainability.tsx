@@ -1,8 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/Card";
 import { Leaf, Car, Zap } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 function AnimatedCounter({
   end,
@@ -16,28 +19,22 @@ function AnimatedCounter({
   const [count, setCount] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
   const hasAnimated = useRef(false);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
-          hasAnimated.current = true;
-          const startTime = Date.now();
-          const animate = () => {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            setCount(Math.floor(eased * end));
-            if (progress < 1) requestAnimationFrame(animate);
-          };
-          requestAnimationFrame(animate);
-        }
-      },
-      { threshold: 0.3 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [end, duration]);
+    if (isInView && !hasAnimated.current) {
+      hasAnimated.current = true;
+      const startTime = Date.now();
+      const animate = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setCount(Math.floor(eased * end));
+        if (progress < 1) requestAnimationFrame(animate);
+      };
+      requestAnimationFrame(animate);
+    }
+  }, [isInView, end, duration]);
 
   return (
     <span ref={ref} className="font-black text-4xl md:text-5xl text-rido-green">
@@ -48,7 +45,7 @@ function AnimatedCounter({
 }
 
 const stats = [
-  { label: "Tonnes CO₂ Saved", value: 1240, suffix: "+", icon: Leaf },
+  { label: "Tonnes CO\u2082 Saved", value: 1240, suffix: "+", icon: Leaf },
   { label: "Car Trips Replaced", value: 85000, suffix: "+", icon: Car },
   { label: "Km Ridden Emission-Free", value: 420000, suffix: "+", icon: Zap },
 ];
@@ -73,24 +70,26 @@ const commitments = [
 
 export function Sustainability() {
   return (
-    <section id="sustainability" className="py-24 px-6 relative">
+    <section id="sustainability" aria-label="Sustainability impact" className="py-24 px-6 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-rido-navy via-rido-green/5 to-rido-navy" />
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-rido-green text-sm font-semibold uppercase tracking-wider mb-3">
-            Planet First
-          </p>
-          <h2 className="text-4xl md:text-5xl font-black">
-            Real <span className="text-rido-green">Sustainability</span>
-          </h2>
-          <p className="mt-4 text-white/50 max-w-xl mx-auto">
-            Not just talk. Every Rido ride replaces a car trip. Here&apos;s our real impact.
-          </p>
+          <ScrollReveal>
+            <p className="text-rido-green text-sm font-semibold uppercase tracking-wider mb-3">
+              Planet First
+            </p>
+            <h2 className="text-4xl md:text-5xl font-black">
+              Real <span className="text-rido-green">Sustainability</span>
+            </h2>
+            <p className="mt-4 text-white/50 max-w-xl mx-auto">
+              Not just talk. Every Rido ride replaces a car trip. Here&apos;s our real impact.
+            </p>
+          </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" staggerDelay={0.15}>
           {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
+            <StaggerItem key={stat.label} className="text-center">
               <div className="flex justify-center mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-rido-green/10 flex items-center justify-center">
                   <stat.icon className="w-7 h-7 text-rido-green" />
@@ -98,22 +97,24 @@ export function Sustainability() {
               </div>
               <AnimatedCounter end={stat.value} suffix={stat.suffix} />
               <p className="text-white/40 text-sm mt-2">{stat.label}</p>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
           {commitments.map((item) => (
-            <Card key={item.title}>
-              <h3 className="font-bold text-lg mb-2 text-rido-green">
-                {item.title}
-              </h3>
-              <p className="text-sm text-white/50 leading-relaxed">
-                {item.description}
-              </p>
-            </Card>
+            <StaggerItem key={item.title}>
+              <Card>
+                <h3 className="font-bold text-lg mb-2 text-rido-green">
+                  {item.title}
+                </h3>
+                <p className="text-sm text-white/50 leading-relaxed">
+                  {item.description}
+                </p>
+              </Card>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerReveal>
       </div>
     </section>
   );
