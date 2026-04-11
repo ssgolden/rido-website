@@ -148,6 +148,7 @@
 | `Navbar` | `src/components/layout/Navbar.tsx` | Fixed, glass-strong, active section |
 | `Footer` | `src/components/layout/Footer.tsx` | 4-column, legal links to /privacy + /terms |
 | `PricingCalculator` | Inside `Pricing.tsx` | Interactive ride cost estimator |
+| `Skeleton` | `src/components/ui/Skeleton.tsx` | Loading pulse skeleton |
 
 ### CSS Utilities
 
@@ -212,7 +213,8 @@ rido/
 │   │   ├── layout.tsx                      # Root layout (Google Fonts, skip link, meta)
 │   │   ├── page.tsx                        # Homepage (9 sections + Navbar + Footer)
 │   │   ├── privacy/page.tsx                # Privacy Policy (11 sections)
-│   │   └── terms/page.tsx                  # Terms of Service (16 sections)
+│   │   ├── terms/page.tsx                  # Terms of Service (16 sections)
+│   │   └── not-found.tsx                   # Custom 404 page
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Navbar.tsx                   # Fixed glass navbar, active section tracking
@@ -234,7 +236,8 @@ rido/
 │   │       ├── Card.tsx                      # Glass card with hover
 │   │       ├── RidoLogo.tsx                  # Checkmark + wordmark logo
 │   │       ├── ScrollReveal.tsx              # Framer Motion scroll fade-in
-│   │       └── StaggerReveal.tsx             # Staggered children animation
+│   │       ├── StaggerReveal.tsx             # Staggered children animation
+│   │       └── Skeleton.tsx                  # Loading pulse skeleton
 │   ├── data/
 │   │   ├── cities.ts                         # 9 Spanish cities with coordinates
 │   │   ├── vehicles.ts                       # E-scooter + E-bike specs, images, features
@@ -243,6 +246,13 @@ rido/
 │       └── utils.ts                          # cn() utility
 └── public/
     ├── favicon.svg                           # SVG checkmark favicon
+    ├── apple-touch-icon.svg                  # 180×180 apple touch icon
+    ├── manifest.json                         # PWA manifest (brand colors, icons)
+    ├── robots.txt                            # Allow all, sitemap reference
+    ├── sitemap.xml                           # /, /privacy, /terms
+    ├── icons/
+    │   ├── icon-192.svg                       # PWA icon 192×192
+    │   └── icon-512.svg                       # PWA icon 512×512
     └── images/
         ├── bike/                             # 4 e-bike images
         ├── scooter/                          # 1 scooter image
@@ -274,6 +284,8 @@ rido/
 | 2026-01 | Vercel deployment | Static SSG on Vercel via Codex deploy script |
 | 2026-01 | Mobile responsive fix (S25) | min-h-dvh, responsive padding, button sizing, viewport-fit:cover, scroll-margin, overscroll |
 | 2026-01 | Mobile responsive v2 (S25) | min-h-screen+min-h-dvh fallback, section pt-14/sm:pt-20, smaller blur orbs, navbar mobile logo=sm, svh+dvh body fallback, safe-area utilities |
+| 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color, 404 page |
+| 2026-01 | Image optimization | sizes attributes on all Image components, Suspense boundary on HowItWorks, Skeleton component |
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
 | 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
