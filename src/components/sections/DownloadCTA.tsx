@@ -59,6 +59,7 @@ export function DownloadCTA() {
                   alt="Rido app showing vehicle map and ride options"
                   width={280}
                   height={607}
+                  sizes="(max-width: 640px) 240px, 280px"
                   className="mx-auto rounded-3xl shadow-2xl shadow-rido-magenta/20"
                   priority
                 />
@@ -72,6 +73,7 @@ export function DownloadCTA() {
                     alt="Rido app showing vehicle map and ride options"
                     width={280}
                     height={607}
+                    sizes="(max-width: 640px) 240px, 280px"
                     className="mx-auto rounded-3xl shadow-2xl shadow-rido-magenta/20"
                     priority
                   />

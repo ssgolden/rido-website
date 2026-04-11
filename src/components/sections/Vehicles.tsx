@@ -59,6 +59,7 @@ export function Vehicles() {
                   src={v.images[activeImage]}
                   alt={v.imageAlt}
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                   priority
                 />
