@@ -8,6 +8,7 @@ Premium dark-mode website for **Rido**, a shared micro-mobility business operati
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # Production build
+NEXT_OUTPUT=export npm run build  # Static export for GitHub Pages
 npm run lint     # ESLint check
 ```
 
@@ -16,19 +17,20 @@ npm run lint     # ESLint check
 - **Framework:** Next.js 16 (App Router, Static Site Generation)
 - **UI:** React 19 + TypeScript
 - **Styling:** Tailwind CSS 4
-- **Animations:** Framer Motion 12
+- **Animations:** Framer Motion 12 (ScrollReveal, StaggerReveal)
 - **Icons:** Lucide React
-- **Font:** Inter (Google Fonts)
-- **Deployment:** Vercel
+- **Font:** Inter (Google Fonts, `<link>` fallback for Turbopack)
+- **Deployment:** GitHub Pages (auto-deploy via Actions)
 
 ## Project Structure
 
 ```
 src/
 ├── app/
-│   ├── globals.css          # Tailwind theme, CSS utilities
-│   ├── layout.tsx          # Root layout (fonts, meta, skip link)
+│   ├── globals.css          # Tailwind theme, CSS utilities, hero animations
+│   ├── layout.tsx          # Root layout (fonts, meta, skip link, Analytics)
 │   ├── page.tsx            # Homepage (9 animated sections)
+│   ├── not-found.tsx       # Custom 404 page
 │   ├── privacy/page.tsx    # GDPR Privacy Policy
 │   └── terms/page.tsx      # Terms & Conditions
 ├── components/
@@ -36,20 +38,29 @@ src/
 │   ├── sections/           # Hero, HowItWorks, Vehicles, Cities, Safety,
 │   │                         Sustainability, Pricing, About, DownloadCTA
 │   └── ui/                 # Badge, Button, Card, RidoLogo, ScrollReveal,
-│                             StaggerReveal
+│                             StaggerReveal, Skeleton
+├── hooks/
+│   └── useCountUp.ts       # IntersectionObserver count-up animation
 ├── data/                   # cities.ts, vehicles.ts, pricing.ts
-└── lib/                    # utils.ts (cn helper)
+└── lib/
+    ├── utils.ts            # cn() helper
+    └── basePath.ts          # GitHub Pages basePath utility
 ```
 
 ## Key Features
 
 - 🎨 Dark-mode-first cinematic design with **magenta (#DE0498)** brand color
 - ✨ Framer Motion scroll animations on every section
+- 🌊 Animated hero gradient with floating orbs and micro-particles
+- 🔢 Count-up stats that animate when scrolled into view (useCountUp hook)
+- 🖱️ Micro-interactions on Safety cards, Vehicle thumbnails (hover:scale, tint)
 - 📱 Responsive at 360px (Samsung S25) → 1440px, `min-h-dvh` for mobile viewport
 - ♿ Accessibility: skip-to-content, aria-labels, focus-visible, prefers-reduced-motion
 - 🧮 Interactive ride pricing calculator
 - 📄 Real legal pages (Go2 Place S.L., GDPR, Terms)
 - 🏷️ Lucide SVG icons throughout (zero emoji icons)
+- 🛡️ Trust signals in Download CTA (Free to download, No credit card, 8+ cities)
+- 🔒 Security badge (Insured, GDPR, Data protected)
 
 ## Brand Colors
 
@@ -63,9 +74,16 @@ src/
 
 ## Deployment
 
-Push to `master` on GitHub — Vercel auto-deploys:
+Push to `master` on GitHub — GitHub Actions auto-deploys to GitHub Pages (~41s):
+
 - **Repo:** https://github.com/ssgolden/rido-website
-- **Live:** https://skill-deploy-ev5n5hbgck-codex-agent-deploys.vercel.app
+- **Live:** https://ssgolden.github.io/rido-website/
+
+### Adding a Custom Domain
+
+1. Go to repo Settings → Pages → Custom domain → add `rido.bike`
+2. Update DNS to point to GitHub Pages
+3. Remove `basePath` from `next.config.ts` (Vercel deployment doesn't need it)
 
 ## Legal
 

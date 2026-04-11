@@ -11,8 +11,8 @@
 
 - **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
 - **Contact:** info@rido.bike
-- **Live site:** https://ssgolden.github.io/rido-website/
-- **GitHub:** https://github.com/ssgolden/rido-website
+- **Live site:** https://ssgolden.github.io/rido-website/ (auto-deploys on push to master)
+- **GitHub:** https://github.com/ssgolden/rido-website (34 commits)
 
 ---
 
@@ -101,15 +101,15 @@
 
 | # | Section | Route | Key Features |
 |---|---------|-------|-------------|
-| 1 | **Hero** | `/#` | Cinematic gradient, stats grid, dual CTA, rider bg at 7% opacity |
-| 2 | **How It Works** | `/#how-it-works` | 4-step cards, progress line, app screenshot |
+| 1 | **Hero** | `/#` | Animated gradient bg, 3 floating orbs, 3 micro-particles, count-up stats, dual CTA, rider bg at 12% opacity |
+| 2 | **How It Works** | `/#how-it-works` | 4-step cards, progress line (image removed) |
 | 3 | **Vehicles** | `/#vehicles` | Tab switcher, image gallery, spec cards, features list |
 | 4 | **Cities** | `/#cities` | 9 city cards with Lucide icons, Coming Soon badges |
-| 5 | **Safety** | `/#safety` | 4 safety cards, Beginner Mode callout |
+| 5 | **Safety** | `/#safety` | 4 safety cards with hover micro-interactions, Beginner Mode callout |
 | 6 | **Sustainability** | `/#sustainability` | Animated counters, 3 commitment cards |
 | 7 | **Pricing** | `/#pricing` | 3-tier cards (€1/€0.35, Pass, Day €14.99), no-surprise guarantee, calculator |
 | 8 | **About** | `/#about` | Split layout (text + values), company story |
-| 9 | **Download CTA** | `/#download` | App Store/Google Play buttons, floating phone animation |
+| 9 | **Download CTA** | `/#download` | Animated gradient bg, 3 floating orbs, App Store/Google Play buttons, trust signals, security badge |
 | 10 | **Footer** | — | 4-column, legal links, ES/EN selector |
 | 11 | **Privacy Policy** | `/privacy` | 11 sections, GDPR, Go2 Place S.L., legal highlight boxes |
 | 12 | **Terms of Service** | `/terms` | 16 sections, damage fees, age limits, legal warning boxes |
@@ -149,6 +149,7 @@
 | `Footer` | `src/components/layout/Footer.tsx` | 4-column, legal links to /privacy + /terms |
 | `PricingCalculator` | Inside `Pricing.tsx` | Interactive ride cost estimator |
 | `Skeleton` | `src/components/ui/Skeleton.tsx` | Loading pulse skeleton |
+| `useCountUp` | `src/hooks/useCountUp.ts` | IntersectionObserver-triggered count-up animation (prefers-reduced-motion safe) |
 | `basePath` | `src/lib/basePath.ts` | GitHub Pages `/rido-website` prefix utility |
 | `withBase()` | `src/lib/basePath.ts` | Prepends basePath for export builds |
 
@@ -160,6 +161,9 @@
 | `.glass` | White 5% backdrop-blur card |
 | `.glass-strong` | White 10% backdrop-blur card |
 | `.legal-*` | Legal page typography / highlight / warning |
+| `.hero-gradient` | Animated cycling gradient (15s) |
+| `.hero-orb` | Floating blur orb base class |
+| `.hero-orb-1/2/3` | Individual orb keyframe animations (12s/18s/14s) |
 | `focus-visible` | Magenta outline on focus |
 
 ### Accessibility
@@ -183,8 +187,8 @@
 | `public/images/bike/rido-bike-detail.jpg` | E-bike detail close-up | Vehicles section gallery |
 | `public/images/bike/rido-bike-lifestyle.jpg` | E-bike lifestyle angle | Vehicles section gallery |
 | `public/images/lifestyle/rido-scooter-street.jpg` | Scooter on Spanish street | Hero, How It Works |
-| `public/images/app/rido-app-screenshot.png` | Rido app interface (1080×2340) | How It Works, Download CTA |
-| `public/images/lifestyle/rido-rider-street.jpg` | Rider on scooter in Spanish city | Hero bg (7% opacity), About, Sustainability, OG image |
+| `public/images/app/rido-app-screenshot.png` | Rido app interface (1080×2340) | Available but currently unused (removed from HowItWorks + DownloadCTA) |
+| `public/images/lifestyle/rido-rider-street.jpg` | Rider on scooter in Spanish city | Hero bg (12% opacity), About, Sustainability, OG image |
 | `public/favicon.svg` | Checkmark in `#DE0498` on rounded square | Browser favicon |
 
 ---
@@ -223,15 +227,15 @@ rido/
 │   │   │   ├── Footer.tsx                   # 4-column footer, legal links
 │   │   │   └── LegalPage.tsx                # Shared legal page layout
 │   │   ├── sections/
-│   │   │   ├── Hero.tsx                     # Full-screen hero with stats, CTAs
-│   │   │   ├── HowItWorks.tsx               # 4-step cards + progress line + app screenshot
+│   │   │   ├── Hero.tsx                     # Full-screen hero, animated gradient, orbs, count-up stats, CTAs
+│   │   │   ├── HowItWorks.tsx               # 4-step cards + progress line (image removed)
 │   │   │   ├── Vehicles.tsx                  # Tabbed vehicle gallery + specs
 │   │   │   ├── Cities.tsx                    # City cards with Lucide icons
 │   │   │   ├── Safety.tsx                    # Safety cards + Beginner Mode
 │   │   │   ├── Sustainability.tsx            # Animated counters + commitments
 │   │   │   ├── Pricing.tsx                   # Tiers + no-surprise + calculator
 │   │   │   ├── About.tsx                     # Split layout, company story
-│   │   │   └── DownloadCTA.tsx              # Store badges + floating phone
+│   │   │   └── DownloadCTA.tsx              # Animated gradient bg, trust signals, security badge, store buttons
 │   │   └── ui/
 │   │       ├── Badge.tsx                     # Badge variants (magenta/green/default)
 │   │       ├── Button.tsx                    # Button variants (primary/secondary/outline)
@@ -240,12 +244,15 @@ rido/
 │   │       ├── ScrollReveal.tsx              # Framer Motion scroll fade-in
 │   │       ├── StaggerReveal.tsx             # Staggered children animation
 │   │       └── Skeleton.tsx                  # Loading pulse skeleton
+│   ├── hooks/
+│   │   └── useCountUp.ts                    # IntersectionObserver count-up animation (prefers-reduced-motion safe)
 │   ├── data/
 │   │   ├── cities.ts                         # 9 Spanish cities with coordinates
 │   │   ├── vehicles.ts                       # E-scooter + E-bike specs, images, features
 │   │   └── pricing.ts                        # Pay-as-you-go (€1 unlock/€0.35 min), Rido Pass, Day Pass (€14.99)
 │   └── lib/
-│       └── utils.ts                          # cn() utility
+│       ├── utils.ts                          # cn() utility
+│       └── basePath.ts                        # GitHub Pages basePath + withBase() utility
 └── public/
     ├── favicon.svg                           # SVG checkmark favicon
     ├── apple-touch-icon.svg                  # 180×180 apple touch icon
@@ -293,6 +300,8 @@ rido/
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
 | 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
+| 2026-01 | P1 UI/UX upgrades | Hero gradient animation + orbs + micro-particles, micro-interactions on Safety/Vehicles, Download CTA trust signals, useCountUp hook for stats, Sustainability count-up (1,240+/85,000+/420,000+) |
+| 2026-01 | App screenshots removed | Removed rido-app-screenshot.png from HowItWorks and DownloadCTA sections |
 
 ---
 
@@ -308,7 +317,17 @@ rido/
 | 🟢 Low | No sitemap/robots | ✅ DONE: sitemap.xml + robots.txt created |
 | 🟢 Low | No 404 page | ✅ DONE: not-found.tsx with Rido branding |
 | 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
-| 🔴 High | Custom domain rido.bike | Needs DNS pointing to Vercel |
+| 🔴 High | Custom domain rido.bike | Needs DNS pointing to GitHub Pages or Vercel |
+| 🟡 Medium | P0: Stats counter animation | ✅ DONE: useCountUp hook in Hero + Sustainability |
+| 🟡 Medium | P0: Social proof / testimonials | New section: 3 rotating testimonials with avatar, name, city, stars |
+| 🟡 Medium | P0: FAQ accordion | New section: 8-10 questions on age, parking, damage, insurance, refunds |
+| 🟡 Medium | P0: Sticky nav download CTA | Download button in navbar after scrolling past hero |
+| 🟢 Low | P2: Cookie consent banner | GDPR/LOPDGDD required, planned |
+| 🟢 Low | P2: Footer enhancement | Social icons, app download badges, newsletter, legal entity |
+| 🟢 Low | P2: Skeleton loading | loading.tsx for page transitions |
+| 🟢 Low | P3: Comparison table | Rido vs Bolt vs Lime feature comparison |
+| 🟢 Low | P3: Active nav pill animation | Framer Motion layoutId for smooth pill transition |
+| 🟢 Low | P3: Vehicle gallery lightbox | Click-to-expand vehicle images with next/prev |
 
 ---
 

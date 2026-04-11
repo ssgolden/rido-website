@@ -20,16 +20,23 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - All sections need `id` and `aria-label` attributes
 - All interactive elements need `cursor-pointer` class
 - Use `useReducedMotion()` from framer-motion for animations that loop
+- Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
 - Google Fonts loaded via `<link>` in layout.tsx (not next/font — Turbopack bug on Windows)
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
 - Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
 - Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
+- Hero background image opacity is 12% (not 7%)
+- App screenshot images removed from HowItWorks and DownloadCTA sections
+- GitHub Pages deployment uses `basePath: "/rido-website"` with `NEXT_OUTPUT=export` env var
+- Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)
+- Use `next/link` `/Link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
 ## File Conventions
 - Sections in `src/components/sections/`
 - UI primitives in `src/components/ui/`
+- Hooks in `src/hooks/`
 - Layout in `src/components/layout/`
 - Data in `src/data/`
 - Pages in `src/app/`
