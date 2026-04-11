@@ -2,45 +2,34 @@
 
 import { Card } from "@/components/ui/Card";
 import { Leaf, Car, Zap } from "lucide-react";
-import { motion, useInView } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
+import { useCountUp } from "@/hooks/useCountUp";
 
-function AnimatedCounter({
-  end,
-  suffix = "",
-  duration = 2000,
+function SustainabilityStat({
+  value,
+  suffix,
+  label,
+  icon: Icon,
 }: {
-  end: number;
-  suffix?: string;
-  duration?: number;
+  value: number;
+  suffix: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
 }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const hasAnimated = useRef(false);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  useEffect(() => {
-    if (isInView && !hasAnimated.current) {
-      hasAnimated.current = true;
-      const startTime = Date.now();
-      const animate = () => {
-        const elapsed = Date.now() - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        setCount(Math.floor(eased * end));
-        if (progress < 1) requestAnimationFrame(animate);
-      };
-      requestAnimationFrame(animate);
-    }
-  }, [isInView, end, duration]);
-
+  const { count, ref } = useCountUp(value, { duration: 2500 });
   return (
-    <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green">
-      {count.toLocaleString()}
-      {suffix}
-    </span>
+    <StaggerItem className="text-center">
+      <div className="flex justify-center mb-4">
+        <div className="w-14 h-14 rounded-2xl bg-rido-green/10 flex items-center justify-center">
+          <Icon className="w-7 h-7 text-rido-green" />
+        </div>
+      </div>
+      <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green">
+        {count.toLocaleString()}{suffix}
+      </span>
+      <p className="text-white/40 text-sm mt-2">{label}</p>
+    </StaggerItem>
   );
 }
 
@@ -89,15 +78,7 @@ export function Sustainability() {
 
         <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" staggerDelay={0.15}>
           {stats.map((stat) => (
-            <StaggerItem key={stat.label} className="text-center">
-              <div className="flex justify-center mb-4">
-                <div className="w-14 h-14 rounded-2xl bg-rido-green/10 flex items-center justify-center">
-                  <stat.icon className="w-7 h-7 text-rido-green" />
-                </div>
-              </div>
-              <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-              <p className="text-white/40 text-sm mt-2">{stat.label}</p>
-            </StaggerItem>
+            <SustainabilityStat key={stat.label} {...stat} />
           ))}
         </StaggerReveal>
 

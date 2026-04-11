@@ -54,9 +54,9 @@ export function Safety() {
         <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12" staggerDelay={0.1}>
           {safetyItems.map((item) => (
             <StaggerItem key={item.title}>
-              <Card className="flex items-start gap-5">
-                <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center shrink-0">
-                  <item.icon className="w-6 h-6 text-rido-magenta" />
+              <Card className="flex items-start gap-5 group">
+                <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-rido-magenta/20 group-hover:scale-110">
+                  <item.icon className="w-6 h-6 text-rido-magenta transition-transform duration-200 group-hover:scale-110" />
                 </div>
                 <div>
                   <h3 className="font-bold text-lg mb-1">{item.title}</h3>

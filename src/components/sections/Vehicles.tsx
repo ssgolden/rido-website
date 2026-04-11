@@ -70,10 +70,10 @@ export function Vehicles() {
                     <button
                       key={img}
                       onClick={() => setActiveImage(i)}
-                      className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer ${
+                      className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 ${
                         i === activeImage
                           ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"
-                          : "opacity-60 hover:opacity-100"
+                          : "opacity-60"
                       }`}
                     >
                       <Image
