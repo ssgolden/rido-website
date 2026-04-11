@@ -1,0 +1,45 @@
+{
+  "name": "Rido — Shared E-Scooters & E-Bikes in Spain",
+  "short_name": "Rido",
+  "description": "Move freely across Spain with Rido's shared e-scooters and e-bikes. Download the app, scan, and ride.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#DE0498",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["travel", "transportation", "lifestyle"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.rido.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/rido/id0000000000"
+    }
+  ]
+}

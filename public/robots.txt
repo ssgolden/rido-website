@@ -1,0 +1,7 @@
+# Rido — Shared E-Scooters & E-Bikes in Spain
+# https://rido.bike
+
+User-agent: *
+Allow: /
+
+Sitemap: https://rido.bike/sitemap.xml

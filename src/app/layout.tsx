@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: "#0F172A",
 };
 
 export const metadata: Metadata = {
@@ -25,12 +27,17 @@ export const metadata: Metadata = {
   ],
   icons: {
     icon: "/favicon.svg",
+    apple: "/apple-touch-icon.svg",
   },
+  manifest: "/manifest.json",
   openGraph: {
     title: "Rido — Shared E-Scooters & E-Bikes in Spain",
     description:
       "Move freely across Spain with Rido's shared e-scooters and e-bikes.",
     type: "website",
+    url: "https://rido.bike",
+    siteName: "Rido",
+    locale: "en_ES",
     images: [
       {
         url: "/images/lifestyle/rido-rider-street.jpg",
@@ -39,6 +46,16 @@ export const metadata: Metadata = {
         alt: "Rido — Ride Spain",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Rido — Shared E-Scooters & E-Bikes in Spain",
+    description: "Move freely across Spain with shared e-scooters and e-bikes.",
+    images: ["/images/lifestyle/rido-rider-street.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -69,6 +86,7 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
+        <Analytics />
       </body>
     </html>
   );
