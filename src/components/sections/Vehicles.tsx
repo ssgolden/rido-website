@@ -20,14 +20,14 @@ export function Vehicles() {
   };
 
   return (
-    <section id="vehicles" aria-label="Our vehicles" className="py-24 px-6">
+    <section id="vehicles" aria-label="Our vehicles" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
             <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
               Our Fleet
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               Choose Your <span className="text-gradient-brand">Ride</span>
             </h2>
           </ScrollReveal>
@@ -39,7 +39,7 @@ export function Vehicles() {
               <button
                 key={vehicle.id}
                 onClick={() => handleVehicleChange(i)}
-                className={`px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
+                className={`px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer ${
                   i === active
                     ? "bg-rido-magenta text-white shadow-lg shadow-rido-magenta/25"
                     : "glass text-white/60 hover:text-white hover:bg-white/10"

@@ -82,14 +82,14 @@ function PricingCalculator() {
 
 export function Pricing() {
   return (
-    <section id="pricing" aria-label="Pricing plans" className="py-24 px-6">
+    <section id="pricing" aria-label="Pricing plans" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
             <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
               Transparent Pricing
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               No <span className="text-gradient-brand">Surprises</span>
             </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">

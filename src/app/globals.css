@@ -45,10 +45,17 @@
 
   html {
     scroll-behavior: smooth;
+    height: 100%;
   }
 
   body {
     @apply bg-rido-navy text-white font-sans antialiased overflow-x-hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  #main-content {
+    overscroll-behavior: contain;
   }
 
   *:focus-visible {
@@ -108,6 +115,10 @@
 
   .legal-section {
     @apply scroll-mt-24;
+  }
+
+  section[id] {
+    @apply scroll-mt-16 sm:scroll-mt-24;
   }
 }
 

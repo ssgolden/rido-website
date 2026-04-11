@@ -37,7 +37,7 @@ function AnimatedCounter({
   }, [isInView, end, duration]);
 
   return (
-    <span ref={ref} className="font-black text-4xl md:text-5xl text-rido-green">
+    <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green">
       {count.toLocaleString()}
       {suffix}
     </span>
@@ -70,7 +70,7 @@ const commitments = [
 
 export function Sustainability() {
   return (
-    <section id="sustainability" aria-label="Sustainability impact" className="py-24 px-6 relative">
+    <section id="sustainability" aria-label="Sustainability impact" className="py-16 sm:py-24 px-4 sm:px-6 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-rido-navy via-rido-green/5 to-rido-navy" />
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-16">
@@ -78,7 +78,7 @@ export function Sustainability() {
             <p className="text-rido-green text-sm font-semibold uppercase tracking-wider mb-3">
               Planet First
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               Real <span className="text-rido-green">Sustainability</span>
             </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">

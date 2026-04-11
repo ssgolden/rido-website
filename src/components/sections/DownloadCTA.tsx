@@ -10,13 +10,13 @@ export function DownloadCTA() {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <section aria-label="Download the Rido app" className="py-24 px-6 relative overflow-hidden">
+    <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-magenta/20 via-rido-navy to-rido-magenta-light/10" />
       <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-rido-magenta/10 blur-3xl" />
 
       <div className="relative max-w-7xl mx-auto text-center">
         <ScrollReveal>
-          <h2 className="text-4xl md:text-6xl font-black mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">
             Ready to{" "}
             <span className="text-gradient-brand">Ride</span>?
           </h2>
@@ -27,16 +27,16 @@ export function DownloadCTA() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.2}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="min-w-[220px] gap-3">
-              <Apple className="w-5 h-5" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <Button size="lg" className="w-full max-w-[280px] sm:w-auto gap-3">
+              <Apple className="w-5 h-5 shrink-0" />
               <span className="flex flex-col items-start">
                 <span className="text-[10px] leading-tight opacity-70">Download on the</span>
                 <span className="text-sm leading-tight font-bold">App Store</span>
               </span>
             </Button>
-            <Button variant="secondary" size="lg" className="min-w-[220px] gap-3">
-              <Play className="w-5 h-5" />
+            <Button variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto gap-3">
+              <Play className="w-5 h-5 shrink-0" />
               <span className="flex flex-col items-start">
                 <span className="text-[10px] leading-tight opacity-70">Get it on</span>
                 <span className="text-sm leading-tight font-bold">Google Play</span>
@@ -46,7 +46,7 @@ export function DownloadCTA() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.4}>
-          <div className="mt-12 max-w-[280px] mx-auto">
+          <div className="mt-10 sm:mt-12 max-w-[240px] sm:max-w-[280px] mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}

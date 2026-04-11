@@ -9,14 +9,14 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 export function Cities() {
   return (
-    <section id="cities" aria-label="Cities where we operate" className="py-24 px-6">
+    <section id="cities" aria-label="Cities where we operate" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
             <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
               {activeCityCount}+ Cities
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               Where to <span className="text-gradient-brand">Find Us</span>
             </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">

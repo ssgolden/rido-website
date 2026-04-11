@@ -10,7 +10,7 @@ interface LegalPageProps {
 export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
   return (
     <div className="min-h-screen bg-rido-navy">
-      <div className="max-w-3xl mx-auto px-6 py-24">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-white/50 hover:text-rido-magenta transition-colors mb-8"

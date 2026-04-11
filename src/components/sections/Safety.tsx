@@ -35,14 +35,14 @@ const safetyItems = [
 
 export function Safety() {
   return (
-    <section id="safety" aria-label="Safety information" className="py-24 px-6">
+    <section id="safety" aria-label="Safety information" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
             <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
               Your Safety Matters
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               Ride <span className="text-gradient-brand">Safely</span>
             </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">

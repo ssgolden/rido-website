@@ -31,14 +31,14 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" aria-label="How it works" className="py-24 px-6">
+    <section id="how-it-works" aria-label="How it works" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
             <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
               Simple as 1-2-3
             </p>
-            <h2 className="text-4xl md:text-5xl font-black">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
               How It <span className="text-gradient-brand">Works</span>
             </h2>
           </ScrollReveal>
