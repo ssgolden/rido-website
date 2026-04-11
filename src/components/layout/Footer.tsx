@@ -1,4 +1,5 @@
 import { RidoLogo } from "@/components/ui/RidoLogo";
+import Link from "next/link";
 
 const footerLinks = {
   Product: [
@@ -39,22 +40,21 @@ export function Footer() {
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.label}>
-                    {link.href.startsWith("http") ? (
+                    {link.href.startsWith("http") || link.href.startsWith("#") ? (
                       <a
                         href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                         className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer"
                       >
                         {link.label}
                       </a>
                     ) : (
-                      <a
+                      <Link
                         href={link.href}
                         className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer"
                       >
                         {link.label}
-                      </a>
+                      </Link>
                     )}
                   </li>
                 ))}

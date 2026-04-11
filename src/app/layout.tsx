@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { basePath } from "@/lib/basePath";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -26,10 +27,10 @@ export const metadata: Metadata = {
     "rent scooter",
   ],
   icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-touch-icon.svg",
+    icon: `${basePath}/favicon.svg`,
+    apple: `${basePath}/apple-touch-icon.svg`,
   },
-  manifest: "/manifest.json",
+  manifest: `${basePath}/manifest.json`,
   openGraph: {
     title: "Rido — Shared E-Scooters & E-Bikes in Spain",
     description:

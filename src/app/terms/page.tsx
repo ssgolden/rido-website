@@ -1,5 +1,6 @@
 import { LegalPage } from "@/components/layout/LegalPage";
 import { AlertTriangle, Scale } from "lucide-react";
+import { withBase } from "@/lib/basePath";
 
 export default function TermsPage() {
   return (
@@ -151,7 +152,7 @@ export default function TermsPage() {
         The Data Controller for your personal data is Go2Place S.L., with NIF B01745405 and its registered office at Calle Eneldo 3, C4, local 22 — Orihuela Costa — 03189.
       </p>
       <p>
-        For full details, please refer to our <a href="/privacy">Privacy Policy</a>.
+        For full details, please refer to our <a href={withBase("/privacy")}>Privacy Policy</a>.
       </p>
 
       <h2 id="10-ip" className="legal-section">10. Intellectual Property</h2>

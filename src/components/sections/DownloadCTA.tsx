@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import { withBase } from "@/lib/basePath";
 import { Apple, Play } from "lucide-react";
 
 export function DownloadCTA() {
@@ -55,7 +56,7 @@ export function DownloadCTA() {
             >
               {prefersReducedMotion ? (
                 <Image
-                  src="/images/app/rido-app-screenshot.png"
+                  src={withBase("/images/app/rido-app-screenshot.png")}
                   alt="Rido app showing vehicle map and ride options"
                   width={280}
                   height={607}
@@ -69,7 +70,7 @@ export function DownloadCTA() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <Image
-                    src="/images/app/rido-app-screenshot.png"
+                    src={withBase("/images/app/rido-app-screenshot.png")}
                     alt="Rido app showing vehicle map and ride options"
                     width={280}
                     height={607}

@@ -6,6 +6,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { Suspense } from "react";
 import Image from "next/image";
+import { withBase } from "@/lib/basePath";
 
 const steps = [
   {
@@ -76,7 +77,7 @@ export function HowItWorks() {
           <ScrollReveal delay={0.3} className="mt-16 flex justify-center">
             <div className="relative max-w-xs">
               <Image
-                src="/images/app/rido-app-screenshot.png"
+                src={withBase("/images/app/rido-app-screenshot.png")}
                 alt="Rido app showing nearby vehicles and scan-to-ride"
                 width={280}
                 height={600}

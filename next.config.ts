@@ -1,10 +1,13 @@
 import type { NextConfig } from "next";
 
+const isExport = process.env.NEXT_OUTPUT === "export";
+
 const nextConfig: NextConfig = {
-  output: process.env.NEXT_OUTPUT === "export" ? "export" : undefined,
+  output: isExport ? "export" : undefined,
+  basePath: isExport ? "/rido-website" : "",
   images: {
     formats: ["image/avif", "image/webp"],
-    unoptimized: process.env.NEXT_OUTPUT === "export",
+    unoptimized: isExport,
   },
 };
 
