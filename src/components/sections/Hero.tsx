@@ -58,27 +58,25 @@ export function Hero() {
           </div>
         </ScrollReveal>
 
-        <StaggerReveal className="mt-16 flex items-center justify-center gap-8 sm:gap-12 text-white/40" staggerDelay={0.15}>
+        <StaggerReveal className="mt-16 grid grid-cols-3 gap-4 sm:gap-12 text-white/40" staggerDelay={0.15}>
           <StaggerItem className="text-center">
-            <p className="text-3xl font-bold text-white">8+</p>
-            <p className="text-sm">Cities</p>
+            <p className="text-2xl sm:text-3xl font-bold text-white">8+</p>
+            <p className="text-xs sm:text-sm">Cities</p>
           </StaggerItem>
-          <div className="w-px h-10 bg-white/10" />
           <StaggerItem className="text-center">
-            <p className="text-3xl font-bold text-white">2</p>
-            <p className="text-sm">Vehicle Types</p>
+            <p className="text-2xl sm:text-3xl font-bold text-white">2</p>
+            <p className="text-xs sm:text-sm">Vehicle Types</p>
           </StaggerItem>
-          <div className="w-px h-10 bg-white/10" />
           <StaggerItem className="text-center">
-            <p className="text-3xl font-bold text-white">0</p>
-            <p className="text-sm">Emissions</p>
+            <p className="text-2xl sm:text-3xl font-bold text-white">0</p>
+            <p className="text-xs sm:text-sm">Emissions</p>
           </StaggerItem>
         </StaggerReveal>
       </div>
 
       <a
         href="#how-it-works"
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 animate-bounce"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30 motion-safe:animate-bounce"
         aria-label="Scroll down"
       >
         <ChevronDown size={32} />

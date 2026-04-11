@@ -48,7 +48,7 @@ export function Navbar() {
   return (
     <nav
       className={cn(
-        "fixed top-4 left-4 right-4 z-50 rounded-2xl px-6 py-3 transition-all duration-300",
+        "fixed top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-50 rounded-2xl px-4 py-3 sm:px-6 transition-all duration-300",
         scrolled ? "glass-strong shadow-lg" : "bg-transparent"
       )}
     >

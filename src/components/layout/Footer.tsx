@@ -39,12 +39,23 @@ export function Footer() {
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-white/50 hover:text-rido-magenta transition-colors"
-                    >
-                      {link.label}
-                    </a>
+                    {link.href.startsWith("http") ? (
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -53,10 +64,10 @@ export function Footer() {
         </div>
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-white/30">
-            © {new Date().getFullYear()} Rido. All rights reserved.
+            © {new Date().getFullYear()} Go2 Place S.L. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-xs text-white/50 font-semibold">ES</span>
+            <span className="text-xs text-white/50 font-semibold cursor-pointer">ES</span>
             <span className="text-xs text-white/30">EN</span>
           </div>
         </div>

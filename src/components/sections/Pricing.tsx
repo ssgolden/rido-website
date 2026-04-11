@@ -51,7 +51,7 @@ function PricingCalculator() {
           max={60}
           value={minutes}
           onChange={(e) => setMinutes(Number(e.target.value))}
-          className="w-full accent-rido-magenta h-2 rounded-lg appearance-none bg-white/10 cursor-pointer"
+          className="w-full accent-rido-magenta h-2 rounded-lg appearance-none bg-white/10 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rido-magenta [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-rido-magenta [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
           aria-label="Ride duration in minutes"
         />
         <div className="flex justify-between text-xs text-white/30 mt-1">
