@@ -2,14 +2,9 @@
 
 import { Button } from "@/components/ui/Button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
-import { withBase } from "@/lib/basePath";
 import { Apple, Play } from "lucide-react";
 
 export function DownloadCTA() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-magenta/20 via-rido-navy to-rido-magenta-light/10" />
@@ -43,44 +38,6 @@ export function DownloadCTA() {
                 <span className="text-sm leading-tight font-bold">Google Play</span>
               </span>
             </Button>
-          </div>
-        </ScrollReveal>
-
-        <ScrollReveal delay={0.4}>
-          <div className="mt-10 sm:mt-12 max-w-[240px] sm:max-w-[280px] mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              {prefersReducedMotion ? (
-                <Image
-                  src={withBase("/images/app/rido-app-screenshot.png")}
-                  alt="Rido app showing vehicle map and ride options"
-                  width={280}
-                  height={607}
-                  sizes="(max-width: 640px) 240px, 280px"
-                  className="mx-auto rounded-3xl shadow-2xl shadow-rido-magenta/20"
-                  priority
-                />
-              ) : (
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                >
-                  <Image
-                    src={withBase("/images/app/rido-app-screenshot.png")}
-                    alt="Rido app showing vehicle map and ride options"
-                    width={280}
-                    height={607}
-                    sizes="(max-width: 640px) 240px, 280px"
-                    className="mx-auto rounded-3xl shadow-2xl shadow-rido-magenta/20"
-                    priority
-                  />
-                </motion.div>
-              )}
-            </motion.div>
           </div>
         </ScrollReveal>
       </div>
