@@ -84,12 +84,12 @@ export function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-white cursor-pointer p-2 -mr-2"
+          className="md:hidden text-white cursor-pointer p-3 -mr-3"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={mobileOpen}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
