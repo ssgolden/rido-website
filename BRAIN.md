@@ -108,11 +108,13 @@
 | 5 | **Safety** | `/#safety` | 4 safety cards with hover micro-interactions, Beginner Mode callout |
 | 6 | **Sustainability** | `/#sustainability` | Animated counters, 3 commitment cards |
 | 7 | **Pricing** | `/#pricing` | 3-tier cards (€1/€0.35, Pass, Day €14.99), no-surprise guarantee, calculator |
-| 8 | **About** | `/#about` | Split layout (text + values), company story |
-| 9 | **Download CTA** | `/#download` | Animated gradient bg, 3 floating orbs, App Store/Google Play buttons, trust signals, security badge |
-| 10 | **Footer** | — | 4-column, legal links, ES/EN selector |
-| 11 | **Privacy Policy** | `/privacy` | 11 sections, GDPR, Go2 Place S.L., legal highlight boxes |
-| 12 | **Terms of Service** | `/terms` | 16 sections, damage fees, age limits, legal warning boxes |
+| 8 | **FAQ** | `/#faq` | 12-item accordion with Framer Motion expand/collapse |
+| 9 | **Testimonials** | `/#testimonials` | 4 rider quotes with stars, auto-rotate, mobile carousel dots |
+| 10 | **About** | `/#about` | Split layout (text + values), company story |
+| 11 | **Download CTA** | `/#download` | Animated gradient bg, 3 floating orbs, App Store/Google Play buttons, trust signals, security badge |
+| 12 | **Footer** | — | 4-column, legal links, ES/EN selector |
+| 13 | **Privacy Policy** | `/privacy` | 11 sections, GDPR, Go2 Place S.L., legal highlight boxes |
+| 14 | **Terms of Service** | `/terms` | 16 sections, damage fees, age limits, legal warning boxes |
 
 ---
 
@@ -145,9 +147,11 @@
 | `Badge` | `src/components/ui/Badge.tsx` | magenta/magenta-light/green/default |
 | `Card` | `src/components/ui/Card.tsx` | Glass card with hover effects |
 | `LegalPage` | `src/components/layout/LegalPage.tsx` | Shared legal page layout |
-| `Navbar` | `src/components/layout/Navbar.tsx` | Fixed, glass-strong, active section |
+| `Navbar` | `src/components/layout/Navbar.tsx` | Fixed, glass-strong, active section, 'Get the App' CTA with icon |
 | `Footer` | `src/components/layout/Footer.tsx` | 4-column, legal links to /privacy + /terms |
 | `PricingCalculator` | Inside `Pricing.tsx` | Interactive ride cost estimator |
+| `FAQ` | `src/components/sections/FAQ.tsx` | 12-item accordion with Framer Motion |
+| `Testimonials` | `src/components/sections/Testimonials.tsx` | 4 rider quotes, auto-rotate, star ratings |
 | `Skeleton` | `src/components/ui/Skeleton.tsx` | Loading pulse skeleton |
 | `useCountUp` | `src/hooks/useCountUp.ts` | IntersectionObserver-triggered count-up animation (prefers-reduced-motion safe) |
 | `basePath` | `src/lib/basePath.ts` | GitHub Pages `/rido-website` prefix utility |
@@ -234,6 +238,8 @@ rido/
 │   │   │   ├── Safety.tsx                    # Safety cards + Beginner Mode
 │   │   │   ├── Sustainability.tsx            # Animated counters + commitments
 │   │   │   ├── Pricing.tsx                   # Tiers + no-surprise + calculator
+│   │   │   ├── FAQ.tsx                        # 12-item accordion with animated expand/collapse
+│   │   │   ├── Testimonials.tsx                # 4 rider testimonials, auto-rotate, star ratings
 │   │   │   ├── About.tsx                     # Split layout, company story
 │   │   │   └── DownloadCTA.tsx              # Animated gradient bg, trust signals, security badge, store buttons
 │   │   └── ui/
@@ -249,7 +255,9 @@ rido/
 │   ├── data/
 │   │   ├── cities.ts                         # 9 Spanish cities with coordinates
 │   │   ├── vehicles.ts                       # E-scooter + E-bike specs, images, features
-│   │   └── pricing.ts                        # Pay-as-you-go (€1 unlock/€0.35 min), Rido Pass, Day Pass (€14.99)
+│   │   ├── pricing.ts                        # Pay-as-you-go (€1 unlock/€0.35 min), Rido Pass, Day Pass (€14.99)
+│   │   ├── faq.ts                            # 12 FAQ items with questions + answers
+│   │   └── testimonials.ts                    # 4 rider testimonials (Madrid, Barcelona, Valencia, Sevilla)
 │   └── lib/
 │       ├── utils.ts                          # cn() utility
 │       └── basePath.ts                        # GitHub Pages basePath + withBase() utility
@@ -300,6 +308,7 @@ rido/
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
 | 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
+| 2026-01 | P0 UI/UX upgrades | FAQ section (12 items), Testimonials (4 riders), Sticky nav CTA ('Get the App' + Download icon), Vehicle priority fix |
 | 2026-01 | P1 UI/UX upgrades | Hero gradient animation + orbs + micro-particles, micro-interactions on Safety/Vehicles, Download CTA trust signals, useCountUp hook for stats, Sustainability count-up (1,240+/85,000+/420,000+) |
 | 2026-01 | App screenshots removed | Removed rido-app-screenshot.png from HowItWorks and DownloadCTA sections |
 
@@ -319,9 +328,9 @@ rido/
 | 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
 | 🔴 High | Custom domain rido.bike | Needs DNS pointing to GitHub Pages or Vercel |
 | 🟡 Medium | P0: Stats counter animation | ✅ DONE: useCountUp hook in Hero + Sustainability |
-| 🟡 Medium | P0: Social proof / testimonials | New section: 3 rotating testimonials with avatar, name, city, stars |
-| 🟡 Medium | P0: FAQ accordion | New section: 8-10 questions on age, parking, damage, insurance, refunds |
-| 🟡 Medium | P0: Sticky nav download CTA | Download button in navbar after scrolling past hero |
+| 🟡 Medium | P0: Social proof / testimonials | ✅ DONE: Testimonials section with 4 riders, auto-rotate, star ratings |
+| 🟡 Medium | P0: FAQ accordion | ✅ DONE: 12 items, Framer Motion expand/collapse |
+| 🟡 Medium | P0: Sticky nav download CTA | ✅ DONE: 'Get the App' button with Download icon in navbar |
 | 🟢 Low | P2: Cookie consent banner | GDPR/LOPDGDD required, planned |
 | 🟢 Low | P2: Footer enhancement | Social icons, app download badges, newsletter, legal entity |
 | 🟢 Low | P2: Skeleton loading | loading.tsx for page transitions |
