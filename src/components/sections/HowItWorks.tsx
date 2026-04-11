@@ -4,9 +4,6 @@ import { Card } from "@/components/ui/Card";
 import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { Suspense } from "react";
-import Image from "next/image";
-import { withBase } from "@/lib/basePath";
 
 const steps = [
   {
@@ -71,24 +68,6 @@ export function HowItWorks() {
             ))}
           </StaggerReveal>
         </div>
-
-        {/* App screenshot */}
-        <Suspense fallback={<div className="mt-16 flex justify-center"><div className="relative max-w-xs"><div className="w-[280px] h-[600px] rounded-3xl bg-gradient-to-br from-white/5 to-rido-magenta/10 animate-pulse" /></div></div>}>
-          <ScrollReveal delay={0.3} className="mt-16 flex justify-center">
-            <div className="relative max-w-xs">
-              <Image
-                src={withBase("/images/app/rido-app-screenshot.png")}
-                alt="Rido app showing nearby vehicles and scan-to-ride"
-                width={280}
-                height={600}
-                sizes="280px"
-                className="rounded-3xl shadow-2xl shadow-rido-magenta/20"
-                priority
-              />
-              <div className="absolute -inset-4 rounded-[2rem] bg-rido-magenta/5 -z-10" />
-            </div>
-          </ScrollReveal>
-        </Suspense>
       </div>
     </section>
   );
