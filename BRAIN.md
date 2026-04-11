@@ -275,6 +275,8 @@ rido/
 | 2026-01 | Mobile responsive fix (S25) | min-h-dvh, responsive padding, button sizing, viewport-fit:cover, scroll-margin, overscroll |
 | 2026-01 | Mobile responsive v2 (S25) | min-h-screen+min-h-dvh fallback, section pt-14/sm:pt-20, smaller blur orbs, navbar mobile logo=sm, svh+dvh body fallback, safe-area utilities |
 | 2026-01 | Hamburger touch target 46px | p-3 -mr-3 padding for 44px+ touch target accessibility |
+| 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color |
+| 2026-01 | Custom 404 page | Branded 404 with RidoLogo, Back to Home + View Fleet CTAs, legal links |
 
 ---
 
@@ -284,11 +286,13 @@ rido/
 |----------|------|-------|
 | 🔴 High | `next/font/google` blocked by Turbopack | Windows http2 bug; using Google Fonts `<link>` as fallback. Switch when Next.js fixes |
 | 🟡 Medium | E-scooter has only 1 image | Add scooter product gallery when more images provided |
-| 🟡 Medium | No custom 404 page | Create `not-found.tsx` matching site design |
-| 🟡 Medium | Lighthouse audit not run | Target: Performance 90+, Accessibility 95+, SEO 90+ |
 | 🟢 Low | Cookie Policy is external link | Could create `/cookies` page if needed |
 | 🟢 Low | Bilingual ES/EN | Currently English only; could add i18n |
-| 🟢 Low | Vercel Analytics not configured | Add `@vercel/analytics` package for real metrics |
+| 🟢 Low | Vercel Analytics not configured | ✅ DONE: @vercel/analytics installed |
+| 🟢 Low | No sitemap/robots | ✅ DONE: sitemap.xml + robots.txt created |
+| 🟢 Low | No 404 page | ✅ DONE: not-found.tsx with Rido branding |
+| 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
+| 🔴 High | Custom domain rido.bike | Needs DNS pointing to Vercel |
 
 ---
 
