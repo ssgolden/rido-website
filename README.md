@@ -44,7 +44,7 @@ src/
 ├── data/                   # cities.ts, vehicles.ts, pricing.ts
 └── lib/
     ├── utils.ts            # cn() helper
-    └── basePath.ts          # GitHub Pages basePath utility
+    └── basePath.ts          # Runtime basePath detection + withBase() utility
 ```
 
 ## Key Features

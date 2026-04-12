@@ -12,7 +12,7 @@
 - **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
 - **Contact:** info@rido.bike
 - **Live site:** https://ssgolden.github.io/rido-website/ (auto-deploys on push to master)
-- **GitHub:** https://github.com/ssgolden/rido-website (34 commits)
+- **GitHub:** https://github.com/ssgolden/rido-website (38 commits)
 
 ---
 
@@ -154,8 +154,9 @@
 | `Testimonials` | `src/components/sections/Testimonials.tsx` | 4 rider quotes, auto-rotate, star ratings |
 | `Skeleton` | `src/components/ui/Skeleton.tsx` | Loading pulse skeleton |
 | `useCountUp` | `src/hooks/useCountUp.ts` | IntersectionObserver-triggered count-up animation (prefers-reduced-motion safe) |
-| `basePath` | `src/lib/basePath.ts` | GitHub Pages `/rido-website` prefix utility |
-| `withBase()` | `src/lib/basePath.ts` | Prepends basePath for export builds |
+| `getBasePath()` | `src/lib/basePath.ts` | Runtime basePath detection (env var for SSR, `window.location.pathname` for client) |
+| `basePath` | `src/lib/basePath.ts` | Current base path (resolved via `getBasePath()`) |
+| `withBase()` | `src/lib/basePath.ts` | Prepends basePath to path at render time; MUST be called in components, not data files |
 
 ### CSS Utilities
 
@@ -311,6 +312,9 @@ rido/
 | 2026-01 | P0 UI/UX upgrades | FAQ section (12 items), Testimonials (4 riders), Sticky nav CTA ('Get the App' + Download icon), Vehicle priority fix |
 | 2026-01 | P1 UI/UX upgrades | Hero gradient animation + orbs + micro-particles, micro-interactions on Safety/Vehicles, Download CTA trust signals, useCountUp hook for stats, Sustainability count-up (1,240+/85,000+/420,000+) |
 | 2026-01 | App screenshots removed | Removed rido-app-screenshot.png from HowItWorks and DownloadCTA sections |
+| 2026-04 | **Runtime basePath detection** | `getBasePath()` uses `process.env` for SSR + `window.location.pathname` for client. Fixes bike images 404 on GitHub Pages — root cause: `process.env.NEXT_OUTPUT` is undefined in browser JS bundle |
+| 2026-04 | `withBase()` at render time only | Data files (`vehicles.ts`) store plain paths; `withBase()` called in components. Data init time used empty `basePath` in browser, producing wrong URLs |
+| 2026-04 | Hero bg-image → inline style | Changed from Tailwind `bg-[url()]` to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
 
 ---
 
@@ -318,6 +322,7 @@ rido/
 
 | Priority | Item | Notes |
 |----------|------|-------|
+| 🔴 ~~High~~ | ~~Bike images 404 on GitHub Pages~~ | ✅ DONE: Runtime `getBasePath()` + `withBase()` at render time |
 | 🔴 High | `next/font/google` blocked by Turbopack | Windows http2 bug; using Google Fonts `<link>` as fallback. Switch when Next.js fixes |
 | 🟡 Medium | E-scooter has only 1 image | Add scooter product gallery when more images provided |
 | 🟢 Low | Cookie Policy is external link | Could create `/cookies` page if needed |
