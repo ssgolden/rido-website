@@ -7,6 +7,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
+import { withBase } from "@/lib/basePath";
 
 function HeroStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const { count, ref } = useCountUp(value, { duration: 2000 });
@@ -26,7 +27,7 @@ export function Hero() {
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
       {/* Background image with increased opacity */}
-      <div className="absolute inset-0 bg-[url('/images/lifestyle/rido-rider-street.jpg')] bg-cover bg-center opacity-[0.12]" />
+      <div className="absolute inset-0 bg-cover bg-center opacity-[0.12]" style={{ backgroundImage: `url(${withBase('/images/lifestyle/rido-rider-street.jpg')})` }} />
       {/* Animated floating orbs */}
       <div className="absolute top-1/4 right-0 w-[200px] sm:w-[600px] h-[200px] sm:h-[600px] rounded-full bg-rido-magenta/10 blur-3xl hero-orb hero-orb-1" />
       <div className="absolute bottom-0 left-0 w-[150px] sm:w-[400px] h-[150px] sm:h-[400px] rounded-full bg-rido-green/10 blur-3xl hero-orb hero-orb-2" />

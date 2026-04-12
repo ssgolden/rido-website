@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
-import { basePath } from "@/lib/basePath";
 import "./globals.css";
+
+// layout.tsx is server-rendered, so we use the env var directly
+const basePath = process.env.NEXT_OUTPUT === "export" ? "/rido-website" : "";
 
 export const viewport: Viewport = {
   width: "device-width",

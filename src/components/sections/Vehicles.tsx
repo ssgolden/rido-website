@@ -8,11 +8,17 @@ import { Check } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
+import { withBase } from "@/lib/basePath";
 
 export function Vehicles() {
   const [active, setActive] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
   const v = vehicles[active];
+
+  // Apply basePath prefix at render time so it works in both SSR and client.
+  // MUST be called in the component (not in the data file) because
+  // withBase() depends on the runtime environment.
+  const vehicleImages = v.images.map(withBase);
 
   const handleVehicleChange = (index: number) => {
     setActive(index);
@@ -56,7 +62,7 @@ export function Vehicles() {
             <Card className="overflow-hidden p-0">
               <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
                 <Image
-                  src={v.images[activeImage]}
+                  src={vehicleImages[activeImage]}
                   alt={v.imageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
@@ -64,9 +70,9 @@ export function Vehicles() {
                   priority={active === 0 && activeImage === 0}
                 />
               </div>
-              {v.images.length > 1 && (
+              {vehicleImages.length > 1 && (
                 <div className="flex gap-2 p-3 bg-white/5">
-                  {v.images.map((img, i) => (
+                  {vehicleImages.map((img, i) => (
                     <button
                       key={img}
                       onClick={() => setActiveImage(i)}

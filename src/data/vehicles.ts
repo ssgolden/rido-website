@@ -1,5 +1,3 @@
-import { withBase } from "@/lib/basePath";
-
 export interface Vehicle {
   id: string;
   name: string;
@@ -35,8 +33,8 @@ export const vehicles: Vehicle[] = [
       "Beginner mode (15 km/h)",
       "GPS tracking & geofencing",
     ],
-    image: withBase("/images/scooter/rido-scooter-product.jpg"),
-    images: [withBase("/images/scooter/rido-scooter-product.jpg")],
+    image: "/images/scooter/rido-scooter-product.jpg",
+    images: ["/images/scooter/rido-scooter-product.jpg"],
     imageAlt: "Rido e-scooter",
   },
   {
@@ -60,12 +58,12 @@ export const vehicles: Vehicle[] = [
       "Puncture-resistant tires",
       "Step-through frame design",
     ],
-    image: withBase("/images/bike/rido-bike-side.jpg"),
+    image: "/images/bike/rido-bike-side.jpg",
     images: [
-      withBase("/images/bike/rido-bike-front.jpg"),
-      withBase("/images/bike/rido-bike-side.jpg"),
-      withBase("/images/bike/rido-bike-detail.jpg"),
-      withBase("/images/bike/rido-bike-lifestyle.jpg"),
+      "/images/bike/rido-bike-front.jpg",
+      "/images/bike/rido-bike-side.jpg",
+      "/images/bike/rido-bike-detail.jpg",
+      "/images/bike/rido-bike-lifestyle.jpg",
     ],
     imageAlt: "Rido e-bike electric-assist bicycle",
   },
