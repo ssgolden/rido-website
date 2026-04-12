@@ -60,7 +60,7 @@ The S25 has a CSS viewport of **360×780px** (with browser chrome). The hero sec
 <section className="relative min-h-dvh flex items-center justify-center overflow-hidden">
   {/* Background layers - contain the orbs within viewport */}
   <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20" />
-  <div className="absolute inset-0 bg-[url('/images/lifestyle/rido-rider-street.jpg')] bg-cover bg-center opacity-[0.07]" />
+  <div className="absolute inset-0 bg-cover bg-center opacity-[0.07]" style={{ backgroundImage: "url('/images/lifestyle/rido-rider-street.jpg')" }} />
   <div className="absolute top-1/4 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] rounded-full bg-rido-magenta/10 blur-3xl -translate-x-0" />
   <div className="absolute bottom-0 left-0 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] rounded-full bg-rido-green/10 blur-3xl translate-x-0" />
 

@@ -33,7 +33,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)
 - **CRITICAL:** Call `withBase()` at RENDER TIME (inside components), NOT in data files. Data files are initialized once and shared between SSR and client, but `basePath` differs between server and browser. Calling `withBase()` at data init time produces wrong URLs client-side.
 - `withBase()` uses `getBasePath()` which detects basePath at runtime: `process.env.NEXT_OUTPUT` for SSR, `window.location.pathname.startsWith("/rido-website")` for client
-- For CSS background images, use `style={{ backgroundImage: url(withBase('/images/...')) }}` — Tailwind `bg-[url()]` cannot use `withBase()` at runtime
+- For CSS background images, use `style={{ backgroundImage: url(withBase('/images/...')) }}` — Tailwind `bg-\[url()\]` class cannot use `withBase()` at runtime
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
 ## File Conventions

@@ -314,7 +314,7 @@ rido/
 | 2026-01 | App screenshots removed | Removed rido-app-screenshot.png from HowItWorks and DownloadCTA sections |
 | 2026-04 | **Runtime basePath detection** | `getBasePath()` uses `process.env` for SSR + `window.location.pathname` for client. Fixes bike images 404 on GitHub Pages — root cause: `process.env.NEXT_OUTPUT` is undefined in browser JS bundle |
 | 2026-04 | `withBase()` at render time only | Data files (`vehicles.ts`) store plain paths; `withBase()` called in components. Data init time used empty `basePath` in browser, producing wrong URLs |
-| 2026-04 | Hero bg-image → inline style | Changed from Tailwind `bg-[url()]` to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
+| 2026-04 | Hero bg-image → inline style | Changed from Tailwind class to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
 
 ---
 

@@ -393,7 +393,7 @@ Add the lifestyle image as a subtle background:
 
 ```tsx
 <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20" />
-<div className="absolute inset-0 bg-[url('/images/lifestyle/rido-rider-street.jpg')] bg-cover bg-center opacity-10" />
+<div className="absolute inset-0 bg-cover bg-center opacity-10" style={{ backgroundImage: "url('/images/lifestyle/rido-rider-street.jpg')" }} />
 ```
 
 ---
