@@ -11,7 +11,7 @@
 
 - **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
 - **Contact:** info@rido.bike
-- **Live site:** https://rido.bike (Vercel GitHub App, primary) | https://ssgolden.github.io/rido-website/ (GitHub Pages, fallback)
+- **Live site:** https://rido.bike (Netlify GitHub App, primary) | https://ssgolden.github.io/rido-website/ (GitHub Pages, fallback)
 - **GitHub:** https://github.com/ssgolden/rido-website (38 commits)
 
 ---
@@ -127,7 +127,7 @@
 | **Animations** | Framer Motion 12 (ScrollReveal, StaggerReveal) |
 | **Icons** | Lucide React |
 | **Fonts** | Inter (Google Fonts) |
-| **Deployment** | Vercel (GitHub App, primary) | GitHub Pages (fallback via Actions) |
+| **Deployment** | Netlify (GitHub App, static export to `out/`), primary | GitHub Pages (fallback via Actions) |
 | **Package manager** | npm |
 
 ---
@@ -203,7 +203,7 @@
 rido/
 ├── SKILLS.md                              # Skills reference
 ├── BRAIN.md                               # This file
-├── vercel.json                             # Vercel deployment config
+├── netlify.toml                              # Netlify deployment config
 ├── next.config.ts                          # Next.js config
 ├── tsconfig.json                           # TypeScript config
 ├── package.json                            # Dependencies & scripts
@@ -283,10 +283,10 @@ rido/
 
 | Record Type | Name | Value | Purpose |
 |-------------|------|-------|---------|
-| **A** | `@` | `76.76.21.21` | Points root domain to Vercel |
-| **CNAME** | `www` | `cname.vercel-dns.com` | Points www to Vercel |
+| **A** | `@` | `75.2.60.5` | Points root domain to Netlify |
+| **CNAME** | `www` | `rido-bike.netlify.app` | Points www to Netlify |
 
-> DNS is managed in **Squarespace** (domain registrar for rido.bike). Set A record to `76.76.21.21` and CNAME for www to `cname.vercel-dns.com`.
+> DNS is managed in **Squarespace** (domain registrar for rido.bike). Set A record to `75.2.60.5` and CNAME for www to `rido-bike.netlify.app`.
 
 ---
 
@@ -309,7 +309,7 @@ rido/
 | 2026-01 | skip-to-content + focus-visible | Accessibility: skip link, magenta focus rings, aria-labels |
 | 2026-01 | lang="en" | Content is English, not Spanish |
 | 2026-01 | metadataBase https://rido.bike | Resolves OG image URLs for social sharing |
-| 2026-01 | Vercel deployment via GitHub App | Static SSG on Vercel with GitHub App integration — rido.bike via Squarespace DNS |
+| 2026-04-14 | Switch from Vercel to Netlify for rido.bike | Netlify offers simpler static site hosting with GitHub App integration, no bandwidth fees, and squarespace DNS works directly. Static export to `out/` folder. |
 | 2026-01 | Mobile responsive fix (S25) | min-h-dvh, responsive padding, button sizing, viewport-fit:cover, scroll-margin, overscroll |
 | 2026-01 | Mobile responsive v2 (S25) | min-h-screen+min-h-dvh fallback, section pt-14/sm:pt-20, smaller blur orbs, navbar mobile logo=sm, svh+dvh body fallback, safe-area utilities |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color, 404 page |
@@ -325,7 +325,7 @@ rido/
 | 2026-04 | **Runtime basePath detection** | `getBasePath()` uses `process.env` for SSR + `window.location.pathname` for client. Fixes bike images 404 on GitHub Pages — root cause: `process.env.NEXT_OUTPUT` is undefined in browser JS bundle |
 | 2026-04 | `withBase()` at render time only | Data files (`vehicles.ts`) store plain paths; `withBase()` called in components. Data init time used empty `basePath` in browser, producing wrong URLs |
 | 2026-04 | Hero bg-image → inline style | Changed from Tailwind class to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
-| 2026-04 | **Vercel GitHub App for rido.bike** | Primary deployment via Vercel GitHub App (ssgolden/rido-website). GitHub Pages kept as fallback. DNS via Squarespace (A: 76.76.21.21, CNAME www: cname.vercel-dns.com) |
+| 2026-04 | **Netlify GitHub App for rido.bike** | Primary deployment via Netlify GitHub App (ssgolden/rido-website). Static export to `out/` folder. GitHub Pages kept as fallback. DNS via Squarespace (A: 75.2.60.5, CNAME www: rido-bike.netlify.app) |
 
 ---
 
@@ -342,7 +342,7 @@ rido/
 | 🟢 Low | No sitemap/robots | ✅ DONE: sitemap.xml + robots.txt created |
 | 🟢 Low | No 404 page | ✅ DONE: not-found.tsx with Rido branding |
 | 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
-| 🔴 High | Vercel deployment (rido.bike) | In progress — Vercel GitHub App connected, DNS config needed in Squarespace |
+| 🔴 High | Netlify deployment (rido.bike) | In progress — Netlify GitHub App connected, static export to `out/`, DNS config in Squarespace (A: 75.2.60.5, CNAME www: rido-bike.netlify.app) |
 | 🟡 Medium | P0: Stats counter animation | ✅ DONE: useCountUp hook in Hero + Sustainability |
 | 🟡 Medium | P0: Social proof / testimonials | ✅ DONE: Testimonials section with 4 riders, auto-rotate, star ratings |
 | 🟡 Medium | P0: FAQ accordion | ✅ DONE: 12 items, Framer Motion expand/collapse |
@@ -367,7 +367,7 @@ rido/
 | `ui-ux-pro-max` | Design system, color, typography, layout |
 | `web-architect` | Architecture decisions |
 | `verification-before-completion` | Before claiming anything works |
-| `deploy-to-vercel` | Deployment |
+| `netlify-deploy` | Deployment |
 
 ---
 
