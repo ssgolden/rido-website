@@ -6,9 +6,13 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Check } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
+
 import { withBase } from "@/lib/basePath";
+
+
 
 export function Vehicles() {
   const [active, setActive] = useState(0);
@@ -26,7 +30,7 @@ export function Vehicles() {
   };
 
   return (
-    <section id="vehicles" aria-label="Our vehicles" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="vehicles" aria-label="Our vehicles" className="py-16 sm:py-24 px-4 sm:px-6 relative section-tint-magenta">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <ScrollReveal>
@@ -59,14 +63,14 @@ export function Vehicles() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <ScrollReveal direction="left" delay={0.2}>
-            <Card className="overflow-hidden p-0">
+            <Card className="overflow-hidden p-0 group">
               <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
                 <Image
                   src={vehicleImages[activeImage]}
                   alt={v.imageAlt}
                   fill
                   sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                   priority={active === 0 && activeImage === 0}
                 />
               </div>
