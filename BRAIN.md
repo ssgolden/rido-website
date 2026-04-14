@@ -379,3 +379,39 @@ rido/
 - **Lime:** https://www.li.me
 - **Dott:** https://www.ridedott.com
 - **Legal docs:** `Policies/RIDO_PRIVACY_POLICY.docx`, `Policies/RIDO_SERVICE_TERMS_AND_CONDITIONS.docx`
+---
+
+## Design Improvements v2 (2026-04-14)
+
+### Logo Integration
+- Replaced code-generated SVG checkmark with real Rido brand logo (PNG format)
+- Logo appears in Navbar, Footer, Hero section with glow effect
+- Updated favicon.svg, apple-touch-icon.svg, manifest.json with gradient logo
+- Real logo source: `public/images/logo/rido-logo.png` (500x246 RGBA) + `rido-logo-wide.png` (1590x892 RGBA)
+
+### Design Changes
+- Hero: Parallax background, cinematic vignette, gradient shimmer "Freely" text, pulsing CTA glow, floating scooter silhouette
+- Safety: Shield watermark, 5-star badge, pulsing beginner mode border, hover card expansion
+- Sections: Visual dividers (magenta gradient lines) between all sections
+- Vehicles: AnimatePresence crossfade tab switch, spec counter animation, hover zoom, "Try it" CTA
+- About: Timeline milestones, gradient-bordered value cards, pull quote
+- FAQ: Search filter, category tabs, spring icon rotation, contact CTA
+- Cities: Stylized map SVG decoration, hover weather detail, explore CTA
+- Pricing: Shimmer border on popular tier, "Best for Tourists" badge
+- Download CTA: Phone mockup, download counter, bottom gradient fade into footer
+
+### New Components
+- `ScrollProgress.tsx` — Magenta progress bar at top showing scroll position
+- `BackToTop.tsx` — Floating button that appears after 50% scroll, animated entry/exit
+- `RidoLogo.tsx` — Real image-based logo with `mark`, `wordmark`, `full`, `hero` variants
+
+### CSS Additions
+- `.text-gradient-animated` — Shimmer gradient text animation
+- `.section-tint-magenta` / `.section-tint-green` — Alternating section backgrounds
+- `.section-divider` — Thin magenta gradient lines between sections
+- `.shimmer-border::before` — Animated gradient sweep for popular pricing card
+- `.scroll-progress` — Fixed top progress bar
+- `.btn-ripple::after` — Material-style ripple effect on buttons
+- Custom scrollbar (magenta accent)
+- `@keyframes pulse-slow`, `shimmer` animations
+- `prefers-reduced-motion` support for all animations
