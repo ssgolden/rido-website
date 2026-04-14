@@ -11,7 +11,7 @@
 
 - **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
 - **Contact:** info@rido.bike
-- **Live site:** https://ssgolden.github.io/rido-website/ (auto-deploys on push to master)
+- **Live site:** https://rido.bike (Vercel GitHub App, primary) | https://ssgolden.github.io/rido-website/ (GitHub Pages, fallback)
 - **GitHub:** https://github.com/ssgolden/rido-website (38 commits)
 
 ---
@@ -27,7 +27,6 @@
 | **Business model** | App-based rental (scan → ride → park) |
 | **Target audience** | Urban commuters (18-45), tourists, students, eco-conscious riders |
 | **Website purpose** | Brand awareness → App download → Trust & credibility |
-| **Website type** | Static Next.js site (SSG) on Vercel |
 
 ---
 
@@ -128,7 +127,7 @@
 | **Animations** | Framer Motion 12 (ScrollReveal, StaggerReveal) |
 | **Icons** | Lucide React |
 | **Fonts** | Inter (Google Fonts) |
-| **Deployment** | GitHub Pages (auto-deploy via Actions) + Vercel compatible |
+| **Deployment** | Vercel (GitHub App, primary) | GitHub Pages (fallback via Actions) |
 | **Package manager** | npm |
 
 ---
@@ -280,6 +279,17 @@ rido/
 
 ---
 
+## DNS Configuration
+
+| Record Type | Name | Value | Purpose |
+|-------------|------|-------|---------|
+| **A** | `@` | `76.76.21.21` | Points root domain to Vercel |
+| **CNAME** | `www` | `cname.vercel-dns.com` | Points www to Vercel |
+
+> DNS is managed in **Squarespace** (domain registrar for rido.bike). Set A record to `76.76.21.21` and CNAME for www to `cname.vercel-dns.com`.
+
+---
+
 ## Key Decisions Log
 
 | Date | Decision | Rationale |
@@ -299,7 +309,7 @@ rido/
 | 2026-01 | skip-to-content + focus-visible | Accessibility: skip link, magenta focus rings, aria-labels |
 | 2026-01 | lang="en" | Content is English, not Spanish |
 | 2026-01 | metadataBase https://rido.bike | Resolves OG image URLs for social sharing |
-| 2026-01 | Vercel deployment | Static SSG on Vercel via Codex deploy script |
+| 2026-01 | Vercel deployment via GitHub App | Static SSG on Vercel with GitHub App integration — rido.bike via Squarespace DNS |
 | 2026-01 | Mobile responsive fix (S25) | min-h-dvh, responsive padding, button sizing, viewport-fit:cover, scroll-margin, overscroll |
 | 2026-01 | Mobile responsive v2 (S25) | min-h-screen+min-h-dvh fallback, section pt-14/sm:pt-20, smaller blur orbs, navbar mobile logo=sm, svh+dvh body fallback, safe-area utilities |
 | 2026-01 | SEO & PWA bundle | @vercel/analytics, manifest.json, PWA icons, sitemap.xml, robots.txt, twitter cards, OG metadata, theme-color, 404 page |
@@ -315,6 +325,7 @@ rido/
 | 2026-04 | **Runtime basePath detection** | `getBasePath()` uses `process.env` for SSR + `window.location.pathname` for client. Fixes bike images 404 on GitHub Pages — root cause: `process.env.NEXT_OUTPUT` is undefined in browser JS bundle |
 | 2026-04 | `withBase()` at render time only | Data files (`vehicles.ts`) store plain paths; `withBase()` called in components. Data init time used empty `basePath` in browser, producing wrong URLs |
 | 2026-04 | Hero bg-image → inline style | Changed from Tailwind class to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
+| 2026-04 | **Vercel GitHub App for rido.bike** | Primary deployment via Vercel GitHub App (ssgolden/rido-website). GitHub Pages kept as fallback. DNS via Squarespace (A: 76.76.21.21, CNAME www: cname.vercel-dns.com) |
 
 ---
 
@@ -331,7 +342,7 @@ rido/
 | 🟢 Low | No sitemap/robots | ✅ DONE: sitemap.xml + robots.txt created |
 | 🟢 Low | No 404 page | ✅ DONE: not-found.tsx with Rido branding |
 | 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
-| 🔴 High | Custom domain rido.bike | Needs DNS pointing to GitHub Pages or Vercel |
+| 🔴 High | Vercel deployment (rido.bike) | In progress — Vercel GitHub App connected, DNS config needed in Squarespace |
 | 🟡 Medium | P0: Stats counter animation | ✅ DONE: useCountUp hook in Hero + Sustainability |
 | 🟡 Medium | P0: Social proof / testimonials | ✅ DONE: Testimonials section with 4 riders, auto-rotate, star ratings |
 | 🟡 Medium | P0: FAQ accordion | ✅ DONE: 12 items, Framer Motion expand/collapse |
