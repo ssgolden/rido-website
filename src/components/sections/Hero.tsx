@@ -66,7 +66,7 @@ export function Hero() {
 
         <ScrollReveal delay={0.4}>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Shared e-scooters and e-bikes in Spain&apos;s most vibrant cities.
+            Shared e-scooters and e-bikes on the Costa del Sol.
             Download the app, scan, and ride. Zero emissions, zero hassle.
           </p>
         </ScrollReveal>
@@ -95,7 +95,7 @@ export function Hero() {
         </ScrollReveal>
 
         <StaggerReveal className="mt-10 sm:mt-16 grid grid-cols-3 gap-3 sm:gap-12 text-white/40" staggerDelay={0.15}>
-          <HeroStat value={8} suffix="+" label="Cities" />
+          <HeroStat value={5} suffix="+" label="Cities" />
           <HeroStat value={2} label="Vehicle Types" />
           <HeroStat value={0} label="Emissions" />
         </StaggerReveal>

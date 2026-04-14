@@ -7,7 +7,7 @@ import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-reac
 const trustSignals = [
   { icon: Smartphone, text: "Free to download" },
   { icon: CreditCard, text: "No credit card needed" },
-  { icon: MapPin, text: "Available in 8+ cities" },
+  { icon: MapPin, text: "Available in Costa del Sol" },
 ];
 
 export function DownloadCTA() {

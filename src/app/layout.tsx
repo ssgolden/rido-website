@@ -81,38 +81,11 @@ const jsonLd = {
     "addressCountry": "ES"
   },
   "areaServed": [
-    {
-      "@type": "City",
-      "name": "Madrid"
-    },
-    {
-      "@type": "City",
-      "name": "Barcelona"
-    },
-    {
-      "@type": "City",
-      "name": "Valencia"
-    },
-    {
-      "@type": "City",
-      "name": "Sevilla"
-    },
-    {
-      "@type": "City",
-      "name": "Málaga"
-    },
-    {
-      "@type": "City",
-      "name": "Bilbao"
-    },
-    {
-      "@type": "City",
-      "name": "Palma"
-    },
-    {
-      "@type": "City",
-      "name": "Alicante"
-    }
+    { "@type": "City", "name": "Marbella" },
+    { "@type": "City", "name": "San Pedro de Alcántara" },
+    { "@type": "City", "name": "Cancelada" },
+    { "@type": "City", "name": "Estepona" },
+    { "@type": "City", "name": "El Paraíso" }
   ],
   "serviceType": ["E-Scooter Rental", "E-Bike Rental"],
   "priceRange": "€",

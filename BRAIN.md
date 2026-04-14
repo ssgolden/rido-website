@@ -11,7 +11,7 @@
 
 - **Legal entity:** Go2 Place S.L., NIF B01745405, Calle Eneldo 3, C4, local 22, Orihuela Costa 03189
 - **Contact:** info@rido.bike
-- **Live site:** https://rido.bike (Netlify GitHub App, primary) | https://ssgolden.github.io/rido-website/ (GitHub Pages, fallback)
+- **Live site:** https://rido.bike (Netlify GitHub App, primary) | https://ssgolden.github.io/rido-website/ (GitHub Pages, fallback) | **rido.bike is LIVE ✅ (2026-04-14)**
 - **GitHub:** https://github.com/ssgolden/rido-website (38 commits)
 
 ---
@@ -325,6 +325,7 @@ rido/
 | 2026-04 | **Runtime basePath detection** | `getBasePath()` uses `process.env` for SSR + `window.location.pathname` for client. Fixes bike images 404 on GitHub Pages — root cause: `process.env.NEXT_OUTPUT` is undefined in browser JS bundle |
 | 2026-04 | `withBase()` at render time only | Data files (`vehicles.ts`) store plain paths; `withBase()` called in components. Data init time used empty `basePath` in browser, producing wrong URLs |
 | 2026-04 | Hero bg-image → inline style | Changed from Tailwind class to `style={{ backgroundImage: url(withBase(...)) }}` so basePath is included at runtime |
+| 2026-04-14 | rido.bike goes live on Netlify | SSL provisioned, DNS working at 75.2.60.5, HTTPS active |
 | 2026-04 | **Netlify GitHub App for rido.bike** | Primary deployment via Netlify GitHub App (ssgolden/rido-website). Static export to `out/` folder. GitHub Pages kept as fallback. DNS via Squarespace (A: 75.2.60.5, CNAME www: rido-bike.netlify.app) |
 
 ---
@@ -342,7 +343,7 @@ rido/
 | 🟢 Low | No sitemap/robots | ✅ DONE: sitemap.xml + robots.txt created |
 | 🟢 Low | No 404 page | ✅ DONE: not-found.tsx with Rido branding |
 | 🟢 Low | No PWA manifest | ✅ DONE: manifest.json + SVG icons |
-| 🔴 High | Netlify deployment (rido.bike) | In progress — Netlify GitHub App connected, static export to `out/`, DNS config in Squarespace (A: 75.2.60.5, CNAME www: rido-bike.netlify.app) |
+| 🔴 High | Netlify deployment (rido.bike) | ✅ COMPLETED ✅ — rido.bike live on Netlify, SSL provisioned, DNS at 75.2.60.5 |
 | 🟡 Medium | P0: Stats counter animation | ✅ DONE: useCountUp hook in Hero + Sustainability |
 | 🟡 Medium | P0: Social proof / testimonials | ✅ DONE: Testimonials section with 4 riders, auto-rotate, star ratings |
 | 🟡 Medium | P0: FAQ accordion | ✅ DONE: 12 items, Framer Motion expand/collapse |

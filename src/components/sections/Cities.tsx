@@ -20,7 +20,7 @@ export function Cities() {
               Where to <span className="text-gradient-brand">Find Us</span>
             </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">
-              Rido operates across Spain&apos;s most vibrant cities. More locations arriving soon.
+              Rido serves the Costa del Sol. More locations arriving soon.
             </p>
           </ScrollReveal>
         </div>
