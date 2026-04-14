@@ -12,12 +12,12 @@ const footerLinks = {
     { label: "About", href: "#about" },
     { label: "Safety", href: "#safety" },
     { label: "Sustainability", href: "#sustainability" },
-    { label: "Careers", href: "#" },
+    { label: "Careers", href: "/careers" },
   ],
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "https://Rido.bike/politica-cookies" },
+    { label: "Cookie Policy", href: "/privacy#cookies" },
   ],
 };
 

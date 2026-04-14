@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
-// layout.tsx is server-rendered, so we use the env var directly
-const basePath = process.env.NEXT_OUTPUT === "export" ? "/rido-website" : "";
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -29,10 +26,10 @@ export const metadata: Metadata = {
     "rent scooter",
   ],
   icons: {
-    icon: `${basePath}/favicon.svg`,
-    apple: `${basePath}/apple-touch-icon.svg`,
+    icon: "/favicon.svg",
+    apple: "/apple-touch-icon.svg",
   },
-  manifest: `${basePath}/manifest.json`,
+  manifest: "/manifest.json",
   openGraph: {
     title: "Rido — Shared E-Scooters & E-Bikes in Spain",
     description:
@@ -62,6 +59,69 @@ export const metadata: Metadata = {
   },
 };
 
+// JSON-LD structured data for SEO
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Rido",
+  "description": "Shared e-scooters and e-bikes in Spain's most vibrant cities",
+  "url": "https://rido.bike",
+  "logo": "https://rido.bike/favicon.svg",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "info@rido.bike",
+    "contactType": "customer service"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Calle Eneldo 3, C4, local 22",
+    "addressLocality": "Orihuela Costa",
+    "addressRegion": "Alicante",
+    "postalCode": "03189",
+    "addressCountry": "ES"
+  },
+  "areaServed": [
+    {
+      "@type": "City",
+      "name": "Madrid"
+    },
+    {
+      "@type": "City",
+      "name": "Barcelona"
+    },
+    {
+      "@type": "City",
+      "name": "Valencia"
+    },
+    {
+      "@type": "City",
+      "name": "Sevilla"
+    },
+    {
+      "@type": "City",
+      "name": "Málaga"
+    },
+    {
+      "@type": "City",
+      "name": "Bilbao"
+    },
+    {
+      "@type": "City",
+      "name": "Palma"
+    },
+    {
+      "@type": "City",
+      "name": "Alicante"
+    }
+  ],
+  "serviceType": ["E-Scooter Rental", "E-Bike Rental"],
+  "priceRange": "€",
+  "sameAs": [
+    "https://www.instagram.com/rido",
+    "https://www.facebook.com/rido"
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -79,6 +139,10 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans overflow-x-hidden" suppressHydrationWarning>

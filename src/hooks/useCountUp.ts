@@ -17,7 +17,7 @@ export function useCountUp(
 ) {
   const [count, setCount] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -25,9 +25,12 @@ export function useCountUp(
     ).matches;
 
     if (prefersReduced) {
-      setCount(end);
-      setHasStarted(true);
-      return;
+      // Use a timeout to avoid synchronous setState in effect
+      const timeout = setTimeout(() => {
+        setCount(end);
+        setHasStarted(true);
+      }, 0);
+      return () => clearTimeout(timeout);
     }
 
     const el = ref.current;

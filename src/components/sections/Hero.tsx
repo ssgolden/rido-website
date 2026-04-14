@@ -12,7 +12,7 @@ import { withBase } from "@/lib/basePath";
 function HeroStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const { count, ref } = useCountUp(value, { duration: 2000 });
   return (
-    <StaggerItem className="text-center">
+    <StaggerItem ref={ref} className="text-center">
       <p className="text-2xl sm:text-3xl font-bold text-white">
         {count.toLocaleString()}{suffix}
       </p>

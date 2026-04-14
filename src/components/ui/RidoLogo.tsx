@@ -6,19 +6,19 @@ interface RidoLogoProps {
   className?: string;
 }
 
-export function RidoLogo({ variant = "full", size = "md", className }: RidoLogoProps) {
-  const sizes = {
-    sm: { mark: 20, text: "text-lg" },
-    md: { mark: 28, text: "text-2xl" },
-    lg: { mark: 40, text: "text-4xl" },
-  };
+// Define sizes per variant
+const sizes = {
+  sm: { mark: 20, text: "text-lg" },
+  md: { mark: 28, text: "text-2xl" },
+  lg: { mark: 40, text: "text-4xl" },
+};
 
-  const s = sizes[size];
-
-  const CheckMark = () => (
+// SVG logo mark component
+function CheckMarkMark({ size, className }: { size: number; className?: string }) {
+  return (
     <svg
-      width={s.mark}
-      height={s.mark}
+      width={size}
+      height={size}
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -35,20 +35,42 @@ export function RidoLogo({ variant = "full", size = "md", className }: RidoLogoP
       />
     </svg>
   );
+}
 
-  const WordMark = () => (
-    <span className={cn("font-black tracking-tight text-white", s.text)}>
+// Wordmark (text) component
+function WordMarkText({ textClass, className }: { textClass: string; className?: string }) {
+  return (
+    <span className={cn("font-black tracking-tight text-white", textClass, className)}>
       rido
     </span>
   );
+}
 
-  if (variant === "mark") return <CheckMark />;
-  if (variant === "wordmark") return <WordMark />;
+// Variants map for rendering
+const variants = {
+  mark: CheckMarkMark,
+  wordmark: WordMarkText,
+  full: function FullLogo({ size, className }: { size: string; className?: string }) {
+    const s = sizes[size as keyof typeof sizes] ?? sizes.md;
+    return (
+      <span className="inline-flex items-center gap-2">
+        <CheckMarkMark size={s.mark} className={className} />
+        <WordMarkText textClass={s.text} className={className} />
+      </span>
+    );
+  },
+} as const;
 
-  return (
-    <span className="inline-flex items-center gap-2">
-      <CheckMark />
-      <WordMark />
-    </span>
-  );
+export function RidoLogo({ variant = "full", size = "md", className }: RidoLogoProps) {
+  const s = sizes[size];
+
+  if (variant === "mark") {
+    return <CheckMarkMark size={s.mark} className={className} />;
+  }
+
+  if (variant === "wordmark") {
+    return <WordMarkText textClass={s.text} className={className} />;
+  }
+
+  return variants.full({ size, className });
 }

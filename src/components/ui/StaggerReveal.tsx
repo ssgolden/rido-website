@@ -52,12 +52,14 @@ export function StaggerReveal({
 export function StaggerItem({
   children,
   className,
+  ref: externalRef,
 }: {
   children: React.ReactNode;
   className?: string;
+  ref?: React.Ref<HTMLDivElement>;
 }) {
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <motion.div ref={externalRef} variants={itemVariants} className={className}>
       {children}
     </motion.div>
   );
