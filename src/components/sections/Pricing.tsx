@@ -3,7 +3,7 @@
 import { pricingTiers, noSurpriseGuarantees } from "@/data/pricing";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Check, ShieldCheck, Palmtree } from "lucide-react";
+import { Check, ShieldCheck } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useState } from "react";

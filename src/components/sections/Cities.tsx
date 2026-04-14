@@ -3,7 +3,7 @@
 import { cities, activeCityCount } from "@/data/cities";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { MapPin, Zap, Bike, Sun, ArrowRight } from "lucide-react";
+import { MapPin, Zap, Bike } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
