@@ -8,8 +8,17 @@ Premium dark-mode website for **Rido**, a shared micro-mobility business operati
 npm install
 npm run dev      # http://localhost:3000
 npm run build    # Production build
-NEXT_OUTPUT=export npm run build  # Static export for GitHub Pages
 npm run lint     # ESLint check
+```
+
+## Build Modes
+
+```bash
+# GitHub Pages (default)
+NEXT_OUTPUT=export npm run build
+
+# Custom Domain (rido.bike) — no basePath
+NEXT_OUTPUT=export CUSTOM_DOMAIN=true npm run build
 ```
 
 ## Tech Stack
@@ -19,8 +28,8 @@ npm run lint     # ESLint check
 - **Styling:** Tailwind CSS 4
 - **Animations:** Framer Motion 12 (ScrollReveal, StaggerReveal)
 - **Icons:** Lucide React
-- **Font:** Inter (Google Fonts, `<link>` fallback for Turbopack)
-- **Deployment:** GitHub Pages (auto-deploy via Actions)
+- **Font:** Inter (Google Fonts)
+- **Deployment:** GitHub Pages + Vercel (auto-deploy via Actions)
 
 ## Project Structure
 
@@ -28,20 +37,24 @@ npm run lint     # ESLint check
 src/
 ├── app/
 │   ├── globals.css          # Tailwind theme, CSS utilities, hero animations
-│   ├── layout.tsx          # Root layout (fonts, meta, skip link, Analytics)
-│   ├── page.tsx            # Homepage (9 animated sections)
+│   ├── layout.tsx          # Root layout (fonts, meta, JSON-LD, Analytics)
+│   ├── page.tsx            # Homepage (10 animated sections)
 │   ├── not-found.tsx       # Custom 404 page
+│   ├── error.tsx           # Error boundary
+│   ├── global-error.tsx    # Global error boundary
+│   ├── careers/page.tsx    # Careers page
 │   ├── privacy/page.tsx    # GDPR Privacy Policy
 │   └── terms/page.tsx      # Terms & Conditions
 ├── components/
 │   ├── layout/             # Navbar, Footer, LegalPage
 │   ├── sections/           # Hero, HowItWorks, Vehicles, Cities, Safety,
-│   │                         Sustainability, Pricing, About, DownloadCTA
+│   │                         Sustainability, Pricing, FAQ, Testimonials,
+│   │                         About, DownloadCTA
 │   └── ui/                 # Badge, Button, Card, RidoLogo, ScrollReveal,
 │                             StaggerReveal, Skeleton
 ├── hooks/
 │   └── useCountUp.ts       # IntersectionObserver count-up animation
-├── data/                   # cities.ts, vehicles.ts, pricing.ts
+├── data/                   # cities.ts, vehicles.ts, pricing.ts, faq.ts
 └── lib/
     ├── utils.ts            # cn() helper
     └── basePath.ts          # Runtime basePath detection + withBase() utility
@@ -56,11 +69,11 @@ src/
 - 🖱️ Micro-interactions on Safety cards, Vehicle thumbnails (hover:scale, tint)
 - 📱 Responsive at 360px (Samsung S25) → 1440px, `min-h-dvh` for mobile viewport
 - ♿ Accessibility: skip-to-content, aria-labels, focus-visible, prefers-reduced-motion
-- 🧮 Interactive ride pricing calculator
-- 📄 Real legal pages (Go2 Place S.L., GDPR, Terms)
+- 🛡️ Error boundaries for graceful failure handling
+- 📄 Real legal pages (Go2 Place S.L., GDPR, Terms, Careers)
 - 🏷️ Lucide SVG icons throughout (zero emoji icons)
 - 🛡️ Trust signals in Download CTA (Free to download, No credit card, 8+ cities)
-- 🔒 Security badge (Insured, GDPR, Data protected)
+- 🔍 SEO-optimized with JSON-LD LocalBusiness structured data
 
 ## Brand Colors
 
@@ -74,16 +87,17 @@ src/
 
 ## Deployment
 
-Push to `master` on GitHub — GitHub Actions auto-deploys to GitHub Pages (~41s):
+### GitHub Pages (Default)
+Push to `master` on GitHub — GitHub Actions auto-deploys (~41s):
 
 - **Repo:** https://github.com/ssgolden/rido-website
-- **Live:** https://ssgolden.github.io/rido-website/
+- **Live:** https://ssgolden.github.io/rido-website/ OR https://rido.bike
 
-### Adding a Custom Domain
+### Vercel (Custom Domain)
+See [`docs/VERCEL-SETUP.md`](docs/VERCEL-SETUP.md) for step-by-step instructions.
 
-1. Go to repo Settings → Pages → Custom domain → add `rido.bike`
-2. Update DNS to point to GitHub Pages
-3. Remove `basePath` from `next.config.ts` (Vercel deployment doesn't need it)
+### DNS Configuration
+See [`docs/DNS-SETUP.md`](docs/DNS-SETUP.md) for DNS setup instructions for rido.bike.
 
 ## Legal
 
@@ -91,3 +105,4 @@ Push to `master` on GitHub — GitHub Actions auto-deploys to GitHub Pages (~41s
 - **Contact:** info@rido.bike
 - **Privacy Policy:** [/privacy](/privacy)
 - **Terms & Conditions:** [/terms](/terms)
+- **Careers:** [/careers](/careers)
