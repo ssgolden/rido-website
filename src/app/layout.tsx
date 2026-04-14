@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     locale: "en_ES",
     images: [
       {
-        url: "/images/lifestyle/rido-rider-street.jpg",
+        url: "/images/logo/rido-logo-wide.png",
         width: 1200,
         height: 630,
         alt: "Rido — Ride Spain",
@@ -66,7 +66,7 @@ const jsonLd = {
   "name": "Rido",
   "description": "Shared e-scooters and e-bikes in Spain's most vibrant cities",
   "url": "https://rido.bike",
-  "logo": "https://rido.bike/favicon.svg",
+  "logo": "https://rido.bike/images/logo/rido-logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
     "email": "info@rido.bike",

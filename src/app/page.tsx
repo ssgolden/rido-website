@@ -11,25 +11,43 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { About } from "@/components/sections/About";
 import { DownloadCTA } from "@/components/sections/DownloadCTA";
 import { Footer } from "@/components/layout/Footer";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { BackToTop } from "@/components/ui/BackToTop";
+
+function Divider() {
+  return <div className="section-divider max-w-7xl mx-auto" />;
+}
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <ScrollProgress />
       <main id="main-content">
         <Hero />
+        <Divider />
         <HowItWorks />
+        <Divider />
         <Vehicles />
+        <Divider />
         <Cities />
+        <Divider />
         <Safety />
+        <Divider />
         <Sustainability />
+        <Divider />
         <Pricing />
+        <Divider />
         <FAQ />
+        <Divider />
         <Testimonials />
+        <Divider />
         <About />
+        <Divider />
         <DownloadCTA />
       </main>
       <Footer />
+      <BackToTop />
     </>
   );
 }

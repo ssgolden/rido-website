@@ -1,7 +1,7 @@
 "use client";
 
 import { testimonials } from "@/data/testimonials";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, Users } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useState, useEffect, useCallback } from "react";
@@ -23,6 +23,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const next = useCallback(() => {
     setCurrent((prev) => (prev + 1) % testimonials.length);

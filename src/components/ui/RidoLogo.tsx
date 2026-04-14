@@ -1,20 +1,25 @@
+"use client";
+
+import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { withBase } from "@/lib/basePath";
 
 interface RidoLogoProps {
-  variant?: "full" | "mark" | "wordmark";
-  size?: "sm" | "md" | "lg";
+  variant?: "full" | "mark" | "wordmark" | "hero";
+  size?: "sm" | "md" | "lg" | "xl";
   className?: string;
+  priority?: boolean;
 }
 
-// Define sizes per variant
-const sizes = {
-  sm: { mark: 20, text: "text-lg" },
-  md: { mark: 28, text: "text-2xl" },
-  lg: { mark: 40, text: "text-4xl" },
-};
+const sizeConfig = {
+  sm: { height: 24, text: "text-lg" },
+  md: { height: 32, text: "text-2xl" },
+  lg: { height: 40, text: "text-3xl" },
+  xl: { height: 56, text: "text-5xl" },
+} as const;
 
-// SVG logo mark component
-function CheckMarkMark({ size, className }: { size: number; className?: string }) {
+function FallbackMark({ size, className }: { size: number; className?: string }) {
   return (
     <svg
       width={size}
@@ -25,7 +30,13 @@ function CheckMarkMark({ size, className }: { size: number; className?: string }
       className={cn("shrink-0", className)}
       aria-hidden="true"
     >
-      <rect width="32" height="32" rx="8" fill="#DE0498" />
+      <defs>
+        <linearGradient id="mark-grad" x1="0" y1="0" x2="32" y2="32">
+          <stop offset="0%" stopColor="#F23DB5" />
+          <stop offset="100%" stopColor="#DE0498" />
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="8" fill="url(#mark-grad)" />
       <path
         d="M9 16.5L13.5 21L23 11"
         stroke="white"
@@ -37,40 +48,66 @@ function CheckMarkMark({ size, className }: { size: number; className?: string }
   );
 }
 
-// Wordmark (text) component
-function WordMarkText({ textClass, className }: { textClass: string; className?: string }) {
-  return (
-    <span className={cn("font-black tracking-tight text-white", textClass, className)}>
-      rido
-    </span>
-  );
-}
-
-// Variants map for rendering
-const variants = {
-  mark: CheckMarkMark,
-  wordmark: WordMarkText,
-  full: function FullLogo({ size, className }: { size: string; className?: string }) {
-    const s = sizes[size as keyof typeof sizes] ?? sizes.md;
-    return (
-      <span className="inline-flex items-center gap-2">
-        <CheckMarkMark size={s.mark} className={className} />
-        <WordMarkText textClass={s.text} className={className} />
-      </span>
-    );
-  },
-} as const;
-
-export function RidoLogo({ variant = "full", size = "md", className }: RidoLogoProps) {
-  const s = sizes[size];
+export function RidoLogo({
+  variant = "full",
+  size = "md",
+  className,
+  priority = false,
+}: RidoLogoProps) {
+  const config = sizeConfig[size];
 
   if (variant === "mark") {
-    return <CheckMarkMark size={s.mark} className={className} />;
+    const markSize = size === "xl" ? 48 : size === "lg" ? 36 : size === "md" ? 28 : 20;
+    return <FallbackMark size={markSize} className={className} />;
   }
 
   if (variant === "wordmark") {
-    return <WordMarkText textClass={s.text} className={className} />;
+    return (
+      <span className={cn("font-black tracking-tight text-white", config.text, className)}>
+        rido
+      </span>
+    );
   }
 
-  return variants.full({ size, className });
+  if (variant === "full") {
+    const imgH = config.height;
+    const imgW = Math.round(imgH * 2.03);
+    return (
+      <span className={cn("inline-flex items-center gap-2", className)}>
+        <Image
+          src={withBase("/images/logo/rido-logo.png")}
+          alt="Rido"
+          width={imgW}
+          height={imgH}
+          priority={priority}
+          sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
+          className="shrink-0"
+        />
+      </span>
+    );
+  }
+
+  if (variant === "hero") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className={cn("relative inline-flex items-center", className)}
+      >
+        <div className="absolute inset-0 blur-2xl bg-rido-magenta/40 scale-150 rounded-full" />
+        <Image
+          src={withBase("/images/logo/rido-logo.png")}
+          alt="Rido"
+          width={280}
+          height={138}
+          priority
+          sizes="(max-width: 640px) 200px, 280px"
+          className="relative z-10 shrink-0"
+        />
+      </motion.div>
+    );
+  }
+
+  return null;
 }

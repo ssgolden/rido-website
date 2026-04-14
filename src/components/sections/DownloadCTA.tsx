@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-react";
+import { Apple, Play, Shield, Smartphone, CreditCard, MapPin, ArrowUp } from "lucide-react";
 
 const trustSignals = [
   { icon: Smartphone, text: "Free to download" },

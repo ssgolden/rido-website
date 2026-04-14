@@ -14,6 +14,8 @@
   --animate-slide-up: slide-up 0.6s ease-out forwards;
   --animate-float: float 3s ease-in-out infinite;
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+  --animate-shimmer: shimmer 3s ease-in-out infinite;
   --animate-hero-gradient: hero-gradient 15s ease-in-out infinite;
   --animate-hero-orb-1: hero-orb-1 12s ease-in-out infinite;
   --animate-hero-orb-2: hero-orb-2 18s ease-in-out infinite;
@@ -33,6 +35,14 @@
   @keyframes pulse-glow {
     0%, 100% { box-shadow: 0 0 20px rgba(222, 4, 152, 0.3); }
     50% { box-shadow: 0 0 40px rgba(222, 4, 152, 0.6); }
+  }
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 50%; }
+    100% { background-position: 200% 50%; }
   }
   @keyframes hero-gradient {
     0%, 100% { background-position: 0% 50%; }
@@ -59,28 +69,23 @@
     --background: 248 250 252;
     --foreground: 15 23 42;
   }
-
   .dark {
     --background: 15 23 42;
     --foreground: 248 250 252;
   }
-
   html {
     scroll-behavior: smooth;
     height: 100%;
   }
-
   body {
     @apply bg-rido-navy text-white font-sans antialiased overflow-x-hidden;
     min-height: 100vh;
     min-height: 100svh;
     min-height: 100dvh;
   }
-
   #main-content {
     overscroll-behavior: contain;
   }
-
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-rido-magenta;
   }
@@ -90,75 +95,100 @@
   .text-gradient-brand {
     @apply bg-gradient-to-r from-rido-magenta to-rido-magenta-light bg-clip-text text-transparent;
   }
-
+  .text-gradient-animated {
+    background: linear-gradient(90deg, #DE0498 0%, #F23DB5 25%, #FFFFFF 50%, #F23DB5 75%, #DE0498 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s ease-in-out infinite;
+  }
   .glass {
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
-
   .glass-strong {
     @apply bg-white/10 backdrop-blur-2xl border border-white/20;
   }
-
-  /* Hero animated gradient */
+  .section-divider {
+    @apply w-full h-px opacity-30 my-0;
+    background: linear-gradient(90deg, transparent, #DE0498, transparent);
+  }
+  .section-tint-magenta {
+    background: linear-gradient(180deg, rgba(222, 4, 152, 0.03), transparent);
+  }
+  .section-tint-green {
+    background: linear-gradient(180deg, rgba(34, 197, 94, 0.03), transparent);
+  }
+  .shimmer-border {
+    position: relative;
+  }
+  .shimmer-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(90deg, transparent, rgba(222, 4, 152, 0.4), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 3s ease-in-out infinite;
+    z-index: -1;
+  }
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #DE0498, #F23DB5);
+    z-index: 9999;
+    transition: width 50ms linear;
+  }
+  .btn-ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-ripple::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10.01%);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    transform: scale(10);
+    opacity: 0;
+    transition: transform 0.5s, opacity 0.5s;
+  }
+  .btn-ripple:active::after {
+    transform: scale(0);
+    opacity: 1;
+    transition: 0s;
+  }
   .hero-gradient {
     background-size: 200% 200%;
     animation: hero-gradient 15s ease-in-out infinite;
   }
   .hero-orb {
-    animation-duration: 12s;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
   .hero-orb-1 { animation-name: hero-orb-1; animation-duration: 12s; }
   .hero-orb-2 { animation-name: hero-orb-2; animation-duration: 18s; }
   .hero-orb-3 { animation-name: hero-orb-3; animation-duration: 14s; }
-
-  /* Legal page styles */
-  .legal-content h2 {
-    @apply text-xl font-bold text-white mt-12 mb-4;
-  }
-
-  .legal-content h3 {
-    @apply text-lg font-semibold text-white mt-8 mb-3;
-  }
-
-  .legal-content p {
-    @apply mb-4 leading-relaxed;
-  }
-
-  .legal-content ul {
-    @apply list-disc list-inside mb-4 space-y-1;
-  }
-
-  .legal-content ol {
-    @apply list-decimal list-inside mb-4 space-y-1;
-  }
-
-  .legal-content a {
-    @apply text-rido-magenta hover:text-rido-magenta-light underline transition-colors;
-  }
-
-  .legal-content strong {
-    @apply text-white font-semibold;
-  }
-
-  .legal-highlight {
-    @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6;
-  }
-
-  .legal-warning {
-    @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6;
-  }
-
-  .legal-section {
-    @apply scroll-mt-24;
-  }
-
+  .legal-content h2 { @apply text-xl font-bold text-white mt-12 mb-4; }
+  .legal-content h3 { @apply text-lg font-semibold text-white mt-8 mb-3; }
+  .legal-content p { @apply mb-4 leading-relaxed; }
+  .legal-content ul { @apply list-disc list-inside mb-4 space-y-1; }
+  .legal-content ol { @apply list-decimal list-inside mb-4 space-y-1; }
+  .legal-content a { @apply text-rido-magenta hover:text-rido-magenta-light underline transition-colors; }
+  .legal-content strong { @apply text-white font-semibold; }
+  .legal-highlight { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
+  .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }
+  .legal-section { @apply scroll-mt-24; }
   section[id] {
     @apply scroll-mt-16 sm:scroll-mt-24;
   }
-
-  /* Safe area support for Samsung S25, iPhone with notch/Dynamic Island */
   .safe-left {
     padding-left: max(0.75rem, env(safe-area-inset-left));
   }
@@ -167,7 +197,6 @@
   }
 }
 
-/* Accessibility: reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -177,4 +206,30 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+  .text-gradient-animated {
+    animation: none;
+    -webkit-text-fill-color: unset;
+  }
+  .shimmer-border::before {
+    animation: none;
+  }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #DE0498 #0F172A;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+::-webkit-scrollbar-thumb {
+  background: #DE0498;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #F23DB5;
 }

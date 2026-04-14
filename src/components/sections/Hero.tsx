@@ -2,12 +2,14 @@
 
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, MousePointer } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { useCountUp } from "@/hooks/useCountUp";
 import { withBase } from "@/lib/basePath";
+import { RidoLogo } from "@/components/ui/RidoLogo";
 
 function HeroStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
   const { count, ref } = useCountUp(value, { duration: 2000 });
@@ -22,45 +24,49 @@ function HeroStat({ value, label, suffix = "" }: { value: number; label: string;
 }
 
 export function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+
   return (
-    <section className="relative min-h-screen min-h-dvh flex items-center justify-center overflow-hidden pt-14 sm:pt-20">
-      {/* Animated gradient background */}
+    <section ref={sectionRef} className="relative min-h-screen min-h-dvh flex items-center justify-center overflow-hidden pt-14 sm:pt-20">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-      {/* Background image with increased opacity */}
-      <div className="absolute inset-0 bg-cover bg-center opacity-[0.12]" style={{ backgroundImage: `url(${withBase('/images/lifestyle/rido-rider-street.jpg')})` }} />
-      {/* Animated floating orbs */}
+      
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.18]"
+        style={{ backgroundImage: `url(${withBase('/images/lifestyle/rido-rider-street.jpg')})`, y: bgY }}
+      />
+
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.6) 100%)" }} />
+      
       <div className="absolute top-1/4 right-0 w-[200px] sm:w-[600px] h-[200px] sm:h-[600px] rounded-full bg-rido-magenta/10 blur-3xl hero-orb hero-orb-1" />
       <div className="absolute bottom-0 left-0 w-[150px] sm:w-[400px] h-[150px] sm:h-[400px] rounded-full bg-rido-green/10 blur-3xl hero-orb hero-orb-2" />
       <div className="absolute top-1/2 left-1/3 w-[120px] sm:w-[300px] h-[120px] sm:h-[300px] rounded-full bg-rido-magenta-light/5 blur-3xl hero-orb hero-orb-3" />
-      {/* Micro-particles for depth */}
-      <motion.div
-        className="absolute top-[20%] left-[15%] w-1.5 h-1.5 rounded-full bg-rido-magenta/30"
-        animate={{ y: [0, -20, 0], opacity: [0.3, 0.6, 0.3] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      />
-      <motion.div
-        className="absolute top-[60%] right-[20%] w-1 h-1 rounded-full bg-rido-magenta-light/40"
-        animate={{ y: [0, -15, 0], opacity: [0.2, 0.5, 0.2] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-      />
-      <motion.div
-        className="absolute top-[40%] right-[35%] w-2 h-2 rounded-full bg-rido-green/20"
-        animate={{ y: [0, -12, 0], opacity: [0.15, 0.3, 0.15] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-      />
+      
+      <motion.div className="absolute top-[70%] left-[5%] opacity-[0.03] pointer-events-none" animate={{ x: [0, 30, 0], y: [0, -10, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}>
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M5 19h2l3-7h4l2 3h3"/></svg>
+      </motion.div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center py-6 sm:py-12 pb-20 sm:pb-16">
-        <ScrollReveal delay={0.1}>
-          <Badge variant="magenta" className="mb-4 sm:mb-6">
-            Now available across Spain
-          </Badge>
+      <motion.div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center py-6 sm:py-12 pb-20 sm:pb-16" style={{ opacity: contentOpacity }}>
+        <ScrollReveal delay={0.05}>
+          <div className="mb-4 sm:mb-6">
+            <RidoLogo variant="hero" size="xl" />
+          </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.2}>
+        <ScrollReveal delay={0.15}>
+          <Badge variant="magenta" className="mb-4 sm:mb-6">Now available across Spain</Badge>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.25}>
           <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]">
-            Move <span className="text-gradient-brand">Freely</span>
-            <br />
-            Across Spain
+            Move <span className="text-gradient-animated">Freely</span>
+            <br />Across Spain
           </h1>
         </ScrollReveal>
 
@@ -73,23 +79,12 @@ export function Hero() {
 
         <ScrollReveal delay={0.6}>
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.5 }}
-            >
-              <Button size="lg" className="w-full max-w-[280px] sm:w-auto">
-                Download the App
-              </Button>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="relative group">
+              <span className="absolute inset-0 rounded-xl bg-rido-magenta/30 blur-xl scale-110 group-hover:scale-125 transition-transform duration-500 animate-pulse-slow" />
+              <Button size="lg" className="relative w-full max-w-[280px] sm:w-auto">Download the App</Button>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.95, duration: 0.5 }}
-            >
-              <Button variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">
-                See How It Works
-              </Button>
+            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.95, duration: 0.5 }}>
+              <Button variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">See How It Works</Button>
             </motion.div>
           </div>
         </ScrollReveal>
@@ -99,13 +94,10 @@ export function Hero() {
           <HeroStat value={2} label="Vehicle Types" />
           <HeroStat value={0} label="Emissions" />
         </StaggerReveal>
-      </div>
+      </motion.div>
 
-      <a
-        href="#how-it-works"
-        className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 text-white/30 motion-safe:animate-bounce"
-        aria-label="Scroll down"
-      >
+      <a href="#how-it-works" className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30 motion-safe:animate-bounce" aria-label="Scroll down">
+        <MousePointer className="w-4 h-4 -rotate-90" />
         <ChevronDown size={28} className="sm:w-8 sm:h-8" />
       </a>
     </section>

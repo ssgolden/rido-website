@@ -12,7 +12,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer",
+          "btn-ripple inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer",
           "hover:scale-105 active:scale-95",
           variant === "primary" &&
             "bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25",

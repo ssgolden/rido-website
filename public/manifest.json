@@ -28,7 +28,11 @@
       "purpose": "maskable"
     }
   ],
-  "categories": ["travel", "transportation", "lifestyle"],
+  "categories": [
+    "travel",
+    "transportation",
+    "lifestyle"
+  ],
   "lang": "en",
   "dir": "ltr",
   "prefer_related_applications": true,
