@@ -4,6 +4,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { withBase } from "@/lib/basePath";
+import { useState, useEffect } from "react";
 
 interface RidoLogoProps {
   variant?: "full" | "mark" | "wordmark" | "hero";
@@ -55,6 +56,11 @@ export function RidoLogo({
   priority = false,
 }: RidoLogoProps) {
   const config = sizeConfig[size];
+  const [imgError, setImgError] = useState(false);
+
+  useEffect(() => {
+    setImgError(false);
+  }, [variant]);
 
   if (variant === "mark") {
     const markSize = size === "xl" ? 48 : size === "lg" ? 36 : size === "md" ? 28 : 20;
@@ -74,15 +80,21 @@ export function RidoLogo({
     const imgW = Math.round(imgH * 2.03);
     return (
       <span className={cn("inline-flex items-center gap-2", className)}>
-        <Image
-          src={withBase("/images/logo/rido-logo.png")}
-          alt="Rido"
-          width={imgW}
-          height={imgH}
-          priority={priority}
-          sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
-          className="shrink-0"
-        />
+        {imgError ? (
+          <FallbackMark size={imgH} className="shrink-0" />
+        ) : (
+          <Image
+            src={withBase("/images/logo/rido-logo.png")}
+            alt="Rido"
+            width={imgW}
+            height={imgH}
+            priority={priority}
+            sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
+            className="shrink-0 drop-shadow-[0_0_0.5px_rgba(222,4,152,0.6)]"
+            style={{ imageRendering: "auto" }}
+            onError={() => setImgError(true)}
+          />
+        )}
       </span>
     );
   }
@@ -96,15 +108,21 @@ export function RidoLogo({
         className={cn("relative inline-flex items-center", className)}
       >
         <div className="absolute inset-0 blur-2xl bg-rido-magenta/40 scale-150 rounded-full" />
-        <Image
-          src={withBase("/images/logo/rido-logo.png")}
-          alt="Rido"
-          width={280}
-          height={138}
-          priority
-          sizes="(max-width: 640px) 200px, 280px"
-          className="relative z-10 shrink-0"
-        />
+        {imgError ? (
+          <FallbackMark size={138} className="relative z-10 shrink-0" />
+        ) : (
+          <Image
+            src={withBase("/images/logo/rido-logo.png")}
+            alt="Rido"
+            width={280}
+            height={138}
+            priority
+            sizes="(max-width: 640px) 200px, 280px"
+            className="relative z-10 shrink-0 drop-shadow-[0_0_0.5px_rgba(222,4,152,0.6)]"
+            style={{ imageRendering: "auto" }}
+            onError={() => setImgError(true)}
+          />
+        )}
       </motion.div>
     );
   }
