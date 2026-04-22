@@ -68,9 +68,7 @@ function WordGroup({
         </span>
       ))}
       {highlightWords.map((w, i) => (
-        <span key={`h-${i}`} className={cn("inline-block mr-[0.25em]", highlightClass)}>
-          <AnimatedWord text={w} />
-        </span>
+        <AnimatedWord key={`h-${i}`} text={w} className={cn("mr-[0.25em]", highlightClass)} />
       ))}
       {afterWords.map((w, i) => (
         <span key={`a-${i}`} className="inline-block mr-[0.25em]">
