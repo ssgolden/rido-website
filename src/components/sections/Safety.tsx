@@ -1,8 +1,7 @@
 "use client";
 
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
-import { Shield, HardHat, WineOff, User, Gauge, Star } from "lucide-react";
+import { Shield, HardHat, WineOff, User, Star } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
@@ -33,7 +32,7 @@ export function Safety() {
             </div>
           </ScrollReveal>
         </div>
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12" staggerDelay={0.1}>
+        <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6" staggerDelay={0.1}>
           {safetyItems.map((item) => (
             <StaggerItem key={item.title}>
               <Card className="flex items-start gap-5 group hover:border-rido-magenta/30">
@@ -49,19 +48,6 @@ export function Safety() {
             </StaggerItem>
           ))}
         </StaggerReveal>
-        <ScrollReveal delay={0.3}>
-          <Card className="max-w-2xl mx-auto text-center border-rido-magenta/30 relative overflow-hidden">
-            <div className="absolute inset-0 rounded-2xl border-2 border-rido-magenta/40 animate-pulse-slow pointer-events-none" />
-            <div className="relative z-10 p-6">
-              <div className="flex items-center justify-center gap-3 mb-3">
-                <Gauge className="w-6 h-6 text-rido-magenta-light" />
-                <h3 className="text-xl font-bold">Beginner Mode</h3>
-              </div>
-              <p className="text-white/50 text-sm mb-4">New to e-scooters? Your first 5 rides are speed-capped at 15 km/h so you can build confidence safely.</p>
-              <Badge variant="magenta-light" className="cursor-default">Automatic for new riders</Badge>
-            </div>
-          </Card>
-        </ScrollReveal>
       </div>
     </section>
   );
