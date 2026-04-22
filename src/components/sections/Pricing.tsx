@@ -4,6 +4,7 @@ import { pricingTiers, noSurpriseGuarantees } from "@/data/pricing";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Check, ShieldCheck, Palmtree } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useState } from "react";
@@ -48,9 +49,13 @@ export function Pricing() {
     <section id="pricing" aria-label="Pricing plans" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
+          <SectionHeading
+            eyebrow="Transparent Pricing"
+            before="No"
+            highlight="Surprises"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
           <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">Transparent Pricing</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">No <span className="text-gradient-brand">Surprises</span></h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">See the price before every ride. No hidden fees, no minimum top-ups, no refund charges.</p>
           </ScrollReveal>
         </div>

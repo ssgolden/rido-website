@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { vehicles } from "@/data/vehicles";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Check } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
 
@@ -18,6 +18,13 @@ export function Vehicles() {
   const [active, setActive] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
   const v = vehicles[active];
+  const [mainImageError, setMainImageError] = useState(false);
+  const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
+
+  useEffect(() => {
+    setMainImageError(false);
+    setThumbErrors({});
+  }, [active, activeImage]);
 
   // Apply basePath prefix at render time so it works in both SSR and client.
   // MUST be called in the component (not in the data file) because
@@ -33,14 +40,12 @@ export function Vehicles() {
     <section id="vehicles" aria-label="Our vehicles" className="py-16 sm:py-24 px-4 sm:px-6 relative section-tint-magenta">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
-              Our Fleet
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
-              Choose Your <span className="text-gradient-brand">Ride</span>
-            </h2>
-          </ScrollReveal>
+          <SectionHeading
+            eyebrow="Our Fleet"
+            before="Choose Your"
+            highlight="Ride"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
         </div>
 
         <ScrollReveal delay={0.1}>
@@ -65,14 +70,21 @@ export function Vehicles() {
           <ScrollReveal direction="left" delay={0.2}>
             <Card className="overflow-hidden p-0 group">
               <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
-                <Image
-                  src={vehicleImages[activeImage]}
-                  alt={v.imageAlt}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  priority={active === 0 && activeImage === 0}
-                />
+                {mainImageError ? (
+                  <div className="absolute inset-0 flex items-center justify-center text-white/40 text-sm">
+                    Image unavailable
+                  </div>
+                ) : (
+                  <Image
+                    src={vehicleImages[activeImage]}
+                    alt={v.imageAlt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    priority={active === 0 && activeImage === 0}
+                    onError={() => setMainImageError(true)}
+                  />
+                )}
               </div>
               {vehicleImages.length > 1 && (
                 <div className="flex gap-2 p-3 bg-white/5">
@@ -86,13 +98,20 @@ export function Vehicles() {
                           : "opacity-60"
                       }`}
                     >
-                      <Image
-                        src={img}
-                        alt={`${v.name} view ${i + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="64px"
-                      />
+                      {thumbErrors[i] ? (
+                        <div className="w-full h-full flex items-center justify-center bg-white/10 text-white/40 text-[10px] text-center px-1">
+                          Image unavailable
+                        </div>
+                      ) : (
+                        <Image
+                          src={img}
+                          alt={`${v.name} view ${i + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="64px"
+                          onError={() => setThumbErrors((prev) => ({ ...prev, [i]: true }))}
+                        />
+                      )}
                     </button>
                   ))}
                 </div>

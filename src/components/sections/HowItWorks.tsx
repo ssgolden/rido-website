@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/Card";
 import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 const steps = [
@@ -33,14 +33,12 @@ export function HowItWorks() {
     <section id="how-it-works" aria-label="How it works" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">
-              Simple as 1-2-3
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
-              How It <span className="text-gradient-brand">Works</span>
-            </h2>
-          </ScrollReveal>
+          <SectionHeading
+            eyebrow="Simple as 1-2-3"
+            before="How It"
+            highlight="Works"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
         </div>
 
         <div className="relative">

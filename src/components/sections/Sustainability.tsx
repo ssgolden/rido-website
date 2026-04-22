@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/Card";
 import { Leaf, Car, Zap } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -63,13 +64,14 @@ export function Sustainability() {
       <div className="absolute inset-0 bg-gradient-to-b from-rido-navy via-rido-green/5 to-rido-navy" />
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-16">
+          <SectionHeading
+            eyebrow="Planet First"
+            before="Real"
+            highlight="Sustainability"
+            highlightClass="text-rido-green"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
           <ScrollReveal>
-            <p className="text-rido-green text-sm font-semibold uppercase tracking-wider mb-3">
-              Planet First
-            </p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">
-              Real <span className="text-rido-green">Sustainability</span>
-            </h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">
               Not just talk. Every Rido ride replaces a car trip. Here&apos;s our real impact.
             </p>

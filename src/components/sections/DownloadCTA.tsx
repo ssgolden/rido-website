@@ -2,6 +2,7 @@
 
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";

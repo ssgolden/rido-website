@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { ChevronDown, MousePointer } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -38,7 +39,7 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
       
       <motion.div
-        className="absolute inset-0 bg-cover bg-center opacity-[0.18]"
+        className="absolute inset-0 bg-cover bg-center bg-rido-navy opacity-[0.18]"
         style={{ backgroundImage: `url(${withBase('/images/lifestyle/rido-rider-street.jpg')})`, y: bgY }}
       />
 
@@ -64,10 +65,42 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.25}>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]">
-            Move <span className="text-gradient-animated">Freely</span>
-            <br />Across Spain
-          </h1>
+          <motion.h1
+            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.1 } },
+            }}
+          >
+            {["Move", "Freely"].map((w, i) => (
+              <motion.span
+                key={w}
+                className={cn("inline-block mr-[0.25em] will-change-transform", w === "Freely" ? "text-gradient-animated" : "")}
+                variants={{
+                  hidden: { opacity: 0, filter: "blur(10px)", y: 30 },
+                  visible: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
+                }}
+              >
+                {w}
+              </motion.span>
+            ))}
+            <br className="hidden sm:block" />
+            {["Across", "Spain"].map((w) => (
+              <motion.span
+                key={w}
+                className="inline-block mr-[0.25em] will-change-transform"
+                variants={{
+                  hidden: { opacity: 0, filter: "blur(10px)", y: 30 },
+                  visible: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
+                }}
+              >
+                {w}
+              </motion.span>
+            ))}
+          </motion.h1>
         </ScrollReveal>
 
         <ScrollReveal delay={0.4}>

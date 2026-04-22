@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -127,7 +128,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Analytics />
       </body>
     </html>

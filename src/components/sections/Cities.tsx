@@ -4,6 +4,7 @@ import { cities, activeCityCount } from "@/data/cities";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { MapPin, Zap, Bike, Sun } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
@@ -12,9 +13,13 @@ export function Cities() {
     <section id="cities" aria-label="Cities where we operate" className="py-16 sm:py-24 px-4 sm:px-6 relative">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
+          <SectionHeading
+            eyebrow={`${activeCityCount}+ Cities`}
+            before="Where to"
+            highlight="Find Us"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
           <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">{activeCityCount}+ Cities</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">Where to <span className="text-gradient-brand">Find Us</span></h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">Rido serves the Costa del Sol. More locations arriving soon.</p>
           </ScrollReveal>
         </div>

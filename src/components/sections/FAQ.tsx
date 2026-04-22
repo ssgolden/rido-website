@@ -2,6 +2,7 @@
 
 import { faqItems } from "@/data/faq";
 import { ChevronDown, Search, Mail } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -60,9 +61,13 @@ export function FAQ() {
     <section id="faq" aria-label="Frequently asked questions" className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
+          <SectionHeading
+            eyebrow="Got Questions?"
+            before="Frequently"
+            highlight="Asked"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
           <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">Got Questions?</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">Frequently <span className="text-gradient-brand">Asked</span></h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">Everything you need to know about riding with Rido.</p>
           </ScrollReveal>
         </div>

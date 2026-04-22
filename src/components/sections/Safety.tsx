@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/Card";
 import { Shield, HardHat, WineOff, User, Star } from "lucide-react";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
@@ -20,9 +21,13 @@ export function Safety() {
       </div>
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-16">
+          <SectionHeading
+            eyebrow="Your Safety Matters"
+            before="Ride"
+            highlight="Safely"
+            className="text-3xl sm:text-4xl md:text-5xl font-black"
+          />
           <ScrollReveal>
-            <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">Your Safety Matters</p>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">Ride <span className="text-gradient-brand">Safely</span></h2>
             <p className="mt-4 text-white/50 max-w-xl mx-auto">Safety is not optional — it&apos;s the foundation of everything we do.</p>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
