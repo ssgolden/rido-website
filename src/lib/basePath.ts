@@ -11,12 +11,15 @@
  * path (missing the /rido-website prefix) on GitHub Pages.
  */
 export function getBasePath(): string {
-  // Server-side: check the env var (available during SSR and static export)
+  // Server-side: check env vars (available during SSR and static export)
   if (typeof window === "undefined") {
+    // Custom domain (rido.bike) needs no basePath
+    if (process.env.CUSTOM_DOMAIN === "true") return "";
+    // GitHub Pages deployment at /rido-website
     return process.env.NEXT_OUTPUT === "export" ? "/rido-website" : "";
   }
   // Client-side: detect from the current URL (works in both
-  // GitHub Pages deployment and local dev)
+  // GitHub Pages deployment, custom domain, and local dev)
   return window.location.pathname.startsWith("/rido-website")
     ? "/rido-website"
     : "";
