@@ -3,7 +3,7 @@
 import { cities, activeCityCount } from "@/data/cities";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { MapPin, Zap, Bike, Sun, ArrowRight } from "lucide-react";
+import { MapPin, Zap, Bike, Sun } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
@@ -26,8 +26,12 @@ export function Cities() {
                 <path d="M50,80 Q100,40 200,50 Q300,60 350,30 Q400,20 500,40 Q550,50 580,30" fill="none" stroke="#DE0498" strokeWidth="1.5" strokeDasharray="4 6"/>
                 <path d="M50,80 Q100,40 200,50 Q300,60 350,30 Q400,20 500,40 Q550,50 580,30 L580,160 L50,160 Z" fill="rgba(222,4,152,0.03)"/>
                 {cities.map((city, i) => {
-                  const x = 80 + (i * 100);
-                  const y = 40 + (i % 2 === 0 ? 10 : -5);
+                  const total = cities.length;
+                  const margin = 60;
+                  const available = 600 - margin * 2;
+                  const step = total > 1 ? available / (total - 1) : 0;
+                  const x = margin + step * i;
+                  const y = 55 + (i % 2 === 0 ? 15 : -20);
                   return (
                     <g key={city.slug}>
                       <circle cx={x} cy={y} r="4" fill="#DE0498" opacity="0.8"/>
@@ -63,8 +67,7 @@ export function Cities() {
                       ))}
                     </div>
                     <div className="mt-2 flex items-center gap-3 text-xs text-white/0 group-hover:text-white/30 transition-all duration-300">
-                      <span className="flex items-center gap-1"><Sun className="w-3 h-3" /> 23°C</span>
-                      <span>Available now</span>
+                      <span className="flex items-center gap-1"><Sun className="w-3 h-3" /> Available now</span>
                     </div>
                   </div>
                 </div>
@@ -73,13 +76,6 @@ export function Cities() {
           ))}
         </StaggerReveal>
 
-        <ScrollReveal delay={0.3}>
-          <div className="mt-10 text-center">
-            <a href="#" className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light font-semibold transition-colors cursor-pointer">
-              Explore all cities <ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-        </ScrollReveal>
       </div>
     </section>
   );

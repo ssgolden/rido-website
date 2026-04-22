@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Link from "next/link";
 import { Button } from "@/components/ui/Button";
 import { AlertTriangle, Home, RefreshCw } from "lucide-react";
 
@@ -46,12 +45,14 @@ export default function Error({
             Try Again
           </Button>
 
-        <Link href="/">
-            <Button variant="secondary" className="gap-2 w-full sm:w-auto">
-              <Home className="w-4 h-4" />
-              Go Home
-            </Button>
-          </Link>
+          <Button
+            variant="secondary"
+            className="gap-2 w-full sm:w-auto"
+            onClick={() => window.location.href = "/"}
+          >
+            <Home className="w-4 h-4" />
+            Go Home
+          </Button>
         </div>
       </div>
     </div>

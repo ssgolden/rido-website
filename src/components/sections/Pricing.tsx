@@ -33,7 +33,7 @@ function PricingCalculator() {
           aria-label="Ride duration in minutes" />
         <div className="flex justify-between text-xs text-white/30 mt-1"><span>1 min</span><span>60 min</span></div>
       </div>
-      <div className="glass rounded-xl p-5 text-center">
+      <div className="glass rounded-xl p-5 text-center" aria-live="polite" aria-atomic="true">
         <p className="text-sm text-white/50 mb-1">Estimated cost</p>
         <p className="text-4xl font-black text-rido-magenta">&euro;{total.toFixed(2)}</p>
         {plan !== "day" && <p className="text-xs text-white/30 mt-2">&euro;{r.unlock.toFixed(2)} unlock + &euro;{r.perMin.toFixed(2)}/min</p>}
