@@ -103,6 +103,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        {/* eslint-disable @next/next/no-page-custom-font -- next/font/google fails on Windows with Turbopack due to "http2 feature is not enabled" build error */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -113,6 +114,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        {/* eslint-enable @next/next/no-page-custom-font */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
