@@ -90,7 +90,7 @@ export function RidoLogo({
             height={imgH}
             priority={priority}
             sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
-            className="shrink-0 drop-shadow-[0_0_0.5px_rgba(222,4,152,0.6)]"
+            className="shrink-0"
             style={{ imageRendering: "auto" }}
             onError={() => setImgError(true)}
           />
@@ -118,7 +118,7 @@ export function RidoLogo({
             height={138}
             priority
             sizes="(max-width: 640px) 200px, 280px"
-            className="relative z-10 shrink-0 drop-shadow-[0_0_0.5px_rgba(222,4,152,0.6)]"
+            className="relative z-10 shrink-0"
             style={{ imageRendering: "auto" }}
             onError={() => setImgError(true)}
           />
