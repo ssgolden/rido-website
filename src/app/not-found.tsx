@@ -1,5 +1,12 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { RidoLogo } from "@/components/ui/RidoLogo";
+
+export const metadata: Metadata = {
+  title: "Page Not Found — Rido",
+  description: "The page you're looking for doesn't exist. Head back to rido.bike.",
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (

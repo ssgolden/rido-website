@@ -18,7 +18,7 @@ function SustainabilityStat({
   label: string;
   icon: React.ComponentType<{ className?: string }>;
 }) {
-  const { count, ref } = useCountUp(value, { duration: 2500 });
+  const { count, ref, visible } = useCountUp(value, { duration: 2500 });
   return (
     <StaggerItem className="text-center">
       <div className="flex justify-center mb-4">
@@ -26,10 +26,10 @@ function SustainabilityStat({
           <Icon className="w-7 h-7 text-rido-green" />
         </div>
       </div>
-      <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green">
+      <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>
         {count.toLocaleString()}{suffix}
       </span>
-      <p className="text-white/40 text-sm mt-2">{label}</p>
+      <p className="text-muted text-sm mt-2">{label}</p>
     </StaggerItem>
   );
 }
@@ -72,17 +72,18 @@ export function Sustainability() {
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-white/50 max-w-xl mx-auto">
+            <p className="mt-4 text-muted max-w-xl mx-auto">
               Not just talk. Every Rido ride replaces a car trip. Here&apos;s our real impact.
             </p>
           </ScrollReveal>
         </div>
 
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16" staggerDelay={0.15}>
+        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4" staggerDelay={0.15}>
           {stats.map((stat) => (
             <SustainabilityStat key={stat.label} {...stat} />
           ))}
         </StaggerReveal>
+        <p className="text-center text-xs text-muted-weak mb-16">Projected impact based on planned fleet size and ridership targets.</p>
 
         <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
           {commitments.map((item) => (
@@ -91,7 +92,7 @@ export function Sustainability() {
                 <h3 className="font-bold text-lg mb-2 text-rido-green">
                   {item.title}
                 </h3>
-                <p className="text-sm text-white/50 leading-relaxed">
+                <p className="text-sm text-muted leading-relaxed">
                   {item.description}
                 </p>
               </Card>

@@ -6,8 +6,12 @@ import { useEffect, useRef, useState } from "react";
  * Animated counter that counts from 0 to `end` when the element enters the viewport.
  * Respects prefers-reduced-motion (shows final value instantly).
  *
+ * Hydration-safe: initializes count at `end` so the server renders the final
+ * value, then resets to 0 and animates up once the component is mounted and
+ * the element scrolls into view. This avoids hydration mismatches for large
+ * numbers (e.g. "0+" on server vs "50,000+" on client).
+ *
  * @param end - Target number to count up to
- * @param suffix - String appended after the number (e.g. "+", "km")
  * @param duration - Animation duration in ms (default 2000)
  * @param delay - Stagger delay in ms (default 0)
  */
@@ -15,9 +19,14 @@ export function useCountUp(
   end: number,
   { duration = 2000, delay = 0 }: { duration?: number; delay?: number } = {}
 ) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(end); // Start at final value for SSR
   const [hasStarted, setHasStarted] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -25,12 +34,7 @@ export function useCountUp(
     ).matches;
 
     if (prefersReduced) {
-      // Use a timeout to avoid synchronous setState in effect
-      const timeout = setTimeout(() => {
-        setCount(end);
-        setHasStarted(true);
-      }, 0);
-      return () => clearTimeout(timeout);
+      return;
     }
 
     const el = ref.current;
@@ -51,12 +55,15 @@ export function useCountUp(
   }, [end]);
 
   useEffect(() => {
-    if (!hasStarted) return;
+    if (!mounted || !hasStarted) return;
 
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReduced) return;
+
+    // Reset count to 0 before animating
+    setCount(0);
 
     let startTime: number;
     let raf: number;
@@ -80,7 +87,11 @@ export function useCountUp(
       clearTimeout(timeout);
       cancelAnimationFrame(raf);
     };
-  }, [hasStarted, end, duration, delay]);
+  }, [mounted, hasStarted, end, duration, delay]);
 
-  return { count, ref };
+  // visible is true once the animation has started (after mount + scroll into view).
+  // Before that, the element is hidden via opacity to avoid the flash of final → 0.
+  const visible = mounted && hasStarted;
+
+  return { count, ref, visible };
 }

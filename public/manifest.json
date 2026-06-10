@@ -35,7 +35,7 @@
   ],
   "lang": "en",
   "dir": "ltr",
-  "prefer_related_applications": true,
+  "prefer_related_applications": false,
   "related_applications": [
     {
       "platform": "play",
@@ -43,7 +43,7 @@
     },
     {
       "platform": "itunes",
-      "url": "https://apps.apple.com/app/rido/id0000000000"
+      "url": "https://apps.apple.com/app/rido"
     }
   ]
 }

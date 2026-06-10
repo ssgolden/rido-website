@@ -8,15 +8,17 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
 import { withBase } from "@/lib/basePath";
 import { RidoLogo } from "@/components/ui/RidoLogo";
+import { vehicles } from "@/data/vehicles";
 
 function HeroStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
-  const { count, ref } = useCountUp(value, { duration: 2000 });
+  const { count, ref, visible } = useCountUp(value, { duration: 2000 });
   return (
     <StaggerItem ref={ref} className="text-center">
-      <p className="text-2xl sm:text-3xl font-bold text-white">
+      <p className="text-2xl sm:text-3xl font-bold text-white transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>
         {count.toLocaleString()}{suffix}
       </p>
       <p className="text-xs sm:text-sm">{label}</p>
@@ -38,10 +40,16 @@ export function Hero() {
     <section ref={sectionRef} className="relative min-h-screen min-h-dvh flex items-center justify-center overflow-hidden pt-14 sm:pt-20">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
       
-      <motion.div
-        className="absolute inset-0 bg-cover bg-center bg-rido-navy opacity-[0.18]"
-        style={{ backgroundImage: `url(${withBase('/images/lifestyle/rido-rider-street.jpg')})`, y: bgY }}
-      />
+      <motion.div className="absolute inset-0" style={{ y: bgY }}>
+        <Image
+          src={withBase('/images/lifestyle/rido-rider-street.jpg')}
+          alt="Rido rider on an e-scooter in a Spanish city street"
+          fill
+          sizes="100vw"
+          className="object-cover opacity-[0.18]"
+          priority
+        />
+      </motion.div>
 
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.6) 100%)" }} />
       
@@ -66,6 +74,7 @@ export function Hero() {
 
         <ScrollReveal delay={0.25}>
           <motion.h1
+            aria-label="Move Freely Across Spain"
             className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]"
             initial="hidden"
             whileInView="visible"
@@ -104,7 +113,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.4}>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
+          <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-strong max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
             Shared e-scooters and e-bikes on the Costa del Sol.
             Download the app, scan, and ride. Zero emissions, zero hassle.
           </p>
@@ -114,22 +123,25 @@ export function Hero() {
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="relative group">
               <span className="absolute inset-0 rounded-xl bg-rido-magenta/30 blur-xl scale-110 group-hover:scale-125 transition-transform duration-500 animate-pulse-slow" />
-              <Button size="lg" className="relative w-full max-w-[280px] sm:w-auto">Download the App</Button>
+              <Button as="a" href="#download" size="lg" className="relative w-full max-w-[280px] sm:w-auto">Download the App</Button>
             </motion.div>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.95, duration: 0.5 }}>
-              <Button variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">See How It Works</Button>
+              <Button as="a" href="#how-it-works" variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">See How It Works</Button>
             </motion.div>
           </div>
         </ScrollReveal>
 
-        <StaggerReveal className="mt-10 sm:mt-16 grid grid-cols-3 gap-3 sm:gap-12 text-white/40" staggerDelay={0.15}>
+        <StaggerReveal className="mt-10 sm:mt-16 grid grid-cols-3 gap-3 sm:gap-12 text-muted" staggerDelay={0.15}>
           <HeroStat value={5} suffix="+" label="Cities" />
-          <HeroStat value={2} label="Vehicle Types" />
-          <HeroStat value={0} label="Emissions" />
+          <HeroStat value={vehicles.length} label="Vehicle Types" />
+          <StaggerItem className="text-center">
+            <p className="text-2xl sm:text-3xl font-bold text-rido-green">Zero</p>
+            <p className="text-xs sm:text-sm">Emissions</p>
+          </StaggerItem>
         </StaggerReveal>
       </motion.div>
 
-      <a href="#how-it-works" className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30 motion-safe:animate-bounce" aria-label="Scroll down">
+      <a href="#how-it-works" className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-weak motion-safe:animate-bounce" aria-label="Scroll down">
         <MousePointer className="w-4 h-4 -rotate-90" />
         <ChevronDown size={28} className="sm:w-8 sm:h-8" />
       </a>

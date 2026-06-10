@@ -28,12 +28,12 @@ export function Safety() {
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-white/50 max-w-xl mx-auto">Safety is not optional — it&apos;s the foundation of everything we do.</p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">Safety is not optional — it&apos;s the foundation of everything we do.</p>
           </ScrollReveal>
           <ScrollReveal delay={0.1}>
             <div className="mt-4 flex items-center justify-center gap-1">
               {[1,2,3,4,5].map((i) => (<Star key={i} className="w-4 h-4 fill-rido-yellow text-rido-yellow" />))}
-              <span className="ml-2 text-sm text-white/50">Safety Rating</span>
+              <span className="ml-2 text-sm text-muted">Safety Rating</span>
             </div>
           </ScrollReveal>
         </div>
@@ -46,8 +46,7 @@ export function Safety() {
                 </div>
                 <div className="flex-1">
                   <h3 className="font-bold text-lg mb-1">{item.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{item.description}</p>
-                  <p className="text-xs text-rido-magenta/0 group-hover:text-rido-magenta/60 transition-all duration-300 mt-1 max-h-0 group-hover:max-h-6 overflow-hidden">Tap to learn more →</p>
+                  <p className="text-sm text-muted leading-relaxed">{item.description}</p>
                 </div>
               </Card>
             </StaggerItem>

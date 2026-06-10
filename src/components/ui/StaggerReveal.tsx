@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { forwardRef, useRef } from "react";
 
 const containerVariants = {
   hidden: {},
@@ -49,18 +49,13 @@ export function StaggerReveal({
   );
 }
 
-export function StaggerItem({
-  children,
-  className,
-  ref: externalRef,
-}: {
+export const StaggerItem = forwardRef<HTMLDivElement, {
   children: React.ReactNode;
   className?: string;
-  ref?: React.Ref<HTMLDivElement>;
-}) {
+}>(function StaggerItem({ children, className }, externalRef) {
   return (
     <motion.div ref={externalRef} variants={itemVariants} className={className}>
       {children}
     </motion.div>
   );
-}
+});

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
+import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -44,7 +45,8 @@ export const metadata: Metadata = {
         url: "/images/logo/rido-logo-wide.png",
         width: 1200,
         height: 630,
-        alt: "Rido — Ride Spain",
+        alt: "Rido — Shared E-Scooters & E-Bikes in Spain's Costa del Sol",
+        type: "image/png",
       },
     ],
   },
@@ -54,9 +56,8 @@ export const metadata: Metadata = {
     description: "Move freely across Spain with shared e-scooters and e-bikes.",
     images: ["/images/lifestyle/rido-rider-street.jpg"],
   },
-  robots: {
-    index: true,
-    follow: true,
+  alternates: {
+    canonical: "https://rido.bike",
   },
 };
 
@@ -92,8 +93,67 @@ const jsonLd = {
   "priceRange": "€",
   "sameAs": [
     "https://www.instagram.com/rido",
-    "https://www.facebook.com/rido"
-  ]
+    "https://www.facebook.com/rido",
+    "https://x.com/rido"
+  ],
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    "name": "Rido Vehicle Rentals",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "name": "Pay as you go",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "E-Scooter Rental",
+          "description": "Shared e-scooter rental by the minute. €1.00 unlock + €0.35 per minute."
+        },
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceCurrency": "EUR",
+          "price": "0.35",
+          "referenceQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1",
+            "unitCode": "MIN"
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Rido Pass",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "E-Scooter & E-Bike Rental",
+          "description": "Unlimited unlocks + reduced per-minute rate. Free unlock + €0.25 per minute."
+        },
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "priceCurrency": "EUR",
+          "price": "0.25",
+          "referenceQuantity": {
+            "@type": "QuantitativeValue",
+            "value": "1",
+            "unitCode": "MIN"
+          }
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Day Pass",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "E-Scooter & E-Bike Rental",
+          "description": "Unlimited rides for 24 hours. €14.99 flat rate."
+        },
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "14.99",
+          "priceCurrency": "EUR"
+        }
+      }
+    ]
+  }
 };
 
 export default function RootLayout({
@@ -105,6 +165,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         {/* eslint-disable @next/next/no-page-custom-font -- next/font/google fails on Windows with Turbopack due to "http2 feature is not enabled" build error */}
+        <link rel="preconnect" href="https://vitals.vercel-insights.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -115,6 +176,12 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        <link rel="alternate" hrefLang="en" href="https://rido.bike" />
+        {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
+        <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
+        <link rel="me" href="https://www.instagram.com/rido" />
+        <link rel="me" href="https://www.facebook.com/rido" />
+        <link rel="me" href="https://x.com/rido" />
         {/* eslint-enable @next/next/no-page-custom-font */}
         <script
           type="application/ld+json"
@@ -130,6 +197,7 @@ export default function RootLayout({
         </a>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Analytics />
+        <ClientCookieConsent />
       </body>
     </html>
   );

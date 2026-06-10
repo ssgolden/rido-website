@@ -58,7 +58,7 @@ export function HowItWorks() {
                     </div>
                   </div>
                   <h3 className="font-bold text-lg mb-2">{step.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">
+                  <p className="text-sm text-muted leading-relaxed">
                     {step.description}
                   </p>
                 </Card>

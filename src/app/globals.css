@@ -9,6 +9,9 @@
   --color-rido-green: #22C55E;
   --color-rido-yellow: #FDE803;
   --color-rido-cloud: #F8FAFC;
+  --color-muted: rgb(148 163 184); /* slate-400, ~6.1:1 on navy */
+  --color-muted-strong: rgb(203 213 225); /* slate-300, ~8.8:1 on navy */
+  --color-muted-weak: rgb(100 116 139); /* slate-500, ~4.0:1 on navy - decorative only */
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --animate-fade-in: fade-in 0.6s ease-out forwards;
   --animate-slide-up: slide-up 0.6s ease-out forwards;
@@ -89,9 +92,24 @@
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-rido-magenta;
   }
+  @media (pointer: coarse) {
+    button, a, [role="button"], input[type="range"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }
 
 @layer utilities {
+  .text-muted {
+    @apply text-slate-400;
+  }
+  .text-muted-strong {
+    @apply text-slate-300;
+  }
+  .text-muted-weak {
+    @apply text-slate-500;
+  }
   .text-gradient-brand {
     @apply bg-gradient-to-r from-rido-magenta to-rido-magenta-light bg-clip-text text-transparent;
   }
@@ -176,6 +194,42 @@
   .hero-orb-1 { animation-name: hero-orb-1; animation-duration: 12s; }
   .hero-orb-2 { animation-name: hero-orb-2; animation-duration: 18s; }
   .hero-orb-3 { animation-name: hero-orb-3; animation-duration: 14s; }
+  @keyframes city-pulse-ring {
+    0% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(2); opacity: 0; }
+    100% { transform: scale(1); opacity: 0.4; }
+  }
+  @keyframes city-dot-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+  @keyframes coming-soon-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  @keyframes dash-flow {
+    to { stroke-dashoffset: -28; }
+  }
+  @keyframes dash-flow-short {
+    to { stroke-dashoffset: -16; }
+  }
+  .city-pulse-ring {
+    animation: city-pulse-ring 2.5s ease-in-out infinite;
+    transform-origin: center;
+  }
+  .city-dot-pulse {
+    animation: city-dot-pulse 2s ease-in-out infinite;
+    transform-origin: center;
+  }
+  .coming-soon-blink {
+    animation: coming-soon-blink 1.8s ease-in-out infinite;
+  }
+  .dash-flow {
+    animation: dash-flow 3s linear infinite;
+  }
+  .dash-flow-short {
+    animation: dash-flow-short 2s linear infinite;
+  }
   .legal-content h2 { @apply text-xl font-bold text-white mt-12 mb-4; }
   .legal-content h3 { @apply text-lg font-semibold text-white mt-8 mb-3; }
   .legal-content p { @apply mb-4 leading-relaxed; }

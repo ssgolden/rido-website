@@ -1,9 +1,34 @@
+import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Briefcase } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Careers — Rido",
+  description: "Join the Rido team and help shape the future of micro-mobility in Spain. We're always looking for passionate people in operations, engineering, marketing, and more.",
+  alternates: { canonical: "https://rido.bike/careers" },
+  openGraph: {
+    title: "Careers — Rido",
+    description: "Join Rido and help shape the future of micro-mobility in Spain.",
+    url: "https://rido.bike/careers",
+  },
+};
 
 export default function CareersPage() {
   return (
     <LegalPage title="Careers" lastUpdated="January 2026">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
+              { "@type": "ListItem", "position": 2, "name": "Careers", "item": "https://rido.bike/careers" },
+            ],
+          }),
+        }}
+      />
       <div className="legal-highlight">
         <div className="flex items-center gap-3 mb-2">
           <Briefcase className="w-5 h-5 text-rido-magenta" />

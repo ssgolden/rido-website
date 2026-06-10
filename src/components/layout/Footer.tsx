@@ -44,7 +44,7 @@ const footerLinks = {
 const socialLinks = [
   { icon: InstagramIcon, href: "https://www.instagram.com/rido", label: "Instagram" },
   { icon: FacebookIcon, href: "https://www.facebook.com/rido", label: "Facebook" },
-  { icon: X, href: "https://x.com/rido", label: "Twitter" },
+  { icon: X, href: "https://x.com/rido", label: "X" },
   { icon: Mail, href: "mailto:info@rido.bike", label: "Email" },
 ];
 
@@ -55,16 +55,16 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2 md:col-span-2">
             <RidoLogo variant="full" size="md" />
-            <p className="mt-3 text-sm text-white/50 leading-relaxed max-w-xs">Shared micro-mobility for Spain.<br />Move freely. Ride responsibly.</p>
+            <p className="mt-3 text-sm text-muted leading-relaxed max-w-xs">Shared micro-mobility for Spain.<br />Move freely. Ride responsibly.</p>
             <div className="flex items-center gap-3 mt-5">
               {socialLinks.map((social) => (
-                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer" aria-label={social.label} className="w-9 h-9 rounded-lg bg-white/5 hover:bg-rido-magenta/20 flex items-center justify-center transition-all duration-200 hover:scale-110 group">
-                  <social.icon className="w-4 h-4 text-white/40 group-hover:text-rido-magenta transition-colors" />
+                <a key={social.label} href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined} rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined} aria-label={social.label} className="w-9 h-9 rounded-lg bg-white/5 hover:bg-rido-magenta/20 flex items-center justify-center transition-all duration-200 hover:scale-110 group" suppressHydrationWarning>
+                  <social.icon className="w-4 h-4 text-muted group-hover:text-rido-magenta transition-colors" />
                 </a>
               ))}
             </div>
             <div className="mt-5">
-              <a href="#download" className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer font-semibold">Download the app →</a>
+              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer font-semibold">Download the app →</a>
             </div>
           </div>
           {Object.entries(footerLinks).map(([category, links]) => (
@@ -74,9 +74,9 @@ export function Footer() {
                 {links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("http") || link.href.startsWith("#") ? (
-                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</a>
+                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</a>
                     ) : (
-                      <Link href={link.href} className="text-sm text-white/50 hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</Link>
+                      <Link href={link.href} className="text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</Link>
                     )}
                   </li>
                 ))}
@@ -85,10 +85,11 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-white/30">© {new Date().getFullYear()} Go2 Place S.L. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <span className="text-xs text-white/50 font-semibold cursor-pointer">ES</span>
-            <span className="text-xs text-white/30">EN</span>
+          <p className="text-xs text-muted-weak">© {new Date().getFullYear()} Go2 Place S.L. All rights reserved.</p>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-weak">English</span>
+            <span className="text-xs text-white/20">·</span>
+            <span className="text-xs text-muted-weak">Español (coming soon)</span>
           </div>
         </div>
       </div>

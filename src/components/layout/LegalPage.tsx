@@ -1,4 +1,3 @@
-import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 interface LegalPageProps {
@@ -11,13 +10,19 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
   return (
     <div className="min-h-screen bg-rido-navy">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-white/50 hover:text-rido-magenta transition-colors mb-8"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Back to home
-        </Link>
+        <nav aria-label="Breadcrumb" className="mb-8">
+          <ol className="flex items-center gap-2 text-sm text-muted">
+            <li>
+              <Link href="/" className="hover:text-rido-magenta transition-colors">
+                Home
+              </Link>
+            </li>
+            <li aria-hidden="true" className="text-white/20">/</li>
+            <li>
+              <span className="text-white/70" aria-current="page">{title}</span>
+            </li>
+          </ol>
+        </nav>
 
         <h1 className="text-3xl md:text-4xl font-black mb-2">{title}</h1>
         <p className="text-sm text-white/40 mb-12">Last updated: {lastUpdated}</p>

@@ -1,10 +1,35 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { AlertTriangle, Scale } from "lucide-react";
-import { withBase } from "@/lib/basePath";
+
+export const metadata: Metadata = {
+  title: "Terms and Conditions — Rido",
+  description: "Read Rido's terms and conditions for e-scooter and e-bike rental services in Spain. Covers user responsibilities, pricing, liability, and data protection.",
+  alternates: { canonical: "https://rido.bike/terms" },
+  openGraph: {
+    title: "Terms and Conditions — Rido",
+    description: "Terms of service for Rido e-scooter and e-bike rentals in Spain.",
+    url: "https://rido.bike/terms",
+  },
+};
 
 export default function TermsPage() {
   return (
     <LegalPage title="Terms and Conditions" lastUpdated="January 2026">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
+              { "@type": "ListItem", "position": 2, "name": "Terms and Conditions", "item": "https://rido.bike/terms" },
+            ],
+          }),
+        }}
+      />
       <div className="legal-warning">
         <div className="flex items-center gap-3 mb-2">
           <AlertTriangle className="w-5 h-5 text-rido-yellow" />
@@ -152,7 +177,7 @@ export default function TermsPage() {
         The Data Controller for your personal data is Go2Place S.L., with NIF B01745405 and its registered office at Calle Eneldo 3, C4, local 22 — Orihuela Costa — 03189.
       </p>
       <p>
-        For full details, please refer to our <a href={withBase("/privacy")}>Privacy Policy</a>.
+        For full details, please refer to our <Link href="/privacy">Privacy Policy</Link>.
       </p>
 
       <h2 id="10-ip" className="legal-section">10. Intellectual Property</h2>
@@ -191,7 +216,7 @@ export default function TermsPage() {
         Our App and website utilise cookies to ensure correct functionality and enhance your user experience. Go2Place S.L. informs the User that the App and the Rido website employ proprietary and third-party cookies to enhance the browsing experience, analyse traffic, and deliver personalised content.
       </p>
       <p>
-        For detailed information on the cookies utilised, their purpose, and management, please consult our <a href="https://Rido.bike/politica-cookies" target="_blank" rel="noopener noreferrer">Cookie Policy</a>.
+        For detailed information on the cookies utilised, their purpose, and management, please consult our <a href="/privacy#cookies">Cookie Policy</a>.
       </p>
 
       <h2 id="14-jurisdiction" className="legal-section">14. Applicable Law and Jurisdiction</h2>

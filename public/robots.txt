@@ -3,5 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /api/
+Crawl-delay: 1
 
 Sitemap: https://rido.bike/sitemap.xml

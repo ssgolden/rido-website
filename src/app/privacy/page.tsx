@@ -1,9 +1,34 @@
+import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Shield } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy — Rido",
+  description: "Learn how Rido (Go2 Place S.L.) collects, uses, and protects your personal data. GDPR-compliant privacy policy for our shared e-scooter and e-bike services in Spain.",
+  alternates: { canonical: "https://rido.bike/privacy" },
+  openGraph: {
+    title: "Privacy Policy — Rido",
+    description: "How we protect your personal data. GDPR-compliant privacy policy.",
+    url: "https://rido.bike/privacy",
+  },
+};
 
 export default function PrivacyPolicyPage() {
   return (
     <LegalPage title="Privacy Policy" lastUpdated="January 2026">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
+              { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://rido.bike/privacy" },
+            ],
+          }),
+        }}
+      />
       <div className="legal-highlight">
         <div className="flex items-center gap-3 mb-2">
           <Shield className="w-5 h-5 text-rido-magenta" />
@@ -133,6 +158,20 @@ export default function PrivacyPolicyPage() {
       <h2 id="11-complaint" className="legal-section">11. Right to File a Complaint with the Supervisory Authority</h2>
       <p>
         If you believe that the processing of your data infringes applicable regulations, you have the right to file a complaint with the Spanish Data Protection Agency (Agencia Española de Protección de Datos — AEPD), via <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>.
+      </p>
+
+      <h2 id="cookies" className="legal-section">Cookie Policy</h2>
+      <p>
+        Our website and app use cookies and similar tracking technologies to ensure proper functionality, analyze traffic, and enhance your experience. Cookies are small data files stored on your device when you visit our website.
+      </p>
+      <h3>Types of Cookies We Use</h3>
+      <ul>
+        <li><strong>Essential Cookies</strong>: Required for the website to function properly, including session management and security features.</li>
+        <li><strong>Analytical Cookies</strong>: Help us understand how visitors interact with our website, allowing us to improve our services.</li>
+        <li><strong>Functional Cookies</strong>: Enable enhanced functionality and personalization, such as remembering your preferences.</li>
+      </ul>
+      <p>
+        You can manage your cookie preferences through your browser settings. For more details on the specific cookies we use, please contact us at <a href="mailto:info@rido.bike">info@rido.bike</a>.
       </p>
 
       <div className="legal-highlight mt-12">

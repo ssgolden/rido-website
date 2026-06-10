@@ -1,15 +1,15 @@
 "use client";
 
-import { faqItems } from "@/data/faq";
+import { faqItems, type Category } from "@/data/faq";
 import { ChevronDown, Search, Mail } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-type Category = "all" | "getting-started" | "pricing" | "safety" | "legal";
+type CategoryFilter = "all" | Category;
 
-const categories: { id: Category; label: string }[] = [
+const categories: { id: CategoryFilter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "getting-started", label: "Getting Started" },
   { id: "pricing", label: "Pricing" },
@@ -17,16 +17,11 @@ const categories: { id: Category; label: string }[] = [
   { id: "legal", label: "Legal" },
 ];
 
-const faqCategories: Category[] = [
-  "getting-started", "getting-started", "getting-started",
-  "legal", "safety", "safety", "safety",
-  "pricing", "pricing", "pricing", "safety", "legal",
-];
-
-function FAQItem({ question, answer, isOpen, onToggle }: { question: string; answer: string; isOpen: boolean; onToggle: () => void }) {
+function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string; answer: string; isOpen: boolean; onToggle: () => void; id: string }) {
+  const answerId = `faq-answer-${id}`;
   return (
     <div className="border-b border-white/10 last:border-b-0">
-      <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group" aria-expanded={isOpen}>
+      <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group" aria-expanded={isOpen} aria-controls={answerId}>
         <span className="font-semibold text-white/90 group-hover:text-rido-magenta transition-colors pr-4 text-sm sm:text-base">{question}</span>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} className="shrink-0">
           <ChevronDown className="w-5 h-5 text-white/40" />
@@ -34,8 +29,8 @@ function FAQItem({ question, answer, isOpen, onToggle }: { question: string; ans
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeInOut" }} className="overflow-hidden">
-            <p className="pb-5 text-sm text-white/50 leading-relaxed pr-8">{answer}</p>
+          <motion.div id={answerId} initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeInOut" }} className="overflow-hidden" role="region">
+            <p className="pb-5 text-sm text-muted leading-relaxed pr-8">{answer}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -46,19 +41,37 @@ function FAQItem({ question, answer, isOpen, onToggle }: { question: string; ans
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState<Category>("all");
+  const [category, setCategory] = useState<CategoryFilter>("all");
 
   const filteredItems = useMemo(() => {
-    return faqItems.map((item, i) => ({ ...item, index: i, cat: faqCategories[i] }))
+    return faqItems
       .filter((item) => {
         const matchesSearch = search === "" || item.question.toLowerCase().includes(search.toLowerCase()) || item.answer.toLowerCase().includes(search.toLowerCase());
-        const matchesCategory = category === "all" || item.cat === category;
+        const matchesCategory = category === "all" || item.category === category;
         return matchesSearch && matchesCategory;
-      });
+      })
+      .map((item) => ({ ...item, index: faqItems.indexOf(item) }));
   }, [search, category]);
 
   return (
     <section id="faq" aria-label="Frequently asked questions" className="py-16 sm:py-24 px-4 sm:px-6">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": faqItems.map((item) => ({
+              "@type": "Question",
+              "name": item.question,
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": item.answer,
+              },
+            })),
+          }),
+        }}
+      />
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionHeading
@@ -68,12 +81,12 @@ export function FAQ() {
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-white/50 max-w-xl mx-auto">Everything you need to know about riding with Rido.</p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">Everything you need to know about riding with Rido.</p>
           </ScrollReveal>
         </div>
         <ScrollReveal delay={0.1}>
           <div className="relative mb-4">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
             <input type="text" placeholder="Search questions..." value={search} onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
               aria-label="Search frequently asked questions" />
@@ -81,23 +94,23 @@ export function FAQ() {
           <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
             {categories.map((cat) => (
               <button key={cat.id} onClick={() => setCategory(cat.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${category === cat.id ? "bg-rido-magenta text-white" : "glass text-white/50 hover:text-white hover:bg-white/10"}`}>
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${category === cat.id ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {cat.label}
               </button>
             ))}
           </div>
           <div className="glass rounded-2xl p-4 sm:p-6">
             {filteredItems.length === 0 ? (
-              <p className="text-center text-white/30 py-8 text-sm">No questions match your search. Try different keywords.</p>
+              <p className="text-center text-muted-weak py-8 text-sm">No questions match your search. Try different keywords.</p>
             ) : (
               filteredItems.map((item) => (
-                <FAQItem key={item.index} question={item.question} answer={item.answer}
+                <FAQItem key={item.index} question={item.question} answer={item.answer} id={String(item.index)}
                   isOpen={openIndex === item.index} onToggle={() => setOpenIndex(openIndex === item.index ? null : item.index)} />
               ))
             )}
           </div>
           <div className="mt-6 text-center">
-            <a href="mailto:info@rido.bike" className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer">
+            <a href="mailto:info@rido.bike" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer">
               <Mail className="w-4 h-4" /> Still have questions? Email info@rido.bike
             </a>
           </div>

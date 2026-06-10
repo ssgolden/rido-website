@@ -28,15 +28,15 @@ export function About() {
               <blockquote className="relative mb-6 pl-6 border-l-4 border-rido-magenta">
                 <p className="text-white/70 text-lg italic leading-relaxed">&ldquo;Moving through your city should be easy, affordable, and clean.&rdquo;</p>
               </blockquote>
-              <p className="text-white/50 leading-relaxed mb-6">Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.</p>
-              <p className="text-white/50 leading-relaxed">So we built a fleet of shared e-scooters and e-bikes designed for Spain&apos;s streets, Spain&apos;s weather, and Spain&apos;s people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.</p>
+              <p className="text-muted leading-relaxed mb-6">Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.</p>
+              <p className="text-muted leading-relaxed">So we built a fleet of shared e-scooters and e-bikes designed for Spain&apos;s streets, Spain&apos;s weather, and Spain&apos;s people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.</p>
               <div className="mt-8 space-y-4">
                 {milestones.map((m, i) => (
                   <ScrollReveal key={m.year} delay={0.1 * i}>
                     <div className="flex items-center gap-4">
                       <span className="text-rido-magenta font-bold text-sm w-12 shrink-0">{m.year}</span>
                       <div className="h-px flex-1 bg-gradient-to-r from-rido-magenta/40 to-transparent" />
-                      <span className="text-white/50 text-sm">{m.event}</span>
+                      <span className="text-muted text-sm">{m.event}</span>
                     </div>
                   </ScrollReveal>
                 ))}
@@ -50,7 +50,7 @@ export function About() {
                   <div className={`w-3 h-3 rounded-full mt-2 shrink-0 ${value.dotClass}`} />
                   <div>
                     <h3 className="font-bold text-lg">{value.title}</h3>
-                    <p className="text-sm text-white/50 leading-relaxed">{value.description}</p>
+                    <p className="text-sm text-muted leading-relaxed">{value.description}</p>
                   </div>
                 </div>
               </StaggerItem>
