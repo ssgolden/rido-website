@@ -1,0 +1,407 @@
+{
+  "common": {
+    "appName": "Rido",
+    "tagline": "Muévete libre. Circula con responsabilidad.",
+    "learnMore": "Saber más",
+    "getStarted": "Empezar",
+    "comingSoon": "Próximamente",
+    "readMore": "Leer más",
+    "readLess": "Leer menos",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "loading": "Cargando…",
+    "error": {
+      "generic": "Algo ha ido mal. Inténtalo de nuevo.",
+      "notFound": "No hemos encontrado lo que buscabas.",
+      "unauthorized": "Inicia sesión para continuar.",
+      "forbidden": "No tienes acceso a esta página.",
+      "validation": "Revisa los campos resaltados e inténtalo de nuevo.",
+      "network": "Error de red. Comprueba tu conexión y vuelve a intentarlo.",
+      "offline": "Parece que no tienes conexión."
+    },
+    "form": {
+      "email": "Correo electrónico",
+      "emailPlaceholder": "tu@correo.com",
+      "password": "Contraseña",
+      "search": "Buscar",
+      "searchPlaceholder": "Buscar…",
+      "required": "Obligatorio",
+      "invalidEmail": "Introduce un correo electrónico válido.",
+      "invalidPassword": "La contraseña debe tener al menos 8 caracteres."
+    },
+    "language": {
+      "label": "Idioma",
+      "switchTo": "Cambiar idioma",
+      "en": "Inglés",
+      "es": "Español"
+    }
+  },
+  "navbar": {
+    "home": "Inicio",
+    "howItWorks": "Cómo funciona",
+    "vehicles": "Vehículos",
+    "cities": "Ciudades",
+    "safety": "Seguridad",
+    "pricing": "Precios",
+    "about": "Sobre nosotros",
+    "getTheApp": "Descarga la app"
+  },
+  "footer": {
+    "tagline": "Movilidad compartida para España.",
+    "downloadTheApp": "Descarga la app",
+    "sections": {
+      "product": "Producto",
+      "company": "Empresa",
+      "legal": "Legal"
+    },
+    "links": {
+      "eScooter": "Patinete eléctrico",
+      "eBike": "Bicicleta eléctrica",
+      "pricing": "Precios",
+      "cities": "Ciudades",
+      "about": "Sobre nosotros",
+      "safety": "Seguridad",
+      "sustainability": "Sostenibilidad",
+      "careers": "Empleo",
+      "privacy": "Política de privacidad",
+      "terms": "Términos del servicio",
+      "cookies": "Política de cookies"
+    },
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "email": "Correo electrónico"
+    },
+    "copyright": "© {year} Go2 Place S.L. Todos los derechos reservados.",
+    "languageNotice": "Español",
+    "languageComingSoon": "Inglés (próximamente)"
+  },
+  "hero": {
+    "ariaLabel": "Muévete libremente por España",
+    "eyebrow": "Movilidad eléctrica compartida de España",
+    "headlineBefore": "Muévete libremente por",
+    "headlineHighlight": "España",
+    "subheadline": "Patinetes y bicicletas eléctricas compartidos, diseñados para las calles españolas. Escanea, conduce y aparca — sin horarios y sin emisiones.",
+    "primaryCta": "Descarga la app",
+    "secondaryCta": "Ver cómo funciona",
+    "stats": {
+      "cities": "Ciudades activas",
+      "vehicles": "Vehículos listos",
+      "rides": "Viajes completados",
+      "co2Saved": "kg de CO₂ ahorrados"
+    },
+    "scrollDown": "Desplázate hacia abajo"
+  },
+  "howItWorks": {
+    "ariaLabel": "Cómo funciona",
+    "eyebrow": "Tan fácil como 1-2-3",
+    "headlineBefore": "Cómo",
+    "headlineHighlight": "funciona",
+    "steps": {
+      "download": {
+        "title": "Descarga y regístrate",
+        "description": "Descarga la app de Rido gratis, crea tu cuenta en segundos y añade tu método de pago."
+      },
+      "scan": {
+        "title": "Escanea y desbloquea",
+        "description": "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y estarás listo para rodar."
+      },
+      "ride": {
+        "title": "Conduce y disfruta",
+        "description": "Respeta las normas de tráfico, usa los carriles bici y disfruta del viaje. Casco recomendado por tu seguridad."
+      },
+      "park": {
+        "title": "Aparca y finaliza el viaje",
+        "description": "Aparca con responsabilidad en las zonas señaladas en la app. Finaliza el viaje y paga solo por lo que has usado."
+      }
+    }
+  },
+  "vehicles": {
+    "ariaLabel": "Nuestros vehículos",
+    "eyebrow": "Nuestra flota",
+    "headlineBefore": "Elige tu",
+    "headlineHighlight": "Ride",
+    "subheadline": "Dos formas de moverte. Ambas diseñadas para la seguridad, la comodidad y la realidad de las calles españolas.",
+    "scooter": {
+      "name": "Rido Scooter",
+      "tagline": "Deslízate por la ciudad",
+      "description": "Nuestro patinete eléctrico de gama alta con plataforma ancha, frenos potentes y hasta 45 km de autonomía. Pensado para exploradores urbanos que exigen seguridad y estilo.",
+      "specs": {
+        "range": "Autonomía",
+        "topSpeed": "Velocidad máx.",
+        "weightLimit": "Peso máx.",
+        "battery": "Batería"
+      },
+      "features": {
+        "lights": "Luces delantera y trasera",
+        "phoneHolder": "Soporte para móvil con carga",
+        "brakes": "Frenos dobles (delantero + trasero)",
+        "turnSignals": "Intermitentes",
+        "beginnerMode": "Modo principiante (15 km/h)",
+        "gps": "Localización GPS y geofencing"
+      },
+      "imageAlt": "Patinete eléctrico Rido"
+    },
+    "bike": {
+      "name": "Rido Bike",
+      "tagline": "Pedalea más lejos, con menos esfuerzo",
+      "description": "Nuestra bicicleta con asistencia eléctrica, asistencia suave al pedaleo, sillín ajustable y cesta delantera resistente. Perfecta para trayectos largos y para llevar lo esencial.",
+      "specs": {
+        "range": "Autonomía",
+        "assistSpeed": "Velocidad con asistencia",
+        "weightLimit": "Peso máx.",
+        "battery": "Batería"
+      },
+      "features": {
+        "pedalAssist": "Asistencia eléctrica al pedaleo",
+        "saddle": "Sillín ajustable en altura",
+        "basket": "Cesta de carga delantera",
+        "lights": "Luces integradas",
+        "tires": "Neumáticos antipinchazos",
+        "frame": "Cuadro de acceso fácil (step-through)"
+      },
+      "imageAlt": "Bicicleta eléctrica de pedaleo asistido Rido"
+    }
+  },
+  "cities": {
+    "ariaLabel": "Ciudades donde operamos",
+    "eyebrowActive": "{count} ciudades",
+    "eyebrowComingSoon": "Próximamente",
+    "headlineBefore": "Dónde",
+    "headlineHighlight": "encontrarnos",
+    "subheadline": "Rido está en la Costa del Sol. Encuentra un viaje en cualquiera de estas ciudades hoy mismo.",
+    "region": "Costa del Sol",
+    "comingSoonBadge": "Pronto",
+    "stats": {
+      "activeCities": "Ciudades activas",
+      "vehiclesDeployed": "Vehículos desplegados",
+      "averageWait": "Tiempo medio de espera"
+    }
+  },
+  "safety": {
+    "ariaLabel": "Información de seguridad",
+    "eyebrow": "Tu seguridad es lo primero",
+    "headlineBefore": "Circula con",
+    "headlineHighlight": "seguridad",
+    "subheadline": "La seguridad no es opcional: es la base de todo lo que hacemos.",
+    "rating": "Valoración de seguridad",
+    "items": {
+      "helmet": {
+        "title": "Casco siempre",
+        "description": "Usa siempre casco. Incluimos uno con cada patinete y ofrecemos recompensas por usarlo en la app."
+      },
+      "oneRider": {
+        "title": "Un único pasajero",
+        "description": "Un patinete, una persona. Nuestro sistema de detección de tándem impide que vaya más de una persona."
+      },
+      "sober": {
+        "title": "Sin alcohol",
+        "description": "No conduzcas bajo los efectos del alcohol. En horas punta puede requerirse una prueba cognitiva para desbloquear el vehículo."
+      },
+      "park": {
+        "title": "Aparca con responsabilidad",
+        "description": "Aparca en las zonas designadas que indica la app. Mantén las aceras libres para los peatones y la accesibilidad."
+      }
+    }
+  },
+  "sustainability": {
+    "ariaLabel": "Impacto en sostenibilidad",
+    "eyebrow": "El planeta, primero",
+    "headlineBefore": "Sostenibilidad",
+    "headlineHighlight": "real",
+    "subheadline": "No son solo palabras. Cada viaje en Rido sustituye a un trayecto en coche. Este es nuestro impacto real.",
+    "stats": {
+      "co2Saved": "Toneladas de CO₂ ahorradas",
+      "carTripsReplaced": "Trayectos en coche sustituidos",
+      "kmRidden": "km recorridos sin emisiones"
+    },
+    "disclaimer": "Impacto estimado según el tamaño previsto de la flota y los objetivos de uso.",
+    "commitments": {
+      "carbonNeutral": {
+        "title": "Operaciones carbono neutral",
+        "description": "Compensamos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde."
+      },
+      "batteries": {
+        "title": "Baterías intercambiables",
+        "description": "Las baterías de nuestros vehículos son intercambiables y se reciclan al final de su vida útil. Sin residuos de un solo uso."
+      },
+      "recycling": {
+        "title": "Reciclaje responsable",
+        "description": "Al final de su vida útil, cada vehículo se desmonta y se recicla. Publicamos nuestras tasas de reciclaje."
+      }
+    }
+  },
+  "pricing": {
+    "ariaLabel": "Planes de precios",
+    "eyebrow": "Precios transparentes",
+    "headlineBefore": "Precios",
+    "headlineHighlight": "honestos",
+    "subheadline": "Consulta el precio antes de cada viaje. Sin comisiones ocultas, sin recargas mínimas, sin gastos de reembolso.",
+    "estimator": {
+      "title": "Calcula tu viaje",
+      "rideDuration": "Duración del viaje:",
+      "minutes": "min",
+      "estimatedCost": "Coste estimado",
+      "unlockBreakdown": "{unlock} € de desbloqueo + {perMinute} €/min",
+      "flatRateNote": "Viajes ilimitados durante 24 horas"
+    },
+    "tiers": {
+      "payAsYouGo": {
+        "name": "Paga por uso",
+        "description": "Sin compromiso. Conduce solo cuando lo necesites."
+      },
+      "ridoPass": {
+        "name": "Rido Pass",
+        "description": "Desbloqueos ilimitados + tarifa reducida por minuto.",
+        "badge": "Más popular"
+      },
+      "dayPass": {
+        "name": "Day Pass",
+        "description": "Viajes ilimitados durante 24 horas.",
+        "badge": "Ideal para turistas"
+      }
+    },
+    "labels": {
+      "unlockFee": "Tarifa de desbloqueo",
+      "perMinute": "Por minuto"
+    },
+    "guarantees": {
+      "noMinTopUp": "Sin recarga mínima",
+      "noHiddenFees": "Sin comisiones ocultas después del viaje",
+      "freeRefund": "Reembolso gratuito del saldo no usado",
+      "exactPricing": "Precio exacto antes de cada viaje"
+    }
+  },
+  "faq": {
+    "ariaLabel": "Preguntas frecuentes",
+    "eyebrow": "Tus preguntas, respondidas",
+    "headlineBefore": "Preguntas",
+    "headlineHighlight": "frecuentes",
+    "subheadline": "¿No encuentras lo que buscas? Escríbenos a {email}.",
+    "searchPlaceholder": "Buscar preguntas…",
+    "searchAriaLabel": "Buscar en las preguntas frecuentes",
+    "categories": {
+      "all": "Todas",
+      "gettingStarted": "Primeros pasos",
+      "pricing": "Precios",
+      "safety": "Seguridad",
+      "legal": "Legal"
+    },
+    "empty": "Ninguna pregunta coincide con tu búsqueda.",
+    "items": {
+      "age": {
+        "question": "¿Qué edad hay que tener para usar Rido?",
+        "answer": "Debes tener al menos 18 años para conducir un patinete o una bicicleta eléctrica de Rido. Tendrás que verificar tu edad al crear la cuenta en la app."
+      },
+      "unlock": {
+        "question": "¿Cómo encuentro y desbloqueo un vehículo Rido?",
+        "answer": "Abre la app de Rido, encuentra un vehículo cerca en el mapa, escanea el código QR del manillar y estarás listo para rodar. La app muestra la disponibilidad y el nivel de batería en tiempo real."
+      },
+      "license": {
+        "question": "¿Necesito carnet de conducir?",
+        "answer": "Para patinetes: no se requiere carnet en la mayoría de ciudades españolas para velocidades de hasta 25 km/h. Para bicicletas eléctricas: tampoco se requiere, ya que se clasifican como bicicletas de pedaleo asistido según la ley española. Consulta siempre la normativa local."
+      },
+      "damage": {
+        "question": "¿Qué pasa si daño un vehículo?",
+        "answer": "Eres responsable de hasta 2.000 € en daños, tal como se indica en nuestros Términos del servicio. Te recomendamos circular con cuidado y aparcar con responsabilidad. Nuestro sistema de detección de tándem supervisa los usos indebidos."
+      },
+      "bikeLanes": {
+        "question": "¿Puedo circular por los carriles bici?",
+        "answer": "¡Sí! En España, los patinetes y las bicicletas eléctricas pueden circular por los carriles bici y por vías con límite de velocidad de hasta 30 km/h. Evita siempre las aceras y las zonas peatonales."
+      },
+      "parking": {
+        "question": "¿Dónde aparco cuando termino?",
+        "answer": "Aparca en las zonas designadas que indica la app. Suelen ser zonas de aparcamiento para bicis o áreas señalizadas. Mantén las aceras despejadas para los peatones y la accesibilidad."
+      },
+      "helmet": {
+        "question": "¿Es obligatorio llevar casco?",
+        "answer": "Recomendamos encarecidamente usar casco en cada viaje. En muchas ciudades españolas, el casco es obligatorio para los usuarios de patinete. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo desde la app."
+      },
+      "cost": {
+        "question": "¿Cuánto cuesta?",
+        "answer": "Paga por uso: 1,00 € de desbloqueo + 0,35 € por minuto. Rido Pass: desbloqueo gratis + 0,25 € por minuto. Day Pass: 14,99 € para viajes ilimitados durante 24 horas. Sin recarga mínima, sin comisiones ocultas."
+      },
+      "ridoPass": {
+        "question": "¿Qué es Rido Pass?",
+        "answer": "Rido Pass te ofrece desbloqueos gratis y una tarifa reducida de 0,25 €/min (en lugar de 0,35 €/min). Es perfecto para quienes usan Rido con frecuencia y quieren ahorrar en cada viaje."
+      },
+      "refund": {
+        "question": "¿Puedo pedir un reembolso del saldo no usado?",
+        "answer": "¡Sí! Ofrecemos reembolsos gratuitos del saldo no usado. No hay recarga mínima y puedes solicitarlo en cualquier momento desde la app. Consulta nuestros Términos del servicio para más detalles."
+      },
+      "battery": {
+        "question": "¿Qué pasa si se agota la batería durante el viaje?",
+        "answer": "Nuestra app muestra el nivel de batería en tiempo real para que puedas elegir un vehículo con carga completa. Si la batería se agota durante el viaje, puedes finalizarlo en cualquier zona de aparcamiento designada, sin coste extra."
+      },
+      "insurance": {
+        "question": "¿Está asegurado mi viaje?",
+        "answer": "Sí, cada viaje de Rido incluye un seguro básico. Nuestros patinetes y bicicletas eléctricas están asegurados frente a responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio."
+      }
+    }
+  },
+  "about": {
+    "ariaLabel": "Sobre Rido",
+    "eyebrow": "Nuestra historia",
+    "headlineBefore": "Nacidos en",
+    "headlineHighlight": "España",
+    "headlineAfter": ", hechos para las ciudades españolas",
+    "quote": "Moverse por tu ciudad debería ser fácil, asequible y limpio.",
+    "paragraph1": "Rido nació de una creencia sencilla. Veíamos carriles bici vacíos, calles colapsadas y ciudades que merecen un aire mejor.",
+    "paragraph2": "Por eso creamos una flota de patinetes y bicicletas eléctricas compartidos, diseñados para las calles de España, el clima de España y la gente de España. Cada vehículo se revisa internamente, cada viaje está asegurado y cada kilómetro sustituye a un trayecto en coche.",
+    "values": {
+      "freedom": {
+        "title": "Libertad",
+        "description": "Muévete a tu manera. Sin horarios, sin esperas, sin problemas de aparcamiento. Escanea y listo."
+      },
+      "safety": {
+        "title": "Seguridad",
+        "description": "Modo principiante, detección de tándem, comprobación de frenos y supervisión del viaje en tiempo real."
+      },
+      "sustainability": {
+        "title": "Sostenibilidad",
+        "description": "Cero emisiones, baterías intercambiables, operaciones carbono neutral y reciclaje responsable."
+      }
+    },
+    "milestones": {
+      "founded": {
+        "year": "2025",
+        "event": "Rido se funda en España"
+      },
+      "launch": {
+        "year": "2026",
+        "event": "Lanzamiento en la Costa del Sol — 5 ciudades activas"
+      },
+      "expansion": {
+        "year": "2027",
+        "event": "Expansión por toda Andalucía"
+      }
+    }
+  },
+  "downloadCTA": {
+    "ariaLabel": "Descarga la app de Rido",
+    "headlineBefore": "¿Listo para",
+    "headlineHighlight": "Rodar",
+    "subheadline": "Descarga la app de Rido y empieza a moverte libremente por España. Tu primer viaje te está esperando.",
+    "ridersCount": "{count} riders y subiendo",
+    "appStore": {
+      "topLabel": "Descargar en",
+      "name": "App Store",
+      "ariaLabel": "Descargar en el App Store — próximamente"
+    },
+    "googlePlay": {
+      "topLabel": "Disponible en",
+      "name": "Google Play",
+      "ariaLabel": "Descargar en Google Play — próximamente"
+    },
+    "scanAndRide": "Escanea y conduce",
+    "trustSignals": {
+      "free": "Descarga gratis",
+      "noCard": "Sin tarjeta de crédito",
+      "available": "Disponible en la Costa del Sol"
+    }
+  }
+}

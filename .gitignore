@@ -43,3 +43,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# QA artifacts (local-only)
+/dogfood-output/
+
+# Dev smoke tests (not part of production)
+/scripts/smoke-*.mts

@@ -1,0 +1,407 @@
+{
+  "common": {
+    "appName": "Rido",
+    "tagline": "Move freely. Ride responsibly.",
+    "learnMore": "Learn more",
+    "getStarted": "Get started",
+    "comingSoon": "Coming soon",
+    "readMore": "Read more",
+    "readLess": "Read less",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "loading": "Loading…",
+    "error": {
+      "generic": "Something went wrong. Please try again.",
+      "notFound": "We couldn't find what you were looking for.",
+      "unauthorized": "Please sign in to continue.",
+      "forbidden": "You don't have access to this page.",
+      "validation": "Please check the highlighted fields and try again.",
+      "network": "Network error. Check your connection and retry.",
+      "offline": "You appear to be offline."
+    },
+    "form": {
+      "email": "Email",
+      "emailPlaceholder": "you@example.com",
+      "password": "Password",
+      "search": "Search",
+      "searchPlaceholder": "Search…",
+      "required": "Required",
+      "invalidEmail": "Please enter a valid email address.",
+      "invalidPassword": "Password must be at least 8 characters."
+    },
+    "language": {
+      "label": "Language",
+      "switchTo": "Switch language",
+      "en": "English",
+      "es": "Spanish"
+    }
+  },
+  "navbar": {
+    "home": "Home",
+    "howItWorks": "How It Works",
+    "vehicles": "Vehicles",
+    "cities": "Cities",
+    "safety": "Safety",
+    "pricing": "Pricing",
+    "about": "About",
+    "getTheApp": "Get the App"
+  },
+  "footer": {
+    "tagline": "Shared micro-mobility for Spain.",
+    "downloadTheApp": "Download the app",
+    "sections": {
+      "product": "Product",
+      "company": "Company",
+      "legal": "Legal"
+    },
+    "links": {
+      "eScooter": "E-Scooter",
+      "eBike": "E-Bike",
+      "pricing": "Pricing",
+      "cities": "Cities",
+      "about": "About",
+      "safety": "Safety",
+      "sustainability": "Sustainability",
+      "careers": "Careers",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy"
+    },
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "x": "X",
+      "email": "Email"
+    },
+    "copyright": "© {year} Go2 Place S.L. All rights reserved.",
+    "languageNotice": "English",
+    "languageComingSoon": "Spanish (coming soon)"
+  },
+  "hero": {
+    "ariaLabel": "Move Freely Across Spain",
+    "eyebrow": "Spain's shared e-mobility",
+    "headlineBefore": "Move Freely Across",
+    "headlineHighlight": "Spain",
+    "subheadline": "Shared e-scooters and e-bikes, built for Spanish streets. Scan, ride, and park — no schedules, no emissions.",
+    "primaryCta": "Download the App",
+    "secondaryCta": "See how it works",
+    "stats": {
+      "cities": "Cities live",
+      "vehicles": "Vehicles ready",
+      "rides": "Rides completed",
+      "co2Saved": "kg CO₂ saved"
+    },
+    "scrollDown": "Scroll down"
+  },
+  "howItWorks": {
+    "ariaLabel": "How it works",
+    "eyebrow": "Simple as 1-2-3",
+    "headlineBefore": "How It",
+    "headlineHighlight": "Works",
+    "steps": {
+      "download": {
+        "title": "Download & Create",
+        "description": "Get the Rido app for free, create your account in seconds, and add your payment method."
+      },
+      "scan": {
+        "title": "Scan & Unlock",
+        "description": "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll."
+      },
+      "ride": {
+        "title": "Ride & Enjoy",
+        "description": "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety."
+      },
+      "park": {
+        "title": "Park & End Ride",
+        "description": "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used."
+      }
+    }
+  },
+  "vehicles": {
+    "ariaLabel": "Our vehicles",
+    "eyebrow": "Our Fleet",
+    "headlineBefore": "Choose Your",
+    "headlineHighlight": "Ride",
+    "subheadline": "Two ways to move. Both built for safety, comfort, and the realities of Spanish streets.",
+    "scooter": {
+      "name": "Rido Scooter",
+      "tagline": "Glide through the city",
+      "description": "Our top-tier e-scooter with a wide deck, powerful brakes, and up to 45 km of range. Built for urban explorers who demand safety and style.",
+      "specs": {
+        "range": "Range",
+        "topSpeed": "Top Speed",
+        "weightLimit": "Weight Limit",
+        "battery": "Battery"
+      },
+      "features": {
+        "lights": "Front and rear lights",
+        "phoneHolder": "Phone holder with charging",
+        "brakes": "Dual brakes (front + rear)",
+        "turnSignals": "Turn signals",
+        "beginnerMode": "Beginner mode (15 km/h)",
+        "gps": "GPS tracking & geofencing"
+      },
+      "imageAlt": "Rido e-scooter"
+    },
+    "bike": {
+      "name": "Rido Bike",
+      "tagline": "Pedal further, effort less",
+      "description": "Our electric-assist bike with smooth pedal support, an adjustable saddle, and a sturdy front basket. Perfect for longer commutes and carrying essentials.",
+      "specs": {
+        "range": "Range",
+        "assistSpeed": "Assist Speed",
+        "weightLimit": "Weight Limit",
+        "battery": "Battery"
+      },
+      "features": {
+        "pedalAssist": "Electric pedal assist",
+        "saddle": "Adjustable saddle height",
+        "basket": "Front cargo basket",
+        "lights": "Integrated lights",
+        "tires": "Puncture-resistant tires",
+        "frame": "Step-through frame design"
+      },
+      "imageAlt": "Rido e-bike electric-assist bicycle"
+    }
+  },
+  "cities": {
+    "ariaLabel": "Cities where we operate",
+    "eyebrowActive": "{count} Cities",
+    "eyebrowComingSoon": "Coming Soon",
+    "headlineBefore": "Where to",
+    "headlineHighlight": "Find Us",
+    "subheadline": "Rido is on the Costa del Sol. Find a ride in any of these cities today.",
+    "region": "Costa del Sol",
+    "comingSoonBadge": "Soon",
+    "stats": {
+      "activeCities": "Active cities",
+      "vehiclesDeployed": "Vehicles deployed",
+      "averageWait": "Average wait time"
+    }
+  },
+  "safety": {
+    "ariaLabel": "Safety information",
+    "eyebrow": "Your Safety Matters",
+    "headlineBefore": "Ride",
+    "headlineHighlight": "Safely",
+    "subheadline": "Safety is not optional — it's the foundation of everything we do.",
+    "rating": "Safety Rating",
+    "items": {
+      "helmet": {
+        "title": "Helmet First",
+        "description": "Always wear a helmet. We include one with every scooter and offer helmet rewards in the app."
+      },
+      "oneRider": {
+        "title": "One Rider Only",
+        "description": "One scooter, one rider. Our tandem detection system ensures nobody doubles up."
+      },
+      "sober": {
+        "title": "Stay Sober",
+        "description": "No riding under the influence. At peak hours, a cognitive reaction test may be required to unlock."
+      },
+      "park": {
+        "title": "Park Responsibly",
+        "description": "Park in designated areas shown in the app. Keep sidewalks clear for pedestrians and accessibility."
+      }
+    }
+  },
+  "sustainability": {
+    "ariaLabel": "Sustainability impact",
+    "eyebrow": "Planet First",
+    "headlineBefore": "Real",
+    "headlineHighlight": "Sustainability",
+    "subheadline": "Not just talk. Every Rido ride replaces a car trip. Here's our real impact.",
+    "stats": {
+      "co2Saved": "Tonnes CO₂ saved",
+      "carTripsReplaced": "Car trips replaced",
+      "kmRidden": "km ridden emission-free"
+    },
+    "disclaimer": "Projected impact based on planned fleet size and ridership targets.",
+    "commitments": {
+      "carbonNeutral": {
+        "title": "Carbon Neutral Operations",
+        "description": "We offset 100% of our operational emissions through verified carbon credits and green energy."
+      },
+      "batteries": {
+        "title": "Swappable Batteries",
+        "description": "Our vehicle batteries are swappable and recycled at end-of-life. No single-use waste."
+      },
+      "recycling": {
+        "title": "Responsible Recycling",
+        "description": "At end of life, every vehicle is dismantled and recycled. We publish our recycling rates."
+      }
+    }
+  },
+  "pricing": {
+    "ariaLabel": "Pricing plans",
+    "eyebrow": "Transparent Pricing",
+    "headlineBefore": "Honest",
+    "headlineHighlight": "Pricing",
+    "subheadline": "See the price before every ride. No hidden fees, no minimum top-ups, no refund charges.",
+    "estimator": {
+      "title": "Estimate Your Ride",
+      "rideDuration": "Ride duration:",
+      "minutes": "min",
+      "estimatedCost": "Estimated cost",
+      "unlockBreakdown": "€{unlock} unlock + €{perMinute}/min",
+      "flatRateNote": "Unlimited rides for 24 hours"
+    },
+    "tiers": {
+      "payAsYouGo": {
+        "name": "Pay as you go",
+        "description": "No commitment. Ride when you need it."
+      },
+      "ridoPass": {
+        "name": "Rido Pass",
+        "description": "Unlimited unlocks + reduced per-minute rate.",
+        "badge": "Most Popular"
+      },
+      "dayPass": {
+        "name": "Day Pass",
+        "description": "Unlimited rides for 24 hours.",
+        "badge": "Best for Tourists"
+      }
+    },
+    "labels": {
+      "unlockFee": "Unlock Fee",
+      "perMinute": "Per minute"
+    },
+    "guarantees": {
+      "noMinTopUp": "No minimum top-up required",
+      "noHiddenFees": "No hidden fees after your ride",
+      "freeRefund": "Free refund of unused balance",
+      "exactPricing": "Exact pricing shown before every ride"
+    }
+  },
+  "faq": {
+    "ariaLabel": "Frequently asked questions",
+    "eyebrow": "Questions, Answered",
+    "headlineBefore": "Frequently Asked",
+    "headlineHighlight": "Questions",
+    "subheadline": "Can't find what you're looking for? Email us at {email}.",
+    "searchPlaceholder": "Search questions…",
+    "searchAriaLabel": "Search frequently asked questions",
+    "categories": {
+      "all": "All",
+      "gettingStarted": "Getting Started",
+      "pricing": "Pricing",
+      "safety": "Safety",
+      "legal": "Legal"
+    },
+    "empty": "No questions match your search.",
+    "items": {
+      "age": {
+        "question": "What age do I need to be to ride a Rido?",
+        "answer": "You must be at least 18 years old to ride a Rido e-scooter or e-bike. You'll need to verify your age when creating an account in the app."
+      },
+      "unlock": {
+        "question": "How do I find and unlock a Rido vehicle?",
+        "answer": "Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels."
+      },
+      "license": {
+        "question": "Do I need a driver's license?",
+        "answer": "For e-scooters: no license is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no license is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations."
+      },
+      "damage": {
+        "question": "What happens if I damage a vehicle?",
+        "answer": "You are responsible for up to €2,000 in damage as outlined in our Terms of Service. We recommend riding carefully and parking responsibly. Our tandem detection system monitors for misuse."
+      },
+      "bikeLanes": {
+        "question": "Can I ride in bike lanes?",
+        "answer": "Yes! In Spain, e-scooters and e-bikes are permitted in bike lanes and on roads with speed limits up to 30 km/h. Always avoid sidewalks and pedestrian zones."
+      },
+      "parking": {
+        "question": "Where do I park when I'm done?",
+        "answer": "Park in designated areas shown in the app. These are typically bike rack zones or marked parking areas. Keep sidewalks clear for pedestrians and accessibility."
+      },
+      "helmet": {
+        "question": "Do I need to wear a helmet?",
+        "answer": "We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app."
+      },
+      "cost": {
+        "question": "How much does it cost?",
+        "answer": "Pay As You Go: €1.00 unlock + €0.35 per minute. Rido Pass: Free unlock + €0.25 per minute. Day Pass: €14.99 for unlimited 24-hour rides. No minimum top-up, no hidden fees."
+      },
+      "ridoPass": {
+        "question": "What is the Rido Pass?",
+        "answer": "The Rido Pass gives you free unlocks and a reduced per-minute rate of €0.25/min (instead of €0.35/min). It's perfect for frequent riders who want to save on every ride."
+      },
+      "refund": {
+        "question": "Can I get a refund for unused balance?",
+        "answer": "Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details."
+      },
+      "battery": {
+        "question": "What if the battery dies during my ride?",
+        "answer": "Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge."
+      },
+      "insurance": {
+        "question": "Is my ride insured?",
+        "answer": "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service."
+      }
+    }
+  },
+  "about": {
+    "ariaLabel": "About Rido",
+    "eyebrow": "Our Story",
+    "headlineBefore": "Born in",
+    "headlineHighlight": "Spain",
+    "headlineAfter": ", Built for Spanish Cities",
+    "quote": "Moving through your city should be easy, affordable, and clean.",
+    "paragraph1": "Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.",
+    "paragraph2": "So we built a fleet of shared e-scooters and e-bikes designed for Spain's streets, Spain's weather, and Spain's people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.",
+    "values": {
+      "freedom": {
+        "title": "Freedom",
+        "description": "Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go."
+      },
+      "safety": {
+        "title": "Safety",
+        "description": "Beginner mode, tandem detection, brake checks, and real-time ride monitoring."
+      },
+      "sustainability": {
+        "title": "Sustainability",
+        "description": "Zero emissions, swappable batteries, carbon-neutral operations, responsible recycling."
+      }
+    },
+    "milestones": {
+      "founded": {
+        "year": "2025",
+        "event": "Rido founded in Spain"
+      },
+      "launch": {
+        "year": "2026",
+        "event": "Costa del Sol launch — 5 cities live"
+      },
+      "expansion": {
+        "year": "2027",
+        "event": "Expanding across Andalusia"
+      }
+    }
+  },
+  "downloadCTA": {
+    "ariaLabel": "Download the Rido app",
+    "headlineBefore": "Ready to",
+    "headlineHighlight": "Ride",
+    "subheadline": "Download the Rido app and start moving freely across Spain. Your first ride is waiting.",
+    "ridersCount": "{count} riders and counting",
+    "appStore": {
+      "topLabel": "Download on the",
+      "name": "App Store",
+      "ariaLabel": "Download on the App Store — coming soon"
+    },
+    "googlePlay": {
+      "topLabel": "Get it on",
+      "name": "Google Play",
+      "ariaLabel": "Get it on Google Play — coming soon"
+    },
+    "scanAndRide": "Scan & Ride",
+    "trustSignals": {
+      "free": "Free to download",
+      "noCard": "No credit card needed",
+      "available": "Available in Costa del Sol"
+    }
+  }
+}
