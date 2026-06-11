@@ -50,7 +50,7 @@ export function getDb(): Db {
       idle_timeout: 20,
       connect_timeout: 10,
       prepare: false, // serverless / pgbouncer-friendly
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       ...(env.NODE_ENV === "development" ? { debug: false } : {}),
     });
 

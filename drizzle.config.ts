@@ -22,7 +22,7 @@ const parsed = envSchema.safeParse(process.env);
 if (!parsed.success && process.env.DATABASE_URL) {
   // For `drizzle-kit generate` (which doesn't need DB access) we tolerate
   // missing non-DB vars; for `migrate` we want everything.
-  // eslint-disable-next-line no-console
+   
   console.warn(
     "[drizzle.config] env validation warnings (non-fatal for generate):",
     parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; "),

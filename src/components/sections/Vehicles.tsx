@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { vehicles } from "@/data/vehicles";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { withBase } from "@/lib/basePath";
 
@@ -22,19 +22,27 @@ export function Vehicles() {
   const [mainImageError, setMainImageError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
 
-  useEffect(() => {
-    setMainImageError(false);
-    setThumbErrors({});
-  }, [active, activeImage]);
-
   // Apply basePath prefix at render time so it works in both SSR and client.
   // MUST be called in the component (not in the data file) because
   // withBase() depends on the runtime environment.
   const vehicleImages = v.images.map(withBase);
 
+  // active/activeImage only change through these handlers, so resetting the
+  // image-error state here replaces the old useEffect on [active, activeImage].
+  const resetImageErrors = () => {
+    setMainImageError(false);
+    setThumbErrors({});
+  };
+
   const handleVehicleChange = (index: number) => {
     setActive(index);
     setActiveImage(0);
+    resetImageErrors();
+  };
+
+  const handleImageChange = (index: number) => {
+    setActiveImage(index);
+    resetImageErrors();
   };
 
   return (
@@ -99,7 +107,7 @@ export function Vehicles() {
                   {vehicleImages.map((img, i) => (
                     <button
                       key={img}
-                      onClick={() => setActiveImage(i)}
+                      onClick={() => handleImageChange(i)}
                       className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 ${
                         i === activeImage
                           ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"

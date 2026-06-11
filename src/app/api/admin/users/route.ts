@@ -34,7 +34,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { getServerSession } from "next-auth";
-import { and, count, desc, eq, ilike, or, type SQL } from "drizzle-orm";
+import { and, count, desc, ilike, or, type SQL } from "drizzle-orm";
 import { z, ZodError } from "zod";
 
 import { ok, err, ErrorCodes, type ApiResponse, paginationSchema } from "@/lib/contract";

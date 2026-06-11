@@ -40,7 +40,6 @@ import type {
   AnalyticsEventInput,
   AnalyticsTrackResult,
   CitiesListQuery,
-  City,
   CityDetail,
   CityListResponse,
   ContactRequest,

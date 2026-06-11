@@ -36,6 +36,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - For CSS background images, use `style={{ backgroundImage: url(withBase('/images/...')) }}` — Tailwind `bg-\[url()\]` class cannot use `withBase()` at runtime
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
+## Build & Deploy Invariants
+- Live site (rido.bike) deploys via GitHub Pages static export (`.github/workflows/deploy.yml`, master pushes). `npm run build` runs `scripts/build.mjs`, which excludes `src/app/api/` when `NEXT_OUTPUT=export` (API routes cannot ship to static hosting) and restores it afterwards. Server builds (Vercel) keep API routes.
+- GitHub Pages CANNOT serve custom response headers — the `headers()` in next.config.ts and `public/_headers` only take effect on a server host (Vercel/Netlify).
+- Next 16: use `src/proxy.ts` (the middleware.ts convention is deprecated). The proxy must ONLY match `/admin/:path*` and `/api/admin/:path*` — public routes must never enter it, and it must never throw on missing env vars (deny instead).
+- Do NOT enable next-intl locale routing until an `app/[locale]/` structure exists — otherwise every page 404s (rewrites target nonexistent locale paths).
+- Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
+
 ## File Conventions
 - Sections in `src/components/sections/`
 - UI primitives in `src/components/ui/`

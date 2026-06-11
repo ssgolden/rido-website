@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RidoLogo } from "@/components/ui/RidoLogo";
@@ -15,28 +15,31 @@ const navLinks = [
   { label: "Pricing", href: "#pricing" },
 ];
 
+// Scroll position as an external store: rAF-throttled scroll subscription.
+// useSyncExternalStore re-reads the snapshot right after hydration, so the
+// initial scroll position (e.g. after hash navigation) is picked up without
+// setting state inside an effect. Server snapshot is `false` (transparent).
+function subscribeToScroll(onStoreChange: () => void) {
+  let ticking = false;
+  const handleScroll = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        onStoreChange();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  return () => window.removeEventListener("scroll", handleScroll);
+}
+const getScrolledSnapshot = () => window.scrollY > 20;
+const getScrolledServerSnapshot = () => false;
+
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useSyncExternalStore(subscribeToScroll, getScrolledSnapshot, getScrolledServerSnapshot);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-
-  useEffect(() => {
-    // Check initial scroll position (e.g. after hash navigation)
-    setScrolled(window.scrollY > 20);
-
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (mobileOpen) { document.body.style.overflow = "hidden"; }

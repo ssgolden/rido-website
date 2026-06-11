@@ -112,10 +112,10 @@ export async function seedDatabase(opts: SeedOptions = {}): Promise<SeedResult> 
  * Useful for local dev — runs the seeder against DATABASE_URL.
  */
 async function runCli(): Promise<void> {
-  // eslint-disable-next-line no-console
+   
   console.log("[seed] starting…");
   const result = await seedDatabase();
-  // eslint-disable-next-line no-console
+   
   console.log("[seed] done", result);
   process.exit(0);
 }
@@ -129,7 +129,7 @@ const invokedDirectly =
 
 if (invokedDirectly) {
   runCli().catch((err) => {
-    // eslint-disable-next-line no-console
+     
     console.error("[seed] failed", err);
     process.exit(1);
   });

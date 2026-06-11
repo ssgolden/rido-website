@@ -1,15 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+// "Mounted" flag without setState-in-effect: the server snapshot is `false`,
+// the client snapshot is `true`, and React re-reads it right after hydration.
+const emptySubscribe = () => () => {};
+const getTrueSnapshot = () => true;
+const getFalseSnapshot = () => false;
 
 /**
  * Animated counter that counts from 0 to `end` when the element enters the viewport.
  * Respects prefers-reduced-motion (shows final value instantly).
  *
- * Hydration-safe: initializes count at `end` so the server renders the final
- * value, then resets to 0 and animates up once the component is mounted and
- * the element scrolls into view. This avoids hydration mismatches for large
- * numbers (e.g. "0+" on server vs "50,000+" on client).
+ * Hydration-safe: the returned count is `end` until the animation starts, so
+ * the server renders the final value, then it switches to 0 and animates up
+ * once the component is mounted and the element scrolls into view. This
+ * avoids hydration mismatches for large numbers (e.g. "0+" on server vs
+ * "50,000+" on client).
  *
  * @param end - Target number to count up to
  * @param duration - Animation duration in ms (default 2000)
@@ -19,14 +26,13 @@ export function useCountUp(
   end: number,
   { duration = 2000, delay = 0 }: { duration?: number; delay?: number } = {}
 ) {
-  const [count, setCount] = useState(end); // Start at final value for SSR
+  // Animated value; `null` until the first animation frame. The displayed
+  // count is derived below: `end` before the animation starts (so the server
+  // renders the final value), then 0 → end while animating.
+  const [animatedCount, setAnimatedCount] = useState<number | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, getTrueSnapshot, getFalseSnapshot);
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const prefersReduced = window.matchMedia(
@@ -62,9 +68,6 @@ export function useCountUp(
     ).matches;
     if (prefersReduced) return;
 
-    // Reset count to 0 before animating
-    setCount(0);
-
     let startTime: number;
     let raf: number;
 
@@ -75,7 +78,7 @@ export function useCountUp(
         const progress = Math.min(elapsed / duration, 1);
         // Ease-out cubic for natural feel
         const eased = 1 - Math.pow(1 - progress, 3);
-        setCount(Math.floor(eased * end));
+        setAnimatedCount(Math.floor(eased * end));
         if (progress < 1) {
           raf = requestAnimationFrame(animate);
         }
@@ -92,6 +95,10 @@ export function useCountUp(
   // visible is true once the animation has started (after mount + scroll into view).
   // Before that, the element is hidden via opacity to avoid the flash of final → 0.
   const visible = mounted && hasStarted;
+
+  // Before the animation starts, show the final value (SSR + first paint);
+  // once started, show 0 until the first animation frame lands.
+  const count = hasStarted ? (animatedCount ?? 0) : end;
 
   return { count, ref, visible };
 }

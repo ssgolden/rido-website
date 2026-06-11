@@ -30,7 +30,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { ZodError } from "zod";
-import { and, count, desc, eq, sql } from "drizzle-orm";
+import { count, desc } from "drizzle-orm";
 
 import { ok, err, ErrorCodes, type ApiResponse } from "@/lib/contract";
 import { getDb, waitlistSignups, type WaitlistSignup } from "@/lib/db";

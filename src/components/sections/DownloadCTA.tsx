@@ -2,11 +2,9 @@
 
 
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
-import { useState, useEffect } from "react";
 
 const trustSignals = [
   { icon: Smartphone, text: "Free to download" },
@@ -20,12 +18,7 @@ function DownloadCounter() {
 }
 
 export function DownloadCTA() {
-  const prefersReduced = useReducedMotion();
-  // Avoid hydration mismatch: start with server-safe default, update after mount
-  const [shouldReduce, setShouldReduce] = useState(false);
-  useEffect(() => {
-    setShouldReduce(prefersReduced ?? false);
-  }, [prefersReduced]);
+  const shouldReduce = useReducedMotion();
 
   return (
     <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">

@@ -92,7 +92,7 @@ interface CacheBackend {
  * read-only in production. Tests that need to swap backends should
  * use the {@link __resetCacheForTests} hook below.
  */
-let activeBackend: CacheBackend = pickBackend();
+const activeBackend: CacheBackend = pickBackend();
 
 /**
  * Decide which backend to use based on `REDIS_URL`. The decision

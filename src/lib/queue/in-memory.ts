@@ -693,10 +693,10 @@ export class InMemoryJobQueue<TPayload = unknown, TResult = unknown> {
    * handle is tracked so {@link close} can cancel it.
    *
    * @param job The job to retry.
-   * @param err The error from the failed attempt. Stored on
-   *            `job.lastError` for the next worker's logs.
+   * @param _err The error from the failed attempt. Currently unused;
+   *             kept in the signature for future logging.
    */
-  private scheduleRetry(job: Job<TPayload, TResult>, err: Error): void {
+  private scheduleRetry(job: Job<TPayload, TResult>, _err: Error): void {
     job.status = "failed";
     // Exponential backoff: baseDelay * 2^(attempts - 1).
     // attempts is already incremented, so the first retry sees

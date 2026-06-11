@@ -4,7 +4,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { withBase } from "@/lib/basePath";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface RidoLogoProps {
   variant?: "full" | "mark" | "wordmark" | "hero";
@@ -56,11 +56,11 @@ export function RidoLogo({
   priority = false,
 }: RidoLogoProps) {
   const config = sizeConfig[size];
-  const [imgError, setImgError] = useState(false);
-
-  useEffect(() => {
-    setImgError(false);
-  }, [variant]);
+  // Remember which variant failed to load instead of resetting a boolean in
+  // an effect: switching variants derives a fresh (non-errored) state.
+  const [errorVariant, setErrorVariant] = useState<RidoLogoProps["variant"] | null>(null);
+  const imgError = errorVariant === variant;
+  const setImgError = () => setErrorVariant(variant);
 
   if (variant === "mark") {
     const markSize = size === "xl" ? 48 : size === "lg" ? 36 : size === "md" ? 28 : 20;
@@ -92,7 +92,7 @@ export function RidoLogo({
             sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
             className="shrink-0"
             style={{ imageRendering: "auto" }}
-            onError={() => setImgError(true)}
+            onError={setImgError}
           />
         )}
       </span>
@@ -120,7 +120,7 @@ export function RidoLogo({
             sizes="(max-width: 640px) 200px, 280px"
             className="relative z-10 shrink-0"
             style={{ imageRendering: "auto" }}
-            onError={() => setImgError(true)}
+            onError={setImgError}
           />
         )}
       </motion.div>

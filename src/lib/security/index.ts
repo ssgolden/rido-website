@@ -57,7 +57,6 @@
 
 import {
   rateLimit as inMemoryRateLimit,
-  rateLimitByIp as inMemoryRateLimitByIp,
   extractClientIp as inMemoryExtractClientIp,
   clearRateLimit as inMemoryClearRateLimit,
   type RateLimitInput,

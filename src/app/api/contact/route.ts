@@ -143,7 +143,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       throw new Error("Insert returned no row");
     }
     inserted = row;
-  } catch (e) {
+  } catch {
     return jsonResponse(
       err(
         ErrorCodes.INTERNAL,

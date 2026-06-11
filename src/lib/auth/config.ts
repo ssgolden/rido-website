@@ -21,7 +21,7 @@
  */
 
 import { compare, hash } from "bcryptjs";
-import { eq, sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import type { NextAuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";

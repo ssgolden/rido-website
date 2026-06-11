@@ -12,17 +12,7 @@ interface SectionHeadingProps {
   className?: string;
   highlightClass?: string;
   stagger?: number;
-  duration?: number;
 }
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
 
 const wordVariants = {
   hidden: { opacity: 0, filter: "blur(10px)", y: 20 },
@@ -88,7 +78,6 @@ export function SectionHeading({
   className,
   highlightClass,
   stagger,
-  duration,
 }: SectionHeadingProps) {
   const shouldReduce = useReducedMotion();
 
