@@ -241,7 +241,9 @@
   .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }
   .legal-section { @apply scroll-mt-24; }
   section[id] {
-    @apply scroll-mt-16 sm:scroll-mt-24;
+    /* Clear the floating fixed navbar (~76px bottom edge on mobile, ~84px on sm+).
+       Lenis scrollTo() and native scrollIntoView() both honor scroll-margin-top. */
+    @apply scroll-mt-20 sm:scroll-mt-24;
   }
   .safe-left {
     padding-left: max(0.75rem, env(safe-area-inset-left));
