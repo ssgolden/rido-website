@@ -216,7 +216,7 @@ export default function TermsPage() {
         Our App and website utilise cookies to ensure correct functionality and enhance your user experience. Go2Place S.L. informs the User that the App and the Rido website employ proprietary and third-party cookies to enhance the browsing experience, analyse traffic, and deliver personalised content.
       </p>
       <p>
-        For detailed information on the cookies utilised, their purpose, and management, please consult our <a href="/privacy#cookies">Cookie Policy</a>.
+        For detailed information on the cookies utilised, their purpose, and management, please consult our <a href="/politica-cookies">Cookie Policy</a>.
       </p>
 
       <h2 id="14-jurisdiction" className="legal-section">14. Applicable Law and Jurisdiction</h2>

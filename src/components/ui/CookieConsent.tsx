@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -26,24 +27,29 @@ function safeSetStorage(key: string, value: string): void {
   }
 }
 
-export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
+const emptySubscribe = () => () => {};
 
-  useEffect(() => {
-    const consent = safeGetStorage(STORAGE_KEY);
-    if (!consent) {
-      setVisible(true);
-    }
-  }, []);
+export function CookieConsent() {
+  // Stored consent read via useSyncExternalStore: the server snapshot reports
+  // consent as present so SSR and the first client paint never show the
+  // banner; the real localStorage value is read right after hydration, so
+  // users who already consented never see a banner flash.
+  const hasStoredConsent = useSyncExternalStore(
+    emptySubscribe,
+    () => safeGetStorage(STORAGE_KEY) !== null,
+    () => true
+  );
+  const [dismissed, setDismissed] = useState(false);
+  const visible = !hasStoredConsent && !dismissed;
 
   const handleAccept = () => {
     safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
-    setVisible(false);
+    setDismissed(true);
   };
 
   const handleDecline = () => {
     safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: false, timestamp: Date.now() }));
-    setVisible(false);
+    setDismissed(true);
   };
 
   return (
@@ -64,10 +70,10 @@ export function CookieConsent() {
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-white mb-1">We value your privacy</h3>
                 <p className="text-sm text-white/60 leading-relaxed">
-                  We use cookies to enhance your browsing experience, analyze site traffic, and serve personalized content. By clicking &quot;Accept&quot;, you consent to our use of cookies.{" "}
-                  <a href="/privacy#cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
+                  We use a small amount of on-device storage to remember your preferences, plus cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.{" "}
+                  <Link href="/politica-cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
                     Learn more
-                  </a>
+                  </Link>
                 </p>
                 <div className="mt-4 flex flex-col sm:flex-row gap-2">
                   <Button size="sm" onClick={handleAccept}>Accept all cookies</Button>
