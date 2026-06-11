@@ -49,3 +49,6 @@ next-env.d.ts
 
 # Dev smoke tests (not part of production)
 /scripts/smoke-*.mts
+
+# API routes temporarily excluded during static export builds (scripts/build.mjs)
+.export-excluded-api/
