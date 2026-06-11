@@ -1,25 +1,6 @@
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import Link from "next/link";
-import { X, Mail } from "lucide-react";
-import type { SVGProps } from "react";
-
-function InstagramIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-      <circle cx="12" cy="12" r="5" />
-      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-    </svg>
-  );
-}
-
-function FacebookIcon(props: SVGProps<SVGSVGElement>) {
-  return (
-    <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-    </svg>
-  );
-}
+import { Mail } from "lucide-react";
 
 const footerLinks = {
   Product: [
@@ -37,14 +18,11 @@ const footerLinks = {
   Legal: [
     { label: "Privacy Policy", href: "/privacy" },
     { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/privacy#cookies" },
+    { label: "Cookie Policy", href: "/politica-cookies" },
   ],
 };
 
 const socialLinks = [
-  { icon: InstagramIcon, href: "https://www.instagram.com/rido", label: "Instagram" },
-  { icon: FacebookIcon, href: "https://www.facebook.com/rido", label: "Facebook" },
-  { icon: X, href: "https://x.com/rido", label: "X" },
   { icon: Mail, href: "mailto:info@rido.bike", label: "Email" },
 ];
 

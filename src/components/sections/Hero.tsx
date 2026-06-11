@@ -69,7 +69,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <Badge variant="magenta" className="mb-4 sm:mb-6">Now available across Spain</Badge>
+          <Badge variant="magenta" className="mb-4 sm:mb-6">Now live on the Costa del Sol</Badge>
         </ScrollReveal>
 
         <ScrollReveal delay={0.25}>
@@ -84,7 +84,7 @@ export function Hero() {
               visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
-            {["Move", "Freely"].map((w, i) => (
+            {["Move", "Freely"].map((w) => (
               <motion.span
                 key={w}
                 className={cn("inline-block mr-[0.25em] will-change-transform", w === "Freely" ? "text-gradient-animated" : "")}

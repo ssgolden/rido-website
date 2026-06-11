@@ -91,11 +91,6 @@ const jsonLd = {
   ],
   "serviceType": ["E-Scooter Rental", "E-Bike Rental"],
   "priceRange": "€",
-  "sameAs": [
-    "https://www.instagram.com/rido",
-    "https://www.facebook.com/rido",
-    "https://x.com/rido"
-  ],
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     "name": "Rido Vehicle Rentals",
@@ -179,9 +174,6 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
-        <link rel="me" href="https://www.instagram.com/rido" />
-        <link rel="me" href="https://www.facebook.com/rido" />
-        <link rel="me" href="https://x.com/rido" />
         {/* eslint-enable @next/next/no-page-custom-font */}
         <script
           type="application/ld+json"
