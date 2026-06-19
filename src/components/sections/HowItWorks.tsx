@@ -8,8 +8,8 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 const steps = [
   {
     icon: Smartphone,
-    title: "Download & Create",
-    description: "Get the Rido app for free, create your account in seconds, and add your payment method.",
+    title: "Sign Up Early",
+    description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.",
   },
   {
     icon: QrCode,

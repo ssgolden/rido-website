@@ -28,8 +28,8 @@ export default function Home() {
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
             <h1>Rido — Shared E-Scooters & E-Bikes in Spain</h1>
-            <p>Move freely across Spain with Rido&apos;s shared e-scooters and e-bikes. Download the app, scan, and ride. Zero emissions, zero hassle.</p>
-            <p>Available in Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso on the Costa del Sol.</p>
+            <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.</p>
+            <p>Coming soon to Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso.</p>
           </div>
         </noscript>
         <Hero />

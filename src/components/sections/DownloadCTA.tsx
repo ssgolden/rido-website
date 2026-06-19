@@ -1,20 +1,110 @@
 "use client";
 
-
+import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-react";
+import { Apple, Play, Shield, Smartphone, CreditCard, MapPin, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
 
 const trustSignals = [
-  { icon: Smartphone, text: "Free to download" },
-  { icon: CreditCard, text: "No credit card needed" },
-  { icon: MapPin, text: "Available in Costa del Sol" },
+  { icon: Smartphone, text: "Be first to ride" },
+  { icon: CreditCard, text: "No payment now" },
+  { icon: MapPin, text: "Costa del Sol launch" },
 ];
 
 function DownloadCounter() {
   const { count, ref, visible } = useCountUp(1200, { duration: 2500 });
   return <span ref={ref} className="font-bold text-rido-magenta transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>{count.toLocaleString()}+</span>;
+}
+
+const WAITLIST_KEY = "rido-waitlist-email";
+
+function WaitlistForm() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setStatus("error");
+      setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      // Store email in localStorage so it persists (no backend on static export).
+      // When the backend is ready, this is where the fetch() to /api/waitlist would go.
+      const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
+      if (!existing.includes(email)) {
+        existing.push(email);
+        localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
+      }
+      // Simulate network delay for UX feedback
+      await new Promise((r) => setTimeout(r, 600));
+      setStatus("success");
+    } catch {
+      setStatus("error");
+      setErrorMsg("Something went wrong. Please try again.");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        className="glass rounded-2xl p-6 text-center max-w-md mx-auto lg:mx-0"
+      >
+        <CheckCircle className="w-12 h-12 text-rido-green mx-auto mb-3" />
+        <h3 className="text-lg font-bold mb-1">You&apos;re on the list!</h3>
+        <p className="text-sm text-muted">
+          We&apos;ll email you the moment Rido launches on the Costa del Sol. Get ready to ride.
+        </p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto lg:mx-0">
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="relative flex-1">
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === "error") setStatus("idle");
+            }}
+            placeholder="your@email.com"
+            disabled={status === "loading"}
+            aria-label="Email address for waitlist"
+            aria-invalid={status === "error"}
+            className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="btn-ripple inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 px-6 py-3 text-sm whitespace-nowrap disabled:opacity-60 disabled:cursor-wait"
+        >
+          {status === "loading" ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            "Join Waitlist"
+          )}
+        </button>
+      </div>
+      {status === "error" && (
+        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">{errorMsg}</p>
+      )}
+    </form>
+  );
 }
 
 export function DownloadCTA() {
@@ -23,7 +113,7 @@ export function DownloadCTA() {
   const shouldReduce = prefersReduced ?? false;
 
   return (
-    <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section aria-label="Join the Rido waitlist" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-magenta/20 via-rido-navy to-rido-magenta-light/10 hero-gradient" />
       <div className="absolute top-0 right-0 w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] rounded-full bg-rido-magenta/10 blur-3xl" />
       <div className="absolute bottom-0 left-0 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] rounded-full bg-rido-magenta-light/8 blur-3xl" />
@@ -34,10 +124,13 @@ export function DownloadCTA() {
             <ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">Ready to <span className="text-gradient-brand">Ride</span>?</h2>
               <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">Join the waitlist and be first to ride when Rido launches on the Costa del Sol.</p>
-              <p className="text-sm text-muted-weak mb-8"><DownloadCounter /> people on the waitlist</p>
+              <p className="text-sm text-muted-weak mb-6"><DownloadCounter /> people on the waitlist</p>
             </ScrollReveal>
-            <ScrollReveal delay={0.2}>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8">
+            <ScrollReveal delay={0.15}>
+              <WaitlistForm />
+            </ScrollReveal>
+            <ScrollReveal delay={0.25}>
+              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8">
                 <a href="#" onClick={(e) => e.preventDefault()} aria-label="Download on the App Store — coming soon" className="inline-block opacity-70 cursor-not-allowed">
                   <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 flex items-center gap-3 relative">
                     <Apple className="w-6 h-6 text-white shrink-0" />

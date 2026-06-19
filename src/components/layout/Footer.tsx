@@ -64,7 +64,7 @@ export function Footer() {
               ))}
             </div>
             <div className="mt-5">
-              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer font-semibold">Download the app →</a>
+              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer font-semibold">Join the waitlist →</a>
             </div>
           </div>
           {Object.entries(footerLinks).map(([category, links]) => (
