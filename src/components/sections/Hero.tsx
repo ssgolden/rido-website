@@ -84,7 +84,7 @@ export function Hero() {
               visible: { transition: { staggerChildren: 0.1 } },
             }}
           >
-            {["Move", "Freely"].map((w, i) => (
+            {["Move", "Freely"].map((w) => (
               <motion.span
                 key={w}
                 className={cn("inline-block mr-[0.25em] will-change-transform", w === "Freely" ? "text-gradient-animated" : "")}
