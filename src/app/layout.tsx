@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Analytics } from "@vercel/analytics/react";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
+import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://rido.bike"),
   title: "Rido — Shared E-Scooters & E-Bikes in Spain",
   description:
-    "Move freely across Spain with Rido's shared e-scooters and e-bikes. Download the app, scan, and ride. Zero emissions, zero hassle.",
+    "Move freely across Spain with Rido's shared e-scooters and e-bikes. Join the waitlist and be first to ride on the Costa del Sol. Zero emissions, zero hassle.",
   keywords: [
     "rido",
     "e-scooter",
@@ -165,7 +165,6 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         {/* eslint-disable @next/next/no-page-custom-font -- next/font/google fails on Windows with Turbopack due to "http2 feature is not enabled" build error */}
-        <link rel="preconnect" href="https://vitals.vercel-insights.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -196,7 +195,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
-        <Analytics />
+        <ConsentAwareAnalytics />
         <ClientCookieConsent />
       </body>
     </html>

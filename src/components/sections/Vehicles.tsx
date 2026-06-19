@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { vehicles } from "@/data/vehicles";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -22,11 +22,6 @@ export function Vehicles() {
   const [mainImageError, setMainImageError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
 
-  useEffect(() => {
-    setMainImageError(false);
-    setThumbErrors({});
-  }, [active, activeImage]);
-
   // Apply basePath prefix at render time so it works in both SSR and client.
   // MUST be called in the component (not in the data file) because
   // withBase() depends on the runtime environment.
@@ -35,6 +30,13 @@ export function Vehicles() {
   const handleVehicleChange = (index: number) => {
     setActive(index);
     setActiveImage(0);
+    setMainImageError(false);
+    setThumbErrors({});
+  };
+
+  const handleThumbnailClick = (index: number) => {
+    setActiveImage(index);
+    setMainImageError(false);
   };
 
   return (
@@ -99,7 +101,7 @@ export function Vehicles() {
                   {vehicleImages.map((img, i) => (
                     <button
                       key={img}
-                      onClick={() => setActiveImage(i)}
+                      onClick={() => handleThumbnailClick(i)}
                       className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 ${
                         i === activeImage
                           ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"

@@ -5,7 +5,7 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
 const milestones = [
   { year: "2025", event: "Rido founded in Spain" },
-  { year: "2026", event: "Costa del Sol launch — 5 cities live" },
+  { year: "2026", event: "Costa del Sol launch — 5 cities planned" },
   { year: "2027", event: "Expanding across Andalusia" },
 ];
 

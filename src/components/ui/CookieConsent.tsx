@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -26,24 +26,29 @@ function safeSetStorage(key: string, value: string): void {
   }
 }
 
-export function CookieConsent() {
-  const [visible, setVisible] = useState(false);
+// Subscribe to localStorage consent state without setState-in-effect.
+// Returns true when the banner should be visible (no consent recorded yet).
+function useShouldShowConsent() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => !safeGetStorage(STORAGE_KEY), // client
+    () => false // SSR — don't show banner during hydration
+  );
+}
 
-  useEffect(() => {
-    const consent = safeGetStorage(STORAGE_KEY);
-    if (!consent) {
-      setVisible(true);
-    }
-  }, []);
+export function CookieConsent() {
+  const shouldShow = useShouldShowConsent();
+  const [dismissed, setDismissed] = useState(false);
+  const visible = shouldShow && !dismissed;
 
   const handleAccept = () => {
     safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
-    setVisible(false);
+    setDismissed(true);
   };
 
   const handleDecline = () => {
     safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: false, timestamp: Date.now() }));
-    setVisible(false);
+    setDismissed(true);
   };
 
   return (

@@ -69,7 +69,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.15}>
-          <Badge variant="magenta" className="mb-4 sm:mb-6">Now available across Spain</Badge>
+          <Badge variant="magenta" className="mb-4 sm:mb-6">Coming to the Costa del Sol</Badge>
         </ScrollReveal>
 
         <ScrollReveal delay={0.25}>
@@ -114,8 +114,8 @@ export function Hero() {
 
         <ScrollReveal delay={0.4}>
           <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-strong max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Shared e-scooters and e-bikes on the Costa del Sol.
-            Download the app, scan, and ride. Zero emissions, zero hassle.
+            Shared e-scooters and e-bikes coming to the Costa del Sol.
+            Join the waitlist, be first to ride. Zero emissions, zero hassle.
           </p>
         </ScrollReveal>
 
@@ -123,7 +123,7 @@ export function Hero() {
           <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="relative group">
               <span className="absolute inset-0 rounded-xl bg-rido-magenta/30 blur-xl scale-110 group-hover:scale-125 transition-transform duration-500 animate-pulse-slow" />
-              <Button as="a" href="#download" size="lg" className="relative w-full max-w-[280px] sm:w-auto">Download the App</Button>
+              <Button as="a" href="#download" size="lg" className="relative w-full max-w-[280px] sm:w-auto">Join the Waitlist</Button>
             </motion.div>
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.95, duration: 0.5 }}>
               <Button as="a" href="#how-it-works" variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">See How It Works</Button>

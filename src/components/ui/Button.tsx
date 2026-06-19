@@ -54,6 +54,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
     if (props.as === "a") {
       const { as: _as, ...anchorProps } = props as ButtonAsLink;
+      void _as;
       return (
         <a ref={ref as React.Ref<HTMLAnchorElement>} className={classes} {...anchorProps}>
           {children}
@@ -62,6 +63,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     }
 
     const { as: _as, ...buttonProps } = props as ButtonAsButton;
+    void _as;
     return (
       <button ref={ref as React.Ref<HTMLButtonElement>} className={classes} {...buttonProps}>
         {children}

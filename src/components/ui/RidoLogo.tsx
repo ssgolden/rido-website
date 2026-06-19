@@ -4,7 +4,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { withBase } from "@/lib/basePath";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface RidoLogoProps {
   variant?: "full" | "mark" | "wordmark" | "hero";
@@ -58,10 +58,6 @@ export function RidoLogo({
   const config = sizeConfig[size];
   const [imgError, setImgError] = useState(false);
 
-  useEffect(() => {
-    setImgError(false);
-  }, [variant]);
-
   if (variant === "mark") {
     const markSize = size === "xl" ? 48 : size === "lg" ? 36 : size === "md" ? 28 : 20;
     return <FallbackMark size={markSize} className={className} />;
@@ -84,6 +80,7 @@ export function RidoLogo({
           <FallbackMark size={imgH} className="shrink-0" />
         ) : (
           <Image
+            key={`full-${variant}`}
             src={withBase("/images/logo/rido-logo.png")}
             alt="Rido"
             width={imgW}
@@ -112,6 +109,7 @@ export function RidoLogo({
           <FallbackMark size={138} className="relative z-10 shrink-0" />
         ) : (
           <Image
+            key={`hero-${variant}`}
             src={withBase("/images/logo/rido-logo.png")}
             alt="Rido"
             width={280}

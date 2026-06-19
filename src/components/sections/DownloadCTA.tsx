@@ -5,7 +5,6 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Apple, Play, Shield, Smartphone, CreditCard, MapPin } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
-import { useState, useEffect } from "react";
 
 const trustSignals = [
   { icon: Smartphone, text: "Free to download" },
@@ -14,17 +13,14 @@ const trustSignals = [
 ];
 
 function DownloadCounter() {
-  const { count, ref, visible } = useCountUp(50000, { duration: 2500 });
+  const { count, ref, visible } = useCountUp(1200, { duration: 2500 });
   return <span ref={ref} className="font-bold text-rido-magenta transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>{count.toLocaleString()}+</span>;
 }
 
 export function DownloadCTA() {
   const prefersReduced = useReducedMotion();
-  // Avoid hydration mismatch: start with server-safe default, update after mount
-  const [shouldReduce, setShouldReduce] = useState(false);
-  useEffect(() => {
-    setShouldReduce(prefersReduced ?? false);
-  }, [prefersReduced]);
+  // useReducedMotion returns null on SSR and boolean on client — null is falsy.
+  const shouldReduce = prefersReduced ?? false;
 
   return (
     <section aria-label="Download the Rido app" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
@@ -37,8 +33,8 @@ export function DownloadCTA() {
           <div className="text-center lg:text-left">
             <ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">Ready to <span className="text-gradient-brand">Ride</span>?</h2>
-              <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">Download the Rido app and start moving freely across Spain. Your first ride is waiting.</p>
-              <p className="text-sm text-muted-weak mb-8"><DownloadCounter /> riders and counting</p>
+              <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">Join the waitlist and be first to ride when Rido launches on the Costa del Sol.</p>
+              <p className="text-sm text-muted-weak mb-8"><DownloadCounter /> people on the waitlist</p>
             </ScrollReveal>
             <ScrollReveal delay={0.2}>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8">

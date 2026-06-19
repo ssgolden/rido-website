@@ -1,6 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+
+/**
+ * Returns true on the client, false during SSR.
+ * Uses useSyncExternalStore so there is no setState-in-effect lint violation.
+ */
+function useIsMounted() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true, // client
+    () => false // server
+  );
+}
 
 /**
  * Animated counter that counts from 0 to `end` when the element enters the viewport.
@@ -21,13 +33,12 @@ export function useCountUp(
 ) {
   const [count, setCount] = useState(end); // Start at final value for SSR
   const [hasStarted, setHasStarted] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsMounted();
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+  // Observe viewport intersection to trigger the count-up.
+  // setHasStarted runs inside an IntersectionObserver callback (external system
+  // update), which is the idiomatic pattern the lint rule permits.
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -54,6 +65,11 @@ export function useCountUp(
     return () => observer.disconnect();
   }, [end]);
 
+  // Run the count-up animation once mounted and in view.
+  // We set the initial count to 0 at the start of the effect body only when
+  // we are actually about to animate — this is the "reset before external
+  // system sync" pattern. To satisfy the lint rule, we fold the reset into
+  // the first rAF callback rather than calling setState synchronously.
   useEffect(() => {
     if (!mounted || !hasStarted) return;
 
@@ -62,13 +78,12 @@ export function useCountUp(
     ).matches;
     if (prefersReduced) return;
 
-    // Reset count to 0 before animating
-    setCount(0);
-
     let startTime: number;
     let raf: number;
 
-    const timeout = setTimeout(() => {
+    const startAnimation = () => {
+      // Reset to 0 inside the timer callback (not synchronously in effect body)
+      setCount(0);
       startTime = performance.now();
       const animate = (now: number) => {
         const elapsed = now - startTime;
@@ -81,7 +96,9 @@ export function useCountUp(
         }
       };
       raf = requestAnimationFrame(animate);
-    }, delay);
+    };
+
+    const timeout = setTimeout(startAnimation, delay);
 
     return () => {
       clearTimeout(timeout);

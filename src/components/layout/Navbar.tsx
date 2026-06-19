@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { RidoLogo } from "@/components/ui/RidoLogo";
@@ -15,28 +15,33 @@ const navLinks = [
   { label: "Pricing", href: "#pricing" },
 ];
 
+// Subscribe to scroll position without setState-in-effect.
+// Returns whether the page is scrolled past `threshold` px.
+function useScrolledPast(threshold: number) {
+  return useSyncExternalStore(
+    (callback) => {
+      let ticking = false;
+      const handleScroll = () => {
+        if (!ticking) {
+          window.requestAnimationFrame(() => {
+            callback();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => window.removeEventListener("scroll", handleScroll);
+    },
+    () => window.scrollY > threshold,
+    () => false // SSR
+  );
+}
+
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useScrolledPast(20);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
-
-  useEffect(() => {
-    // Check initial scroll position (e.g. after hash navigation)
-    setScrolled(window.scrollY > 20);
-
-    let ticking = false;
-    const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (mobileOpen) { document.body.style.overflow = "hidden"; }
@@ -68,7 +73,7 @@ export function Navbar() {
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>Get the App</span></Button>
+          <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button>
         </div>
         <button className="md:hidden text-white cursor-pointer p-3 -mr-3" onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -81,7 +86,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("block py-2.5 text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta font-semibold" : "text-muted-strong hover:text-rido-magenta")} onClick={() => setMobileOpen(false)}>{link.label}</a>
               ))}
-              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2"><Download className="w-4 h-4" /><span>Get the App</span></Button></div>
+              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button></div>
             </div>
           </motion.div>
         )}

@@ -22,7 +22,7 @@ export function Cities() {
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-muted max-w-xl mx-auto">Rido is on the Costa del Sol. Find a ride in any of these cities today.</p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">Rido is launching on the Costa del Sol. Here are the cities we&apos;re bringing our fleet to.</p>
           </ScrollReveal>
         </div>
 

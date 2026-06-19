@@ -73,7 +73,7 @@ export function Sustainability() {
           />
           <ScrollReveal>
             <p className="mt-4 text-muted max-w-xl mx-auto">
-              Not just talk. Every Rido ride replaces a car trip. Here&apos;s our real impact.
+              Every Rido ride replaces a car trip. Here&apos;s the impact we&apos;re projected to make.
             </p>
           </ScrollReveal>
         </div>
