@@ -47,6 +47,9 @@ const socialLinks = [
   { icon: X, href: "https://x.com/rido", label: "X" },
   { icon: Mail, href: "mailto:info@rido.bike", label: "Email" },
 ];
+// NOTE: Social media links above are placeholders. When real accounts are created,
+// update the URLs. The rel="me" links were removed from layout.tsx to avoid
+// confusing search engines with dead profile links.
 
 export function Footer() {
   return (

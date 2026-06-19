@@ -1,0 +1,69 @@
+# Rido
+
+> Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
+
+## About
+Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol: Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
+
+## How It Works
+1. Join the waitlist at https://rido.bike#download
+2. Download the Rido app (launching soon on iOS and Android)
+3. Find a Rido vehicle near you on the in-app map
+4. Scan the QR code on the handlebar to unlock
+5. Ride following traffic rules and bike lanes
+6. Park in a designated area shown in the app
+7. End the ride and pay only for what you used
+
+## Pricing
+- **Pay As You Go**: €1.00 unlock + €0.35 per minute. No commitment.
+- **Rido Pass**: Free unlock + €0.25 per minute. Best for frequent riders.
+- **Day Pass**: €14.99 for unlimited 24-hour rides. Best for tourists.
+- No minimum top-up, no hidden fees, free refund of unused balance.
+
+## Vehicles
+- **Rido Scooter** (e-scooter): 45 km range, 25 km/h top speed, 120 kg weight limit, swappable battery, dual brakes, turn signals, GPS tracking, beginner mode.
+- **Rido Bike** (e-bike): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
+
+## Cities (all coming soon)
+- Marbella, Costa del Sol (e-scooter + e-bike)
+- San Pedro de Alcántara, Costa del Sol (e-scooter + e-bike)
+- Cancelada, Costa del Sol (e-scooter + e-bike)
+- Estepona, Costa del Sol (e-scooter + e-bike)
+- El Paraíso, Costa del Sol (e-scooter)
+
+## Safety
+- Helmet included with every scooter
+- One rider per vehicle (tandem detection)
+- No riding under the influence (cognitive test at peak hours)
+- Park in designated areas only
+- Beginner mode available (15 km/h)
+
+## Sustainability
+- Zero direct emissions
+- Carbon-neutral operations via verified carbon credits
+- Swappable and recycled batteries
+- Vehicle recycling program at end of life
+- Projected impact: 1,240+ tonnes CO₂ saved, 85,000+ car trips replaced, 420,000+ km emission-free
+
+## Company
+- **Legal entity**: Go2 Place S.L.
+- **NIF**: B01745405
+- **Address**: Calle Eneldo 3, C4, local 22, 03189 Orihuela Costa, Alicante, Spain
+- **Email**: info@rido.bike
+- **Website**: https://rido.bike
+
+## Links
+- [Main site](https://rido.bike)
+- [How it works](https://rido.bike#how-it-works)
+- [Vehicles](https://rido.bike#vehicles)
+- [Pricing](https://rido.bike#pricing)
+- [Cities](https://rido.bike#cities)
+- [Safety](https://rido.bike#safety)
+- [Sustainability](https://rido.bike#sustainability)
+- [FAQ](https://rido.bike#faq)
+- [About](https://rido.bike#about)
+- [Join waitlist](https://rido.bike#download)
+- [Terms of Service](https://rido.bike/terms)
+- [Privacy Policy](https://rido.bike/privacy)
+- [Cookie Policy](https://rido.bike/privacy#cookies)
+- [Careers](https://rido.bike/careers)

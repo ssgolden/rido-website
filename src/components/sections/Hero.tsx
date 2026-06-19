@@ -43,11 +43,12 @@ export function Hero() {
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <Image
           src={withBase('/images/lifestyle/rido-rider-street.jpg')}
-          alt="Rido rider on an e-scooter in a Spanish city street"
+          alt="Rido rider on a shared e-scooter riding through a Costa del Sol street in Spain"
           fill
           sizes="100vw"
           className="object-cover opacity-[0.18]"
           priority
+          fetchPriority="high"
         />
       </motion.div>
 

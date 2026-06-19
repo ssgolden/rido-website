@@ -3,33 +3,35 @@ import type { MetadataRoute } from "next";
 // Force static generation so this route is compatible with `output: "export"`
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://rido.bike";
+const baseUrl = "https://rido.bike";
+// Use fixed date instead of new Date() so the sitemap is stable across builds
+const lastModified = "2026-06-19";
 
+export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified,
       changeFrequency: "weekly",
       priority: 1,
     },
     {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      url: `${baseUrl}/careers`,
+      lastModified,
       changeFrequency: "monthly",
+      priority: 0.4,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified,
+      changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
+      lastModified,
+      changeFrequency: "yearly",
       priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/careers`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.2,
     },
   ];
 }

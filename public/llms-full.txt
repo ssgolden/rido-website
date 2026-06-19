@@ -1,0 +1,206 @@
+# Rido — Full Site Content for AI/LLM Ingestion
+
+> This file contains the complete content of rido.bike in markdown format for AI crawlers and LLMs. It is maintained alongside the website and updated on each release.
+
+---
+
+# Rido — Shared E-Scooters & E-Bikes in Spain
+
+Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. The service provides zero-emission shared vehicles available via a mobile app. Users can find, unlock, ride, and park vehicles using the Rido app.
+
+Operated by Go2 Place S.L. (NIF B01745405), based in Orihuela Costa, Alicante, Spain.
+
+## Hero Section
+
+**Headline**: Move Freely Across Spain
+
+**Subheadline**: Shared e-scooters and e-bikes coming to the Costa del Sol. Join the waitlist, be first to ride. Zero emissions, zero hassle.
+
+**Stats**: 5+ Cities | 2 Vehicle Types | Zero Emissions
+
+**Badge**: Coming to the Costa del Sol
+
+---
+
+## How It Works
+
+### Step 1: Sign Up Early
+Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.
+
+### Step 2: Scan & Unlock
+Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll.
+
+### Step 3: Ride & Enjoy
+Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.
+
+### Step 4: Park & End Ride
+Park responsibly in designated areas shown in the app. End your ride and pay only for what you used.
+
+---
+
+## Vehicles
+
+### Rido Scooter (E-Scooter)
+- **Tagline**: Glide through the city
+- **Description**: Our top-tier e-scooter with a wide deck, powerful brakes, and up to 45 km of range. Built for urban explorers who demand safety and style.
+- **Range**: 45 km
+- **Top Speed**: 25 km/h
+- **Weight Limit**: 120 kg
+- **Battery**: Swappable
+- **Features**: Front and rear lights, phone holder with charging, dual brakes (front + rear), turn signals, beginner mode (15 km/h), GPS tracking & geofencing
+
+### Rido Bike (E-Bike)
+- **Tagline**: Pedal further, effort less
+- **Description**: Our electric-assist bike with smooth pedal support, an adjustable saddle, and a sturdy front basket. Perfect for longer commutes and carrying essentials.
+- **Range**: 60 km
+- **Assist Speed**: 25 km/h
+- **Weight Limit**: 130 kg
+- **Battery**: Swappable
+- **Features**: Electric pedal assist, adjustable saddle height, front cargo basket, integrated lights, puncture-resistant tires, step-through frame design
+
+---
+
+## Cities (all coming soon to the Costa del Sol)
+
+1. **Marbella** (Costa del Sol) — e-scooter + e-bike
+2. **San Pedro de Alcántara** (Costa del Sol) — e-scooter + e-bike
+3. **Cancelada** (Costa del Sol) — e-scooter + e-bike
+4. **Estepona** (Costa del Sol) — e-scooter + e-bike
+5. **El Paraíso** (Costa del Sol) — e-scooter
+
+---
+
+## Safety
+
+**Safety Rating**: 5 stars
+
+### Helmet First
+Always wear a helmet. We include one with every scooter and offer helmet rewards in the app.
+
+### One Rider Only
+One scooter, one rider. Our tandem detection system ensures nobody doubles up.
+
+### Stay Sober
+No riding under the influence. At peak hours, a cognitive reaction test may be required to unlock.
+
+### Park Responsibly
+Park in designated areas shown in the app. Keep sidewalks clear for pedestrians and accessibility.
+
+---
+
+## Sustainability
+
+Every Rido ride replaces a car trip. Here's the impact we're projected to make.
+
+### Projected Impact
+- 1,240+ tonnes CO₂ Saved
+- 85,000+ Car Trips Replaced
+- 420,000+ Km Ridden Emission-Free
+
+*Projected impact based on planned fleet size and ridership targets.*
+
+### Commitments
+- **Carbon Neutral Operations**: We offset 100% of our operational emissions through verified carbon credits and green energy.
+- **Swappable Batteries**: Our vehicle batteries are swappable and recycled at end-of-life. No single-use waste.
+- **Responsible Recycling**: At end of life, every vehicle is dismantled and recycled. We publish our recycling rates.
+
+---
+
+## Pricing
+
+### Pay As You Go
+- Unlock fee: €1.00
+- Per minute: €0.35/min
+- No commitment. Ride when you need it.
+
+### Rido Pass (Most Popular)
+- Unlock fee: Free
+- Per minute: €0.25/min
+- Unlimited unlocks + reduced per-minute rate.
+
+### Day Pass (Best for Tourists)
+- €14.99 flat rate
+- Unlimited rides for 24 hours.
+
+**No-Surprise Guarantee**: No minimum top-up required, no hidden fees after your ride, free refund of unused balance, exact pricing shown before every ride.
+
+---
+
+## Frequently Asked Questions
+
+### What age do I need to be to ride a Rido?
+You must be at least 18 years old to ride a Rido e-scooter or e-bike. You'll need to verify your age when creating an account in the app.
+
+### How do I find and unlock a Rido vehicle?
+Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.
+
+### Do I need a driver's license?
+For e-scooters: no license is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no license is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations.
+
+### What happens if I damage a vehicle?
+You are responsible for up to €2,000 in damage as outlined in our Terms of Service. We recommend riding carefully and parking responsibly. Our tandem detection system monitors for misuse.
+
+### Can I ride in bike lanes?
+Yes! In Spain, e-scooters and e-bikes are permitted in bike lanes and on roads with speed limits up to 30 km/h. Always avoid sidewalks and pedestrian zones.
+
+### Where do I park when I'm done?
+Park in designated areas shown in the app. These are typically bike rack zones or marked parking areas. Keep sidewalks clear for pedestrians and accessibility.
+
+### Do I need to wear a helmet?
+We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app.
+
+### How much does it cost?
+Pay As You Go: €1.00 unlock + €0.35 per minute. Rido Pass: Free unlock + €0.25 per minute. Day Pass: €14.99 for unlimited 24-hour rides. No minimum top-up, no hidden fees.
+
+### What is the Rido Pass?
+The Rido Pass gives you free unlocks and a reduced per-minute rate of €0.25/min (instead of €0.35/min). It's perfect for frequent riders who want to save on every ride.
+
+### Can I get a refund for unused balance?
+Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details.
+
+### What if the battery dies during my ride?
+Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.
+
+### Is my ride insured?
+Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.
+
+---
+
+## About Rido
+
+Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.
+
+So we built a fleet of shared e-scooters and e-bikes designed for Spain's streets, Spain's weather, and Spain's people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.
+
+### Milestones
+- 2025: Rido founded in Spain
+- 2026: Costa del Sol launch — 5 cities planned
+- 2027: Expanding across Andalusia
+
+### Values
+- **Freedom**: Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go.
+- **Safety**: Beginner mode, tandem detection, brake checks, and real-time ride monitoring.
+- **Sustainability**: Zero emissions, swappable batteries, carbon-neutral operations, responsible recycling.
+
+---
+
+## Waitlist
+
+Join the waitlist and be first to ride when Rido launches on the Costa del Sol. 1,200+ people already on the waitlist. No payment required to join.
+
+- iOS app: Coming soon
+- Android app: Coming soon
+- Free to join, no credit card needed
+
+---
+
+## Legal
+
+- **Company**: Go2 Place S.L.
+- **NIF**: B01745405
+- **Address**: Calle Eneldo 3, C4, local 22, 03189 Orihuela Costa, Alicante, Spain
+- **Email**: info@rido.bike
+- **Terms of Service**: https://rido.bike/terms
+- **Privacy Policy**: https://rido.bike/privacy
+- **Cookie Policy**: https://rido.bike/privacy#cookies
+- **Careers**: https://rido.bike/careers

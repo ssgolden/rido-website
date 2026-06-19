@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
+import { getAllSchemas } from "@/lib/schema";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -13,19 +14,25 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rido.bike"),
-  title: "Rido — Shared E-Scooters & E-Bikes in Spain",
+  title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
   description:
-    "Move freely across Spain with Rido's shared e-scooters and e-bikes. Join the waitlist and be first to ride on the Costa del Sol. Zero emissions, zero hassle.",
+    "Shared e-scooters and e-bikes coming to the Costa del Sol. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle.",
   keywords: [
     "rido",
     "e-scooter",
     "e-bike",
     "shared mobility",
     "Spain",
+    "Costa del Sol",
+    "Marbella",
+    "Estepona",
+    "San Pedro de Alcántara",
     "electric scooter",
     "electric bike",
     "micromobility",
-    "rent scooter",
+    "rent scooter Spain",
+    "alquiler patinete",
+    "alquiler bici eléctrica",
   ],
   icons: {
     icon: "/favicon.svg",
@@ -33,9 +40,9 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   openGraph: {
-    title: "Rido — Shared E-Scooters & E-Bikes in Spain",
+    title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
     description:
-      "Move freely across Spain with Rido's shared e-scooters and e-bikes.",
+      "Join the waitlist and be first to ride shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.",
     type: "website",
     url: "https://rido.bike",
     siteName: "Rido",
@@ -45,116 +52,30 @@ export const metadata: Metadata = {
         url: "/images/logo/rido-logo-wide.png",
         width: 1200,
         height: 630,
-        alt: "Rido — Shared E-Scooters & E-Bikes in Spain's Costa del Sol",
+        alt: "Rido — Shared E-Scooters & E-Bikes on Spain's Costa del Sol",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rido — Shared E-Scooters & E-Bikes in Spain",
-    description: "Move freely across Spain with shared e-scooters and e-bikes.",
+    title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
+    description: "Join the waitlist and be first to ride on the Costa del Sol. Zero emissions, zero hassle.",
     images: ["/images/lifestyle/rido-rider-street.jpg"],
   },
   alternates: {
     canonical: "https://rido.bike",
   },
+  other: {
+    "geo.position": "36.5099;-4.8862",
+    "geo.region": "ES-A",
+    "geo.placename": "Marbella, Costa del Sol, Spain",
+    ICBM: "36.5099, -4.8862",
+  },
 };
 
-// JSON-LD structured data for SEO
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Rido",
-  "description": "Shared e-scooters and e-bikes in Spain's most vibrant cities",
-  "url": "https://rido.bike",
-  "logo": "https://rido.bike/images/logo/rido-logo.png",
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "info@rido.bike",
-    "contactType": "customer service"
-  },
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Calle Eneldo 3, C4, local 22",
-    "addressLocality": "Orihuela Costa",
-    "addressRegion": "Alicante",
-    "postalCode": "03189",
-    "addressCountry": "ES"
-  },
-  "areaServed": [
-    { "@type": "City", "name": "Marbella" },
-    { "@type": "City", "name": "San Pedro de Alcántara" },
-    { "@type": "City", "name": "Cancelada" },
-    { "@type": "City", "name": "Estepona" },
-    { "@type": "City", "name": "El Paraíso" }
-  ],
-  "serviceType": ["E-Scooter Rental", "E-Bike Rental"],
-  "priceRange": "€",
-  "sameAs": [
-    "https://www.instagram.com/rido",
-    "https://www.facebook.com/rido",
-    "https://x.com/rido"
-  ],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    "name": "Rido Vehicle Rentals",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "name": "Pay as you go",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "E-Scooter Rental",
-          "description": "Shared e-scooter rental by the minute. €1.00 unlock + €0.35 per minute."
-        },
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "priceCurrency": "EUR",
-          "price": "0.35",
-          "referenceQuantity": {
-            "@type": "QuantitativeValue",
-            "value": "1",
-            "unitCode": "MIN"
-          }
-        }
-      },
-      {
-        "@type": "Offer",
-        "name": "Rido Pass",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "E-Scooter & E-Bike Rental",
-          "description": "Unlimited unlocks + reduced per-minute rate. Free unlock + €0.25 per minute."
-        },
-        "priceSpecification": {
-          "@type": "UnitPriceSpecification",
-          "priceCurrency": "EUR",
-          "price": "0.25",
-          "referenceQuantity": {
-            "@type": "QuantitativeValue",
-            "value": "1",
-            "unitCode": "MIN"
-          }
-        }
-      },
-      {
-        "@type": "Offer",
-        "name": "Day Pass",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "E-Scooter & E-Bike Rental",
-          "description": "Unlimited rides for 24 hours. €14.99 flat rate."
-        },
-        "priceSpecification": {
-          "@type": "PriceSpecification",
-          "price": "14.99",
-          "priceCurrency": "EUR"
-        }
-      }
-    ]
-  }
-};
+// Centralized JSON-LD structured data for SEO and AI engines
+const allSchemas = getAllSchemas();
 
 export default function RootLayout({
   children,
@@ -164,7 +85,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* eslint-disable @next/next/no-page-custom-font -- next/font/google fails on Windows with Turbopack due to "http2 feature is not enabled" build error */}
+        {/* Custom font loaded via <link> — next/font/google fails on Windows with Turbopack */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -178,14 +99,14 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
-        <link rel="me" href="https://www.instagram.com/rido" />
-        <link rel="me" href="https://www.facebook.com/rido" />
-        <link rel="me" href="https://x.com/rido" />
-        {/* eslint-enable @next/next/no-page-custom-font */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        {/* JSON-LD structured data for SEO and AI engines */}
+        {allSchemas.map((schema, i) => (
+          <script
+            key={i}
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+          />
+        ))}
       </head>
       <body className="font-sans overflow-x-hidden" suppressHydrationWarning>
         <a
