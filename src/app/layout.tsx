@@ -3,6 +3,7 @@ import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { getAllSchemas } from "@/lib/schema";
+import { Toaster } from "@/components/animation/Toast";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -122,6 +123,7 @@ export default function RootLayout({
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <ConsentAwareAnalytics />
         <ClientCookieConsent />
+        <Toaster />
       </body>
     </html>
   );
