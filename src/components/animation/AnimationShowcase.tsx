@@ -319,8 +319,6 @@ function DemoCard({
       to={{ opacity: 1, y: 0 }}
       duration={0.7}
       ease="power3.out"
-      stagger={0.06}
-      childrenSelector="> *"
     >
       <div className="rounded-2xl glass p-6 h-full flex flex-col gap-4 hover:border-rido-magenta/40 transition-colors">
         <div className="flex items-start gap-3">

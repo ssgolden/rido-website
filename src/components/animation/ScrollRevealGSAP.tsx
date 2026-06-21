@@ -67,7 +67,13 @@ export function ScrollRevealGSAP({
         gsap.set(ref.current, { opacity: 1, y: 0 });
         return;
       }
-      const target = childrenSelector ? ref.current?.querySelectorAll(childrenSelector) : ref.current;
+      // Guard: a selector starting with '>' is invalid for querySelectorAll.
+      // This happens when callers pass '> *' or similar — we just animate the
+      // wrapper instead of throwing on the page.
+      const safeSelector = childrenSelector && !childrenSelector.trim().startsWith(">")
+        ? childrenSelector
+        : undefined;
+      const target = safeSelector ? ref.current?.querySelectorAll(safeSelector) : ref.current;
       if (!target) return;
       gsap.fromTo(
         target as gsap.TweenTarget,
