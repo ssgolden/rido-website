@@ -36,6 +36,8 @@ export const vehicles: Vehicle[] = [
     image: "/images/scooter/rido-scooter-product.jpg",
     images: [
       "/images/scooter/rido-scooter-product.jpg",
+      "/images/scooter/rido-scooter-three-quarter-helmet.jpeg",
+      "/images/scooter/rido-scooter-side-helmet.jpeg",
       "/images/scooter/rido-scooter-handlebars.jpeg",
     ],
     imageAlt: "Rido e-scooter",
