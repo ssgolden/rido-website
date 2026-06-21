@@ -1,150 +1,264 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { ChevronDown, MousePointer } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { useRef, useMemo } from "react";
 import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
 import { withBase } from "@/lib/basePath";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { vehicles } from "@/data/vehicles";
 
-function HeroStat({ value, label, suffix = "" }: { value: number; label: string; suffix?: string }) {
-  const { count, ref, visible } = useCountUp(value, { duration: 2000 });
+// Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
+const NOISE_SVG =
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>'
+  );
+
+// Stats config — all white, with eyebrow icons + tabular numerals.
+const stats = [
+  { icon: MapPin, value: 5, suffix: "", label: "Launch Cities" },
+  { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
+  { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
+];
+
+function HeroStat({ stat }: { stat: (typeof stats)[number] }) {
+  const isText = "text" in stat;
+  const { count, ref, visible } = useCountUp(stat.value, { duration: 1600 });
   return (
-    <StaggerItem ref={ref} className="text-center">
-      <p className="text-2xl sm:text-3xl font-bold text-white transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>
-        {count.toLocaleString()}{suffix}
+    <StaggerItem ref={ref} className="text-center min-w-0">
+      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-white/40" aria-hidden="true" />
+      <p
+        className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight tabular-nums ${stat.green ? "text-rido-green" : "text-white"}`}
+        style={{ opacity: visible ? 1 : 0 }}
+        suppressHydrationWarning
+      >
+        {isText ? stat.text : count.toLocaleString()}
       </p>
-      <p className="text-xs sm:text-sm">{label}</p>
+      <p className="mt-1 text-[10px] sm:text-xs uppercase tracking-[0.15em] text-white/40">{stat.label}</p>
     </StaggerItem>
   );
 }
 
+// Linear/Vercel-style easeOutQuint — confident, not mushy.
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+// One word array, one variants block — manual <br/> between line 1 and line 2.
+// Non-breaking spaces inside "Costa\u00A0del\u00A0Sol" keep the launch region as one unit.
+const headlineWords = [
+  "Move",
+  "Freely",
+  "Across",
+  "the",
+  "Costa\u00A0del\u00A0Sol",
+] as const;
+
+const wordVariants = {
+  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.7, ease: EASE },
+  },
+};
+
 export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+
+  // Scroll-driven parallax — only when motion is allowed.
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end start"],
   });
+  const bgYRaw = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const bgY = reduce ? "0%" : bgYRaw;
+  const contentOpacityRaw = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0]);
+  const contentOpacity = reduce ? 1 : contentOpacityRaw;
 
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
+  // Group indices: 0..2 line 1, 3..4 line 2.
+  const wordGroup = useMemo(() => new Set([3, 4]), []);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen min-h-dvh flex items-center justify-center overflow-hidden pt-14 sm:pt-20">
-      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-      
+    <section
+      ref={sectionRef}
+      id="hero"
+      aria-labelledby="hero-heading"
+      className="relative min-h-dvh flex items-center justify-center overflow-hidden pt-[max(3.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]"
+    >
+      {/* Top edge highlight — premium dark panel cue */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
+      />
+
+      {/* Deep navy base + animated brand gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15 hero-gradient" />
+
+      {/* Lifestyle photo: full-bleed, low opacity, subtle parallax */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <Image
-          src={withBase('/images/lifestyle/rido-rider-street.jpg')}
-          alt="Rido rider on a shared e-scooter riding through a Costa del Sol street in Spain"
+          src={withBase("/images/lifestyle/rido-rider-street.jpg")}
+          alt=""
+          role="presentation"
           fill
           sizes="100vw"
-          className="object-cover opacity-[0.18]"
+          className="object-cover opacity-[0.12]"
           priority
           fetchPriority="high"
+          decoding="sync"
         />
       </motion.div>
 
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.6) 100%)" }} />
-      
-      <div className="absolute top-1/4 right-0 w-[200px] sm:w-[600px] h-[200px] sm:h-[600px] rounded-full bg-rido-magenta/10 blur-3xl hero-orb hero-orb-1" />
-      <div className="absolute bottom-0 left-0 w-[150px] sm:w-[400px] h-[150px] sm:h-[400px] rounded-full bg-rido-green/10 blur-3xl hero-orb hero-orb-2" />
-      <div className="absolute top-1/2 left-1/3 w-[120px] sm:w-[300px] h-[120px] sm:h-[300px] rounded-full bg-rido-magenta-light/5 blur-3xl hero-orb hero-orb-3" />
-      
-      <motion.div className="absolute top-[70%] left-[5%] opacity-[0.03] pointer-events-none" animate={{ x: [0, 30, 0], y: [0, -10, 0] }} transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}>
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1"><circle cx="5" cy="19" r="3"/><circle cx="19" cy="19" r="3"/><path d="M5 19h2l3-7h4l2 3h3"/></svg>
-      </motion.div>
+      {/* Brand color cast — injects magenta into the photo */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 mix-blend-color"
+        style={{ background: "rgba(222,4,152,0.18)" }}
+      />
 
-      <motion.div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 text-center py-6 sm:py-12 pb-20 sm:pb-16" style={{ opacity: contentOpacity }}>
+      {/* Vignette + bottom fade for readability */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(15,23,42,0.7) 100%)" }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
+
+      {/* Soft ambient orbs — breathing */}
+      <div
+        aria-hidden="true"
+        className="absolute top-1/4 -right-24 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-rido-magenta/8 blur-[100px] hero-orb hero-orb-1"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 -left-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-green/15 blur-[90px] hero-orb hero-orb-2"
+      />
+
+      {/* Film grain — kills gradient banding, premium cue */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none opacity-[0.05] mix-blend-overlay"
+        style={{ backgroundImage: `url("${NOISE_SVG}")` }}
+      />
+
+      <motion.div
+        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-6 sm:py-12 pb-24 sm:pb-20"
+        style={{ opacity: contentOpacity }}
+      >
         <ScrollReveal delay={0.05}>
-          <div className="mb-4 sm:mb-6">
-            <RidoLogo variant="hero" size="xl" />
+          <div className="mb-5 sm:mb-7 flex justify-center">
+            <RidoLogo variant="hero" size="lg" />
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.15}>
-          <Badge variant="magenta" className="mb-4 sm:mb-6">Coming to the Costa del Sol</Badge>
+        {/* Social-proof kicker above the badge */}
+        <ScrollReveal delay={0.1}>
+          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rido-green/60" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
+            </span>
+            <span>1,200+ riders on the waitlist</span>
+          </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.25}>
-          <motion.h1
-            aria-label="Move Freely Across Spain"
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.1 } },
-            }}
+        <ScrollReveal delay={0.18}>
+          <Badge variant="magenta" className="mb-5 sm:mb-7">
+            Launching the Costa del Sol
+          </Badge>
+        </ScrollReveal>
+
+        {/* Headline — animate="visible" (not whileInView) so first paint reveals the H1, not after a frame. */}
+        <motion.h1
+          id="hero-heading"
+          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-[-0.02em] leading-[1.05] sm:leading-[1.02] md:leading-[0.98] text-balance"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: reduce ? 0 : 0.09, delayChildren: 0.2 } },
+          }}
+        >
+          {headlineWords.map((w, i) => (
+            <motion.span
+              key={`${w}-${i}`}
+              className={`inline-block ${wordGroup.has(i) ? "text-gradient-animated" : ""}`}
+              variants={wordVariants}
+            >
+              {w}
+              {i < headlineWords.length - 1 ? "\u00A0" : ""}
+              {i === 2 ? <br className="hidden sm:inline" aria-hidden="true" /> : null}
+            </motion.span>
+          ))}
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 0.9, duration: 0.6, ease: EASE }}
+          className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-snug px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+        >
+          Spain&apos;s first locally-built shared e-scooter and e-bike service. Zero emissions. Swappable batteries. Real human support in your timezone.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: reduce ? 0 : 1.05, duration: 0.55, ease: EASE }}
+          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+        >
+          <a
+            href="#download"
+            className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
           >
-            {["Move", "Freely"].map((w) => (
-              <motion.span
-                key={w}
-                className={cn("inline-block mr-[0.25em] will-change-transform", w === "Freely" ? "text-gradient-animated" : "")}
-                variants={{
-                  hidden: { opacity: 0, filter: "blur(10px)", y: 30 },
-                  visible: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-                }}
-              >
-                {w}
-              </motion.span>
-            ))}
-            <br className="hidden sm:block" />
-            {["Across", "Spain"].map((w) => (
-              <motion.span
-                key={w}
-                className="inline-block mr-[0.25em] will-change-transform"
-                variants={{
-                  hidden: { opacity: 0, filter: "blur(10px)", y: 30 },
-                  visible: { opacity: 1, filter: "blur(0px)", y: 0, transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] } },
-                }}
-              >
-                {w}
-              </motion.span>
-            ))}
-          </motion.h1>
-        </ScrollReveal>
+            <span>Reserve My First Ride</span>
+            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+          </a>
+          <a
+            href="#how-it-works"
+            className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] transition-all duration-300 ease-out hover:bg-white/[0.1] hover:border-white/25 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
+          >
+            <span>Watch 30-sec Demo</span>
+          </a>
+        </motion.div>
 
-        <ScrollReveal delay={0.4}>
-          <p className="mt-4 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-strong max-w-2xl mx-auto leading-relaxed px-2 sm:px-0">
-            Shared e-scooters and e-bikes coming to the Costa del Sol.
-            Join the waitlist, be first to ride. Zero emissions, zero hassle.
-          </p>
-        </ScrollReveal>
+        {/* Microcopy under CTAs — risk reversal + social proof */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: reduce ? 0 : 1.25, duration: 0.5 }}
+          className="mt-5 inline-flex items-center gap-2 text-xs text-white/55"
+        >
+          <Shield className="w-3.5 h-3.5" aria-hidden="true" />
+          No spam, unsubscribe anytime · GDPR compliant
+        </motion.p>
 
-        <ScrollReveal delay={0.6}>
-          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.5 }} className="relative group">
-              <span className="absolute inset-0 rounded-xl bg-rido-magenta/30 blur-xl scale-110 group-hover:scale-125 transition-transform duration-500 animate-pulse-slow" />
-              <Button as="a" href="#download" size="lg" className="relative w-full max-w-[280px] sm:w-auto">Join the Waitlist</Button>
-            </motion.div>
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.95, duration: 0.5 }}>
-              <Button as="a" href="#how-it-works" variant="secondary" size="lg" className="w-full max-w-[280px] sm:w-auto">See How It Works</Button>
-            </motion.div>
-          </div>
-        </ScrollReveal>
-
-        <StaggerReveal className="mt-10 sm:mt-16 grid grid-cols-3 gap-3 sm:gap-12 text-muted" staggerDelay={0.15}>
-          <HeroStat value={5} suffix="+" label="Cities" />
-          <HeroStat value={vehicles.length} label="Vehicle Types" />
-          <StaggerItem className="text-center">
-            <p className="text-2xl sm:text-3xl font-bold text-rido-green">Zero</p>
-            <p className="text-xs sm:text-sm">Emissions</p>
-          </StaggerItem>
+        <StaggerReveal
+          className="mt-12 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
+          staggerDelay={0.12}
+        >
+          {stats.map((s) => (
+            <HeroStat key={s.label} stat={s} />
+          ))}
         </StaggerReveal>
       </motion.div>
 
-      <a href="#how-it-works" className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-muted-weak motion-safe:animate-bounce" aria-label="Scroll down">
-        <MousePointer className="w-4 h-4 -rotate-90" />
-        <ChevronDown size={28} className="sm:w-8 sm:h-8" />
+      {/* Scroll cue — labelled, refined, fades on scroll */}
+      <a
+        href="#how-it-works"
+        aria-label="Scroll to next section"
+        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/55 hover:text-rido-magenta transition-colors min-h-[44px] min-w-[44px] justify-center"
+      >
+        <span className="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
+        <span className="relative flex h-7 w-px bg-white/20 overflow-hidden">
+          <span className="absolute inset-x-0 top-0 h-1.5 bg-rido-magenta motion-safe:animate-[scroll-dot_1.8s_ease-in-out_infinite]" />
+        </span>
       </a>
     </section>
   );

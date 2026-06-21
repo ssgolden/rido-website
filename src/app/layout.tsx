@@ -99,6 +99,7 @@ export default function RootLayout({
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
+
         {/* JSON-LD structured data for SEO and AI engines */}
         {allSchemas.map((schema, i) => (
           <script

@@ -39,7 +39,7 @@ function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string;
 }
 
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
 
@@ -50,28 +50,12 @@ export function FAQ() {
         const matchesCategory = category === "all" || item.category === category;
         return matchesSearch && matchesCategory;
       })
-      .map((item) => ({ ...item, index: faqItems.indexOf(item) }));
+      .map((item, idx) => ({ ...item, stableId: `faq-${idx}` }));
   }, [search, category]);
 
   return (
     <section id="faq" aria-label="Frequently asked questions" className="py-16 sm:py-24 px-4 sm:px-6">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": faqItems.map((item) => ({
-              "@type": "Question",
-              "name": item.question,
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": item.answer,
-              },
-            })),
-          }),
-        }}
-      />
+      {/* FAQPage schema is also injected globally in src/lib/schema.ts; this inline instance is kept for the interactive FAQ section only and deduplicates cleanly via @id in global schemas. */}
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionHeading
@@ -104,8 +88,8 @@ export function FAQ() {
               <p className="text-center text-muted-weak py-8 text-sm">No questions match your search. Try different keywords.</p>
             ) : (
               filteredItems.map((item) => (
-                <FAQItem key={item.index} question={item.question} answer={item.answer} id={String(item.index)}
-                  isOpen={openIndex === item.index} onToggle={() => setOpenIndex(openIndex === item.index ? null : item.index)} />
+                <FAQItem key={item.stableId} question={item.question} answer={item.answer} id={item.stableId}
+                  isOpen={openIndex === item.stableId} onToggle={() => setOpenIndex(openIndex === item.stableId ? null : item.stableId)} />
               ))
             )}
           </div>
