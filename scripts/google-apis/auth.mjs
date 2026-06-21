@@ -73,7 +73,8 @@ const server = createServer(async (req, res) => {
     console.log("Refresh token:", tokens.refresh_token || "NO REFRESH TOKEN — revoke access at myaccount.google.com and rerun with prompt=consent");
     console.log("Scope:", tokens.scope);
     console.log("Expires:", tokens.expiry_date);
-    console.log("\nStore refresh_token in .env as GOOGLE_REFRESH_TOKEN\n");
+    console.log("\nAdd this line to scripts/google-apis/.env:");
+    console.log(`GOOGLE_REFRESH_TOKEN=${tokens.refresh_token || ""}\n`);
 
     res.writeHead(200, { "Content-Type": "text/html" });
     res.end(`<h1>Authorized.</h1><p>You can close this window. Refresh token printed in terminal.</p>`);

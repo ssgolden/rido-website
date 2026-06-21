@@ -104,6 +104,14 @@ export default function RootLayout({
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
 
+        {/* Google Search Console verification — set NEXT_PUBLIC_GSC_VERIFICATION in env to enable */}
+        {process.env.NEXT_PUBLIC_GSC_VERIFICATION ? (
+          <meta
+            name="google-site-verification"
+            content={process.env.NEXT_PUBLIC_GSC_VERIFICATION}
+          />
+        ) : null}
+
         {/* JSON-LD structured data for SEO and AI engines */}
         {allSchemas.map((schema, i) => (
           <script
