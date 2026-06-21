@@ -47,7 +47,7 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 - **Top Speed**: 25 km/h
 - **Weight Limit**: 120 kg
 - **Battery**: Swappable
-- **Features**: Front and rear lights, phone holder with charging, dual brakes (front + rear), turn signals, beginner mode (15 km/h), GPS tracking & geofencing
+- **Features**: Helmet provided, Front and rear lights, dual brakes (front + rear), turn signals, beginner mode (15 km/h), GPS tracking & geofencing
 
 ### Rido Bike (E-Bike)
 - **Tagline**: Pedal further, effort less

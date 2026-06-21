@@ -26,8 +26,8 @@ export const vehicles: Vehicle[] = [
       { label: "Battery", value: "Swappable" },
     ],
     features: [
+      "Helmet provided",
       "Front and rear lights",
-      "Phone holder with charging",
       "Dual brakes (front + rear)",
       "Turn signals",
       "Beginner mode (15 km/h)",
