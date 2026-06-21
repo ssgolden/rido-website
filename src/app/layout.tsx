@@ -92,10 +92,13 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* eslint-disable @next/next/no-page-custom-font */}
+        {/* App Router layout is the correct place for global fonts; next/font/google fails on Windows + Turbopack */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@9..40,400..900&display=swap"
           rel="stylesheet"
         />
+        {/* eslint-enable @next/next/no-page-custom-font */}
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />

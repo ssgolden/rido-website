@@ -34,7 +34,10 @@ export const vehicles: Vehicle[] = [
       "GPS tracking & geofencing",
     ],
     image: "/images/scooter/rido-scooter-product.jpg",
-    images: ["/images/scooter/rido-scooter-product.jpg"],
+    images: [
+      "/images/scooter/rido-scooter-product.jpg",
+      "/images/scooter/rido-scooter-handlebars.jpeg",
+    ],
     imageAlt: "Rido e-scooter",
   },
   {
