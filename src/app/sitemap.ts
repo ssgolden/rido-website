@@ -14,6 +14,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "weekly",
       priority: 1,
+      alternates: {
+        languages: {
+          en: baseUrl,
+          "x-default": baseUrl,
+        },
+      },
     },
     {
       url: `${baseUrl}/careers`,

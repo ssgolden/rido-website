@@ -43,7 +43,6 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - Carbon-neutral operations via verified carbon credits
 - Swappable and recycled batteries
 - Vehicle recycling program at end of life
-- Projected impact: 1,240+ tonnes CO₂ saved, 85,000+ car trips replaced, 420,000+ km emission-free
 
 ## Company
 - **Legal entity**: Go2 Place S.L.
@@ -67,3 +66,12 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - [Privacy Policy](https://rido.bike/privacy)
 - [Cookie Policy](https://rido.bike/privacy#cookies)
 - [Careers](https://rido.bike/careers)
+
+## For AI Crawlers
+- Language: English
+- Region: Spain (Costa del Sol, Andalusia)
+- Currency: EUR
+- Launch status: Pre-launch / waitlist
+- Service type: Shared e-scooter and e-bike rental
+- Target cities: Marbella, San Pedro de Alcántara, Cancelada, Estepona, El Paraíso
+- Primary entity: Go2 Place S.L. operating the "Rido" brand
