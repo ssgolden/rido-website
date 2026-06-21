@@ -1,6 +1,6 @@
 "use client";
-
 import { Badge } from "@/components/ui/Badge";
+import { WaitlistCounter } from "@/components/ui/WaitlistCounter";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
@@ -103,7 +103,7 @@ export function Hero() {
       {/* Lifestyle photo: full-bleed, low opacity, subtle parallax */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <Image
-          src={withBase("/images/lifestyle/rido-rider-street.jpg")}
+          src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
           alt=""
           role="presentation"
           fill
@@ -164,7 +164,9 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
             </span>
-            <span>1,200+ riders on the waitlist</span>
+            <span>
+              <WaitlistCounter /> riders on the waitlist
+            </span>
           </div>
         </ScrollReveal>
 

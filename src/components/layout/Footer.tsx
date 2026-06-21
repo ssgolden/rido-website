@@ -21,12 +21,16 @@ function FacebookIcon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
-const footerLinks = {
+type FooterLink = { label: string; href: string; badge?: string };
+type FooterColumn = Record<string, FooterLink[]>;
+
+const footerLinks: FooterColumn = {
   Product: [
     { label: "E-Scooter", href: "#vehicles" },
     { label: "E-Bike", href: "#vehicles" },
     { label: "Pricing", href: "#pricing" },
     { label: "Cities", href: "#cities" },
+    { label: "Motion Lab", href: "/motion-lab", badge: "new" },
   ],
   Company: [
     { label: "About", href: "#about" },
@@ -77,9 +81,23 @@ export function Footer() {
                 {links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("http") || link.href.startsWith("#") ? (
-                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</a>
+                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">
+                        {link.label}
+                        {link.badge ? (
+                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta border border-rido-magenta/30">
+                            {link.badge}
+                          </span>
+                        ) : null}
+                      </a>
                     ) : (
-                      <Link href={link.href} className="text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">{link.label}</Link>
+                      <Link href={link.href} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">
+                        {link.label}
+                        {link.badge ? (
+                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta border border-rido-magenta/30">
+                            {link.badge}
+                          </span>
+                        ) : null}
+                      </Link>
                     )}
                   </li>
                 ))}
