@@ -46,6 +46,7 @@ next-env.d.ts
 
 # QA artifacts (local-only)
 /dogfood-output/
+.visual-qa/
 
 # Dev smoke tests (not part of production)
 /scripts/smoke-*.mts

@@ -40,9 +40,9 @@ export function Vehicles() {
   };
 
   return (
-    <section id="vehicles" aria-label="Our vehicles" className="py-16 sm:py-24 px-4 sm:px-6 relative section-tint-magenta">
+    <section id="vehicles" aria-label="Our vehicles" className="py-12 sm:py-24 px-4 sm:px-6 relative section-tint-magenta">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow="Our Fleet"
             before="Choose Your"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -69,10 +70,10 @@ export function CookieConsent() {
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-white mb-1">We value your privacy</h3>
                 <p className="text-sm text-white/60 leading-relaxed">
-                  We use cookies to enhance your browsing experience, analyze site traffic, and serve personalized content. By clicking &quot;Accept&quot;, you consent to our use of cookies.{" "}
-                  <a href="/privacy#cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
+                  We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.{" "}
+                  <Link href="/politica-cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
                     Learn more
-                  </a>
+                  </Link>
                 </p>
                 <div className="mt-4 flex flex-col sm:flex-row gap-2">
                   <Button size="sm" onClick={handleAccept}>Accept all cookies</Button>

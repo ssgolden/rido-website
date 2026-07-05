@@ -4,6 +4,10 @@ import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { getAllSchemas } from "@/lib/schema";
 import { Toaster } from "@/components/animation/Toast";
+// Self-hosted variable fonts (bundled WOFF2, no external requests).
+// Do NOT switch to next/font — it breaks Turbopack builds on Windows.
+import "@fontsource-variable/inter";
+import "@fontsource-variable/sora";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -86,20 +90,6 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* Custom font loaded via <link> — next/font/google fails on Windows with Turbopack */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* eslint-disable @next/next/no-page-custom-font */}
-        {/* App Router layout is the correct place for global fonts; next/font/google fails on Windows + Turbopack */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@9..40,400..900&display=swap"
-          rel="stylesheet"
-        />
-        {/* eslint-enable @next/next/no-page-custom-font */}
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />

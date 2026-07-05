@@ -13,7 +13,15 @@
   --color-muted: rgb(148 163 184); /* slate-400, ~6.1:1 on navy */
   --color-muted-strong: rgb(203 213 225); /* slate-300, ~8.8:1 on navy */
   --color-muted-weak: rgb(100 116 139); /* slate-500, ~4.0:1 on navy - decorative only */
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  /* Fluid display scale — use as text-display-2xl (hero) / text-display-xl (section headings) */
+  --text-display-2xl: clamp(2.75rem, 1.5rem + 5vw, 6rem);
+  --text-display-2xl--line-height: 0.95;
+  --text-display-2xl--letter-spacing: -0.02em;
+  --text-display-xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
+  --text-display-xl--line-height: 1.1;
+  --text-display-xl--letter-spacing: -0.02em;
   --animate-fade-in: fade-in 0.6s ease-out forwards;
   --animate-slide-up: slide-up 0.6s ease-out forwards;
   --animate-float: float 3s ease-in-out infinite;
@@ -90,6 +98,10 @@
   #main-content {
     overscroll-behavior: contain;
   }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-rido-magenta;
   }
@@ -131,6 +143,26 @@
   .section-divider {
     @apply w-full h-px opacity-30 my-0;
     background: linear-gradient(90deg, transparent, #DE0498, transparent);
+  }
+  /* Mobile-only horizontal snap carousel for card grids. Containers keep
+     their md+ grid classes (e.g. "mobile-carousel md:grid md:grid-cols-3");
+     below md the stacked cards become one swipeable, edge-snapping row. */
+  @media (max-width: 47.9375rem) {
+    .mobile-carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .mobile-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-carousel > * {
+      flex: 0 0 auto;
+      width: min(80%, 20rem);
+      scroll-snap-align: center;
+    }
   }
   .section-tint-magenta {
     background: linear-gradient(180deg, rgba(222, 4, 152, 0.03), transparent);

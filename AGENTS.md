@@ -21,7 +21,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - All interactive elements need `cursor-pointer` class
 - Use `useReducedMotion()` from framer-motion for animations that loop
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
-- Google Fonts loaded via `<link>` in layout.tsx (not next/font — Turbopack bug on Windows)
+- Fonts are self-hosted via `@fontsource-variable` packages imported in layout.tsx — zero external font requests (still not next/font — Turbopack bug on Windows)
+- Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
@@ -35,6 +36,12 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - `withBase()` uses `getBasePath()` which detects basePath at runtime: `process.env.NEXT_OUTPUT` for SSR, `window.location.pathname.startsWith("/rido-website")` for client
 - For CSS background images, use `style={{ backgroundImage: url(withBase('/images/...')) }}` — Tailwind `bg-\[url()\]` class cannot use `withBase()` at runtime
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
+
+## Build & Deploy Invariants
+- Live site (rido.bike) deploys via GitHub Pages static export (`.github/workflows/deploy.yml`, master pushes). `npm run build` is a plain `next build` — there is no build wrapper and no `src/app/api/` on master (the backend/API layer was removed; it would return only with a hosting move to Vercel).
+- GitHub Pages CANNOT serve custom response headers — `public/_headers` (and any `headers()` in next.config.ts) only take effect on a server host (Vercel/Netlify).
+- Do NOT enable next-intl locale routing until an `app/[locale]/` structure exists — otherwise every page 404s (rewrites target nonexistent locale paths).
+- Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
 
 ## File Conventions
 - Sections in `src/components/sections/`
