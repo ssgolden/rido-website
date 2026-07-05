@@ -3,6 +3,15 @@
 #
 # Syntax: https://docs.netlify.com/routing/headers/
 # Source of truth for the rules: src/next.config.ts (keep in sync).
+#
+# CSP notes for the coverage map (MapLibre GL + OpenFreeMap, keyless):
+# - connect-src https://tiles.openfreemap.org — style JSON, glyph PBFs,
+#   sprite JSON/PNG, and vector tiles are all fetched via fetch/XHR.
+# - img-src https://tiles.openfreemap.org + blob: — decoded tile/sprite
+#   bitmaps (already covered by the broad https:, listed for clarity).
+# - worker-src 'self' blob: — MapLibre spawns its tile worker from a blob
+#   URL; without this the default-src 'self' fallback blocks it.
+# - style-src is NOT needed: the map "style" is JSON over fetch, not CSS.
 
 /*
   X-Frame-Options: DENY
@@ -11,4 +20,4 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(self)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https:; connect-src 'self' https://vitals.vercel-insights.com; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https: https://tiles.openfreemap.org; connect-src 'self' https://vitals.vercel-insights.com https://tiles.openfreemap.org; worker-src 'self' blob:; frame-ancestors 'none'
