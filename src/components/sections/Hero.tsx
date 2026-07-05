@@ -179,7 +179,7 @@ export function Hero() {
         {/* Headline — animate="visible" (not whileInView) so first paint reveals the H1, not after a frame. */}
         <motion.h1
           id="hero-heading"
-          className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-[-0.02em] leading-[1.05] sm:leading-[1.02] md:leading-[0.98] text-balance"
+          className="text-display-2xl font-black text-balance"
           initial="hidden"
           animate="visible"
           variants={{
