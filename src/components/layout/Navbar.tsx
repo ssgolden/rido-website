@@ -7,14 +7,41 @@ import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X, Download } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
 
-const navLinks = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Vehicles", href: "#vehicles" },
-  { label: "Cities", href: "#cities" },
-  { label: "Safety", href: "#safety" },
-  { label: "Pricing", href: "#pricing" },
-];
+// User-visible strings per locale. hrefs are code-level anchors and stay
+// identical across locales.
+const en = {
+  homeAria: "Rido home",
+  joinWaitlist: "Join Waitlist",
+  openMenu: "Open menu",
+  closeMenu: "Close menu",
+  navLinks: [
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Vehicles", href: "#vehicles" },
+    { label: "Cities", href: "#cities" },
+    { label: "Safety", href: "#safety" },
+    { label: "Pricing", href: "#pricing" },
+  ],
+};
+
+const copy: Record<Locale, typeof en> = {
+  en,
+  es: {
+    homeAria: "Inicio de Rido",
+    joinWaitlist: "Únete a la lista",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    navLinks: [
+      { label: "Cómo funciona", href: "#how-it-works" },
+      { label: "Vehículos", href: "#vehicles" },
+      { label: "Ciudades", href: "#cities" },
+      { label: "Seguridad", href: "#safety" },
+      { label: "Precios", href: "#pricing" },
+    ],
+  },
+};
 
 // Subscribe to scroll position without setState-in-effect.
 // Returns whether the page is scrolled past `threshold` px.
@@ -40,6 +67,9 @@ function useScrolledPast(threshold: number) {
 }
 
 export function Navbar() {
+  const locale = useLocale();
+  const t = copy[locale];
+  const navLinks = t.navLinks;
   const scrolled = useScrolledPast(20);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -51,7 +81,9 @@ export function Navbar() {
   }, [mobileOpen]);
 
   useEffect(() => {
-    const sectionIds = navLinks.map((l) => l.href.replace("#", ""));
+    // hrefs are locale-independent, so read them from the en copy to keep
+    // the effect's dependency list empty.
+    const sectionIds = copy.en.navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) setActiveSection(entry.target.id); }); },
       { rootMargin: "-50% 0px" }
@@ -63,7 +95,7 @@ export function Navbar() {
   return (
     <nav className={cn("fixed top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}>
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label="Rido home" className="min-w-0 shrink-0 group relative">
+        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} aria-label={t.homeAria} className="min-w-0 shrink-0 group relative">
           <span className="absolute inset-0 bg-rido-magenta/0 group-hover:bg-rido-magenta/20 blur-xl rounded-lg transition-all duration-500" />
           <span className="relative z-10 block sm:hidden"><RidoLogo variant="full" size="sm" priority /></span>
           <span className="relative z-10 hidden sm:block"><RidoLogo variant="full" size="md" priority /></span>
@@ -75,10 +107,10 @@ export function Navbar() {
         </div>
         <div className="hidden md:flex items-center gap-3">
           <Magnetic>
-            <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button>
+            <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
           </Magnetic>
         </div>
-        <button className="md:hidden text-white cursor-pointer p-3 -mr-3" onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen}>
+        <button className="md:hidden text-white cursor-pointer p-3 -mr-3" onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? t.closeMenu : t.openMenu} aria-expanded={mobileOpen}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
@@ -89,7 +121,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("block py-2.5 text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta font-semibold" : "text-muted-strong hover:text-rido-magenta")} onClick={() => setMobileOpen(false)}>{link.label}</a>
               ))}
-              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button></div>
+              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>
           </motion.div>
         )}

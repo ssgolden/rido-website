@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { cities } from "@/data/cities";
 
 // Force static generation so this route is compatible with `output: "export"`
 export const dynamic = "force-static";
@@ -17,10 +18,51 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: {
           en: baseUrl,
+          es: `${baseUrl}/es`,
           "x-default": baseUrl,
         },
       },
     },
+    {
+      url: `${baseUrl}/es`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9,
+      alternates: {
+        languages: {
+          en: baseUrl,
+          es: `${baseUrl}/es`,
+          "x-default": baseUrl,
+        },
+      },
+    },
+    // Per-city landing pages (EN at /{slug}, ES at /es/{slug})
+    ...cities.map((city) => ({
+      url: `${baseUrl}/${city.slug}`,
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      alternates: {
+        languages: {
+          en: `${baseUrl}/${city.slug}`,
+          es: `${baseUrl}/es/${city.slug}`,
+          "x-default": `${baseUrl}/${city.slug}`,
+        },
+      },
+    })),
+    ...cities.map((city) => ({
+      url: `${baseUrl}/es/${city.slug}`,
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      alternates: {
+        languages: {
+          en: `${baseUrl}/${city.slug}`,
+          es: `${baseUrl}/es/${city.slug}`,
+          "x-default": `${baseUrl}/${city.slug}`,
+        },
+      },
+    })),
     {
       url: `${baseUrl}/careers`,
       lastModified,

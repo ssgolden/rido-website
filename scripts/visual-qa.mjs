@@ -21,6 +21,8 @@ const outDir = process.argv[3] ?? ".visual-qa";
 
 const PAGES = [
   { path: "/", name: "home", fullPage: true },
+  { path: "/es", name: "home-es", fullPage: true },
+  { path: "/marbella", name: "city-marbella", fullPage: true },
   { path: "/#pricing", name: "pricing-anchor", fullPage: false },
   { path: "/politica-cookies", name: "cookie-policy", fullPage: false },
   { path: "/privacy", name: "privacy", fullPage: false },

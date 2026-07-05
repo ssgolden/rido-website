@@ -8,31 +8,75 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
 
-const steps = [
-  {
-    icon: Smartphone,
-    title: "Sign Up Early",
-    description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.",
+// User-visible strings per locale.
+const en = {
+  ariaLabel: "How it works",
+  eyebrow: "Simple as 1-2-3",
+  headingBefore: "How It",
+  headingHighlight: "Works",
+  steps: [
+    {
+      icon: Smartphone,
+      title: "Sign Up Early",
+      description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.",
+    },
+    {
+      icon: QrCode,
+      title: "Scan & Unlock",
+      description: "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll.",
+    },
+    {
+      icon: Bike,
+      title: "Ride & Enjoy",
+      description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
+    },
+    {
+      icon: ParkingCircle,
+      title: "Park & End Ride",
+      description: "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used.",
+    },
+  ],
+};
+
+const copy: Record<Locale, typeof en> = {
+  en,
+  es: {
+    ariaLabel: "Cómo funciona",
+    eyebrow: "Tan fácil como 1-2-3",
+    headingBefore: "Cómo",
+    headingHighlight: "funciona",
+    steps: [
+      {
+        icon: Smartphone,
+        title: "Regístrate pronto",
+        description: "Únete ya a la lista de espera y sé de los primeros cuando llegue la app de Rido. Crea tu cuenta en segundos cuando esté lista.",
+      },
+      {
+        icon: QrCode,
+        title: "Escanea y desbloquea",
+        description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo para rodar.",
+      },
+      {
+        icon: Bike,
+        title: "Monta y disfruta",
+        description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Te recomendamos llevar casco.",
+      },
+      {
+        icon: ParkingCircle,
+        title: "Aparca y termina",
+        description: "Aparca de forma responsable en las zonas indicadas en la app. Termina el viaje y paga solo por lo que uses.",
+      },
+    ],
   },
-  {
-    icon: QrCode,
-    title: "Scan & Unlock",
-    description: "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll.",
-  },
-  {
-    icon: Bike,
-    title: "Ride & Enjoy",
-    description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
-  },
-  {
-    icon: ParkingCircle,
-    title: "Park & End Ride",
-    description: "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used.",
-  },
-];
+};
 
 export function HowItWorks() {
+  const locale = useLocale();
+  const t = copy[locale];
+  const steps = t.steps;
   // Desktop scroll-telling: map scroll progress through the two-column
   // track onto a step index. position:sticky + useScroll stays in sync
   // with Lenis because Lenis animates the native window scroll position.
@@ -50,13 +94,13 @@ export function HowItWorks() {
   });
 
   return (
-    <section id="how-it-works" aria-label="How it works" className="py-12 sm:py-24 px-4 sm:px-6">
+    <section id="how-it-works" aria-label={t.ariaLabel} className="py-12 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
-            eyebrow="Simple as 1-2-3"
-            before="How It"
-            highlight="Works"
+            eyebrow={t.eyebrow}
+            before={t.headingBefore}
+            highlight={t.headingHighlight}
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
         </div>

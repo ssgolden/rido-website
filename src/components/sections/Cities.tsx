@@ -7,23 +7,53 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CoverageMap } from "@/components/ui/CoverageMap";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
+
+const copy = {
+  en: {
+    sectionAria: "Cities where we operate",
+    citiesWord: "Cities",
+    comingSoonEyebrow: "Coming Soon",
+    headingBefore: "Where to",
+    headingHighlight: "Find Us",
+    intro: "Rido is launching on the Costa del Sol. Here are the cities we're bringing our fleet to.",
+    comingSoonBadge: "Coming Soon",
+    eScooter: "E-Scooter",
+    eBike: "E-Bike",
+  },
+  es: {
+    sectionAria: "Ciudades donde operamos",
+    citiesWord: "Ciudades",
+    comingSoonEyebrow: "Próximamente",
+    headingBefore: "Dónde",
+    headingHighlight: "Encontrarnos",
+    intro: "Rido llega a la Costa del Sol. Estas son las ciudades a las que traemos nuestra flota.",
+    comingSoonBadge: "Próximamente",
+    eScooter: "Patinete eléctrico",
+    eBike: "Bici eléctrica",
+  },
+} as const satisfies Record<Locale, Record<string, string>>;
 
 export function Cities() {
+  const locale = useLocale();
+  const t = copy[locale];
+
   return (
-    <section id="cities" aria-label="Cities where we operate" className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rido-magenta/5 blur-3xl pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
-            eyebrow={activeCityCount > 0 ? `${activeCityCount} Cities` : "Coming Soon"}
-            before="Where to"
-            highlight="Find Us"
+            eyebrow={activeCityCount > 0 ? `${activeCityCount} ${t.citiesWord}` : t.comingSoonEyebrow}
+            before={t.headingBefore}
+            highlight={t.headingHighlight}
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-muted max-w-xl mx-auto">Rido is launching on the Costa del Sol. Here are the cities we&apos;re bringing our fleet to.</p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
           </ScrollReveal>
         </div>
 
@@ -49,7 +79,7 @@ export function Cities() {
                       <h3 className="font-black text-lg sm:text-xl">{city.name}</h3>
                       {city.comingSoon && (
                         <Badge variant="magenta-light" className="cursor-default">
-                          <span className="coming-soon-blink">Coming Soon</span>
+                          <span className="coming-soon-blink">{t.comingSoonBadge}</span>
                         </Badge>
                       )}
                     </div>
@@ -57,7 +87,7 @@ export function Cities() {
                     <div className="mt-3 flex gap-2">
                       {city.vehicles.map((v) => (
                         <Badge key={v} variant={v === "e-scooter" ? "magenta" : "green"} className="cursor-default">
-                          {v === "e-scooter" ? <><Zap className="w-3 h-3" /> E-Scooter</> : <><Bike className="w-3 h-3" /> E-Bike</>}
+                          {v === "e-scooter" ? <><Zap className="w-3 h-3" /> {t.eScooter}</> : <><Bike className="w-3 h-3" /> {t.eBike}</>}
                         </Badge>
                       ))}
                     </div>

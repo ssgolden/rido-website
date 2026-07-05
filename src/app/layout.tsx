@@ -70,6 +70,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://rido.bike",
+    languages: {
+      en: "https://rido.bike",
+      es: "https://rido.bike/es",
+    },
   },
   other: {
     "geo.position": "36.5099;-4.8862",
@@ -91,7 +95,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
-        {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
+        <link rel="alternate" hrefLang="es" href="https://rido.bike/es" />
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
 
         {/* Google Search Console verification — set NEXT_PUBLIC_GSC_VERIFICATION in env to enable */}

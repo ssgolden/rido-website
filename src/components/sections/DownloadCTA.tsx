@@ -5,12 +5,97 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Apple, Play, Shield, Smartphone, CreditCard, MapPin, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCountUp } from "@/hooks/useCountUp";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
 
-const trustSignals = [
-  { icon: Smartphone, text: "Be first to ride" },
-  { icon: CreditCard, text: "No payment now" },
-  { icon: MapPin, text: "Costa del Sol launch" },
-];
+interface DownloadCopy {
+  sectionAria: string;
+  headingBefore: string;
+  headingHighlight: string;
+  headingAfter: string;
+  intro: string;
+  waitlistCount: string;
+  emailPlaceholder: string;
+  emailAria: string;
+  submit: string;
+  errorInvalid: string;
+  errorGeneric: string;
+  successTitle: string;
+  successBody: string;
+  appStoreAria: string;
+  appStoreTop: string;
+  appStoreName: string;
+  googlePlayAria: string;
+  googlePlayTop: string;
+  googlePlayName: string;
+  soon: string;
+  /** Fixed-length tuple: zips with `trustSignalIcons` by index. */
+  trustSignals: readonly [string, string, string];
+  complianceLine: string;
+  phoneTagline: string;
+  phoneCta: string;
+  phoneTabs: readonly [string, string, string];
+}
+
+/** Icons zip with `copy[locale].trustSignals` by index. */
+const trustSignalIcons = [Smartphone, CreditCard, MapPin] as const;
+
+const copy = {
+  en: {
+    sectionAria: "Join the Rido waitlist",
+    headingBefore: "Ready to ",
+    headingHighlight: "Ride",
+    headingAfter: "?",
+    intro: "Join the waitlist and be first to ride when Rido launches on the Costa del Sol.",
+    waitlistCount: "people on the waitlist",
+    emailPlaceholder: "your@email.com",
+    emailAria: "Email address for waitlist",
+    submit: "Join Waitlist",
+    errorInvalid: "Please enter a valid email address.",
+    errorGeneric: "Something went wrong. Please try again.",
+    successTitle: "You're on the list!",
+    successBody: "We'll email you the moment Rido launches on the Costa del Sol. Get ready to ride.",
+    appStoreAria: "Download on the App Store — coming soon",
+    appStoreTop: "Download on the",
+    appStoreName: "App Store",
+    googlePlayAria: "Get it on Google Play — coming soon",
+    googlePlayTop: "Get it on",
+    googlePlayName: "Google Play",
+    soon: "Soon",
+    trustSignals: ["Be first to ride", "No payment now", "Costa del Sol launch"],
+    complianceLine: "Insured rides · GDPR compliant · Data protected",
+    phoneTagline: "Move freely",
+    phoneCta: "Scan & Ride",
+    phoneTabs: ["Map", "Ride", "Pay"],
+  },
+  es: {
+    sectionAria: "Únete a la lista de espera de Rido",
+    headingBefore: "¿Todo listo para ",
+    headingHighlight: "rodar",
+    headingAfter: "?",
+    intro: "Únete a la lista de espera y sé de los primeros en rodar cuando Rido llegue a la Costa del Sol.",
+    waitlistCount: "personas en la lista de espera",
+    emailPlaceholder: "tu@email.com",
+    emailAria: "Correo electrónico para la lista de espera",
+    submit: "Unirme a la lista",
+    errorInvalid: "Introduce una dirección de correo electrónico válida.",
+    errorGeneric: "Algo ha salido mal. Vuelve a intentarlo.",
+    successTitle: "¡Ya estás en la lista!",
+    successBody: "Te escribiremos en cuanto Rido llegue a la Costa del Sol. Prepárate para rodar.",
+    appStoreAria: "Descárgalo en el App Store — muy pronto",
+    appStoreTop: "Descárgalo en el",
+    appStoreName: "App Store",
+    googlePlayAria: "Disponible en Google Play — muy pronto",
+    googlePlayTop: "Disponible en",
+    googlePlayName: "Google Play",
+    soon: "Pronto",
+    trustSignals: ["Sé de los primeros en rodar", "Sin pagos por ahora", "Lanzamiento en la Costa del Sol"],
+    complianceLine: "Trayectos asegurados · Cumplimos el RGPD · Datos protegidos",
+    phoneTagline: "Muévete con libertad",
+    phoneCta: "Escanea y rueda",
+    phoneTabs: ["Mapa", "Viaje", "Pago"],
+  },
+} as const satisfies Record<Locale, DownloadCopy>;
 
 function DownloadCounter() {
   const { count, ref, visible } = useCountUp(1200, { duration: 2500 });
@@ -20,20 +105,22 @@ function DownloadCounter() {
 const WAITLIST_KEY = "rido-waitlist-email";
 
 function WaitlistForm() {
+  const locale = useLocale();
+  const t = copy[locale];
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorKey, setErrorKey] = useState<"invalid" | "generic" | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setStatus("error");
-      setErrorMsg("Please enter a valid email address.");
+      setErrorKey("invalid");
       return;
     }
 
     setStatus("loading");
-    setErrorMsg("");
+    setErrorKey(null);
 
     try {
       // Store email in localStorage so it persists (no backend on static export).
@@ -48,7 +135,7 @@ function WaitlistForm() {
       setStatus("success");
     } catch {
       setStatus("error");
-      setErrorMsg("Something went wrong. Please try again.");
+      setErrorKey("generic");
     }
   };
 
@@ -61,10 +148,8 @@ function WaitlistForm() {
         className="glass rounded-2xl p-6 text-center max-w-md mx-auto lg:mx-0"
       >
         <CheckCircle className="w-12 h-12 text-rido-green mx-auto mb-3" />
-        <h3 className="text-lg font-bold mb-1">You&apos;re on the list!</h3>
-        <p className="text-sm text-muted">
-          We&apos;ll email you the moment Rido launches on the Costa del Sol. Get ready to ride.
-        </p>
+        <h3 className="text-lg font-bold mb-1">{t.successTitle}</h3>
+        <p className="text-sm text-muted">{t.successBody}</p>
       </motion.div>
     );
   }
@@ -81,9 +166,9 @@ function WaitlistForm() {
               setEmail(e.target.value);
               if (status === "error") setStatus("idle");
             }}
-            placeholder="your@email.com"
+            placeholder={t.emailPlaceholder}
             disabled={status === "loading"}
-            aria-label="Email address for waitlist"
+            aria-label={t.emailAria}
             aria-invalid={status === "error"}
             className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
           />
@@ -96,24 +181,26 @@ function WaitlistForm() {
           {status === "loading" ? (
             <Loader2 className="w-4 h-4 animate-spin" />
           ) : (
-            "Join Waitlist"
+            t.submit
           )}
         </button>
       </div>
-      {status === "error" && (
-        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">{errorMsg}</p>
+      {status === "error" && errorKey && (
+        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">{errorKey === "invalid" ? t.errorInvalid : t.errorGeneric}</p>
       )}
     </form>
   );
 }
 
 export function DownloadCTA() {
+  const locale = useLocale();
+  const t = copy[locale];
   const prefersReduced = useReducedMotion();
   // useReducedMotion returns null on SSR and boolean on client — null is falsy.
   const shouldReduce = prefersReduced ?? false;
 
   return (
-    <section id="download" aria-label="Join the Rido waitlist" className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section id="download" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-rido-magenta/20 via-rido-navy to-rido-magenta-light/10 hero-gradient" />
       <div className="absolute top-0 right-0 w-[280px] sm:w-[400px] h-[280px] sm:h-[400px] rounded-full bg-rido-magenta/10 blur-3xl" />
       <div className="absolute bottom-0 left-0 w-[200px] sm:w-[300px] h-[200px] sm:h-[300px] rounded-full bg-rido-magenta-light/8 blur-3xl" />
@@ -122,45 +209,48 @@ export function DownloadCTA() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div className="text-center lg:text-left">
             <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">Ready to <span className="text-gradient-brand">Ride</span>?</h2>
-              <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">Join the waitlist and be first to ride when Rido launches on the Costa del Sol.</p>
-              <p className="text-sm text-muted-weak mb-6"><DownloadCounter /> people on the waitlist</p>
+              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
+              <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">{t.intro}</p>
+              <p className="text-sm text-muted-weak mb-6"><DownloadCounter /> {t.waitlistCount}</p>
             </ScrollReveal>
             <ScrollReveal delay={0.15}>
               <WaitlistForm />
             </ScrollReveal>
             <ScrollReveal delay={0.25}>
               <div className="mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8">
-                <a href="#" onClick={(e) => e.preventDefault()} aria-label="Download on the App Store — coming soon" className="inline-block opacity-70 cursor-not-allowed">
+                <a href="#" onClick={(e) => e.preventDefault()} aria-label={t.appStoreAria} className="inline-block opacity-70 cursor-not-allowed">
                   <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 flex items-center gap-3 relative">
                     <Apple className="w-6 h-6 text-white shrink-0" />
-                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">Download on the</span><span className="text-sm leading-tight font-bold">App Store</span></span>
-                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
+                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">{t.appStoreTop}</span><span className="text-sm leading-tight font-bold">{t.appStoreName}</span></span>
+                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">{t.soon}</span>
                   </div>
                 </a>
-                <a href="#" onClick={(e) => e.preventDefault()} aria-label="Get it on Google Play — coming soon" className="inline-block opacity-70 cursor-not-allowed">
+                <a href="#" onClick={(e) => e.preventDefault()} aria-label={t.googlePlayAria} className="inline-block opacity-70 cursor-not-allowed">
                   <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 flex items-center gap-3 relative">
                     <Play className="w-5 h-5 text-white shrink-0 ml-1" />
-                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">Get it on</span><span className="text-sm leading-tight font-bold">Google Play</span></span>
-                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">Soon</span>
+                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">{t.googlePlayTop}</span><span className="text-sm leading-tight font-bold">{t.googlePlayName}</span></span>
+                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">{t.soon}</span>
                   </div>
                 </a>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.35}>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 text-muted-weak text-sm">
-                {trustSignals.map((signal) => (
-                  <div key={signal.text} className="flex items-center gap-2">
-                    <signal.icon className="w-4 h-4 text-rido-magenta/60" />
-                    <span>{signal.text}</span>
-                  </div>
-                ))}
+                {t.trustSignals.map((text, i) => {
+                  const Icon = trustSignalIcons[i];
+                  return (
+                    <div key={text} className="flex items-center gap-2">
+                      <Icon className="w-4 h-4 text-rido-magenta/60" />
+                      <span>{text}</span>
+                    </div>
+                  );
+                })}
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.5}>
               <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-muted-weak text-xs">
                 <Shield className="w-3.5 h-3.5" />
-                <span>Insured rides · GDPR compliant · Data protected</span>
+                <span>{t.complianceLine}</span>
               </div>
             </ScrollReveal>
           </div>
@@ -176,10 +266,10 @@ export function DownloadCTA() {
                         <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M9 16.5L13.5 21L23 11" stroke="#DE0498" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
                       <p className="text-white font-black text-2xl">rido</p>
-                      <p className="text-muted-weak text-sm mt-2">Move freely</p>
-                      <div className="mt-6 w-[160px] h-[40px] rounded-xl bg-rido-magenta/80 flex items-center justify-center text-white font-semibold text-sm">Scan & Ride</div>
+                      <p className="text-muted-weak text-sm mt-2">{t.phoneTagline}</p>
+                      <div className="mt-6 w-[160px] h-[40px] rounded-xl bg-rido-magenta/80 flex items-center justify-center text-white font-semibold text-sm">{t.phoneCta}</div>
                       <div className="mt-4 grid grid-cols-3 gap-2 w-[200px]">
-                        {["Map", "Ride", "Pay"].map((label) => (
+                        {t.phoneTabs.map((label) => (
                           <div key={label} className="h-[60px] rounded-lg bg-white/5 flex items-center justify-center text-muted-weak text-xs">{label}</div>
                         ))}
                       </div>
