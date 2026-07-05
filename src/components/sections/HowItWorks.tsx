@@ -30,9 +30,9 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" aria-label="How it works" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="how-it-works" aria-label="How it works" className="py-12 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow="Simple as 1-2-3"
             before="How It"
@@ -45,7 +45,7 @@ export function HowItWorks() {
           {/* Progress line */}
           <div className="hidden lg:block absolute top-[3.5rem] left-[calc(12.5%+1rem)] right-[calc(12.5%+1rem)] h-0.5 bg-gradient-to-r from-rido-magenta/50 via-rido-magenta/20 to-rido-magenta/50" />
 
-          <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.12}>
+          <StaggerReveal className="mobile-carousel pt-5 md:pt-0 md:grid md:grid-cols-2 lg:grid-cols-4 gap-6" staggerDelay={0.12}>
             {steps.map((step, i) => (
               <StaggerItem key={step.title}>
                 <Card className="text-center relative">

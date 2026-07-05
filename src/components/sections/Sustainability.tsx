@@ -60,10 +60,10 @@ const commitments = [
 
 export function Sustainability() {
   return (
-    <section id="sustainability" aria-label="Sustainability impact" className="py-16 sm:py-24 px-4 sm:px-6 relative">
+    <section id="sustainability" aria-label="Sustainability impact" className="py-12 sm:py-24 px-4 sm:px-6 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-rido-navy via-rido-green/5 to-rido-navy" />
       <div className="relative max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow="Planet First"
             before="Real"
@@ -85,7 +85,7 @@ export function Sustainability() {
         </StaggerReveal>
         <p className="text-center text-xs text-muted-weak mb-16">Projected impact based on planned fleet size and ridership targets.</p>
 
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
           {commitments.map((item) => (
             <StaggerItem key={item.title}>
               <Card>

@@ -131,6 +131,26 @@
     @apply w-full h-px opacity-30 my-0;
     background: linear-gradient(90deg, transparent, #DE0498, transparent);
   }
+  /* Mobile-only horizontal snap carousel for card grids. Containers keep
+     their md+ grid classes (e.g. "mobile-carousel md:grid md:grid-cols-3");
+     below md the stacked cards become one swipeable, edge-snapping row. */
+  @media (max-width: 47.9375rem) {
+    .mobile-carousel {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .mobile-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-carousel > * {
+      flex: 0 0 auto;
+      width: min(80%, 20rem);
+      scroll-snap-align: center;
+    }
+  }
   .section-tint-magenta {
     background: linear-gradient(180deg, rgba(222, 4, 152, 0.03), transparent);
   }
