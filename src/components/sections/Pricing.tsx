@@ -48,9 +48,9 @@ function PricingCalculator() {
 
 export function Pricing() {
   return (
-    <section id="pricing" aria-label="Pricing plans" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="pricing" aria-label="Pricing plans" className="py-12 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow="Transparent Pricing"
             before="No"
@@ -61,9 +61,9 @@ export function Pricing() {
             <p className="mt-4 text-muted max-w-xl mx-auto">See the price before every ride. No hidden fees, no minimum top-ups, no refund charges.</p>
           </ScrollReveal>
         </div>
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6 mb-10 sm:mb-16" staggerDelay={0.1}>
           {pricingTiers.map((tier) => (
-            <StaggerItem key={tier.name}>
+            <StaggerItem key={tier.name} className={tier.popular ? "order-first md:order-none" : undefined}>
               <div className={tier.popular ? "shimmer-border" : ""}>
                 <Card className={`text-center ${tier.popular ? "border-rido-magenta/40 shadow-lg shadow-rido-magenta/10 relative" : ""}`}>
                   {tier.popular && <Badge variant="magenta" className="mb-4 cursor-default">Most Popular</Badge>}

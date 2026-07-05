@@ -4,10 +4,13 @@ import { faqItems, type Category } from "@/data/faq";
 import { ChevronDown, Search, Mail } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 type CategoryFilter = "all" | Category;
+
+const VISIBLE_LIMIT = 6;
 
 const categories: { id: CategoryFilter; label: string }[] = [
   { id: "all", label: "All" },
@@ -42,6 +45,7 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
+  const [showAll, setShowAll] = useState(false);
 
   const filteredItems = useMemo(() => {
     return faqItems
@@ -53,8 +57,11 @@ export function FAQ() {
       .map((item, idx) => ({ ...item, stableId: `faq-${idx}` }));
   }, [search, category]);
 
+  const visibleItems = showAll ? filteredItems : filteredItems.slice(0, VISIBLE_LIMIT);
+  const hiddenCount = filteredItems.length - visibleItems.length;
+
   return (
-    <section id="faq" aria-label="Frequently asked questions" className="py-16 sm:py-24 px-4 sm:px-6">
+    <section id="faq" aria-label="Frequently asked questions" className="py-12 sm:py-24 px-4 sm:px-6">
       {/* FAQPage schema is also injected globally in src/lib/schema.ts; this inline instance is kept for the interactive FAQ section only and deduplicates cleanly via @id in global schemas. */}
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
@@ -71,13 +78,13 @@ export function FAQ() {
         <ScrollReveal delay={0.1}>
           <div className="relative mb-4">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
-            <input type="text" placeholder="Search questions..." value={search} onChange={(e) => setSearch(e.target.value)}
+            <input type="text" placeholder="Search questions..." value={search} onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
               className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
               aria-label="Search frequently asked questions" />
           </div>
           <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
             {categories.map((cat) => (
-              <button key={cat.id} onClick={() => setCategory(cat.id)}
+              <button key={cat.id} onClick={() => { setCategory(cat.id); setShowAll(false); }}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${category === cat.id ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {cat.label}
               </button>
@@ -87,12 +94,19 @@ export function FAQ() {
             {filteredItems.length === 0 ? (
               <p className="text-center text-muted-weak py-8 text-sm">No questions match your search. Try different keywords.</p>
             ) : (
-              filteredItems.map((item) => (
+              visibleItems.map((item) => (
                 <FAQItem key={item.stableId} question={item.question} answer={item.answer} id={item.stableId}
                   isOpen={openIndex === item.stableId} onToggle={() => setOpenIndex(openIndex === item.stableId ? null : item.stableId)} />
               ))
             )}
           </div>
+          {hiddenCount > 0 && (
+            <div className="mt-4 text-center">
+              <Button variant="secondary" size="sm" onClick={() => setShowAll(true)} aria-label={`Show all ${filteredItems.length} questions`}>
+                Show all {filteredItems.length} questions <ChevronDown className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          )}
           <div className="mt-6 text-center">
             <a href="mailto:info@rido.bike" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer">
               <Mail className="w-4 h-4" /> Still have questions? Email info@rido.bike

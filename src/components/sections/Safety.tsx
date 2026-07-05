@@ -15,12 +15,12 @@ const safetyItems = [
 
 export function Safety() {
   return (
-    <section id="safety" aria-label="Safety information" className="py-16 sm:py-24 px-4 sm:px-6 relative overflow-hidden section-tint-magenta">
+    <section id="safety" aria-label="Safety information" className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden section-tint-magenta">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-[0.02]">
         <Shield className="w-[400px] h-[400px] text-white" strokeWidth={0.5} />
       </div>
       <div className="relative max-w-7xl mx-auto">
-        <div className="text-center mb-16">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow="Your Safety Matters"
             before="Ride"
@@ -37,7 +37,7 @@ export function Safety() {
             </div>
           </ScrollReveal>
         </div>
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-2 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 gap-6" staggerDelay={0.1}>
           {safetyItems.map((item) => (
             <StaggerItem key={item.title}>
               <Card className="flex items-start gap-5 group hover:border-rido-magenta/30">
