@@ -12,6 +12,9 @@ import { withBase } from "@/lib/basePath";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { vehicles } from "@/data/vehicles";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
+import type { LucideIcon } from "lucide-react";
 
 // Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
 const NOISE_SVG =
@@ -21,14 +24,60 @@ const NOISE_SVG =
   );
 
 // Stats config — all white, with eyebrow icons + tabular numerals.
-const stats = [
-  { icon: MapPin, value: 5, suffix: "", label: "Launch Cities" },
-  { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
-  { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
-];
+type HeroStatData = {
+  icon: LucideIcon;
+  value: number;
+  suffix: string;
+  label: string;
+  text?: string;
+  green?: boolean;
+};
 
-function HeroStat({ stat }: { stat: (typeof stats)[number] }) {
-  const isText = "text" in stat;
+// User-visible strings per locale. In both locales the headline is five
+// tokens: indices 3-4 carry the gradient, and a <br/> follows index 2.
+// Non-breaking spaces inside "Costa del Sol" keep the launch
+// region as one unit.
+const en = {
+  waitlistSuffix: "riders on the waitlist",
+  badge: "Launching the Costa del Sol",
+  headlineWords: ["Move", "Freely", "Across", "the", "Costa del Sol"],
+  subheadline:
+    "Spain's first locally-built shared e-scooter and e-bike service. Zero emissions. Swappable batteries. Real human support in your timezone.",
+  ctaPrimary: "Reserve My First Ride",
+  ctaSecondary: "Watch 30-sec Demo",
+  microcopy: "No spam, unsubscribe anytime · GDPR compliant",
+  scrollAria: "Scroll to next section",
+  scrollLabel: "Scroll",
+  stats: [
+    { icon: MapPin, value: 5, suffix: "", label: "Launch Cities" },
+    { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
+    { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
+  ] as HeroStatData[],
+};
+
+const copy: Record<Locale, typeof en> = {
+  en,
+  es: {
+    waitlistSuffix: "personas en la lista de espera",
+    badge: "Muy pronto en la Costa del Sol",
+    headlineWords: ["Muévete", "libremente", "por", "la", "Costa del Sol"],
+    subheadline:
+      "El primer servicio de patinetes y bicis eléctricas compartidas creado en España. Cero emisiones. Baterías intercambiables. Soporte humano real en tu zona horaria.",
+    ctaPrimary: "Reserva tu primer viaje",
+    ctaSecondary: "Ver demo de 30 seg",
+    microcopy: "Sin spam, date de baja cuando quieras · Cumplimos el RGPD",
+    scrollAria: "Ir a la siguiente sección",
+    scrollLabel: "Desliza",
+    stats: [
+      { icon: MapPin, value: 5, suffix: "", label: "Ciudades de lanzamiento" },
+      { icon: Bike, value: vehicles.length, suffix: "", label: "Tipos de vehículo" },
+      { icon: Leaf, value: 0, suffix: "", label: "Emisiones directas", text: "Cero", green: true },
+    ] as HeroStatData[],
+  },
+};
+
+function HeroStat({ stat }: { stat: HeroStatData }) {
+  const isText = stat.text !== undefined;
   const { count, ref, visible } = useCountUp(stat.value, { duration: 1600 });
   return (
     <StaggerItem ref={ref} className="text-center min-w-0">
@@ -48,16 +97,8 @@ function HeroStat({ stat }: { stat: (typeof stats)[number] }) {
 // Linear/Vercel-style easeOutQuint — confident, not mushy.
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-// One word array, one variants block — manual <br/> between line 1 and line 2.
-// Non-breaking spaces inside "Costa\u00A0del\u00A0Sol" keep the launch region as one unit.
-const headlineWords = [
-  "Move",
-  "Freely",
-  "Across",
-  "the",
-  "Costa\u00A0del\u00A0Sol",
-] as const;
-
+// One word array (in `copy`), one variants block — manual <br/> between
+// line 1 and line 2.
 const wordVariants = {
   hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
   visible: {
@@ -69,6 +110,9 @@ const wordVariants = {
 };
 
 export function Hero() {
+  const locale = useLocale();
+  const t = copy[locale];
+  const headlineWords = t.headlineWords;
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
 
@@ -166,14 +210,14 @@ export function Hero() {
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
             </span>
             <span>
-              <WaitlistCounter /> riders on the waitlist
+              <WaitlistCounter /> {t.waitlistSuffix}
             </span>
           </div>
         </ScrollReveal>
 
         <ScrollReveal delay={0.18}>
           <Badge variant="magenta" className="mb-5 sm:mb-7">
-            Launching the Costa del Sol
+            {t.badge}
           </Badge>
         </ScrollReveal>
 
@@ -207,7 +251,7 @@ export function Hero() {
           transition={{ delay: reduce ? 0 : 0.9, duration: 0.6, ease: EASE }}
           className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-snug px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
-          Spain&apos;s first locally-built shared e-scooter and e-bike service. Zero emissions. Swappable batteries. Real human support in your timezone.
+          {t.subheadline}
         </motion.p>
 
         <motion.div
@@ -221,7 +265,7 @@ export function Hero() {
               href="#download"
               className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
             >
-              <span>Reserve My First Ride</span>
+              <span>{t.ctaPrimary}</span>
               <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
             </a>
           </Magnetic>
@@ -229,7 +273,7 @@ export function Hero() {
             href="#how-it-works"
             className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] transition-all duration-300 ease-out hover:bg-white/[0.1] hover:border-white/25 hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
           >
-            <span>Watch 30-sec Demo</span>
+            <span>{t.ctaSecondary}</span>
           </a>
         </motion.div>
 
@@ -241,14 +285,14 @@ export function Hero() {
           className="mt-5 inline-flex items-center gap-2 text-xs text-white/55"
         >
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
-          No spam, unsubscribe anytime · GDPR compliant
+          {t.microcopy}
         </motion.p>
 
         <StaggerReveal
           className="mt-12 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
           staggerDelay={0.12}
         >
-          {stats.map((s) => (
+          {t.stats.map((s) => (
             <HeroStat key={s.label} stat={s} />
           ))}
         </StaggerReveal>
@@ -257,10 +301,10 @@ export function Hero() {
       {/* Scroll cue — labelled, refined, fades on scroll */}
       <a
         href="#how-it-works"
-        aria-label="Scroll to next section"
+        aria-label={t.scrollAria}
         className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/55 hover:text-rido-magenta transition-colors min-h-[44px] min-w-[44px] justify-center"
       >
-        <span className="text-[10px] uppercase tracking-[0.2em]">Scroll</span>
+        <span className="text-[10px] uppercase tracking-[0.2em]">{t.scrollLabel}</span>
         <span className="relative flex h-7 w-px bg-white/20 overflow-hidden">
           <span className="absolute inset-x-0 top-0 h-1.5 bg-rido-magenta motion-safe:animate-[scroll-dot_1.8s_ease-in-out_infinite]" />
         </span>

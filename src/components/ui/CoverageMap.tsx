@@ -4,9 +4,31 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { cities, type City } from "@/data/cities";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
 import type { Map as MapLibreMap, LngLatBoundsLike } from "maplibre-gl";
 
 type MapLibreModule = typeof import("maplibre-gl");
+
+const copy = {
+  en: {
+    mapAria: "Map of Rido launch towns on the Costa del Sol — all launching soon",
+    launchingSoon: "Launching soon",
+    /** Lowercase suffix appended to marker aria-labels: "<City> — launching soon". */
+    launchingSoonSuffix: "launching soon",
+    eScooter: "E-Scooter",
+    eBike: "E-Bike",
+  },
+  es: {
+    mapAria: "Mapa de las ciudades de lanzamiento de Rido en la Costa del Sol — todas próximamente",
+    launchingSoon: "Próximamente",
+    launchingSoonSuffix: "próximamente",
+    eScooter: "Patinete eléctrico",
+    eBike: "Bici eléctrica",
+  },
+} as const satisfies Record<Locale, Record<string, string>>;
+
+type Copy = (typeof copy)[Locale];
 
 /** Keyless, free-for-commercial-use vector style (OpenFreeMap / OpenMapTiles). */
 const STYLE_URL = "https://tiles.openfreemap.org/styles/positron";
@@ -100,7 +122,7 @@ function applyBrandStyle(map: MapLibreMap) {
 }
 
 /** Popup content built via DOM APIs (no HTML string interpolation). */
-function buildPopupContent(city: City): HTMLElement {
+function buildPopupContent(city: City, t: Copy): HTMLElement {
   const root = document.createElement("div");
   root.className = "coverage-popup-body";
 
@@ -119,27 +141,27 @@ function buildPopupContent(city: City): HTMLElement {
   if (city.comingSoon) {
     const badge = document.createElement("span");
     badge.className = "coverage-popup-badge";
-    badge.textContent = "Launching soon";
+    badge.textContent = t.launchingSoon;
     meta.appendChild(badge);
   }
   for (const v of city.vehicles) {
     const chip = document.createElement("span");
     chip.className = "coverage-popup-chip";
-    chip.textContent = v === "e-scooter" ? "E-Scooter" : "E-Bike";
+    chip.textContent = v === "e-scooter" ? t.eScooter : t.eBike;
     meta.appendChild(chip);
   }
   root.appendChild(meta);
   return root;
 }
 
-function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, reducedMotion: boolean) {
+function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, reducedMotion: boolean, t: Copy) {
   for (const city of cities) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "coverage-marker-btn cursor-pointer";
     button.setAttribute(
       "aria-label",
-      city.comingSoon ? `${city.name} — launching soon` : city.name
+      city.comingSoon ? `${city.name} — ${t.launchingSoonSuffix}` : city.name
     );
 
     const marker = document.createElement("span");
@@ -164,7 +186,7 @@ function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, reducedMotion: bo
       closeButton: false,
       className: "coverage-popup",
       maxWidth: "260px",
-    }).setDOMContent(buildPopupContent(city));
+    }).setDOMContent(buildPopupContent(city, t));
 
     new lib.Marker({ element: button, anchor: "center" })
       .setLngLat([city.lng, city.lat])
@@ -246,6 +268,12 @@ export function CoverageMap() {
   const prefersReducedMotion = useReducedMotion();
   const reducedRef = useRef(prefersReducedMotion);
   reducedRef.current = prefersReducedMotion;
+  const locale = useLocale();
+  const t = copy[locale];
+  // Markers/popups are built once in the async init callback — read the
+  // latest copy through a ref (same pattern as reducedRef).
+  const copyRef = useRef(t);
+  copyRef.current = t;
 
   const initMap = useCallback(async () => {
     if (startedRef.current) return;
@@ -325,7 +353,7 @@ export function CoverageMap() {
       settled = true;
       window.clearTimeout(failTimer);
       applyBrandStyle(map);
-      addCityMarkers(lib, map, reduced);
+      addCityMarkers(lib, map, reduced, copyRef.current);
       setStatus("ready");
     });
     // Any error before first load (style JSON, glyphs, sprite, initial tiles
@@ -367,7 +395,7 @@ export function CoverageMap() {
     <div
       ref={wrapRef}
       role="group"
-      aria-label="Map of Rido launch towns on the Costa del Sol — all launching soon"
+      aria-label={t.mapAria}
       className="coverage-map relative w-full max-w-3xl h-[220px] sm:h-[340px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden"
     >
       {/* Poster + permanent fallback (the original SVG visualization) */}
@@ -388,7 +416,7 @@ export function CoverageMap() {
 
       {status === "ready" && (
         <div className="pointer-events-none absolute top-3 left-3 z-10 rounded-full bg-rido-navy/80 border border-rido-magenta/30 px-3 py-1 text-[11px] font-bold text-rido-magenta-light backdrop-blur-sm">
-          Launching soon
+          {t.launchingSoon}
         </div>
       )}
     </div>

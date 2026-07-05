@@ -2,11 +2,34 @@
 
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const STORAGE_KEY = "rido-cookie-consent";
+
+// The banner mounts in the root layout, OUTSIDE any LocaleProvider, so it
+// derives the locale from the URL ("/es..." → Spanish) instead of context.
+const en = {
+  title: "We value your privacy",
+  body: "We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.",
+  learnMore: "Learn more",
+  accept: "Accept all cookies",
+  decline: "Decline non-essential",
+  close: "Close",
+};
+const copy: Record<"en" | "es", typeof en> = {
+  en,
+  es: {
+    title: "Tu privacidad nos importa",
+    body: "Guardamos tu preferencia en este dispositivo y, solo si aceptas, cargamos analíticas sin cookies para entender el tráfico del sitio. Sin cookies publicitarias ni de rastreo entre sitios.",
+    learnMore: "Más información",
+    accept: "Aceptar todas",
+    decline: "Rechazar no esenciales",
+    close: "Cerrar",
+  },
+};
 
 function safeGetStorage(key: string): string | null {
   try {
@@ -38,6 +61,8 @@ function useShouldShowConsent() {
 }
 
 export function CookieConsent() {
+  const pathname = usePathname() ?? "/";
+  const t = pathname === "/es" || pathname.startsWith("/es/") ? copy.es : copy.en;
   const shouldShow = useShouldShowConsent();
   const [dismissed, setDismissed] = useState(false);
   const visible = shouldShow && !dismissed;
@@ -68,22 +93,22 @@ export function CookieConsent() {
                 <Cookie className="w-5 h-5 text-rido-magenta" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-white mb-1">We value your privacy</h3>
+                <h3 className="font-bold text-white mb-1">{t.title}</h3>
                 <p className="text-sm text-white/60 leading-relaxed">
-                  We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.{" "}
+                  {t.body}{" "}
                   <Link href="/politica-cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
-                    Learn more
+                    {t.learnMore}
                   </Link>
                 </p>
                 <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                  <Button size="sm" onClick={handleAccept}>Accept all cookies</Button>
-                  <Button size="sm" variant="secondary" onClick={handleDecline}>Decline non-essential</Button>
+                  <Button size="sm" onClick={handleAccept}>{t.accept}</Button>
+                  <Button size="sm" variant="secondary" onClick={handleDecline}>{t.decline}</Button>
                 </div>
               </div>
               <button
                 onClick={handleDecline}
                 className="text-white/40 hover:text-white transition-colors cursor-pointer p-1 shrink-0"
-                aria-label="Close"
+                aria-label={t.close}
               >
                 <X className="w-4 h-4" />
               </button>

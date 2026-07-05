@@ -1,5 +1,9 @@
+import type { Locale } from "@/lib/i18n/config";
+
+export type VehicleId = "e-scooter" | "e-bike";
+
 export interface Vehicle {
-  id: string;
+  id: VehicleId;
   name: string;
   type: "e-scooter" | "e-bike";
   tagline: string;
@@ -10,6 +14,12 @@ export interface Vehicle {
   images: string[];
   imageAlt: string;
 }
+
+/** The user-visible, translatable strings of a Vehicle. */
+export type VehicleCopy = Pick<
+  Vehicle,
+  "tagline" | "description" | "specs" | "features" | "imageAlt"
+>;
 
 export const vehicles: Vehicle[] = [
   {
@@ -73,3 +83,65 @@ export const vehicles: Vehicle[] = [
     imageAlt: "Rido e-bike electric-assist bicycle",
   },
 ];
+
+// Spanish copy, parallel to `vehicles` and keyed by vehicle id. English
+// lives on the Vehicle objects above — they are also consumed by the
+// English-only JSON-LD schemas in src/lib/schema.ts, so their shape
+// must not change.
+const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
+  "e-scooter": {
+    tagline: "Deslízate por la ciudad",
+    description:
+      "Nuestro patinete eléctrico de primera con plataforma ancha, frenos potentes y hasta 45 km de autonomía. Hecho para exploradores urbanos que exigen seguridad y estilo.",
+    specs: [
+      { label: "Autonomía", value: "45 km" },
+      { label: "Velocidad máxima", value: "25 km/h" },
+      { label: "Peso máximo", value: "120 kg" },
+      { label: "Batería", value: "Intercambiable" },
+    ],
+    features: [
+      "Casco incluido",
+      "Luces delantera y trasera",
+      "Freno doble (delantero + trasero)",
+      "Intermitentes",
+      "Modo principiante (15 km/h)",
+      "GPS y geovallado",
+    ],
+    imageAlt: "Patinete eléctrico Rido",
+  },
+  "e-bike": {
+    tagline: "Pedalea más lejos con menos esfuerzo",
+    description:
+      "Nuestra bici con asistencia eléctrica, pedaleo suave, sillín ajustable y una cesta delantera resistente. Perfecta para trayectos largos y para llevar lo esencial.",
+    specs: [
+      { label: "Autonomía", value: "60 km" },
+      { label: "Velocidad asistida", value: "25 km/h" },
+      { label: "Peso máximo", value: "130 kg" },
+      { label: "Batería", value: "Intercambiable" },
+    ],
+    features: [
+      "Pedaleo asistido eléctrico",
+      "Sillín de altura ajustable",
+      "Cesta de carga delantera",
+      "Luces integradas",
+      "Neumáticos antipinchazos",
+      "Cuadro de acceso bajo",
+    ],
+    imageAlt: "Bici eléctrica de pedaleo asistido Rido",
+  },
+};
+
+/**
+ * Returns the vehicle's user-visible copy for the given locale.
+ * For "en" this is a verbatim view of the Vehicle's own fields.
+ */
+export function getVehicleCopy(vehicle: Vehicle, locale: Locale): VehicleCopy {
+  if (locale === "es") return vehicleCopyEs[vehicle.id];
+  return {
+    tagline: vehicle.tagline,
+    description: vehicle.description,
+    specs: vehicle.specs,
+    features: vehicle.features,
+    imageAlt: vehicle.imageAlt,
+  };
+}
