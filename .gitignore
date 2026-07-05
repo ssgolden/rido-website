@@ -52,3 +52,4 @@ next-env.d.ts
 
 # API routes temporarily excluded during static export builds (scripts/build.mjs)
 .export-excluded-api/
+.visual-qa/
