@@ -3,6 +3,7 @@
 import { useState, useEffect, useSyncExternalStore } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
+import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X, Download } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -73,7 +74,9 @@ export function Navbar() {
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
-          <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button>
+          <Magnetic>
+            <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>Join Waitlist</span></Button>
+          </Magnetic>
         </div>
         <button className="md:hidden text-white cursor-pointer p-3 -mr-3" onClick={() => setMobileOpen(!mobileOpen)} aria-label={mobileOpen ? "Close menu" : "Open menu"} aria-expanded={mobileOpen}>
           {mobileOpen ? <X size={22} /> : <Menu size={22} />}
