@@ -4,6 +4,7 @@ import { cities, activeCityCount } from "@/data/cities";
 import { Badge } from "@/components/ui/Badge";
 import { MapPin, Zap, Bike } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { CoverageMap } from "@/components/ui/CoverageMap";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 
@@ -26,57 +27,10 @@ export function Cities() {
           </ScrollReveal>
         </div>
 
-        {/* Animated map visualization */}
+        {/* Real coverage map (MapLibre + OpenFreeMap, lazy-loaded; falls back to the SVG visualization) */}
         <ScrollReveal delay={0.1}>
           <div className="relative mb-16 flex justify-center">
-            <div className="relative w-full max-w-3xl h-[200px] sm:h-[260px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden">
-              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid meet">
-                {/* Coastline path */}
-                <path d="M40,180 Q120,140 200,155 Q300,170 380,120 Q460,80 560,100 Q640,110 720,85 Q760,75 780,80" fill="none" stroke="#DE0498" strokeWidth="1" strokeDasharray="6 8" opacity="0.15" className="dash-flow" />
-                {/* Sea area */}
-                <path d="M40,180 Q120,140 200,155 Q300,170 380,120 Q460,80 560,100 Q640,110 720,85 Q760,75 780,80 L780,260 L40,260 Z" fill="rgba(222,4,152,0.02)"/>
-
-                {/* Connection lines between cities */}
-                {cities.map((city, i) => {
-                  if (i === 0) return null;
-                  const total = cities.length;
-                  const margin = 80;
-                  const available = 800 - margin * 2;
-                  const step = total > 1 ? available / (total - 1) : 0;
-                  const prevX = margin + step * (i - 1);
-                  const prevY = 120 + ((i - 1) % 2 === 0 ? 20 : -25);
-                  const currX = margin + step * i;
-                  const currY = 120 + (i % 2 === 0 ? 20 : -25);
-                  return (
-                    <line key={`line-${city.slug}`} x1={prevX} y1={prevY} x2={currX} y2={currY} stroke="#DE0498" strokeWidth="0.8" strokeDasharray="3 5" opacity="0.15" className="dash-flow-short" />
-                  );
-                })}
-
-                {/* City markers */}
-                {cities.map((city, i) => {
-                  const total = cities.length;
-                  const margin = 80;
-                  const available = 800 - margin * 2;
-                  const step = total > 1 ? available / (total - 1) : 0;
-                  const x = margin + step * i;
-                  const y = 120 + (i % 2 === 0 ? 20 : -25);
-                  return (
-                    <g key={city.slug}>
-                      {/* Outer pulse ring */}
-                      <circle cx={x} cy={y} r="6" fill="none" stroke="#DE0498" strokeWidth="0.8" opacity="0.4" className="city-pulse-ring" style={{ animationDelay: `${i * 0.4}s` }} />
-                      {/* Middle ring */}
-                      <circle cx={x} cy={y} r="8" fill="none" stroke="#DE0498" strokeWidth="0.5" opacity="0.2" />
-                      {/* Inner dot */}
-                      <circle cx={x} cy={y} r="4" fill="#DE0498" opacity="0.9" className="city-dot-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
-                      {/* Glow */}
-                      <circle cx={x} cy={y} r="12" fill="#DE0498" opacity="0.08" />
-                      {/* City name */}
-                      <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter Variable, Inter, sans-serif" fontWeight="700">{city.name}</text>
-                    </g>
-                  );
-                })}
-              </svg>
-            </div>
+            <CoverageMap />
           </div>
         </ScrollReveal>
 

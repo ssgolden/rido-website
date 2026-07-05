@@ -326,3 +326,184 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #F23DB5;
 }
+
+/* ————————————————————————————————————————————————————————————————
+   Coverage map (MapLibre GL) — Cities section
+   Unlayered on purpose: these must override maplibre-gl.css, which is
+   imported inside the client component. The .coverage-map/.coverage-popup
+   prefixes give them the specificity to win regardless of chunk order.
+   ———————————————————————————————————————————————————————————————— */
+
+/* City markers */
+.coverage-marker-btn {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+}
+.coverage-marker-btn:focus-visible {
+  outline: 2px solid var(--color-rido-magenta);
+  outline-offset: 2px;
+  border-radius: 9999px;
+}
+.coverage-marker {
+  position: relative;
+  width: 14px;
+  height: 14px;
+}
+.coverage-marker-dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: var(--color-rido-magenta);
+  box-shadow:
+    0 0 12px rgba(222, 4, 152, 0.75),
+    inset 0 0 2px rgba(255, 255, 255, 0.6);
+}
+.coverage-marker-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  border: 1px solid rgba(222, 4, 152, 0.7);
+  animation: city-pulse-ring 2.5s ease-in-out infinite;
+  transform-origin: center;
+}
+.coverage-marker-label {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(11, 18, 34, 0.95), 0 0 8px rgba(11, 18, 34, 0.8);
+  pointer-events: none;
+}
+/* Five labels don't fit the small phone canvas — markers stay tappable
+   (popup carries name + vehicles + badge); labels return at sm+. */
+@media (max-width: 39.9375rem) {
+  .coverage-marker-label {
+    display: none;
+  }
+}
+
+/* Popups */
+.coverage-popup .maplibregl-popup-content {
+  background: rgba(30, 41, 59, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(2, 6, 23, 0.6);
+  color: #fff;
+  font-family: var(--font-sans);
+  padding: 0.625rem 0.75rem;
+}
+.coverage-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+.coverage-popup.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+.coverage-popup.maplibregl-popup-anchor-bottom-right .maplibregl-popup-tip {
+  border-top-color: rgba(30, 41, 59, 0.96);
+}
+.coverage-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+.coverage-popup.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+.coverage-popup.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-bottom-color: rgba(30, 41, 59, 0.96);
+}
+.coverage-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-right-color: rgba(30, 41, 59, 0.96);
+}
+.coverage-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+  border-left-color: rgba(30, 41, 59, 0.96);
+}
+.coverage-popup-name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 0.875rem;
+  line-height: 1.2;
+}
+.coverage-popup-region {
+  margin-top: 0.125rem;
+  font-size: 0.75rem;
+  color: var(--color-muted);
+}
+.coverage-popup-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+}
+.coverage-popup-badge,
+.coverage-popup-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+.coverage-popup-badge {
+  background: rgba(222, 4, 152, 0.15);
+  border: 1px solid rgba(222, 4, 152, 0.35);
+  color: var(--color-rido-magenta-light);
+}
+.coverage-popup-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-muted-strong);
+}
+
+/* Controls — restyle MapLibre's light chrome for the navy canvas */
+.coverage-map .maplibregl-ctrl-group {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(2, 6, 23, 0.5);
+}
+.coverage-map .maplibregl-ctrl-group button {
+  cursor: pointer;
+}
+.coverage-map .maplibregl-ctrl-group button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.coverage-map .maplibregl-ctrl button:not(:disabled):hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.coverage-map .maplibregl-ctrl button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(1.1);
+}
+
+/* Attribution — required (OpenStreetMap/OpenFreeMap/MapLibre); keep legible on navy */
+.coverage-map .maplibregl-ctrl-attrib {
+  background: rgba(15, 23, 42, 0.75);
+  border-radius: 0.5rem 0 0 0;
+}
+.coverage-map .maplibregl-ctrl-attrib,
+.coverage-map .maplibregl-ctrl-attrib a {
+  color: var(--color-muted);
+  font-size: 10px;
+}
+.coverage-map .maplibregl-ctrl-attrib a:hover {
+  color: var(--color-muted-strong);
+}
+.coverage-map .maplibregl-ctrl-attrib-button {
+  filter: invert(1);
+}
+.coverage-map .maplibregl-canvas {
+  outline: none;
+}
+.coverage-map .maplibregl-cooperative-gesture-screen {
+  border-radius: 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coverage-marker-ring {
+    animation: none;
+    opacity: 0.35;
+  }
+}
