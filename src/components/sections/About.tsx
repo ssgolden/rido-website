@@ -60,7 +60,7 @@ export function About() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <ScrollReveal direction="left">
             <div>
-              <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">{t.eyebrow}</p>
+              <p className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3">{t.eyebrow}</p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <blockquote className="relative mb-6 pl-6 border-l-4 border-rido-magenta">
                 <p className="text-white/70 text-lg italic leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
@@ -71,7 +71,7 @@ export function About() {
                 {t.milestones.map((m, i) => (
                   <ScrollReveal key={m.year} delay={0.1 * i}>
                     <div className="flex items-center gap-4">
-                      <span className="text-rido-magenta font-bold text-sm w-12 shrink-0">{m.year}</span>
+                      <span className="text-rido-magenta-light font-bold text-sm w-12 shrink-0">{m.year}</span>
                       <div className="h-px flex-1 bg-gradient-to-r from-rido-magenta/40 to-transparent" />
                       <span className="text-muted text-sm">{m.event}</span>
                     </div>

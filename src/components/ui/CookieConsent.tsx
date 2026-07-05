@@ -14,7 +14,7 @@ const STORAGE_KEY = "rido-cookie-consent";
 const en = {
   title: "We value your privacy",
   body: "We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.",
-  learnMore: "Learn more",
+  learnMore: "Read our cookie policy",
   accept: "Accept all cookies",
   decline: "Decline non-essential",
   close: "Close",
@@ -24,7 +24,7 @@ const copy: Record<"en" | "es", typeof en> = {
   es: {
     title: "Tu privacidad nos importa",
     body: "Guardamos tu preferencia en este dispositivo y, solo si aceptas, cargamos analíticas sin cookies para entender el tráfico del sitio. Sin cookies publicitarias ni de rastreo entre sitios.",
-    learnMore: "Más información",
+    learnMore: "Lee nuestra política de cookies",
     accept: "Aceptar todas",
     decline: "Rechazar no esenciales",
     close: "Cerrar",
@@ -96,7 +96,7 @@ export function CookieConsent() {
                 <h3 className="font-bold text-white mb-1">{t.title}</h3>
                 <p className="text-sm text-white/60 leading-relaxed">
                   {t.body}{" "}
-                  <Link href="/politica-cookies" className="text-rido-magenta hover:text-rido-magenta-light transition-colors underline">
+                  <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
                   </Link>
                 </p>

@@ -88,7 +88,7 @@ export function AnimationShowcase() {
       {/* Header */}
       <header className="max-w-6xl mx-auto mb-20">
         <ScrollRevealGSAP from={{ opacity: 0, y: 12 }} to={{ opacity: 1, y: 0 }} duration={0.6}>
-          <p className="text-xs uppercase tracking-[0.3em] text-rido-magenta mb-4 flex items-center gap-2">
+          <p className="text-xs uppercase tracking-[0.3em] text-rido-magenta-light mb-4 flex items-center gap-2">
             <Sparkles className="w-3.5 h-3.5" /> Rido Motion Lab
           </p>
         </ScrollRevealGSAP>
@@ -150,7 +150,7 @@ export function AnimationShowcase() {
             className="space-y-3"
           >
             <p className="text-muted-strong">From the left, ease expo.out, 0.8s.</p>
-            <p className="text-rido-magenta font-semibold">Scroll down to retrigger the demos.</p>
+            <p className="text-rido-magenta-light font-semibold">Scroll down to retrigger the demos.</p>
             <p className="text-sm text-muted">ScrollTrigger handles pin / scrub / batch.</p>
           </ScrollRevealGSAP>
         </DemoCard>
@@ -240,7 +240,7 @@ export function AnimationShowcase() {
                   error: "Something went wrong",
                 })
               }
-              className="px-3 py-1.5 rounded-lg bg-rido-magenta/20 border border-rido-magenta/30 text-rido-magenta text-sm font-medium hover:bg-rido-magenta/30 transition-colors cursor-pointer"
+              className="px-3 py-1.5 rounded-lg bg-rido-magenta/20 border border-rido-magenta/30 text-rido-magenta-light text-sm font-medium hover:bg-rido-magenta/30 transition-colors cursor-pointer"
             >
               Promise
             </button>
@@ -266,7 +266,7 @@ export function AnimationShowcase() {
         className="max-w-6xl mx-auto mt-20"
       >
         <div className="rounded-2xl glass p-12 text-center">
-          <p className="text-xs uppercase tracking-[0.3em] text-rido-magenta mb-4">End of page</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-rido-magenta-light mb-4">End of page</p>
           <h2 className="text-3xl sm:text-5xl font-black tracking-tight">
             Motion that feels <span className="text-gradient-brand">alive</span>.
           </h2>

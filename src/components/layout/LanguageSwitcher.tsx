@@ -18,7 +18,7 @@ const EN_ONLY_PATHS = new Set([
 const linkClass = (active: boolean) =>
   cn(
     "inline-block py-2 -my-2 px-1 -mx-1 text-xs transition-colors cursor-pointer",
-    active ? "text-white font-semibold" : "text-muted-weak hover:text-rido-magenta"
+    active ? "text-white font-semibold" : "text-muted-weak hover:text-rido-magenta-light"
   );
 
 /**

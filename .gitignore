@@ -50,3 +50,4 @@ next-env.d.ts
 
 # Dev smoke tests (not part of production)
 /scripts/smoke-*.mts
+.lighthouseci/

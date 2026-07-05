@@ -26,7 +26,7 @@ const variantClasses = (variant: ButtonVariant) => {
     case "secondary":
       return "glass text-white hover:bg-white/15";
     case "outline":
-      return "border-2 border-rido-magenta text-rido-magenta hover:bg-rido-magenta/10";
+      return "border-2 border-rido-magenta text-rido-magenta-light hover:bg-rido-magenta/10";
   }
 };
 

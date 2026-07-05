@@ -76,15 +76,15 @@ export default function NotFound() {
         </div>
 
         <div className="mt-14 flex items-center justify-center gap-6 text-white/30 text-sm">
-          <Link href="/privacy" className="hover:text-rido-magenta transition-colors cursor-pointer">
+          <Link href="/privacy" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
             Privacy Policy
           </Link>
           <span aria-hidden="true">·</span>
-          <Link href="/terms" className="hover:text-rido-magenta transition-colors cursor-pointer">
+          <Link href="/terms" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
             Terms of Service
           </Link>
           <span aria-hidden="true">·</span>
-          <a href="mailto:info@rido.bike" className="hover:text-rido-magenta transition-colors cursor-pointer">
+          <a href="mailto:info@rido.bike" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
             Contact
           </a>
         </div>

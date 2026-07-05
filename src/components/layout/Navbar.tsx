@@ -102,7 +102,7 @@ export function Navbar() {
         </a>
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta font-semibold" : "text-muted-strong hover:text-rido-magenta")}>{link.label}</a>
+            <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
@@ -119,7 +119,7 @@ export function Navbar() {
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }} className="md:hidden overflow-hidden">
             <div className="mt-3 pb-3 border-t border-white/10">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("block py-2.5 text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta font-semibold" : "text-muted-strong hover:text-rido-magenta")} onClick={() => setMobileOpen(false)}>{link.label}</a>
+                <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("block py-2.5 text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={() => setMobileOpen(false)}>{link.label}</a>
               ))}
               <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>

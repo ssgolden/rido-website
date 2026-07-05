@@ -80,7 +80,7 @@ function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string;
   return (
     <div className="border-b border-white/10 last:border-b-0">
       <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group" aria-expanded={isOpen} aria-controls={answerId}>
-        <span className="font-semibold text-white/90 group-hover:text-rido-magenta transition-colors pr-4 text-sm sm:text-base">{question}</span>
+        <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors pr-4 text-sm sm:text-base">{question}</span>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} className="shrink-0">
           <ChevronDown className="w-5 h-5 text-white/40" />
         </motion.div>
@@ -166,7 +166,7 @@ export function FAQ() {
             </div>
           )}
           <div className="mt-6 text-center">
-            <a href="mailto:info@rido.bike" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer">
+            <a href="mailto:info@rido.bike" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta-light hover:text-white transition-colors cursor-pointer">
               <Mail className="w-4 h-4" /> {t.stillQuestions}
             </a>
           </div>

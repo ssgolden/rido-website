@@ -5,9 +5,6 @@ import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { getAllSchemas } from "@/lib/schema";
 import { Toaster } from "@/components/animation/Toast";
 // Self-hosted variable fonts (bundled WOFF2, no external requests).
-// Do NOT switch to next/font — it breaks Turbopack builds on Windows.
-import "@fontsource-variable/inter";
-import "@fontsource-variable/sora";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -94,6 +91,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
+        {/* Self-hosted variable fonts, preloaded so the swap never shifts layout.
+            Files live in public/fonts (copied from @fontsource-variable); the
+            @font-face declarations are in globals.css — not next/font (Windows
+            Turbopack bug, see AGENTS.md). */}
+        <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/sora-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         <link rel="alternate" hrefLang="es" href="https://rido.bike/es" />
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />

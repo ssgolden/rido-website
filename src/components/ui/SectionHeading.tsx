@@ -95,7 +95,7 @@ export function SectionHeading({
     return (
       <>
         {eyebrow && (
-          <p className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3">{eyebrow}</p>
+          <p className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3">{eyebrow}</p>
         )}
         <Tag className={className}>{fullText}</Tag>
       </>
@@ -106,7 +106,7 @@ export function SectionHeading({
     <>
       {eyebrow && (
         <motion.p
-          className="text-rido-magenta text-sm font-semibold uppercase tracking-wider mb-3"
+          className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3"
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
