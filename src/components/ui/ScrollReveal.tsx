@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { EASE_BRAND } from "@/lib/motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -41,7 +42,7 @@ export function ScrollReveal({
           ? { opacity: 1, x: 0, y: 0 }
           : { opacity: 0, ...directionOffset[direction] }
       }
-      transition={{ duration, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration, delay, ease: EASE_BRAND }}
     >
       {children}
     </motion.div>

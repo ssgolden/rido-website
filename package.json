@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.2",
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/sora": "^5.2.8",
     "@types/bcryptjs": "^2.4.6",
     "@vercel/analytics": "^2.0.1",
     "bcryptjs": "^2.4.3",

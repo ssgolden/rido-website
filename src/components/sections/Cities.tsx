@@ -71,7 +71,7 @@ export function Cities() {
                       {/* Glow */}
                       <circle cx={x} cy={y} r="12" fill="#DE0498" opacity="0.08" />
                       {/* City name */}
-                      <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter" fontWeight="700">{city.name}</text>
+                      <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter Variable, Inter, sans-serif" fontWeight="700">{city.name}</text>
                     </g>
                   );
                 })}

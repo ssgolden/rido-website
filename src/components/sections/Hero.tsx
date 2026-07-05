@@ -75,7 +75,7 @@ export function Hero() {
         <ScrollReveal delay={0.25}>
           <motion.h1
             aria-label="Move Freely Across Spain"
-            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tight leading-[0.95] sm:leading-[0.9]"
+            className="text-display-2xl font-black"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}

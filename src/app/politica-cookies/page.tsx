@@ -59,7 +59,7 @@ export default function CookiePolicyPage() {
           <strong>Cookieless analytics (Vercel Analytics)</strong>: We measure aggregate website traffic (page views, visit counts) using Vercel Analytics, which operates <strong>without cookies</strong> and without storing identifiers on your device. It does not track you across websites and the data we receive is anonymous and aggregated.
         </li>
         <li>
-          <strong>Google Fonts</strong>: Our website loads typefaces from Google Fonts (fonts.googleapis.com and fonts.gstatic.com). Google Fonts does not set cookies; however, your browser transmits your IP address to Google when requesting the font files. You can find more information in Google&apos;s privacy policy.
+          <strong>Self-hosted fonts</strong>: The typefaces used on our website are hosted on our own servers and delivered together with the rest of the website. No font files are requested from Google Fonts or any other third party, no cookies are set, and your IP address is not transmitted to any external font provider.
         </li>
       </ul>
       <div className="legal-highlight">
@@ -74,7 +74,7 @@ export default function CookiePolicyPage() {
       </p>
       <ul>
         <li><strong>Strictly necessary storage</strong> (such as the local storage entry that records your consent choice) is exempt from the consent requirement, as it is required to provide a service you have expressly requested.</li>
-        <li><strong>Analytics</strong>: Our analytics solution is cookieless and processes only aggregated, anonymous data. To the extent any processing of personal data occurs (such as the momentary processing of your IP address to serve the website or font files), the legal basis is our legitimate interest in operating, securing, and improving our website.</li>
+        <li><strong>Analytics</strong>: Our analytics solution is cookieless and processes only aggregated, anonymous data. To the extent any processing of personal data occurs (such as the momentary processing of your IP address to serve the website), the legal basis is our legitimate interest in operating, securing, and improving our website.</li>
       </ul>
       <p>
         Where consent is required, it is obtained through the consent banner displayed on your first visit, and you may withdraw it at any time as described below.
@@ -91,7 +91,7 @@ export default function CookiePolicyPage() {
         </li>
       </ul>
       <p>
-        Because our analytics is cookieless and our fonts do not use cookies, declining non-essential technologies does not degrade your experience on our website.
+        Because our analytics is cookieless and our fonts are self-hosted (no third-party requests), declining non-essential technologies does not degrade your experience on our website.
       </p>
 
       <h2 id="5-changes" className="legal-section">5. Changes to This Cookie Policy</h2>

@@ -97,6 +97,19 @@ for (const vp of VIEWPORTS) {
       }
       // Let lazy sections mount and fonts settle.
       await page.waitForTimeout(800);
+      if (target.fullPage) {
+        // Scroll through the page so IntersectionObserver-driven reveals
+        // (ScrollReveal/StaggerReveal) fire before a full-page capture.
+        await page.evaluate(async () => {
+          const step = window.innerHeight / 2;
+          for (let y = 0; y <= document.body.scrollHeight; y += step) {
+            window.scrollTo(0, y);
+            await new Promise((r) => setTimeout(r, 120));
+          }
+          window.scrollTo(0, 0);
+        });
+        await page.waitForTimeout(600);
+      }
       await page.screenshot({ path: file, fullPage: target.fullPage });
       console.log(`[visual-qa] ok   ${file}`);
     } catch (err) {

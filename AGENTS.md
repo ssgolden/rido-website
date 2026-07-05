@@ -21,7 +21,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - All interactive elements need `cursor-pointer` class
 - Use `useReducedMotion()` from framer-motion for animations that loop
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
-- Google Fonts loaded via `<link>` in layout.tsx (not next/font — Turbopack bug on Windows)
+- Fonts are self-hosted via `@fontsource-variable` packages imported in layout.tsx — zero external font requests (still not next/font — Turbopack bug on Windows)
+- Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`

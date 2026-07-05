@@ -2,6 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
+// Self-hosted variable fonts (bundled WOFF2, no external requests).
+// Do NOT switch to next/font — it breaks Turbopack builds on Windows.
+import "@fontsource-variable/inter";
+import "@fontsource-variable/sora";
 import "./globals.css";
 
 export const viewport: Viewport = {
@@ -159,22 +163,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <head>
-        {/* eslint-disable @next/next/no-page-custom-font -- next/font/google fails on Windows with Turbopack due to "http2 feature is not enabled" build error */}
         <link rel="preconnect" href="https://vitals.vercel-insights.com" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
         <link rel="alternate" hrefLang="en" href="https://rido.bike" />
         {/* Spanish hreflang removed — no Spanish version exists yet. Add <link rel="alternate" hrefLang="es" href="https://rido.bike/es" /> when localized */}
         <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
-        {/* eslint-enable @next/next/no-page-custom-font */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
