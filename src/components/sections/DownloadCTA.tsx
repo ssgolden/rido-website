@@ -99,7 +99,7 @@ const copy = {
 
 function DownloadCounter() {
   const { count, ref, visible } = useCountUp(1200, { duration: 2500 });
-  return <span ref={ref} className="font-bold text-rido-magenta transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>{count.toLocaleString()}+</span>;
+  return <span ref={ref} className="font-bold text-rido-magenta-light transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>{count.toLocaleString()}+</span>;
 }
 
 const WAITLIST_KEY = "rido-waitlist-email";

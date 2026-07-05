@@ -32,7 +32,7 @@ export default function CookiePolicyPage() {
       <div className="legal-highlight">
         <div className="flex items-center gap-3 mb-2">
           <Cookie className="w-5 h-5 text-rido-magenta" />
-          <h3 className="!mt-0 !mb-0 text-white font-bold">Transparency First</h3>
+          <h2 className="!mt-0 !mb-0 text-lg text-white font-bold">Transparency First</h2>
         </div>
         <p className="!mb-0">
           This policy explains which cookies and similar technologies are used on the Rido website, why we use them, and how you can manage or withdraw your consent at any time.

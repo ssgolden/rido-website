@@ -1,6 +1,49 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Self-hosted variable fonts (copied from @fontsource-variable packages into
+   public/fonts so the files have stable URLs we can <link rel="preload"> in
+   layout.tsx — preloading is what keeps the font swap out of CLS). Latin
+   subset covers Spanish (U+0000-00FF includes á é í ó ú ñ ü ¿ ¡). */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Sora Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 800;
+  src: url("/fonts/sora-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Metric-matched fallback fonts: while the self-hosted variable fonts load,
+   Arial is size-adjusted to Inter/Sora metrics so the swap causes (almost)
+   no reflow — this is what keeps CLS inside the 0.05 budget. Values match
+   the overrides next/font generates for these families (we can't use
+   next/font itself — Windows Turbopack bug, see AGENTS.md). */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Sora Fallback";
+  src: local("Arial");
+  size-adjust: 108.66%;
+  ascent-override: 92.06%;
+  descent-override: 23.02%;
+  line-gap-override: 0%;
+}
+
 @theme {
   --color-rido-magenta: #DE0498;
   --color-rido-magenta-dark: #C10385;
@@ -12,9 +55,9 @@
   --color-rido-cloud: #F8FAFC;
   --color-muted: rgb(148 163 184); /* slate-400, ~6.1:1 on navy */
   --color-muted-strong: rgb(203 213 225); /* slate-300, ~8.8:1 on navy */
-  --color-muted-weak: rgb(100 116 139); /* slate-500, ~4.0:1 on navy - decorative only */
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Sora Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --color-muted-weak: rgb(124 139 163); /* #7C8BA3, ~5.2:1 on navy - AA-compliant for body text */
+  --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sora Variable", "Sora Fallback", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   /* Fluid display scale — use as text-display-2xl (hero) / text-display-xl (section headings) */
   --text-display-2xl: clamp(2.75rem, 1.5rem + 5vw, 6rem);
   --text-display-2xl--line-height: 0.95;
@@ -121,7 +164,7 @@
     @apply text-slate-300;
   }
   .text-muted-weak {
-    @apply text-slate-500;
+    color: var(--color-muted-weak);
   }
   .text-gradient-brand {
     @apply bg-gradient-to-r from-rido-magenta to-rido-magenta-light bg-clip-text text-transparent;
@@ -274,7 +317,7 @@
   .legal-content p { @apply mb-4 leading-relaxed; }
   .legal-content ul { @apply list-disc list-inside mb-4 space-y-1; }
   .legal-content ol { @apply list-decimal list-inside mb-4 space-y-1; }
-  .legal-content a { @apply text-rido-magenta hover:text-rido-magenta-light underline transition-colors; }
+  .legal-content a { @apply text-rido-magenta-light hover:text-white underline transition-colors; }
   .legal-content strong { @apply text-white font-semibold; }
   .legal-highlight { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
   .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }

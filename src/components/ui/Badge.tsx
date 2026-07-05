@@ -12,7 +12,7 @@ export function Badge({ children, variant = "default", className }: BadgeProps) 
       className={cn(
         "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium",
         variant === "magenta" &&
-          "bg-rido-magenta/15 text-rido-magenta border border-rido-magenta/25",
+          "bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/25",
         variant === "green" &&
           "bg-rido-green/15 text-rido-green border border-rido-green/25",
         variant === "magenta-light" &&

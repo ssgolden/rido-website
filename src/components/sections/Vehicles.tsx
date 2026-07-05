@@ -167,7 +167,7 @@ export function Vehicles() {
                   {v.type === "e-scooter" ? t.badgeScooter : t.badgeBike}
                 </Badge>
                 <h3 className="text-3xl font-black">{v.name}</h3>
-                <p className="text-rido-magenta font-semibold mt-1">{vCopy.tagline}</p>
+                <p className="text-rido-magenta-light font-semibold mt-1">{vCopy.tagline}</p>
               </div>
 
               <p className="text-muted leading-relaxed">{vCopy.description}</p>
@@ -175,7 +175,7 @@ export function Vehicles() {
               <StaggerReveal className="grid grid-cols-2 gap-4" staggerDelay={0.08}>
                 {vCopy.specs.map((spec) => (
                   <StaggerItem key={spec.label} className="glass rounded-xl p-4 text-center">
-                    <p className="text-lg font-bold text-rido-magenta">{spec.value}</p>
+                    <p className="text-lg font-bold text-rido-magenta-light">{spec.value}</p>
                     <p className="text-xs text-muted">{spec.label}</p>
                   </StaggerItem>
                 ))}

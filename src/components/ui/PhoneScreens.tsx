@@ -139,7 +139,7 @@ function RideScreen() {
           <span className="text-5xl font-black text-white">17</span>
           <span className="text-xs font-semibold text-muted">km/h</span>
         </div>
-        <div className="mt-1 flex items-center gap-1 text-rido-magenta">
+        <div className="mt-1 flex items-center gap-1 text-rido-magenta-light">
           <Gauge className="w-3.5 h-3.5" />
           <span className="text-[10px] font-semibold">Cruising</span>
         </div>

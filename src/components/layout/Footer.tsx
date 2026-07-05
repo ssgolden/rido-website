@@ -111,29 +111,29 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
               ))}
             </div>
             <div className="mt-5">
-              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta hover:text-rido-magenta-light transition-colors cursor-pointer font-semibold">{t.joinWaitlist}</a>
+              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta-light hover:text-white transition-colors cursor-pointer font-semibold">{t.joinWaitlist}</a>
             </div>
           </div>
           {t.columns.map((column) => (
             <div key={column.heading}>
-              <h4 className="font-semibold text-white mb-4">{column.heading}</h4>
+              <h3 className="font-semibold text-white mb-4">{column.heading}</h3>
               <ul className="space-y-2">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("http") || link.href.startsWith("#") ? (
-                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">
+                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
                         {link.label}
                         {link.badge ? (
-                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta border border-rido-magenta/30">
+                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/30">
                             {link.badge}
                           </span>
                         ) : null}
                       </a>
                     ) : (
-                      <Link href={link.href} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta transition-colors cursor-pointer">
+                      <Link href={link.href} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
                         {link.label}
                         {link.badge ? (
-                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta border border-rido-magenta/30">
+                          <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/30">
                             {link.badge}
                           </span>
                         ) : null}

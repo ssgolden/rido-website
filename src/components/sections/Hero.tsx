@@ -66,7 +66,7 @@ const copy: Record<Locale, typeof en> = {
     ctaPrimary: "Reserva tu primer viaje",
     ctaSecondary: "Ver demo de 30 seg",
     microcopy: "Sin spam, date de baja cuando quieras · Cumplimos el RGPD",
-    scrollAria: "Ir a la siguiente sección",
+    scrollAria: "Desliza a la siguiente sección",
     scrollLabel: "Desliza",
     stats: [
       { icon: MapPin, value: 5, suffix: "", label: "Ciudades de lanzamiento" },
@@ -302,7 +302,7 @@ export function Hero() {
       <a
         href="#how-it-works"
         aria-label={t.scrollAria}
-        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/55 hover:text-rido-magenta transition-colors min-h-[44px] min-w-[44px] justify-center"
+        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/55 hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
       >
         <span className="text-[10px] uppercase tracking-[0.2em]">{t.scrollLabel}</span>
         <span className="relative flex h-7 w-px bg-white/20 overflow-hidden">

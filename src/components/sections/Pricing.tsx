@@ -122,8 +122,8 @@ export function Pricing() {
                   <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
                   <p className="text-sm text-muted mb-6">{tier.description}</p>
                   <div className="space-y-3">
-                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.unlockFee}</p><p className="text-lg font-bold text-rido-magenta">{tier.unlockFee}</p></div>
-                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.perMinute}</p><p className="text-lg font-bold text-rido-magenta">{tier.perMinute}</p></div>
+                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.unlockFee}</p><p className="text-lg font-bold text-rido-magenta-light">{tier.unlockFee}</p></div>
+                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.perMinute}</p><p className="text-lg font-bold text-rido-magenta-light">{tier.perMinute}</p></div>
                   </div>
                 </Card>
               </div>
