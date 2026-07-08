@@ -38,10 +38,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
 ## Build & Deploy Invariants
-- Live site (rido.bike) deploys via GitHub Pages static export (`.github/workflows/deploy.yml`, master pushes). `npm run build` is a plain `next build` — there is no build wrapper and no `src/app/api/` on master (the backend/API layer was removed; it would return only with a hosting move to Vercel).
+- Live site (rido.bike) deploys via GitHub Pages static export (`.github/workflows/deploy.yml`, master pushes). `npm run build` runs `scripts/build.mjs`: a plain `next build` for server hosts, and an API-route-excluding build when `NEXT_OUTPUT=export` (route handlers cannot be statically exported).
 - GitHub Pages CANNOT serve custom response headers — `public/_headers` (and any `headers()` in next.config.ts) only take effect on a server host (Vercel/Netlify).
 - Do NOT enable next-intl locale routing until an `app/[locale]/` structure exists — otherwise every page 404s (rewrites target nonexistent locale paths).
 - Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
+- Pre-launch gate: `src/proxy.ts` redirects everything to /coming-soon when the `GATE_PASSWORD` env var is set (Vercel only — the password lives in Vercel project settings, NEVER in this public repo). Unset the var to launch. GitHub Pages export ignores the proxy; API routes are excluded from export by `scripts/build.mjs`.
 
 ## File Conventions
 - Sections in `src/components/sections/`
