@@ -6,12 +6,15 @@ import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Mail, Lock, Check } from "lucide-react";
+import { citiesAnnounced } from "@/data/cities";
 
 const en = {
   badge: "Launching soon on the Costa del Sol",
   heading1: "Something good",
   heading2: "is rolling in.",
-  sub: "Shared e-scooters and e-bikes for Marbella, San Pedro, Cancelada, Estepona and El Paraíso. Join the waitlist and be first to ride.",
+  sub: citiesAnnounced
+    ? "Shared e-scooters and e-bikes for Marbella, San Pedro, Cancelada, Estepona and El Paraíso. Join the waitlist and be first to ride."
+    : "Shared e-scooters and e-bikes are coming to the Costa del Sol. Launch cities announced soon — join the waitlist and be first to ride.",
   emailPlaceholder: "your@email.com",
   emailAria: "Email address",
   join: "Join the waitlist",
@@ -33,7 +36,9 @@ const copy: Record<"en" | "es", typeof en> = {
     badge: "Muy pronto en la Costa del Sol",
     heading1: "Algo bueno",
     heading2: "está en camino.",
-    sub: "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé el primero en rodar.",
+    sub: citiesAnnounced
+      ? "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé el primero en rodar."
+      : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera y sé el primero en rodar.",
     emailPlaceholder: "tu@email.com",
     emailAria: "Correo electrónico",
     join: "Únete a la lista",

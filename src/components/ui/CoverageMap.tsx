@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { cities, type City } from "@/data/cities";
+import { cities, citiesAnnounced, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { Map as MapLibreMap, LngLatBoundsLike } from "maplibre-gl";
@@ -13,6 +13,7 @@ type MapLibreModule = typeof import("maplibre-gl");
 const copy = {
   en: {
     mapAria: "Map of Rido launch towns on the Costa del Sol — all launching soon",
+    regionMapAria: "Map of the Costa del Sol region — Rido launch towns announced soon",
     launchingSoon: "Launching soon",
     /** Lowercase suffix appended to marker aria-labels: "<City> — launching soon". */
     launchingSoonSuffix: "launching soon",
@@ -21,6 +22,7 @@ const copy = {
   },
   es: {
     mapAria: "Mapa de las ciudades de lanzamiento de Rido en la Costa del Sol — todas próximamente",
+    regionMapAria: "Mapa de la región de la Costa del Sol — las ciudades de lanzamiento de Rido se anunciarán muy pronto",
     launchingSoon: "Próximamente",
     launchingSoonSuffix: "próximamente",
     eScooter: "Patinete eléctrico",
@@ -63,6 +65,17 @@ const COVERAGE_BOUNDS: LngLatBoundsLike = (() => {
     [Math.max(...lngs) + pad, Math.max(...lats) + pad],
   ];
 })();
+
+/**
+ * Fixed western-Costa-del-Sol region view used while launch towns are
+ * unannounced (showCities=false). Deliberately NOT derived from the city
+ * coordinates, so the camera frames the region generally rather than
+ * hinting at the exact coverage footprint.
+ */
+const REGION_BOUNDS: LngLatBoundsLike = [
+  [-5.35, 36.3],
+  [-4.55, 36.7],
+];
 
 function supportsWebGL(): boolean {
   try {
@@ -200,7 +213,7 @@ function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, reducedMotion: bo
  * shown before the map library loads and (b) the permanent fallback when
  * WebGL is unavailable or the style/tiles fail to load.
  */
-function CoverageSvgFallback() {
+function CoverageSvgFallback({ showCities }: { showCities: boolean }) {
   return (
     <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
       {/* Coastline path */}
@@ -242,8 +255,10 @@ function CoverageSvgFallback() {
             <circle cx={x} cy={y} r="4" fill="#DE0498" opacity="0.9" className="city-dot-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
             {/* Glow */}
             <circle cx={x} cy={y} r="12" fill="#DE0498" opacity="0.08" />
-            {/* City name */}
-            <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter Variable, Inter, sans-serif" fontWeight="700">{city.name}</text>
+            {/* City name — hidden until launch towns are announced */}
+            {showCities && (
+              <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter Variable, Inter, sans-serif" fontWeight="700">{city.name}</text>
+            )}
           </g>
         );
       })}
@@ -257,8 +272,13 @@ type MapStatus = "idle" | "loading" | "ready" | "fallback";
  * Real interactive coverage map (MapLibre GL + OpenFreeMap tiles — keyless).
  * maplibre-gl (~250KB) is dynamically imported only once the panel scrolls
  * near the viewport; until then (and on any failure) the SVG poster renders.
+ *
+ * `showCities` gates every town-name surface (markers, labels, popups, aria,
+ * SVG labels) and swaps the camera to a fixed Costa del Sol region view.
+ * It defaults to the `citiesAnnounced` flag so no consumer can leak town
+ * names by accident while the launch towns are unannounced.
  */
-export function CoverageMap() {
+export function CoverageMap({ showCities = citiesAnnounced }: { showCities?: boolean } = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -307,7 +327,8 @@ export function CoverageMap() {
         style: STYLE_URL,
         // Initial camera from bounds — set at construction time, so there is
         // no animated fitBounds at all (reduced-motion safe by design).
-        bounds: COVERAGE_BOUNDS,
+        // Pre-announcement, frame the region generally instead of the towns.
+        bounds: showCities ? COVERAGE_BOUNDS : REGION_BOUNDS,
         fitBoundsOptions: { padding: { top: 44, right: 44, bottom: 56, left: 44 } },
         attributionControl: {
           compact: true,
@@ -353,14 +374,15 @@ export function CoverageMap() {
       settled = true;
       window.clearTimeout(failTimer);
       applyBrandStyle(map);
-      addCityMarkers(lib, map, reduced, copyRef.current);
+      // Town markers (names, labels, popups) only after the announcement.
+      if (showCities) addCityMarkers(lib, map, reduced, copyRef.current);
       setStatus("ready");
     });
     // Any error before first load (style JSON, glyphs, sprite, initial tiles
     // unreachable) means the map cannot prove anything — show the SVG instead.
     // Errors after a successful load (a single dropped tile) are ignored.
     map.on("error", fail);
-  }, []);
+  }, [showCities]);
 
   // Lazy trigger: only pull in maplibre-gl when the panel approaches the viewport.
   useEffect(() => {
@@ -395,11 +417,11 @@ export function CoverageMap() {
     <div
       ref={wrapRef}
       role="group"
-      aria-label={t.mapAria}
+      aria-label={showCities ? t.mapAria : t.regionMapAria}
       className="coverage-map relative w-full max-w-3xl h-[220px] sm:h-[340px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden"
     >
       {/* Poster + permanent fallback (the original SVG visualization) */}
-      {posterVisible && <CoverageSvgFallback />}
+      {posterVisible && <CoverageSvgFallback showCities={showCities} />}
 
       {/* Real map canvas — fades in over the poster once tiles are ready */}
       {status !== "fallback" && (

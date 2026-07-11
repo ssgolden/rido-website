@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { cities } from "@/data/cities";
+import { cities, citiesAnnounced } from "@/data/cities";
 import { CityLanding, getCity, getCityMetadata } from "./city-landing";
 
 // Static export: only the five launch-town slugs exist; anything else 404s at build time.
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return cities.map((city) => ({ city: city.slug }));
+  // Until the launch towns are announced (citiesAnnounced), no city pages are
+  // built at all — with dynamicParams=false every /{slug} URL 404s.
+  // output:export rejects an empty param list, so while unannounced we emit
+  // one inert placeholder slug that resolves to notFound() (no town names).
+  return citiesAnnounced
+    ? cities.map((city) => ({ city: city.slug }))
+    : [{ city: "launch-cities-announced-soon" }];
 }
 
 export async function generateMetadata({

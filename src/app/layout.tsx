@@ -3,6 +3,7 @@ import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { getAllSchemas } from "@/lib/schema";
+import { citiesAnnounced } from "@/data/cities";
 import { Toaster } from "@/components/animation/Toast";
 // Self-hosted variable fonts (bundled WOFF2, no external requests).
 import "./globals.css";
@@ -17,8 +18,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://rido.bike"),
   title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
-  description:
-    "Shared e-scooters and e-bikes coming to the Costa del Sol. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle.",
+  description: citiesAnnounced
+    ? "Shared e-scooters and e-bikes coming to the Costa del Sol. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle."
+    : "Shared e-scooters and e-bikes coming to the Costa del Sol. Launch cities announced soon — join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
   keywords: [
     "rido",
     "e-scooter",
@@ -26,9 +28,8 @@ export const metadata: Metadata = {
     "shared mobility",
     "Spain",
     "Costa del Sol",
-    "Marbella",
-    "Estepona",
-    "San Pedro de Alcántara",
+    // Town-name keywords only after the launch announcement
+    ...(citiesAnnounced ? ["Marbella", "Estepona", "San Pedro de Alcántara"] : []),
     "electric scooter",
     "electric bike",
     "micromobility",
@@ -75,7 +76,7 @@ export const metadata: Metadata = {
   other: {
     "geo.position": "36.5099;-4.8862",
     "geo.region": "ES-A",
-    "geo.placename": "Marbella, Costa del Sol, Spain",
+    "geo.placename": citiesAnnounced ? "Marbella, Costa del Sol, Spain" : "Costa del Sol, Spain",
     ICBM: "36.5099, -4.8862",
   },
 };

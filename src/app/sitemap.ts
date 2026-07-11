@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { cities } from "@/data/cities";
+import { cities, citiesAnnounced } from "@/data/cities";
 
 // Force static generation so this route is compatible with `output: "export"`
 export const dynamic = "force-static";
@@ -36,8 +36,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
     },
-    // Per-city landing pages (EN at /{slug}, ES at /es/{slug})
-    ...cities.map((city) => ({
+    // Per-city landing pages (EN at /{slug}, ES at /es/{slug}) — only once the
+    // launch towns are announced; pre-announcement these routes aren't built.
+    ...(citiesAnnounced ? cities : []).map((city) => ({
       url: `${baseUrl}/${city.slug}`,
       lastModified,
       changeFrequency: "weekly" as const,
@@ -50,7 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
     })),
-    ...cities.map((city) => ({
+    ...(citiesAnnounced ? cities : []).map((city) => ({
       url: `${baseUrl}/es/${city.slug}`,
       lastModified,
       changeFrequency: "weekly" as const,
