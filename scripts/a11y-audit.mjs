@@ -16,7 +16,7 @@ import { execSync } from "node:child_process";
 const baseUrl = process.argv[2] ?? "http://localhost:3000";
 
 // Representative set: EN + ES home, a city page, legal, careers, 404.
-const PAGES = ["/", "/es", "/marbella", "/politica-cookies", "/privacy", "/careers"];
+const PAGES = ["/", "/es", "/coming-soon", "/politica-cookies", "/privacy", "/careers"];
 
 // Fail the gate on these impact levels only; report the rest.
 const BLOCKING = new Set(["serious", "critical"]);
