@@ -5,6 +5,7 @@ import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
+import { citiesAnnounced } from "@/data/cities";
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })));
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })));
@@ -19,8 +20,9 @@ const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({
 
 export const metadata: Metadata = {
   title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
-  description:
-    "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar en Marbella, Estepona y más. Cero emisiones, cero complicaciones.",
+  description: citiesAnnounced
+    ? "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar en Marbella, Estepona y más. Cero emisiones, cero complicaciones."
+    : "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
   alternates: {
     canonical: "https://rido.bike/es",
     languages: {
@@ -70,7 +72,11 @@ export default function HomeEs() {
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
             <h1>Rido — Patinetes y bicicletas eléctricas compartidas en España</h1>
             <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido en la Costa del Sol. Cero emisiones, cero complicaciones.</p>
-            <p>Muy pronto en Marbella, San Pedro de Alcántara, Cancelada, Estepona y El Paraíso.</p>
+            <p>
+              {citiesAnnounced
+                ? "Muy pronto en Marbella, San Pedro de Alcántara, Cancelada, Estepona y El Paraíso."
+                : "Muy pronto en la Costa del Sol — las ciudades de lanzamiento se anunciarán en breve."}
+            </p>
           </div>
         </noscript>
         <Hero />

@@ -1,6 +1,6 @@
 import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
-import { cities } from "@/data/cities";
+import { cities, citiesAnnounced } from "@/data/cities";
 
 const baseUrl = "https://rido.bike";
 
@@ -106,8 +106,9 @@ export const webPageSchema = {
   "@type": "WebPage",
   "@id": `${baseUrl}/`,
   name: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
-  description:
-    "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle.",
+  description: citiesAnnounced
+    ? "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle."
+    : "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Launch cities announced soon — join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
   url: baseUrl,
   isPartOf: { "@id": websiteId },
   about: { "@id": brandId },
@@ -145,15 +146,20 @@ export const localBusinessSchema = {
     latitude: 36.5099,
     longitude: -4.8862,
   },
-  hasMap: "https://www.google.com/maps/place/Marbella,+M%C3%A1laga,+Spain",
-  areaServed: cities.map((city) => ({
-    "@type": "City",
-    name: city.name,
-    containedInPlace: {
-      "@type": "AdministrativeArea",
-      name: city.region,
-    },
-  })),
+  hasMap: citiesAnnounced
+    ? "https://www.google.com/maps/place/Marbella,+M%C3%A1laga,+Spain"
+    : "https://www.google.com/maps/place/Costa+del+Sol,+Spain",
+  // Pre-announcement, the served area is the region only — no town names.
+  areaServed: citiesAnnounced
+    ? cities.map((city) => ({
+        "@type": "City",
+        name: city.name,
+        containedInPlace: {
+          "@type": "AdministrativeArea",
+          name: city.region,
+        },
+      }))
+    : [{ "@type": "AdministrativeArea", name: "Costa del Sol" }],
   serviceType: ["E-Scooter Rental", "E-Bike Rental"],
   openingHoursSpecification: {
     "@type": "OpeningHoursSpecification",
@@ -331,38 +337,60 @@ export const speakableSchema = {
 };
 
 // --- Services per city ------------------------------------------------------
-export const cityServiceSchemas = cities.map((city) => ({
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "@id": `${baseUrl}/#service-${city.slug}`,
-  serviceType:
-    city.vehicles.length === 2 ? "E-Scooter & E-Bike Rental" : "E-Scooter Rental",
-  provider: { "@id": `${baseUrl}/#localbusiness` },
-  areaServed: {
-    "@type": "Place",
-    name: city.name,
-    geo: {
-      "@type": "GeoCoordinates",
-      latitude: city.lat,
-      longitude: city.lng,
-    },
-    containedInPlace: {
-      "@type": "City",
-      name: city.name,
-      containedInPlace: { "@type": "AdministrativeArea", name: city.region },
-    },
-  },
-  description: `Shared ${city.vehicles
-    .map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike"))
-    .join(" and ")} rental in ${city.name}, ${city.region}. Coming soon.`,
-  offers: {
-    "@type": "AggregateOffer",
-    priceCurrency: "EUR",
-    lowPrice: "0.25",
-    highPrice: "14.99",
-    availability: "https://schema.org/PreOrder",
-  },
-}));
+// Pre-announcement (citiesAnnounced === false) the per-town Service nodes are
+// replaced by a single region-level Service so no town name reaches JSON-LD.
+export const cityServiceSchemas = citiesAnnounced
+  ? cities.map((city) => ({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "@id": `${baseUrl}/#service-${city.slug}`,
+      serviceType:
+        city.vehicles.length === 2 ? "E-Scooter & E-Bike Rental" : "E-Scooter Rental",
+      provider: { "@id": `${baseUrl}/#localbusiness` },
+      areaServed: {
+        "@type": "Place",
+        name: city.name,
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: city.lat,
+          longitude: city.lng,
+        },
+        containedInPlace: {
+          "@type": "City",
+          name: city.name,
+          containedInPlace: { "@type": "AdministrativeArea", name: city.region },
+        },
+      },
+      description: `Shared ${city.vehicles
+        .map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike"))
+        .join(" and ")} rental in ${city.name}, ${city.region}. Coming soon.`,
+      offers: {
+        "@type": "AggregateOffer",
+        priceCurrency: "EUR",
+        lowPrice: "0.25",
+        highPrice: "14.99",
+        availability: "https://schema.org/PreOrder",
+      },
+    }))
+  : [
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "@id": `${baseUrl}/#service-costa-del-sol`,
+        serviceType: "E-Scooter & E-Bike Rental",
+        provider: { "@id": `${baseUrl}/#localbusiness` },
+        areaServed: { "@type": "AdministrativeArea", name: "Costa del Sol" },
+        description:
+          "Shared e-scooter and e-bike rental on the Costa del Sol, Spain. First launch locations announced soon.",
+        offers: {
+          "@type": "AggregateOffer",
+          priceCurrency: "EUR",
+          lowPrice: "0.25",
+          highPrice: "14.99",
+          availability: "https://schema.org/PreOrder",
+        },
+      },
+    ];
 
 // --- FAQPage ---------------------------------------------------------------
 import { faqItems } from "@/data/faq";

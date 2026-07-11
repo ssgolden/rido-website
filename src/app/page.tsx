@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { citiesAnnounced } from "@/data/cities";
 import { Navbar } from "@/components/layout/Navbar";
 import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
@@ -29,7 +30,11 @@ export default function Home() {
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
             <h1>Rido — Shared E-Scooters & E-Bikes in Spain</h1>
             <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.</p>
-            <p>Coming soon to Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso.</p>
+            <p>
+              {citiesAnnounced
+                ? "Coming soon to Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso."
+                : "Coming soon to the Costa del Sol — launch cities announced soon."}
+            </p>
           </div>
         </noscript>
         <Hero />

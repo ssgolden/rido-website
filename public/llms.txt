@@ -3,7 +3,7 @@
 > Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
 
 ## About
-Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol: Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
+Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol; the launch cities will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
 
 ## How It Works
 1. Join the waitlist at https://rido.bike#download
@@ -25,11 +25,7 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - **Rido Bike** (e-bike): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
 
 ## Cities (all coming soon)
-- Marbella, Costa del Sol (e-scooter + e-bike)
-- San Pedro de Alcántara, Costa del Sol (e-scooter + e-bike)
-- Cancelada, Costa del Sol (e-scooter + e-bike)
-- Estepona, Costa del Sol (e-scooter + e-bike)
-- El Paraíso, Costa del Sol (e-scooter)
+- 5 launch cities on the Costa del Sol — announced soon (e-scooters + e-bikes)
 
 ## Safety
 - Helmet included with every scooter
@@ -73,5 +69,5 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - Currency: EUR
 - Launch status: Pre-launch / waitlist
 - Service type: Shared e-scooter and e-bike rental
-- Target cities: Marbella, San Pedro de Alcántara, Cancelada, Estepona, El Paraíso
+- Target cities: 5 launch cities on the Costa del Sol, announced soon
 - Primary entity: Go2 Place S.L. operating the "Rido" brand
