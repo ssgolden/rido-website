@@ -1,6 +1,5 @@
 "use client";
 import { Badge } from "@/components/ui/Badge";
-import { WaitlistCounter } from "@/components/ui/WaitlistCounter";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
@@ -38,7 +37,7 @@ type HeroStatData = {
 // Non-breaking spaces inside "Costa del Sol" keep the launch
 // region as one unit.
 const en = {
-  waitlistSuffix: "riders on the waitlist",
+  waitlistKicker: "Waitlist now open — be first to ride",
   badge: "Launching the Costa del Sol",
   headlineWords: ["Move", "Freely", "Across", "the", "Costa del Sol"],
   subheadline:
@@ -58,7 +57,7 @@ const en = {
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    waitlistSuffix: "personas en la lista de espera",
+    waitlistKicker: "Lista de espera abierta — sé de los primeros en rodar",
     badge: "Muy pronto en la Costa del Sol",
     headlineWords: ["Muévete", "libremente", "por", "la", "Costa del Sol"],
     subheadline:
@@ -209,9 +208,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
             </span>
-            <span>
-              <WaitlistCounter /> {t.waitlistSuffix}
-            </span>
+            <span>{t.waitlistKicker}</span>
           </div>
         </ScrollReveal>
 

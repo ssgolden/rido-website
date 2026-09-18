@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Apple, Play, Shield, Smartphone, CreditCard, MapPin, Mail, CheckCircle, Loader2 } from "lucide-react";
+import { Shield, Smartphone, CreditCard, MapPin, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
-import { useCountUp } from "@/hooks/useCountUp";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -14,7 +13,6 @@ interface DownloadCopy {
   headingHighlight: string;
   headingAfter: string;
   intro: string;
-  waitlistCount: string;
   emailPlaceholder: string;
   emailAria: string;
   submit: string;
@@ -22,13 +20,7 @@ interface DownloadCopy {
   errorGeneric: string;
   successTitle: string;
   successBody: string;
-  appStoreAria: string;
-  appStoreTop: string;
-  appStoreName: string;
-  googlePlayAria: string;
-  googlePlayTop: string;
-  googlePlayName: string;
-  soon: string;
+  appsNote: string;
   /** Fixed-length tuple: zips with `trustSignalIcons` by index. */
   trustSignals: readonly [string, string, string];
   complianceLine: string;
@@ -47,7 +39,6 @@ const copy = {
     headingHighlight: "Ride",
     headingAfter: "?",
     intro: "Join the waitlist and be first to ride when Rido launches on the Costa del Sol.",
-    waitlistCount: "people on the waitlist",
     emailPlaceholder: "your@email.com",
     emailAria: "Email address for waitlist",
     submit: "Join Waitlist",
@@ -55,13 +46,7 @@ const copy = {
     errorGeneric: "Something went wrong. Please try again.",
     successTitle: "You're on the list!",
     successBody: "We'll email you the moment Rido launches on the Costa del Sol. Get ready to ride.",
-    appStoreAria: "Download on the App Store — coming soon",
-    appStoreTop: "Download on the",
-    appStoreName: "App Store",
-    googlePlayAria: "Get it on Google Play — coming soon",
-    googlePlayTop: "Get it on",
-    googlePlayName: "Google Play",
-    soon: "Soon",
+    appsNote: "iOS and Android apps in development. Join the waitlist to get an early-access invite the moment they ship.",
     trustSignals: ["Be first to ride", "No payment now", "Costa del Sol launch"],
     complianceLine: "Insured rides · GDPR compliant · Data protected",
     phoneTagline: "Move freely",
@@ -74,7 +59,6 @@ const copy = {
     headingHighlight: "rodar",
     headingAfter: "?",
     intro: "Únete a la lista de espera y sé de los primeros en rodar cuando Rido llegue a la Costa del Sol.",
-    waitlistCount: "personas en la lista de espera",
     emailPlaceholder: "tu@email.com",
     emailAria: "Correo electrónico para la lista de espera",
     submit: "Unirme a la lista",
@@ -82,13 +66,7 @@ const copy = {
     errorGeneric: "Algo ha salido mal. Vuelve a intentarlo.",
     successTitle: "¡Ya estás en la lista!",
     successBody: "Te escribiremos en cuanto Rido llegue a la Costa del Sol. Prepárate para rodar.",
-    appStoreAria: "Descárgalo en el App Store — muy pronto",
-    appStoreTop: "Descárgalo en el",
-    appStoreName: "App Store",
-    googlePlayAria: "Disponible en Google Play — muy pronto",
-    googlePlayTop: "Disponible en",
-    googlePlayName: "Google Play",
-    soon: "Pronto",
+    appsNote: "Apps de iOS y Android en desarrollo. Únete a la lista para recibir una invitación de acceso anticipado en cuanto salgan.",
     trustSignals: ["Sé de los primeros en rodar", "Sin pagos por ahora", "Lanzamiento en la Costa del Sol"],
     complianceLine: "Trayectos asegurados · Cumplimos el RGPD · Datos protegidos",
     phoneTagline: "Muévete con libertad",
@@ -96,11 +74,6 @@ const copy = {
     phoneTabs: ["Mapa", "Viaje", "Pago"],
   },
 } as const satisfies Record<Locale, DownloadCopy>;
-
-function DownloadCounter() {
-  const { count, ref, visible } = useCountUp(1200, { duration: 2500 });
-  return <span ref={ref} className="font-bold text-rido-magenta-light transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>{count.toLocaleString()}+</span>;
-}
 
 const WAITLIST_KEY = "rido-waitlist-email";
 
@@ -123,8 +96,9 @@ function WaitlistForm() {
     setErrorKey(null);
 
     try {
-      // Store email in localStorage so it persists (no backend on static export).
-      // When the backend is ready, this is where the fetch() to /api/waitlist would go.
+      // ⚠️ PLACEHOLDER: emails persist ONLY to this visitor's browser localStorage.
+      // They are NOT sent anywhere — do NOT ship past beta without wiring a real backend.
+      // Swap point: replace the block below with `await fetch('/api/waitlist', { method: 'POST', body: JSON.stringify({ email }) })`.
       const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
       if (!existing.includes(email)) {
         existing.push(email);
@@ -211,27 +185,15 @@ export function DownloadCTA() {
             <ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">{t.intro}</p>
-              <p className="text-sm text-muted-weak mb-6"><DownloadCounter /> {t.waitlistCount}</p>
             </ScrollReveal>
             <ScrollReveal delay={0.15}>
               <WaitlistForm />
             </ScrollReveal>
             <ScrollReveal delay={0.25}>
-              <div className="mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-8">
-                <a href="#" onClick={(e) => e.preventDefault()} aria-label={t.appStoreAria} className="inline-block opacity-70 cursor-not-allowed">
-                  <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 flex items-center gap-3 relative">
-                    <Apple className="w-6 h-6 text-white shrink-0" />
-                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">{t.appStoreTop}</span><span className="text-sm leading-tight font-bold">{t.appStoreName}</span></span>
-                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">{t.soon}</span>
-                  </div>
-                </a>
-                <a href="#" onClick={(e) => e.preventDefault()} aria-label={t.googlePlayAria} className="inline-block opacity-70 cursor-not-allowed">
-                  <div className="bg-white/10 border border-white/20 rounded-xl px-6 py-3 flex items-center gap-3 relative">
-                    <Play className="w-5 h-5 text-white shrink-0 ml-1" />
-                    <span className="flex flex-col items-start"><span className="text-[10px] leading-tight opacity-70">{t.googlePlayTop}</span><span className="text-sm leading-tight font-bold">{t.googlePlayName}</span></span>
-                    <span className="absolute -top-2 -right-2 text-[9px] bg-rido-magenta text-white px-1.5 py-0.5 rounded-full font-semibold">{t.soon}</span>
-                  </div>
-                </a>
+              <div className="mt-6 flex items-center justify-center lg:justify-start mb-8">
+                <div className="glass rounded-xl px-5 py-4 border border-white/10 max-w-md">
+                  <p className="text-sm text-white/80">{t.appsNote}</p>
+                </div>
               </div>
             </ScrollReveal>
             <ScrollReveal delay={0.35}>
