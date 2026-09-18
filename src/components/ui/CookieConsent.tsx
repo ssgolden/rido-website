@@ -86,6 +86,9 @@ export function CookieConsent() {
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby="cookie-consent-title"
         >
           <div className="max-w-4xl mx-auto glass-strong rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
             <div className="flex items-start gap-4">
@@ -93,8 +96,8 @@ export function CookieConsent() {
                 <Cookie className="w-5 h-5 text-rido-magenta" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-bold text-white mb-1">{t.title}</h3>
-                <p className="text-sm text-white/60 leading-relaxed">
+                <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
+                <p className="text-sm text-white/70 leading-relaxed">
                   {t.body}{" "}
                   <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
@@ -107,7 +110,7 @@ export function CookieConsent() {
               </div>
               <button
                 onClick={handleDecline}
-                className="text-white/40 hover:text-white transition-colors cursor-pointer p-1 shrink-0"
+                className="text-white/60 hover:text-white transition-colors cursor-pointer p-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy rounded"
                 aria-label={t.close}
               >
                 <X className="w-4 h-4" />

@@ -45,7 +45,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
   ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
     const classes = cn(
       "btn-ripple inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer",
-      "hover:scale-105 active:scale-95",
+      "hover:scale-105 active:scale-[0.98] active:translate-y-px active:duration-75 will-change-transform transform-gpu",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy",
       variantClasses(variant),
       sizeClasses(size),

@@ -114,7 +114,7 @@ export function Pricing() {
         </div>
         <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6 mb-10 sm:mb-16" staggerDelay={0.1}>
           {pricingTiers.map((tier) => (
-            <StaggerItem key={tier.id} className={tier.popular ? "order-first md:order-none" : undefined}>
+            <StaggerItem key={tier.id} className={tier.popular ? "order-first md:order-none lg:-translate-y-3 lg:scale-[1.03]" : undefined}>
               <div className={tier.popular ? "shimmer-border" : ""}>
                 <Card className={`text-center ${tier.popular ? "border-rido-magenta/40 shadow-lg shadow-rido-magenta/10 relative" : ""}`}>
                   {tier.popular && <Badge variant="magenta" className="mb-4 cursor-default">{t.mostPopular}</Badge>}
@@ -122,33 +122,37 @@ export function Pricing() {
                   <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
                   <p className="text-sm text-muted mb-6">{tier.description}</p>
                   <div className="space-y-3">
-                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.unlockFee}</p><p className="text-lg font-bold text-rido-magenta-light">{tier.unlockFee}</p></div>
-                    <div className="glass rounded-xl p-3"><p className="text-xs text-muted">{t.perMinute}</p><p className="text-lg font-bold text-rido-magenta-light">{tier.perMinute}</p></div>
+                    {/* Per-minute rate is the decision input — dominant size. Unlock fee demoted to footnote. */}
+                    <div className="glass rounded-xl p-4"><p className="text-xs text-muted uppercase tracking-wider">{t.perMinute}</p><p className="text-2xl font-black text-rido-magenta-light">{tier.perMinute}</p></div>
+                    <div className="text-xs text-muted-weak">{t.unlockFee}: <span className="text-muted-strong font-semibold">{tier.unlockFee}</span></div>
                   </div>
                 </Card>
               </div>
             </StaggerItem>
           ))}
         </StaggerReveal>
-        <ScrollReveal delay={0.2}>
-          <div className="glass rounded-2xl p-8 max-w-2xl mx-auto mb-16">
-            <div className="flex items-center gap-3 mb-6">
-              <ShieldCheck className="w-6 h-6 text-rido-green" />
-              <h3 className="text-lg font-bold">{t.guaranteeTitle}</h3>
+        {/* Guarantee + calculator combined: 2-col on lg+, single column flow below */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <ScrollReveal delay={0.2}>
+            <div className="glass rounded-2xl p-6 sm:p-8 h-full">
+              <div className="flex items-center gap-3 mb-6">
+                <ShieldCheck className="w-6 h-6 text-rido-green" />
+                <h3 className="text-lg font-bold">{t.guaranteeTitle}</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {noSurpriseGuarantees.map((item) => (
+                  <div key={item} className="flex items-center gap-2 text-sm">
+                    <Check className="w-4 h-4 text-rido-green shrink-0" />
+                    <span className="text-white/70">{item}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {noSurpriseGuarantees.map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm">
-                  <Check className="w-4 h-4 text-rido-green shrink-0" />
-                  <span className="text-white/60">{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </ScrollReveal>
-        <ScrollReveal delay={0.3}>
-          <PricingCalculator />
-        </ScrollReveal>
+          </ScrollReveal>
+          <ScrollReveal delay={0.3}>
+            <PricingCalculator />
+          </ScrollReveal>
+        </div>
       </div>
     </section>
   );

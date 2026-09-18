@@ -138,8 +138,8 @@ export function HowItWorks() {
                 <StaggerItem key={step.title}>
                   <div
                     className={cn(
-                      "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-colors duration-300 ease-out",
-                      active ? "glass border-rido-magenta/40" : "border-transparent"
+                      "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-all duration-300 ease-out",
+                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent opacity-50"
                     )}
                   >
                     <div

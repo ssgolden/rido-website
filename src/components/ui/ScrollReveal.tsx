@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
+import { EASE, SCROLL_MARGIN } from "@/lib/motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -21,7 +22,8 @@ export function ScrollReveal({
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: "-80px" });
+  const isInView = useInView(ref, { once, margin: SCROLL_MARGIN });
+  const reduce = useReducedMotion();
 
   const directionOffset = {
     up: { y: 40 },
@@ -30,6 +32,10 @@ export function ScrollReveal({
     right: { x: -40 },
     none: {},
   };
+
+  if (reduce) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
@@ -41,7 +47,7 @@ export function ScrollReveal({
           ? { opacity: 1, x: 0, y: 0 }
           : { opacity: 0, ...directionOffset[direction] }
       }
-      transition={{ duration, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration, delay, ease: EASE as unknown as [number, number, number, number] }}
     >
       {children}
     </motion.div>

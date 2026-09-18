@@ -120,6 +120,8 @@ function WaitlistForm() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.3 }}
         className="glass rounded-2xl p-6 text-center max-w-md mx-auto lg:mx-0"
+        role="status"
+        aria-live="polite"
       >
         <CheckCircle className="w-12 h-12 text-rido-green mx-auto mb-3" />
         <h3 className="text-lg font-bold mb-1">{t.successTitle}</h3>

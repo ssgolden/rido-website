@@ -111,7 +111,13 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
               ))}
             </div>
             <div className="mt-5">
-              <a href="#download" suppressHydrationWarning className="inline-flex items-center gap-2 text-sm text-rido-magenta-light hover:text-white transition-colors cursor-pointer font-semibold">{t.joinWaitlist}</a>
+              <a
+                href="#download"
+                suppressHydrationWarning
+                className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-lg border-2 border-rido-magenta text-rido-magenta-light font-semibold transition-all duration-200 hover:bg-rido-magenta/10 hover:scale-105 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+              >
+                {t.joinWaitlist}
+              </a>
             </div>
           </div>
           {t.columns.map((column) => (

@@ -1,12 +1,15 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { forwardRef, useRef } from "react";
+import { EASE, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
+
+const EASE_TUPLE = EASE as unknown as [number, number, number, number];
 
 const containerVariants = {
   hidden: {},
   show: {
-    transition: { staggerChildren: 0.1 },
+    transition: { staggerChildren: STAGGER.text },
   },
 };
 
@@ -15,7 +18,7 @@ const itemVariants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+    transition: { duration: 0.5, ease: EASE_TUPLE },
   },
 };
 
@@ -28,10 +31,15 @@ interface StaggerRevealProps {
 export function StaggerReveal({
   children,
   className,
-  staggerDelay = 0.1,
+  staggerDelay = STAGGER.text,
 }: StaggerRevealProps) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const isInView = useInView(ref, { once: true, margin: SCROLL_MARGIN });
+  const reduce = useReducedMotion();
+
+  if (reduce) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div

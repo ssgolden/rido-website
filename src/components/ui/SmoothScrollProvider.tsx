@@ -10,20 +10,39 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducedMotionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const coarsePointerMq = window.matchMedia("(pointer: coarse)");
 
     let lenis: Lenis | null = null;
-    if (!prefersReduced) {
+
+    const shouldEnable = () =>
+      !reducedMotionMq.matches && !coarsePointerMq.matches;
+
+    const start = () => {
+      if (lenis) return;
       lenis = new Lenis({
         autoRaf: true,
         lerp: 0.1,
         wheelMultiplier: 1,
-        // Smooth-scroll in-page anchor clicks. Lenis honors the target's
-        // scroll-margin-top (set on section[id] in globals.css for the fixed navbar).
         anchors: true,
       });
       lenisRef.current = lenis;
-    }
+    };
+
+    const stop = () => {
+      lenis?.destroy();
+      lenis = null;
+      lenisRef.current = null;
+    };
+
+    const sync = () => {
+      if (shouldEnable()) start();
+      else stop();
+    };
+
+    sync();
+    reducedMotionMq.addEventListener("change", sync);
+    coarsePointerMq.addEventListener("change", sync);
 
     // Initial-load hash handling: sections below the Hero mount lazily via
     // next/dynamic, so the anchor target may not exist when the browser tries
@@ -34,7 +53,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     try {
       if (hash.length > 1) selector = `#${CSS.escape(decodeURIComponent(hash.slice(1)))}`;
     } catch {
-      selector = null; // malformed hash — ignore
+      selector = null;
     }
     if (selector) {
       const target = selector;
@@ -56,8 +75,9 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     return () => {
       cancelAnimationFrame(rafId);
-      lenis?.destroy();
-      lenisRef.current = null;
+      reducedMotionMq.removeEventListener("change", sync);
+      coarsePointerMq.removeEventListener("change", sync);
+      stop();
     };
   }, []);
 

@@ -15,8 +15,8 @@ import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "
  */
 
 const MAX_PULL_PX = 8;
-// Gentle spring — settles in ~200ms, no overshoot wobble (micro-interaction budget).
-const SPRING = { stiffness: 150, damping: 15, mass: 0.1 };
+// Critically-damped spring — settles without overshoot wobble.
+const SPRING = { stiffness: 260, damping: 24, mass: 0.1 };
 
 interface MagneticProps {
   children: ReactNode;

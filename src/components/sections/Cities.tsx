@@ -52,7 +52,7 @@ export function Cities() {
   const t = copy[locale];
 
   return (
-    <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
+    <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-16 px-4 sm:px-6 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rido-magenta/5 blur-3xl pointer-events-none" />
 
@@ -78,7 +78,7 @@ export function Cities() {
         {/* Real coverage map (MapLibre + OpenFreeMap, lazy-loaded; falls back to the SVG visualization).
             Pre-announcement it shows the Costa del Sol region only — no town markers/labels/popups. */}
         <ScrollReveal delay={0.1}>
-          <div className="relative mb-16 flex justify-center">
+          <div className="relative mb-10 flex justify-center">
             <CoverageMap showCities={citiesAnnounced} />
           </div>
         </ScrollReveal>

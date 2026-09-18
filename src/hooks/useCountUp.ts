@@ -35,10 +35,16 @@ export function useCountUp(
   const [hasStarted, setHasStarted] = useState(false);
   const mounted = useIsMounted();
   const ref = useRef<HTMLDivElement>(null);
+  // Reduced-motion: immediately mark as started at final value; animation effect bails below.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setHasStarted(true);
+      setCount(end);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Observe viewport intersection to trigger the count-up.
-  // setHasStarted runs inside an IntersectionObserver callback (external system
-  // update), which is the idiomatic pattern the lint rule permits.
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
