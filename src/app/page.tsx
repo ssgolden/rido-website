@@ -37,6 +37,7 @@ const Sustainability = dynamic(() => import("@/components/sections/Sustainabilit
 const Pricing = dynamic(() => import("@/components/sections/Pricing").then((m) => ({ default: m.Pricing })), { loading });
 const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })), { loading });
 const About = dynamic(() => import("@/components/sections/About").then((m) => ({ default: m.About })), { loading });
+const Partners = dynamic(() => import("@/components/sections/Partners").then((m) => ({ default: m.Partners })), { loading });
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })), { loading });
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
@@ -78,6 +79,8 @@ export default function Home() {
         <FAQ />
         <Divider />
         <About />
+        <Divider />
+        <Partners />
         <Divider />
         <DownloadCTA />
       </main>

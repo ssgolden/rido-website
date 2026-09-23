@@ -15,6 +15,7 @@ const Sustainability = dynamic(() => import("@/components/sections/Sustainabilit
 const Pricing = dynamic(() => import("@/components/sections/Pricing").then((m) => ({ default: m.Pricing })));
 const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })));
 const About = dynamic(() => import("@/components/sections/About").then((m) => ({ default: m.About })));
+const Partners = dynamic(() => import("@/components/sections/Partners").then((m) => ({ default: m.Partners })));
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
 
@@ -96,6 +97,8 @@ export default function HomeEs() {
         <FAQ />
         <Divider />
         <About />
+        <Divider />
+        <Partners />
         <Divider />
         <DownloadCTA />
       </main>
