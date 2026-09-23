@@ -14,6 +14,7 @@ import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
 import { EASE, STAGGER } from "@/lib/motion";
+import { WaitlistProof } from "@/components/ui/WaitlistProof";
 
 // Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
 const NOISE_SVG =
@@ -34,6 +35,8 @@ type HeroStatData = {
 // User-visible strings per locale. Non-breaking spaces keep "Costa del Sol" as one unit.
 const en = {
   waitlistKicker: "Waitlist now open — be first to ride",
+  waitlistSingular: "{count} person on the waitlist",
+  waitlistPlural: "{count} people on the waitlist",
   badge: "Coming soon to the Costa del Sol",
   headlineWords: ["Move", "Freely", "Across", "the", "Costa del Sol"],
   subheadline:
@@ -54,6 +57,8 @@ const copy: Record<Locale, typeof en> = {
   en,
   es: {
     waitlistKicker: "Lista de espera abierta — sé de los primeros en moverte",
+    waitlistSingular: "{count} persona en la lista de espera",
+    waitlistPlural: "{count} personas en la lista de espera",
     badge: "Muy pronto en la Costa del Sol",
     headlineWords: ["Muévete", "libremente", "por", "la", "Costa del Sol"],
     subheadline:
@@ -220,7 +225,13 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
             </span>
-            <span>{t.waitlistKicker}</span>
+            <span>
+              <WaitlistProof
+                singular={t.waitlistSingular}
+                plural={t.waitlistPlural}
+                fallbackKicker={t.waitlistKicker}
+              />
+            </span>
           </div>
         </ScrollReveal>
 

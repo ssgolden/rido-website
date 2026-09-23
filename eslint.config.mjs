@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Google Apps Script — deployed to script.google.com, not bundled by Next.js
+    "scripts/waitlist-apps-script.js",
   ]),
 ]);
 

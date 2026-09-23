@@ -76,6 +76,9 @@ const copy = {
 } as const satisfies Record<Locale, DownloadCopy>;
 
 const WAITLIST_KEY = "rido-waitlist-email";
+// Public Apps Script web app URL. Set via NEXT_PUBLIC_WAITLIST_URL at build time.
+// Local dev / static preview falls back to localStorage only.
+const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 
 function WaitlistForm() {
   const locale = useLocale();
@@ -96,16 +99,28 @@ function WaitlistForm() {
     setErrorKey(null);
 
     try {
-      // ⚠️ PLACEHOLDER: emails persist ONLY to this visitor's browser localStorage.
-      // They are NOT sent anywhere — do NOT ship past beta without wiring a real backend.
-      // Swap point: replace the block below with `await fetch('/api/waitlist', { method: 'POST', body: JSON.stringify({ email }) })`.
+      // Persist locally as backup, then POST to the configured backend when set.
       const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
       if (!existing.includes(email)) {
         existing.push(email);
         localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
       }
-      // Simulate network delay for UX feedback
-      await new Promise((r) => setTimeout(r, 600));
+
+      if (WAITLIST_URL) {
+        const res = await fetch(WAITLIST_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            email,
+            locale,
+            userAgent: navigator.userAgent,
+          }),
+        });
+        if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
+        const json = await res.json().catch(() => ({}));
+        if (json.ok === false && json.error !== "invalid") throw new Error(json.error || "waitlist rejected");
+      }
+
       setStatus("success");
     } catch {
       setStatus("error");

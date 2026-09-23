@@ -55,6 +55,8 @@ const copy: Record<"en" | "es", typeof en> = {
   },
 };
 
+const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+
 export function ComingSoon() {
   const router = useRouter();
   const [locale, setLocale] = useState<"en" | "es">("en");
@@ -72,12 +74,23 @@ export function ComingSoon() {
     if (signupState === "busy") return;
     setSignupState("busy");
     try {
-      const res = await fetch("/api/waitlist", {
+      // Static-export: /api/waitlist is excluded; use the Apps Script web app URL.
+      // When hosted on a server with the API route present, fall back to it.
+      const target = WAITLIST_URL || "/api/waitlist";
+      const headers: Record<string, string> = WAITLIST_URL
+        ? { "Content-Type": "text/plain;charset=utf-8" }
+        : { "Content-Type": "application/json" };
+      const res = await fetch(target, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, locale }),
+        headers,
+        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
       });
-      setSignupState(res.ok ? "done" : "error");
+      if (!res.ok) { setSignupState("error"); return; }
+      if (WAITLIST_URL) {
+        const json = await res.json().catch(() => ({}));
+        if (json.ok === false) { setSignupState("error"); return; }
+      }
+      setSignupState("done");
     } catch {
       setSignupState("error");
     }
