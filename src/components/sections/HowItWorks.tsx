@@ -57,7 +57,7 @@ const copy: Record<Locale, typeof en> = {
       {
         icon: QrCode,
         title: "Escanea y desbloquea",
-        description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo para rodar.",
+        description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo para circular.",
       },
       {
         icon: Bike,

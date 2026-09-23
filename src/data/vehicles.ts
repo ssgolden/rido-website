@@ -105,7 +105,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
       "Freno doble (delantero + trasero)",
       "Intermitentes",
       "Modo principiante (15 km/h)",
-      "GPS y geovallado",
+      "GPS y geocercado",
     ],
     imageAlt: "Patinete eléctrico Rido",
   },

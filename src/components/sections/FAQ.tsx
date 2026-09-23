@@ -57,7 +57,7 @@ const copy = {
     sectionAria: "Preguntas frecuentes",
     eyebrow: "¿Tienes dudas?",
     headingBefore: "Preguntas",
-    headingHighlight: "Frecuentes",
+    headingHighlight: "frecuentes",
     intro: "Todo lo que necesitas saber para rodar con Rido.",
     searchPlaceholder: "Busca una pregunta...",
     searchAria: "Buscar en las preguntas frecuentes",

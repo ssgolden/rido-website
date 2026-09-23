@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
+import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
 import { getAllSchemas } from "@/lib/schema";
 import { citiesAnnounced } from "@/data/cities";
 import { Toaster } from "@/components/animation/Toast";
@@ -126,7 +127,9 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          <LazyMotionRoot>{children}</LazyMotionRoot>
+        </SmoothScrollProvider>
         <ConsentAwareAnalytics />
         <ClientCookieConsent />
         <Toaster />

@@ -53,7 +53,7 @@ const en = {
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    waitlistKicker: "Lista de espera abierta — sé de los primeros en rodar",
+    waitlistKicker: "Lista de espera abierta — sé de los primeros en moverte",
     badge: "Muy pronto en la Costa del Sol",
     headlineWords: ["Muévete", "libremente", "por", "la", "Costa del Sol"],
     subheadline:

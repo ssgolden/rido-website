@@ -37,8 +37,8 @@ const copy: Record<"en" | "es", typeof en> = {
     heading1: "Algo bueno",
     heading2: "está en camino.",
     sub: citiesAnnounced
-      ? "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé el primero en rodar."
-      : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera y sé el primero en rodar.",
+      ? "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé el primero en subirte."
+      : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera y sé el primero en subirte.",
     emailPlaceholder: "tu@email.com",
     emailAria: "Correo electrónico",
     join: "Únete a la lista",
