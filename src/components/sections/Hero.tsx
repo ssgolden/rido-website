@@ -47,7 +47,7 @@ const en = {
   scrollAria: "Scroll to next section",
   scrollLabel: "Scroll",
   stats: [
-    { icon: MapPin, value: 5, suffix: "", label: "Launch Cities" },
+    { icon: MapPin, value: 5, suffix: "", label: "Planned Cities" },
     { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
     { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
   ] as HeroStatData[],
@@ -69,7 +69,7 @@ const copy: Record<Locale, typeof en> = {
     scrollAria: "Desliza a la siguiente sección",
     scrollLabel: "Desliza",
     stats: [
-      { icon: MapPin, value: 5, suffix: "", label: "Ciudades de lanzamiento" },
+      { icon: MapPin, value: 5, suffix: "", label: "Ciudades planificadas" },
       { icon: Bike, value: vehicles.length, suffix: "", label: "Tipos de vehículo" },
       { icon: Leaf, value: 0, suffix: "", label: "Emisiones directas", text: "Cero", green: true },
     ] as HeroStatData[],

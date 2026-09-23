@@ -1,54 +1,21 @@
 "use client";
 
 import { Card } from "@/components/ui/Card";
-import { Leaf, Car, Zap } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { useCountUp } from "@/hooks/useCountUp";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 
-function SustainabilityStat({
-  value,
-  suffix,
-  label,
-  icon: Icon,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  icon: React.ComponentType<{ className?: string }>;
-}) {
-  const { count, ref, visible } = useCountUp(value, { duration: 2500 });
-  return (
-    <StaggerItem className="text-center">
-      <div className="flex justify-center mb-4">
-        <div className="w-14 h-14 rounded-2xl bg-rido-green/10 flex items-center justify-center">
-          <Icon className="w-7 h-7 text-rido-green" />
-        </div>
-      </div>
-      <span ref={ref} className="font-black text-3xl sm:text-4xl md:text-5xl text-rido-green transition-opacity duration-300" style={{ opacity: visible ? 1 : 0 }} suppressHydrationWarning>
-        {count.toLocaleString()}{suffix}
-      </span>
-      <p className="text-muted text-sm mt-2">{label}</p>
-    </StaggerItem>
-  );
-}
-
-// User-visible strings per locale.
+// Pre-launch: no projected impact numbers — commitments only. Real impact
+// numbers come back once we have audited first-year data.
 const en = {
-  ariaLabel: "Sustainability impact",
+  ariaLabel: "Sustainability commitments",
   eyebrow: "Planet First",
   headingBefore: "Real",
   headingHighlight: "Sustainability",
-  intro: "Every Rido ride replaces a car trip. Here's the impact we're projected to make.",
-  disclaimer: "Projected impact based on planned fleet size and ridership targets.",
-  stats: [
-    { label: "Tonnes CO\u2082 Saved", value: 1240, suffix: "+", icon: Leaf },
-    { label: "Car Trips Replaced", value: 85000, suffix: "+", icon: Car },
-    { label: "Km Ridden Emission-Free", value: 420000, suffix: "+", icon: Zap },
-  ],
+  intro:
+    "Every Rido ride replaces a car trip. We're holding ourselves to three commitments from day one and publishing our audited impact after our first year on the road.",
   commitments: [
     {
       title: "Carbon Neutral Operations",
@@ -71,32 +38,27 @@ const en = {
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    ariaLabel: "Impacto en sostenibilidad",
+    ariaLabel: "Compromisos de sostenibilidad",
     eyebrow: "El planeta primero",
     headingBefore: "Sostenibilidad",
     headingHighlight: "de verdad",
-    intro: "Cada viaje en Rido sustituye un trayecto en coche. Este es el impacto que prevemos generar.",
-    disclaimer: "Impacto previsto seg\u00fan el tama\u00f1o de flota y los objetivos de uso planificados.",
-    stats: [
-      { label: "Toneladas de CO\u2082 ahorradas", value: 1240, suffix: "+", icon: Leaf },
-      { label: "Trayectos en coche sustituidos", value: 85000, suffix: "+", icon: Car },
-      { label: "Km recorridos sin emisiones", value: 420000, suffix: "+", icon: Zap },
-    ],
+    intro:
+      "Cada viaje en Rido sustituye un trayecto en coche. Asumimos tres compromisos desde el primer día y publicaremos nuestro impacto auditado tras el primer año en la calle.",
     commitments: [
       {
         title: "Operaciones neutras en carbono",
         description:
-          "Compensamos el 100% de nuestras emisiones operativas con cr\u00e9ditos de carbono verificados y energ\u00eda verde.",
+          "Compensamos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde.",
       },
       {
-        title: "Bater\u00edas intercambiables",
+        title: "Baterías intercambiables",
         description:
-          "Las bater\u00edas de nuestros veh\u00edculos son intercambiables y se reciclan al final de su vida \u00fatil. Sin residuos de un solo uso.",
+          "Las baterías de nuestros vehículos son intercambiables y se reciclan al final de su vida útil. Sin residuos de un solo uso.",
       },
       {
         title: "Reciclaje responsable",
         description:
-          "Al final de su vida \u00fatil, cada veh\u00edculo se desmonta y se recicla. Publicamos nuestras tasas de reciclaje.",
+          "Al final de su vida útil, cada vehículo se desmonta y se recicla. Publicamos nuestras tasas de reciclaje.",
       },
     ],
   },
@@ -118,29 +80,16 @@ export function Sustainability() {
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-muted max-w-xl mx-auto">
-              {t.intro}
-            </p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
           </ScrollReveal>
         </div>
-
-        <StaggerReveal className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-4" staggerDelay={0.15}>
-          {t.stats.map((stat) => (
-            <SustainabilityStat key={stat.label} {...stat} />
-          ))}
-        </StaggerReveal>
-        <p className="text-center text-xs text-muted-weak mb-16">{t.disclaimer}</p>
 
         <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
           {t.commitments.map((item) => (
             <StaggerItem key={item.title}>
               <Card>
-                <h3 className="font-bold text-lg mb-2 text-rido-green">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-muted leading-relaxed">
-                  {item.description}
-                </p>
+                <h3 className="font-bold text-lg mb-2 text-rido-green">{item.title}</h3>
+                <p className="text-sm text-muted leading-relaxed">{item.description}</p>
               </Card>
             </StaggerItem>
           ))}
