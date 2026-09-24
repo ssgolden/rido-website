@@ -130,7 +130,7 @@ export const localBusinessSchema = {
   logo: logoUrl,
   image: heroImage,
   email: "info@rido.bike",
-  priceRange: "€€",
+  // Pre-launch: priceRange removed until fares are public.
   currenciesAccepted: "EUR",
   paymentAccepted: "Credit Card, Apple Pay, Google Pay, Debit Card",
   address: {
@@ -175,30 +175,15 @@ export const localBusinessSchema = {
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Rido Vehicle Rentals",
+    // Pre-launch: prices not yet public. List plan names only — no per-offer prices.
     itemListElement: pricingTiers.map((tier) => ({
       "@type": "Offer",
       name: tier.name,
       description: tier.description,
-      priceSpecification: tier.flatRate
-        ? {
-            "@type": "PriceSpecification",
-            price: tier.flatRate.toFixed(2),
-            priceCurrency: "EUR",
-          }
-        : {
-            "@type": "UnitPriceSpecification",
-            priceCurrency: "EUR",
-            price: tier.perMinuteValue.toFixed(2),
-            referenceQuantity: {
-              "@type": "QuantitativeValue",
-              value: "1",
-              unitCode: "MIN",
-            },
-          },
+      availability: "https://schema.org/PreOrder",
       itemOffered: {
         "@type": "Service",
         name: "E-Scooter & E-Bike Rental",
-        description: `Unlock: ${tier.unlockFee}, Per minute: ${tier.perMinute}`,
         provider: { "@id": `${baseUrl}/#localbusiness` },
       },
     })),
@@ -213,11 +198,6 @@ export const howToSchema = {
   description:
     "A step-by-step guide to finding, unlocking, riding, and parking a Rido shared e-scooter or e-bike on the Costa del Sol.",
   totalTime: "PT15M",
-  estimatedCost: {
-    "@type": "MonetaryAmount",
-    currency: "EUR",
-    value: "1.35",
-  },
   step: [
     {
       "@type": "HowToStep",
@@ -261,11 +241,9 @@ export const productSchemas = vehicles.map((vehicle) => ({
   image: `${baseUrl}${vehicle.image}`,
   offers: {
     "@type": "AggregateOffer",
-    priceCurrency: "EUR",
-    lowPrice: "0.25",
-    highPrice: "0.35",
-    offerCount: pricingTiers.length.toString(),
     availability: "https://schema.org/PreOrder",
+    // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
+    offerCount: pricingTiers.length.toString(),
   },
   additionalProperty: vehicle.specs.map((spec) => ({
     "@type": "PropertyValue",
@@ -300,13 +278,6 @@ export const softwareApplicationSchema = {
     "Beginner mode (15 km/h)",
     "Tandem detection",
   ],
-  aggregateRating: {
-    "@type": "AggregateRating",
-    ratingValue: "5",
-    reviewCount: "0",
-    bestRating: "5",
-    worstRating: "1",
-  },
 };
 
 // --- Breadcrumbs -----------------------------------------------------------
@@ -366,10 +337,8 @@ export const cityServiceSchemas = citiesAnnounced
         .join(" and ")} rental in ${city.name}, ${city.region}. Coming soon.`,
       offers: {
         "@type": "AggregateOffer",
-        priceCurrency: "EUR",
-        lowPrice: "0.25",
-        highPrice: "14.99",
         availability: "https://schema.org/PreOrder",
+        // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
       },
     }))
   : [
@@ -384,10 +353,8 @@ export const cityServiceSchemas = citiesAnnounced
           "Shared e-scooter and e-bike rental on the Costa del Sol, Spain. First launch locations announced soon.",
         offers: {
           "@type": "AggregateOffer",
-          priceCurrency: "EUR",
-          lowPrice: "0.25",
-          highPrice: "14.99",
           availability: "https://schema.org/PreOrder",
+          // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
         },
       },
     ];

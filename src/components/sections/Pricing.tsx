@@ -3,13 +3,12 @@
 import { pricingTiersByLocale, noSurpriseGuaranteesByLocale } from "@/data/pricing";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
-import { Check, ShieldCheck, Palmtree } from "lucide-react";
+import { Check, ShieldCheck, Palmtree, Megaphone } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { useState } from "react";
 
 const copy = {
   en: {
@@ -17,80 +16,28 @@ const copy = {
     eyebrow: "Transparent Pricing",
     headingBefore: "No",
     headingHighlight: "Surprises",
-    intro: "See the price before every ride. No hidden fees, no minimum top-ups, no refund charges.",
+    intro:
+      "Fares will be announced at launch. Until then, the promise is the same: see the price before every ride. No hidden fees, no minimum top-ups, no refund charges.",
     mostPopular: "Most Popular",
     bestForTourists: "Best for Tourists",
-    unlockFee: "Unlock Fee",
-    perMinute: "Per Minute",
+    priceAnnouncedLabel: "Pricing to be announced",
+    priceAnnouncedSub: "at launch",
     guaranteeTitle: "No-Surprise Guarantee",
-    calcTitle: "Estimate Your Ride",
-    calcDurationLabel: "Ride duration:",
-    calcDurationAria: "Ride duration in minutes",
-    calcMinUnit: "min",
-    calcEstimated: "Estimated cost",
-    calcUnlockWord: "unlock",
-    calcFlatNote: "Unlimited rides for 24 hours",
   },
   es: {
     sectionAria: "Planes de precios",
     eyebrow: "Precios transparentes",
     headingBefore: "Sin",
     headingHighlight: "Sorpresas",
-    intro: "Ves el precio antes de cada trayecto. Sin costes ocultos, sin recargas mínimas, sin comisiones por reembolso.",
+    intro:
+      "Las tarifas se anunciarán en el lanzamiento. Hasta entonces, la promesa es la misma: verás el precio antes de cada trayecto. Sin costes ocultos, sin recargas mínimas, sin comisiones por reembolso.",
     mostPopular: "El más popular",
     bestForTourists: "Ideal para turistas",
-    unlockFee: "Desbloqueo",
-    perMinute: "Por minuto",
+    priceAnnouncedLabel: "Precios por anunciar",
+    priceAnnouncedSub: "en el lanzamiento",
     guaranteeTitle: "Garantía sin sorpresas",
-    calcTitle: "Calcula tu trayecto",
-    calcDurationLabel: "Duración del trayecto:",
-    calcDurationAria: "Duración del trayecto en minutos",
-    calcMinUnit: "min",
-    calcEstimated: "Coste estimado",
-    calcUnlockWord: "desbloqueo",
-    calcFlatNote: "Trayectos ilimitados durante 24 horas",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
-
-function PricingCalculator() {
-  const locale = useLocale();
-  const t = copy[locale];
-  const pricingTiers = pricingTiersByLocale[locale];
-  const [minutes, setMinutes] = useState(10);
-  const [planIndex, setPlanIndex] = useState(0);
-
-  // Derive rates from the same data source as the pricing cards
-  const tier = pricingTiers[planIndex];
-  const isFlatRate = tier.flatRate != null;
-  const total = isFlatRate ? tier.flatRate! : tier.unlockFeeValue + tier.perMinuteValue * minutes;
-
-  return (
-    <Card className="p-6 sm:p-8 max-w-lg mx-auto">
-      <h3 className="text-xl font-bold mb-6 text-center">{t.calcTitle}</h3>
-      <div className="flex gap-2 mb-6">
-        {pricingTiers.map((tierOption, i) => (
-          <button key={tierOption.id} onClick={() => setPlanIndex(i)}
-            className={`flex-1 py-2.5 rounded-lg text-xs sm:text-sm font-semibold cursor-pointer transition-all duration-200 ${planIndex === i ? "bg-rido-magenta text-white" : "glass text-white/60 hover:text-white hover:bg-white/10"}`}>
-            {tierOption.name}
-          </button>
-        ))}
-      </div>
-      <div className="mb-6">
-        <label className="text-sm text-muted mb-2 block">{t.calcDurationLabel} <strong className="text-white">{minutes} {t.calcMinUnit}</strong></label>
-        <input type="range" min={1} max={60} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))}
-          className="w-full accent-rido-magenta h-2 rounded-lg appearance-none bg-white/10 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-rido-magenta [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-rido-magenta [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
-          aria-label={t.calcDurationAria} />
-        <div className="flex justify-between text-xs text-muted-weak mt-1"><span>1 {t.calcMinUnit}</span><span>60 {t.calcMinUnit}</span></div>
-      </div>
-      <div className="glass rounded-xl p-5 text-center" aria-live="polite" aria-atomic="true">
-        <p className="text-sm text-muted mb-1">{t.calcEstimated}</p>
-        <p className="text-4xl font-black text-rido-magenta">&euro;{total.toFixed(2)}</p>
-        {!isFlatRate && <p className="text-xs text-muted-weak mt-2">&euro;{tier.unlockFeeValue.toFixed(2)} {t.calcUnlockWord} + &euro;{tier.perMinuteValue.toFixed(2)}/min</p>}
-        {isFlatRate && <p className="text-xs text-muted-weak mt-2">{t.calcFlatNote}</p>}
-      </div>
-    </Card>
-  );
-}
 
 export function Pricing() {
   const locale = useLocale();
@@ -112,6 +59,8 @@ export function Pricing() {
             <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
           </ScrollReveal>
         </div>
+
+        {/* Plan cards — names + descriptions stay, prices replaced by "to be announced" pill */}
         <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6 mb-10 sm:mb-16" staggerDelay={0.1}>
           {pricingTiers.map((tier) => (
             <StaggerItem key={tier.id} className={tier.popular ? "order-first md:order-none lg:-translate-y-3 lg:scale-[1.03]" : undefined}>
@@ -121,38 +70,36 @@ export function Pricing() {
                   {!tier.popular && tier.id === "day-pass" && <Badge variant="magenta-light" className="mb-4 cursor-default flex items-center gap-1 mx-auto w-fit"><Palmtree className="w-3 h-3" /> {t.bestForTourists}</Badge>}
                   <h3 className="text-xl font-bold mb-2">{tier.name}</h3>
                   <p className="text-sm text-muted mb-6">{tier.description}</p>
-                  <div className="space-y-3">
-                    {/* Per-minute rate is the decision input — dominant size. Unlock fee demoted to footnote. */}
-                    <div className="glass rounded-xl p-4"><p className="text-xs text-muted uppercase tracking-wider">{t.perMinute}</p><p className="text-2xl font-black text-rido-magenta-light">{tier.perMinute}</p></div>
-                    <div className="text-xs text-muted-weak">{t.unlockFee}: <span className="text-muted-strong font-semibold">{tier.unlockFee}</span></div>
+                  <div className="glass rounded-xl p-5 border border-rido-magenta/20 bg-rido-magenta/[0.04]">
+                    <div className="flex items-center justify-center gap-2 mb-1">
+                      <Megaphone className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" />
+                      <p className="text-sm font-bold text-rido-magenta-light uppercase tracking-wider">{t.priceAnnouncedLabel}</p>
+                    </div>
+                    <p className="text-xs text-muted-weak">{t.priceAnnouncedSub}</p>
                   </div>
                 </Card>
               </div>
             </StaggerItem>
           ))}
         </StaggerReveal>
-        {/* Guarantee + calculator combined: 2-col on lg+, single column flow below */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <ScrollReveal delay={0.2}>
-            <div className="glass rounded-2xl p-6 sm:p-8 h-full">
-              <div className="flex items-center gap-3 mb-6">
-                <ShieldCheck className="w-6 h-6 text-rido-green" />
-                <h3 className="text-lg font-bold">{t.guaranteeTitle}</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {noSurpriseGuarantees.map((item) => (
-                  <div key={item} className="flex items-center gap-2 text-sm">
-                    <Check className="w-4 h-4 text-rido-green shrink-0" />
-                    <span className="text-white/70">{item}</span>
-                  </div>
-                ))}
-              </div>
+
+        {/* No-Surprise Guarantee — full width (calculator removed until prices are public) */}
+        <ScrollReveal delay={0.2}>
+          <div className="glass rounded-2xl p-6 sm:p-8 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 mb-6">
+              <ShieldCheck className="w-6 h-6 text-rido-green" />
+              <h3 className="text-lg font-bold">{t.guaranteeTitle}</h3>
             </div>
-          </ScrollReveal>
-          <ScrollReveal delay={0.3}>
-            <PricingCalculator />
-          </ScrollReveal>
-        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {noSurpriseGuarantees.map((item) => (
+                <div key={item} className="flex items-center gap-2 text-sm">
+                  <Check className="w-4 h-4 text-rido-green shrink-0" />
+                  <span className="text-white/70">{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

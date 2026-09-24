@@ -108,8 +108,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Cuánto cuesta?",
     },
     answer: {
-      en: "Pay As You Go: €1.00 unlock + €0.35 per minute. Rido Pass: Free unlock + €0.25 per minute. Day Pass: €14.99 for unlimited 24-hour rides. No minimum top-up, no hidden fees.",
-      es: "Paga por uso: €1.00 de desbloqueo + €0.35 por minuto. Rido Pass: desbloqueo gratis + €0.25 por minuto. Pase diario: €14.99 con trayectos ilimitados durante 24 horas. Sin recarga mínima ni costes ocultos.",
+      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, with no minimum top-up and no hidden fees.",
+      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, sin recarga mínima ni costes ocultos.",
     },
     category: "pricing",
   },
@@ -119,8 +119,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Qué es el Rido Pass?",
     },
     answer: {
-      en: "The Rido Pass gives you free unlocks and a reduced per-minute rate of €0.25/min (instead of €0.35/min). It's perfect for frequent riders who want to save on every ride.",
-      es: "El Rido Pass te da desbloqueos gratis y una tarifa por minuto reducida de €0.25/min (en lugar de €0.35/min). Es perfecto si montas a menudo y quieres ahorrar en cada trayecto.",
+      en: "The Rido Pass is our rider membership — free unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
+      es: "El Rido Pass es nuestra membresía para usuarios frecuentes: desbloqueos gratis y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
     },
     category: "pricing",
   },
