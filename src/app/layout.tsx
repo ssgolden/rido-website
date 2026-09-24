@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     locale: "en_ES",
     images: [
       {
-        url: "/images/logo/rido-logo-wide.png",
+        url: "/images/og/rido-og.png",
         width: 1200,
         height: 630,
         alt: "Rido — Shared E-Scooters & E-Bikes on Spain's Costa del Sol",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
     description: "Join the waitlist and be first to ride on the Costa del Sol. Zero emissions, zero hassle.",
-    images: ["/images/lifestyle/rido-rider-street.jpg"],
+    images: ["/images/og/rido-og.png"],
   },
   alternates: {
     canonical: "https://rido.bike",

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     locale: "es_ES",
     images: [
       {
-        url: "/images/logo/rido-logo-wide.png",
+        url: "/images/og/rido-og.png",
         width: 1200,
         height: 630,
         alt: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
     description:
       "Únete a la lista de espera y sé de los primeros en montar en la Costa del Sol. Cero emisiones, cero complicaciones.",
-    images: ["/images/lifestyle/rido-rider-street.jpg"],
+    images: ["/images/og/rido-og.png"],
   },
 };
 

@@ -76,12 +76,15 @@ export function Cities() {
         </div>
 
         {/* Real coverage map (MapLibre + OpenFreeMap, lazy-loaded; falls back to the SVG visualization).
-            Pre-announcement it shows the Costa del Sol region only — no town markers/labels/popups. */}
-        <ScrollReveal delay={0.1}>
-          <div className="relative mb-10 flex justify-center">
-            <CoverageMap showCities={citiesAnnounced} />
-          </div>
-        </ScrollReveal>
+            Pre-announcement: don't render the map — an empty Costa del Sol outline reads as broken
+            filler. Show only the teaser card; restore the map the moment citiesAnnounced flips. */}
+        {citiesAnnounced && (
+          <ScrollReveal delay={0.1}>
+            <div className="relative mb-10 flex justify-center">
+              <CoverageMap showCities={citiesAnnounced} />
+            </div>
+          </ScrollReveal>
+        )}
 
         {citiesAnnounced ? (
           /* City cards — restored site-wide when the launch towns are announced */
