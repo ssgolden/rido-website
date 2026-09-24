@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { Shield, Smartphone, CreditCard, MapPin, Mail, CheckCircle, Loader2 } from "lucide-react";
+import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
@@ -27,6 +27,8 @@ interface DownloadCopy {
   phoneTagline: string;
   phoneCta: string;
   phoneTabs: readonly [string, string, string];
+  /** 3-step "what happens after you join" inline preview */
+  whatHappens: readonly [string, string, string];
 }
 
 /** Icons zip with `copy[locale].trustSignals` by index. */
@@ -52,6 +54,11 @@ const copy = {
     phoneTagline: "Move freely",
     phoneCta: "Scan & Ride",
     phoneTabs: ["Map", "Ride", "Pay"],
+    whatHappens: [
+      "We confirm your spot by email",
+      "You get the app invite at launch",
+      "Your first ride is on us",
+    ],
   },
   es: {
     sectionAria: "Únete a la lista de espera de Rido",
@@ -72,6 +79,11 @@ const copy = {
     phoneTagline: "Muévete con libertad",
     phoneCta: "Escanea y rueda",
     phoneTabs: ["Mapa", "Viaje", "Pago"],
+    whatHappens: [
+      "Confirmamos tu plaza por correo",
+      "Recibes la invitación de la app en el lanzamiento",
+      "Tu primer viaje corre por nuestra cuenta",
+    ],
   },
 } as const satisfies Record<Locale, DownloadCopy>;
 
@@ -133,14 +145,60 @@ function WaitlistForm() {
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         className="glass rounded-2xl p-6 text-center max-w-md mx-auto lg:mx-0"
         role="status"
         aria-live="polite"
       >
-        <CheckCircle className="w-12 h-12 text-rido-green mx-auto mb-3" />
-        <h3 className="text-lg font-bold mb-1">{t.successTitle}</h3>
-        <p className="text-sm text-muted">{t.successBody}</p>
+        {/* Choreographed success: ring draws itself then check draws inside */}
+        <motion.svg
+          viewBox="0 0 64 64"
+          className="w-14 h-14 mx-auto mb-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <motion.circle
+            cx="32"
+            cy="32"
+            r="28"
+            fill="none"
+            stroke="#22C55E"
+            strokeWidth="3"
+            strokeLinecap="round"
+            initial={{ pathLength: 0, rotate: -90 }}
+            animate={{ pathLength: 1, rotate: -90 }}
+            style={{ transformOrigin: "center" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.path
+            d="M20 33 L28 41 L45 24"
+            fill="none"
+            stroke="#22C55E"
+            strokeWidth="4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ delay: 0.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </motion.svg>
+        <motion.h3
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.4 }}
+          className="text-lg font-bold mb-1"
+        >
+          {t.successTitle}
+        </motion.h3>
+        <motion.p
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="text-sm text-muted"
+        >
+          {t.successBody}
+        </motion.p>
       </motion.div>
     );
   }
@@ -152,6 +210,9 @@ function WaitlistForm() {
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
           <input
             type="email"
+            inputMode="email"
+            autoComplete="email"
+            name="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -202,6 +263,15 @@ export function DownloadCTA() {
             <ScrollReveal>
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">{t.intro}</p>
+              {/* 3-step "what happens after you join" preview — sets expectation + lifts submit rate */}
+              <ol className="mt-6 mb-6 inline-flex flex-col sm:flex-row items-start lg:items-start gap-3 sm:gap-5 text-left max-w-lg">
+                {t.whatHappens.map((step, i) => (
+                  <li key={step} className="flex items-start gap-3 text-sm">
+                    <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-rido-magenta/15 border border-rido-magenta/40 text-rido-magenta-light text-[10px] font-bold shrink-0">{i + 1}</span>
+                    <span className="text-white/80 leading-snug">{step}</span>
+                  </li>
+                ))}
+              </ol>
             </ScrollReveal>
             <ScrollReveal delay={0.15}>
               <WaitlistForm />

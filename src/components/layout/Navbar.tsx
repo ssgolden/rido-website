@@ -100,7 +100,7 @@ export function Navbar() {
     const sectionIds = copy.en.navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) setActiveSection(entry.target.id); }); },
-      { rootMargin: "-50% 0px" }
+      { rootMargin: "-45% 0px -45% 0px" }
     );
     sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
