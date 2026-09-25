@@ -3,7 +3,8 @@ import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useRef, useMemo } from "react";
 import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
@@ -13,7 +14,7 @@ import { vehicles } from "@/data/vehicles";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
-import { EASE, STAGGER } from "@/lib/motion";
+import { STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
 
 // Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
@@ -97,29 +98,12 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
   );
 }
 
-const EASE_TUPLE = EASE as unknown as [number, number, number, number];
-
-const wordVariants = {
-  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE_TUPLE },
-  },
-};
-
-const wordVariantsReduced = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-};
-
 export function Hero() {
   const locale = useLocale();
   const t = copy[locale];
   const headlineWords = t.headlineWords;
   const sectionRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -135,7 +119,6 @@ export function Hero() {
 
   // Group indices: 0..2 line 1, 3..4 line 2.
   const wordGroup = useMemo(() => new Set([3, 4]), []);
-  const variants = reduce ? wordVariantsReduced : wordVariants;
 
   return (
     <section
@@ -153,7 +136,9 @@ export function Hero() {
       {/* Deep navy base + animated brand gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
 
-      {/* Lifestyle photo: full-bleed, subtle parallax. Lowered fetchpriority — H1 text is the real LCP. */}
+      {/* Lifestyle photo: full-bleed at 22% opacity, subtle parallax. Decorative,
+          so it is NOT preloaded (that competed with the H1's CSS/fonts on the
+          critical path); eager + low priority keeps it early but yielding. */}
       <motion.div className="absolute inset-0" style={{ y: bgY }}>
         <Image
           src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
@@ -162,7 +147,8 @@ export function Hero() {
           fill
           sizes="100vw"
           className="object-cover opacity-[0.22]"
-          priority
+          loading="eager"
+          fetchPriority="low"
           decoding="async"
         />
       </motion.div>
@@ -220,7 +206,7 @@ export function Hero() {
       >
         {/* Social-proof kicker */}
         <ScrollReveal delay={0.05}>
-          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">
+          <div className="mb-3 sm:mb-4 min-h-6 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
@@ -241,45 +227,37 @@ export function Hero() {
           </Badge>
         </ScrollReveal>
 
-        {/* Headline — animate="visible" so first paint reveals the H1. Spaces rendered as sibling text nodes for SR correctness. */}
-        <motion.h1
-          id="hero-heading"
-          className="text-display-2xl font-extrabold text-balance"
-          initial="hidden"
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: 0.15 } },
-          }}
-        >
+        {/* Headline — the LCP element. Words enter via a CSS keyframe that only
+            animates transform + blur (never opacity), so the server HTML is
+            painted immediately, no-JS visitors see it, and LCP is first paint.
+            The global prefers-reduced-motion rule collapses the keyframe. */}
+        <h1 id="hero-heading" className="text-display-2xl font-extrabold text-balance">
           {headlineWords.map((w, i) => (
             <span key={`${w}-${i}`}>
-              <motion.span
-                className={`inline-block ${wordGroup.has(i) ? "text-gradient-brand" : ""}`}
-                variants={variants}
+              <span
+                className={`hero-word inline-block ${wordGroup.has(i) ? "text-gradient-brand" : ""}`}
+                style={{ animationDelay: `${0.15 + i * STAGGER.text}s` }}
               >
                 {w}
-              </motion.span>
+              </span>
               {i < headlineWords.length - 1 ? " " : ""}
               {i === 2 ? <br className="hidden sm:inline" aria-hidden="true" /> : null}
             </span>
           ))}
-        </motion.h1>
+        </h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.65, duration: 0.6, ease: EASE_TUPLE }}
-          className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+        {/* Subheadline is the likely LCP element after the H1: CSS transform-only
+            entrance, never opacity:0 in the HTML, no JS gating. */}
+        <p
+          className="hero-enter mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+          style={{ animationDelay: "0.65s" }}
         >
           {t.subheadline}
-        </motion.p>
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.8, duration: 0.55, ease: EASE_TUPLE }}
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+        <div
+          className="hero-enter mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          style={{ animationDelay: "0.8s" }}
         >
           <a
             href="#download"
@@ -296,18 +274,13 @@ export function Hero() {
           >
             <span>{t.ctaSecondary}</span>
           </a>
-        </motion.div>
+        </div>
 
         {/* Microcopy under CTAs */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: reduce ? 0 : 0.95, duration: 0.5 }}
-          className="mt-5 inline-flex items-center gap-2 text-xs text-white/70"
-        >
+        <p className="hero-enter mt-5 inline-flex items-center gap-2 text-xs text-white/70" style={{ animationDelay: "0.95s" }}>
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
           {t.microcopy}
-        </motion.p>
+        </p>
 
         <StaggerReveal
           className="mt-10 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"

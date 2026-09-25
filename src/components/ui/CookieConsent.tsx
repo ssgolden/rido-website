@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-
-const STORAGE_KEY = "rido-cookie-consent";
+import { CONSENT_EVENT, readConsentRecord, writeConsentRecord } from "@/lib/consent";
 
 // The banner mounts in the root layout, OUTSIDE any LocaleProvider, so it
 // derives the locale from the URL ("/es..." → Spanish) instead of context.
@@ -15,7 +14,7 @@ const en = {
   title: "We value your privacy",
   body: "We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.",
   learnMore: "Read our cookie policy",
-  accept: "Accept all cookies",
+  accept: "Accept analytics",
   decline: "Decline non-essential",
   close: "Close",
 };
@@ -31,31 +30,21 @@ const copy: Record<"en" | "es", typeof en> = {
   },
 };
 
-function safeGetStorage(key: string): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(key);
-  } catch {
-    // localStorage unavailable (private browsing, storage blocked, etc.)
-    return null;
-  }
-}
-
-function safeSetStorage(key: string, value: string): void {
-  try {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(key, value);
-  } catch {
-    // Silently fail if storage is blocked
-  }
-}
-
-// Subscribe to localStorage consent state without setState-in-effect.
-// Returns true when the banner should be visible (no consent recorded yet).
+// Subscribe to the consent record without setState-in-effect.
+// Returns true when the banner should be visible (no current-version consent
+// recorded yet). Re-evaluates when another tab answers, or when a "cookie
+// settings" control clears the record.
 function useShouldShowConsent() {
   return useSyncExternalStore(
-    () => () => {},
-    () => !safeGetStorage(STORAGE_KEY), // client
+    (callback) => {
+      window.addEventListener("storage", callback);
+      window.addEventListener(CONSENT_EVENT, callback);
+      return () => {
+        window.removeEventListener("storage", callback);
+        window.removeEventListener(CONSENT_EVENT, callback);
+      };
+    },
+    () => readConsentRecord() === null, // client
     () => false // SSR — don't show banner during hydration
   );
 }
@@ -68,14 +57,25 @@ export function CookieConsent() {
   const visible = shouldShow && !dismissed;
 
   const handleAccept = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
+    writeConsentRecord(true);
     setDismissed(true);
   };
 
   const handleDecline = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: false, timestamp: Date.now() }));
+    writeConsentRecord(false);
     setDismissed(true);
   };
+
+  // Escape = decline, so keyboard users can dismiss the banner without
+  // tabbing through the whole page to reach it (it is last in DOM order).
+  useEffect(() => {
+    if (!visible) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleDecline();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [visible]);
 
   return (
     <AnimatePresence>
@@ -86,20 +86,21 @@ export function CookieConsent() {
           exit={{ y: 100, opacity: 0 }}
           transition={{ duration: 0.3, ease: "easeOut" }}
           className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6"
-          role="dialog"
-          aria-modal="false"
+          role="region"
           aria-labelledby="cookie-consent-title"
+          aria-describedby="cookie-consent-body"
         >
-          <div className="max-w-4xl mx-auto glass-strong rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
+          {/* Solid surface (not glass): a translucent banner over the magenta CTA drops the title below 4.5:1 */}
+          <div className="max-w-4xl mx-auto rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40 border border-white/10 bg-rido-navy-light">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0">
                 <Cookie className="w-5 h-5 text-rido-magenta" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
-                <p className="text-sm text-white/70 leading-relaxed">
+                <p id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</p>
+                <p id="cookie-consent-body" className="text-sm text-white/70 leading-relaxed">
                   {t.body}{" "}
-                  <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
+                  <Link href="/politica-cookies" prefetch={false} className="text-white underline hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
                   </Link>
                 </p>

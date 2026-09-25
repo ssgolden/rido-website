@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const locale = useLocale();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +32,7 @@ export function BackToTop() {
           transition={{ duration: 0.2 }}
           onClick={scrollToTop}
           className="fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-rido-magenta text-white flex items-center justify-center shadow-lg shadow-rido-magenta/30 hover:bg-rido-magenta-dark transition-all duration-300 cursor-pointer hover:scale-110"
-          aria-label="Scroll to top"
+          aria-label={locale === "es" ? "Volver arriba" : "Scroll to top"}
         >
           <ArrowUp className="w-5 h-5" />
         </motion.button>

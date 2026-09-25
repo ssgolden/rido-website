@@ -16,7 +16,7 @@ export function Badge({ children, variant = "default", className }: BadgeProps) 
         variant === "green" &&
           "bg-rido-green/15 text-rido-green border border-rido-green/25",
         variant === "magenta-light" &&
-          "bg-rido-magenta-light/15 text-rido-magenta-light border border-rido-magenta-light/25",
+          "bg-rido-magenta-light/20 text-white border border-rido-magenta-light/40",
         variant === "default" &&
           "bg-white/10 text-white/80 border border-white/15",
         className

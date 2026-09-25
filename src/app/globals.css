@@ -119,6 +119,29 @@
   }
 }
 
+/* Keyframes referenced directly by class (.hero-orb-*, .hero-gradient) must be
+   declared outside @theme: Tailwind 4 only emits @theme keyframes when the
+   matching animate-* utility is used, so these were silently missing from the
+   built CSS and the orbs never moved. */
+@keyframes hero-gradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes hero-orb-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.05); }
+  66% { transform: translate(-20px, 15px) scale(0.95); }
+}
+@keyframes hero-orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-25px, -15px) scale(1.08); }
+  66% { transform: translate(20px, 10px) scale(0.92); }
+}
+@keyframes hero-orb-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(15px, -25px) scale(1.1); }
+}
+
 @layer base {
   :root {
     --background: 248 250 252;
@@ -208,6 +231,11 @@
     .mobile-carousel::-webkit-scrollbar {
       display: none;
     }
+    .mobile-carousel:focus-visible {
+      outline: 2px solid var(--color-rido-magenta);
+      outline-offset: 4px;
+      border-radius: 1rem;
+    }
     .mobile-carousel > * {
       flex: 0 0 auto;
       width: min(80%, 20rem);
@@ -269,6 +297,22 @@
   .hero-gradient {
     background-size: 200% 200%;
     animation: hero-gradient 15s ease-in-out infinite;
+  }
+  /* Hero headline words: transform + blur only (no opacity) so the H1 is
+     painted on first frame and counts as LCP immediately. */
+  @keyframes hero-word-in {
+    from { transform: translateY(18px); filter: blur(6px); }
+    to { transform: translateY(0); filter: blur(0); }
+  }
+  .hero-word {
+    animation: hero-word-in 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  }
+  @keyframes hero-enter-in {
+    from { transform: translateY(10px); }
+    to { transform: translateY(0); }
+  }
+  .hero-enter {
+    animation: hero-enter-in 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   }
   /* Hero orbs — only animate when motion is allowed; two 700px blurred blobs repainting
      every frame is the single most expensive paint on the page. */

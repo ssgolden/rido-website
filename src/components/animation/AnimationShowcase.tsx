@@ -73,7 +73,7 @@ export function AnimationShowcase() {
     new Promise<T>((resolve) => setTimeout(() => resolve(value), ms));
 
   return (
-    <main className="min-h-dvh bg-rido-navy text-white pt-24 pb-32 px-4 sm:px-6 relative overflow-x-hidden">
+    <main id="main-content" className="min-h-dvh bg-rido-navy text-white pt-24 pb-32 px-4 sm:px-6 relative overflow-x-hidden">
       <Toaster />
 
       {/* Ambient noise field behind the whole page */}

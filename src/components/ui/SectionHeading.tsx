@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -15,10 +16,9 @@ interface SectionHeadingProps {
 }
 
 const wordVariants = {
-  hidden: { opacity: 0, filter: "blur(10px)", y: 20 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    filter: "blur(0px)",
     y: 0,
     transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
   },
@@ -27,7 +27,7 @@ const wordVariants = {
 function AnimatedWord({ text, className }: { text: string; className?: string }) {
   return (
     <motion.span
-      className={cn("inline-block will-change-transform", className)}
+      className={cn("inline-block", className)}
       variants={wordVariants}
     >
       {text}
@@ -50,19 +50,25 @@ function WordGroup({
   const highlightWords = highlight.trim().split(" ");
   const afterWords = after?.trim().split(" ") ?? [];
 
+  // The " " text nodes are ignored by the flex container for layout (spacing
+  // comes from mr-[0.25em]) but they keep the DOM text readable as separate
+  // words for crawlers, copy/paste and text extraction ("How It Works", not
+  // "HowItWorks").
   return (
     <>
       {beforeWords.map((w, i) => (
         <span key={`b-${i}`} className="inline-block mr-[0.25em]">
-          <AnimatedWord text={w} />
+          <AnimatedWord text={w} />{" "}
         </span>
       ))}
       {highlightWords.map((w, i) => (
-        <AnimatedWord key={`h-${i}`} text={w} className={cn("mr-[0.25em]", highlightClass)} />
+        <span key={`h-${i}`} className="inline-block mr-[0.25em]">
+          <AnimatedWord text={w} className={highlightClass} />{" "}
+        </span>
       ))}
       {afterWords.map((w, i) => (
         <span key={`a-${i}`} className="inline-block mr-[0.25em]">
-          <AnimatedWord text={w} />
+          <AnimatedWord text={w} />{" "}
         </span>
       ))}
     </>
@@ -79,7 +85,7 @@ export function SectionHeading({
   highlightClass,
   stagger,
 }: SectionHeadingProps) {
-  const shouldReduce = useReducedMotion();
+  const shouldReduce = usePrefersReducedMotion();
 
   const container = {
     hidden: {},
@@ -122,7 +128,6 @@ export function SectionHeading({
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
-          aria-label={[before, highlight, after].filter(Boolean).join(" ")}
         >
           <WordGroup
             text={before}

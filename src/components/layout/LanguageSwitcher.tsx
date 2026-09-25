@@ -39,12 +39,13 @@ export function LanguageSwitcher() {
       : `/es${basePathname}`;
 
   return (
-    <div
+    <nav
       className="flex items-center gap-2"
       aria-label={isEs ? "Selección de idioma" : "Language selection"}
     >
       <Link
         href={enHref}
+        prefetch={false}
         lang="en"
         hrefLang="en"
         aria-label="View this page in English"
@@ -58,6 +59,7 @@ export function LanguageSwitcher() {
       </span>
       <Link
         href={esHref}
+        prefetch={false}
         lang="es"
         hrefLang="es"
         aria-label="Ver esta página en español"
@@ -66,6 +68,6 @@ export function LanguageSwitcher() {
       >
         Español
       </Link>
-    </div>
+    </nav>
   );
 }

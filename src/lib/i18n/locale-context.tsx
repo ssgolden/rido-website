@@ -23,6 +23,9 @@ export function LocaleProvider({
   // change it in the App Router, so reflect the active locale here.
   useEffect(() => {
     document.documentElement.lang = locale;
+    return () => {
+      document.documentElement.lang = "en";
+    };
   }, [locale]);
 
   return <LocaleContext.Provider value={locale}>{children}</LocaleContext.Provider>;

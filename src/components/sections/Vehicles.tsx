@@ -87,6 +87,7 @@ export function Vehicles() {
               <button
                 key={vehicle.id}
                 onClick={() => handleVehicleChange(i)}
+                aria-pressed={i === active}
                 className={`relative px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm transition-colors duration-200 cursor-pointer ${
                   i === active
                     ? "text-white"
@@ -121,7 +122,6 @@ export function Vehicles() {
                     fill
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    priority={active === 0 && activeImage === 0}
                     onError={() => setMainImageError(true)}
                   />
                 )}
@@ -132,6 +132,7 @@ export function Vehicles() {
                     <button
                       key={img}
                       onClick={() => handleThumbnailClick(i)}
+                      aria-current={i === activeImage ? "true" : undefined}
                       className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 ${
                         i === activeImage
                           ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"

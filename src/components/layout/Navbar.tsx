@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -64,20 +65,44 @@ function useScrolledPast(threshold: number) {
   );
 }
 
-export function Navbar() {
+interface NavbarProps {
+  /**
+   * Prefix for the section anchors. On the home pages this is "" (same-page
+   * anchors); on other routes (city landing pages) pass "/" or "/es" so the
+   * links navigate home instead of pointing at sections that don't exist.
+   */
+  anchorBase?: string;
+}
+
+export function Navbar({ anchorBase = "" }: NavbarProps = {}) {
   const locale = useLocale();
   const t = copy[locale];
-  const navLinks = t.navLinks;
+  const homeHref = locale === "es" ? "/es" : "/";
+  const navLinks = t.navLinks.map((l) => ({ ...l, href: `${anchorBase}${l.href}` }));
   const scrolled = useScrolledPast(20);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (mobileOpen) { document.body.style.overflow = "hidden"; }
     else { document.body.style.overflow = ""; }
     return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  // Tabbing out of the open panel would land on hidden, scroll-locked page
+  // content; close the menu instead so focus stays on visible UI.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onFocusOut = (e: FocusEvent) => {
+      const next = e.relatedTarget as Node | null;
+      if (next && !navRef.current?.contains(next)) setMobileOpen(false);
+    };
+    const nav = navRef.current;
+    nav?.addEventListener("focusout", onFocusOut);
+    return () => nav?.removeEventListener("focusout", onFocusOut);
   }, [mobileOpen]);
 
   // Escape closes menu and returns focus to the hamburger
@@ -97,6 +122,7 @@ export function Navbar() {
   }, [mobileOpen]);
 
   useEffect(() => {
+    if (anchorBase) return; // not on a page that contains the sections
     const sectionIds = copy.en.navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) setActiveSection(entry.target.id); }); },
@@ -104,10 +130,11 @@ export function Navbar() {
     );
     sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
-  }, []);
+  }, [anchorBase]);
 
   return (
     <nav
+      ref={navRef}
       className={cn("fixed z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}
       style={{
         top: "max(0.75rem, env(safe-area-inset-top))",
@@ -116,24 +143,32 @@ export function Navbar() {
       }}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label={t.homeAria} className="min-w-0 shrink-0 group relative">
+        <Link
+          href={homeHref}
+          onClick={(e) => {
+            // Already on the home page: scroll to top instead of a navigation.
+            if (!anchorBase) { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+          }}
+          aria-label={t.homeAria}
+          className="min-w-0 shrink-0 group relative"
+        >
           <span className="absolute inset-0 bg-rido-magenta/0 group-hover:bg-rido-magenta/20 blur-xl rounded-lg transition-all duration-500" />
           <span className="relative z-10 block sm:hidden"><RidoLogo variant="full" size="sm" priority /></span>
           <span className="relative z-10 hidden sm:block"><RidoLogo variant="full" size="md" priority /></span>
-        </a>
+        </Link>
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
+            <a key={link.href} href={link.href} aria-current={activeSection === link.href.slice(link.href.indexOf("#") + 1) ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.slice(link.href.indexOf("#") + 1) ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
           <Magnetic>
-            <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
+            <Button as="a" href={`${anchorBase}#download`} size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
           </Magnetic>
         </div>
         {/* Mobile: keep a compact Join CTA visible next to the hamburger — primary conversion action on the dominant traffic class */}
         <div className="flex md:hidden items-center gap-2">
-          <Button as="a" href="#download" size="sm" className="gap-1.5 min-h-[44px] px-4">
+          <Button as="a" href={`${anchorBase}#download`} size="sm" className="gap-1.5 min-h-[44px] px-4">
             <Download className="w-4 h-4" />
             <span>{t.joinShort}</span>
           </Button>
@@ -143,6 +178,7 @@ export function Navbar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? t.closeMenu : t.openMenu}
             aria-expanded={mobileOpen}
+            aria-controls="mobile-menu"
           >
             {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -151,6 +187,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-menu"
             ref={panelRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -160,9 +197,9 @@ export function Navbar() {
           >
             <div className="mt-3 pb-3 border-t border-white/10">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={() => setMobileOpen(false)}>{link.label}</a>
+                <a key={link.href} href={link.href} aria-current={activeSection === link.href.slice(link.href.indexOf("#") + 1) ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.slice(link.href.indexOf("#") + 1) ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={() => setMobileOpen(false)}>{link.label}</a>
               ))}
-              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
+              <div className="mt-3"><Button as="a" href={`${anchorBase}#download`} onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>
           </motion.div>
         )}

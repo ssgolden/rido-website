@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
 /**
@@ -25,7 +26,7 @@ interface MagneticProps {
 }
 
 export function Magnetic({ children, className = "inline-block" }: MagneticProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const [finePointer, setFinePointer] = useState(false);
 

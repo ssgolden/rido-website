@@ -12,9 +12,10 @@ import { useReducedMotion } from "framer-motion";
  *
  * Pure R3F + drei; no extra plugins. Drop into any hero section.
  */
-function DistortOrb() {
+function DistortOrb({ reduce }: { reduce: boolean }) {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((state) => {
+    if (reduce) return;
     if (ref.current) {
       ref.current.rotation.x = state.clock.elapsedTime * 0.15;
       ref.current.rotation.y = state.clock.elapsedTime * 0.2;
@@ -26,7 +27,7 @@ function DistortOrb() {
         color="#DE0498"
         attach="material"
         distort={0.4}
-        speed={1.6}
+        speed={reduce ? 0 : 1.6}
         roughness={0.15}
         metalness={0.6}
       />
@@ -37,7 +38,7 @@ function DistortOrb() {
 /**
  * Stars — minimal particle field for atmosphere.
  */
-function Stars({ count = 200 }: { count?: number }) {
+function Stars({ count = 200, reduce = false }: { count?: number; reduce?: boolean }) {
   const [positions, setPositions] = useState<Float32Array | null>(null);
   useEffect(() => {
     // Defer to a microtask so the initial commit completes first.
@@ -57,6 +58,7 @@ function Stars({ count = 200 }: { count?: number }) {
   }, [count]);
   const ref = useRef<THREE.Points>(null);
   useFrame((_, delta) => {
+    if (reduce) return;
     if (ref.current) ref.current.rotation.y += delta * 0.05;
   });
   if (!positions) return null;
@@ -103,9 +105,9 @@ export function Scene3D({
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 3, 5]} intensity={0.8} color="#F23DB5" />
         <directionalLight position={[-3, -3, 2]} intensity={0.4} color="#22C55E" />
-        {showStars ? <Stars /> : null}
+        {showStars ? <Stars reduce={reduce ?? false} /> : null}
         <Float speed={reduce ? 0 : 1.2} rotationIntensity={0.3} floatIntensity={0.5}>
-          <DistortOrb />
+          <DistortOrb reduce={reduce ?? false} />
         </Float>
         {showEnvironment ? <Environment preset="city" /> : null}
       </Canvas>

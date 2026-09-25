@@ -112,7 +112,9 @@ export function FAQ() {
         const matchesCategory = category === "all" || item.category === category;
         return matchesSearch && matchesCategory;
       })
-      .map((item, idx) => ({ ...item, stableId: `faq-${idx}` }));
+      // Key by the item's position in the SOURCE list, not the filtered list,
+      // so the open question does not jump when a search narrows the results.
+      .map((item) => ({ ...item, stableId: `faq-${faqItemsByLocale[locale].indexOf(item)}` }));
   }, [locale, search, category]);
 
   const visibleItems = showAll ? filteredItems : filteredItems.slice(0, VISIBLE_LIMIT);
@@ -120,7 +122,7 @@ export function FAQ() {
 
   return (
     <section id="faq" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6">
-      {/* FAQPage schema is also injected globally in src/lib/schema.ts (English, from the canonical faqItems export); this interactive section renders the active locale's copy. */}
+      {/* FAQPage JSON-LD for this locale is emitted by the page (src/lib/schema.ts getHomeSchemas). */}
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionHeading
@@ -137,12 +139,12 @@ export function FAQ() {
           <div className="relative mb-4">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
             <input type="text" placeholder={t.searchPlaceholder} value={search} onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
-              className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
+              className="w-full pl-11 pr-4 py-3 rounded-xl glass border border-white/25 text-white text-sm placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
               aria-label={t.searchAria} />
           </div>
           <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
             {categoryIds.map((catId) => (
-              <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }}
+              <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }} aria-pressed={category === catId}
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {t.categories[catId]}
               </button>

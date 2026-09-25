@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -111,26 +112,34 @@ function WaitlistForm() {
     setErrorKey(null);
 
     try {
-      // Persist locally as backup, then POST to the configured backend when set.
-      const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
-      if (!existing.includes(email)) {
-        existing.push(email);
-        localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
-      }
-
       if (WAITLIST_URL) {
         const res = await fetch(WAITLIST_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            email,
-            locale,
-            userAgent: navigator.userAgent,
-          }),
+          body: JSON.stringify({ email, locale }),
         });
         if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
-        const json = await res.json().catch(() => ({}));
-        if (json.ok === false && json.error !== "invalid") throw new Error(json.error || "waitlist rejected");
+        // Success only on an explicit ok:true — an unparseable body (HTML error
+        // page, sign-in page) or ok:false must never show the success screen.
+        const json = await res.json().catch(() => null);
+        if (!json || json.ok !== true) {
+          setStatus("error");
+          setErrorKey(json?.error === "invalid" ? "invalid" : "generic");
+          return;
+        }
+      } else {
+        // No backend configured at build time (local dev / preview): keep the
+        // address on this device so nothing is lost. Best effort only.
+        try {
+          const existing: unknown = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
+          const list = Array.isArray(existing) ? existing.filter((x): x is string => typeof x === "string") : [];
+          if (!list.includes(email)) {
+            list.push(email);
+            localStorage.setItem(WAITLIST_KEY, JSON.stringify(list));
+          }
+        } catch {
+          /* storage blocked (private mode, quota) — ignore */
+        }
       }
 
       setStatus("success");
@@ -154,6 +163,7 @@ function WaitlistForm() {
         <motion.svg
           viewBox="0 0 64 64"
           className="w-14 h-14 mx-auto mb-3"
+          aria-hidden="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
@@ -222,7 +232,7 @@ function WaitlistForm() {
             disabled={status === "loading"}
             aria-label={t.emailAria}
             aria-invalid={status === "error"}
-            className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
+            className="w-full pl-11 pr-4 py-3 rounded-xl glass border border-white/25 text-white text-sm placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
           />
         </div>
         <button
@@ -247,9 +257,7 @@ function WaitlistForm() {
 export function DownloadCTA() {
   const locale = useLocale();
   const t = copy[locale];
-  const prefersReduced = useReducedMotion();
-  // useReducedMotion returns null on SSR and boolean on client — null is falsy.
-  const shouldReduce = prefersReduced ?? false;
+  const shouldReduce = usePrefersReducedMotion();
 
   return (
     <section id="download" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
@@ -312,7 +320,7 @@ export function DownloadCTA() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="w-full h-full bg-gradient-to-b from-rido-magenta/30 to-rido-navy flex flex-col items-center justify-center pt-10">
                       <div className="w-16 h-16 rounded-2xl bg-rido-magenta/30 mb-4 flex items-center justify-center">
-                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M9 16.5L13.5 21L23 11" stroke="#DE0498" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M9 16.5L13.5 21L23 11" stroke="#DE0498" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       </div>
                       <p className="text-white font-black text-2xl">rido</p>
                       <p className="text-muted-weak text-sm mt-2">{t.phoneTagline}</p>

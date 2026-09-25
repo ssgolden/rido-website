@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 
 /** How long to keep waiting for a lazily-mounted hash target (next/dynamic sections). */
 const HASH_RESOLVE_TIMEOUT_MS = 5000;
@@ -18,15 +18,22 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     const shouldEnable = () =>
       !reducedMotionMq.matches && !coarsePointerMq.matches;
 
+    let starting = false;
     const start = () => {
-      if (lenis) return;
-      lenis = new Lenis({
-        autoRaf: true,
-        lerp: 0.1,
-        wheelMultiplier: 1,
-        anchors: true,
+      if (lenis || starting) return;
+      starting = true;
+      // Lazy: touch devices and reduced-motion users never download Lenis.
+      void import("lenis").then(({ default: LenisCtor }) => {
+        starting = false;
+        if (lenis || !shouldEnable()) return;
+        lenis = new LenisCtor({
+          autoRaf: true,
+          lerp: 0.1,
+          wheelMultiplier: 1,
+          anchors: true,
+        });
+        lenisRef.current = lenis;
       });
-      lenisRef.current = lenis;
     };
 
     const stop = () => {

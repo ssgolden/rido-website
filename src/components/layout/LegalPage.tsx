@@ -8,7 +8,7 @@ interface LegalPageProps {
 
 export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
   return (
-    <div className="min-h-screen bg-rido-navy">
+    <div className="min-h-dvh bg-rido-navy">
       {/* Target for the global skip-to-content link in the root layout */}
       <main id="main-content" className="max-w-3xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
         <nav aria-label="Breadcrumb" className="mb-8">

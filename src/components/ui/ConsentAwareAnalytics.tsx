@@ -3,18 +3,10 @@
 import { useSyncExternalStore } from "react";
 import dynamic from "next/dynamic";
 
-const STORAGE_KEY = "rido-cookie-consent";
+import { CONSENT_EVENT, readConsentRecord } from "@/lib/consent";
 
 function readConsent(): boolean {
-  try {
-    if (typeof window === "undefined") return false;
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const parsed = JSON.parse(raw);
-    return parsed.accepted === true;
-  } catch {
-    return false;
-  }
+  return readConsentRecord()?.accepted === true;
 }
 
 // Dynamically import Analytics so it (and its network calls) only loads
@@ -32,8 +24,13 @@ export function ConsentAwareAnalytics() {
   const hasConsent = useSyncExternalStore(
     // Subscribe to storage events so consent changes are picked up.
     (callback) => {
+      // "storage" only fires in OTHER tabs; CONSENT_EVENT covers this tab.
       window.addEventListener("storage", callback);
-      return () => window.removeEventListener("storage", callback);
+      window.addEventListener(CONSENT_EVENT, callback);
+      return () => {
+        window.removeEventListener("storage", callback);
+        window.removeEventListener(CONSENT_EVENT, callback);
+      };
     },
     () => readConsent(), // client snapshot
     () => false // SSR snapshot — never load analytics during SSR

@@ -1,14 +1,28 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
-import "maplibre-gl/dist/maplibre-gl.css";
+import { withBase } from "@/lib/basePath";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cities, citiesAnnounced, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { Map as MapLibreMap, LngLatBoundsLike } from "maplibre-gl";
 
 type MapLibreModule = typeof import("maplibre-gl");
+
+const MAP_CSS_ID = "maplibre-gl-css";
+function loadMapStylesheet(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (document.getElementById(MAP_CSS_ID)) return resolve();
+    const link = document.createElement("link");
+    link.id = MAP_CSS_ID;
+    link.rel = "stylesheet";
+    link.href = withBase("/vendor/maplibre-gl.css");
+    link.onload = () => resolve();
+    link.onerror = () => reject(new Error("maplibre css failed"));
+    document.head.appendChild(link);
+  });
+}
 
 const copy = {
   en: {
@@ -282,10 +296,11 @@ export function CoverageMap({ showCities = citiesAnnounced }: { showCities?: boo
   const wrapRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
+  const unmountedRef = useRef(false);
   const startedRef = useRef(false);
   const [status, setStatus] = useState<MapStatus>("idle");
   const [posterVisible, setPosterVisible] = useState(true);
-  const prefersReducedMotion = useReducedMotion();
+  const prefersReducedMotion = usePrefersReducedMotion();
   const reducedRef = useRef(prefersReducedMotion);
   reducedRef.current = prefersReducedMotion;
   const locale = useLocale();
@@ -307,15 +322,19 @@ export function CoverageMap({ showCities = citiesAnnounced }: { showCities?: boo
 
     let lib: MapLibreModule;
     try {
-      lib = await import("maplibre-gl");
+      // The stylesheet is attached at runtime (public/vendor/maplibre-gl.css,
+      // copied from node_modules — keep in sync when upgrading maplibre-gl).
+      // A bundler import, even a dynamic one, gets hoisted into the page CSS
+      // and blocks rendering on every page of the site.
+      [lib] = await Promise.all([import("maplibre-gl"), loadMapStylesheet()]);
     } catch {
-      setStatus("fallback");
+      if (!unmountedRef.current) setStatus("fallback");
       return;
     }
 
     const container = mapContainerRef.current;
-    if (!container) {
-      setStatus("fallback");
+    // Unmounted while the chunk was loading: never create a map on a detached node.
+    if (!container || unmountedRef.current) {
       return;
     }
 
@@ -407,7 +426,9 @@ export function CoverageMap({ showCities = citiesAnnounced }: { showCities?: boo
 
   // Teardown on unmount.
   useEffect(() => {
+    unmountedRef.current = false;
     return () => {
+      unmountedRef.current = true;
       mapRef.current?.remove();
       mapRef.current = null;
     };

@@ -38,6 +38,16 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
     }
   }, [open]);
 
+  // The footer advertises "esc close": honour it.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onOpenChange(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onOpenChange]);
+
   return (
     <AnimatePresence>
       {open ? (
@@ -55,6 +65,9 @@ export function CommandMenu({ open, onOpenChange }: CommandMenuProps) {
             exit={{ opacity: 0, scale: 0.96, y: -8 }}
             transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Rido command menu"
             className="w-full max-w-lg rounded-2xl glass overflow-hidden shadow-2xl shadow-black/60"
           >
             <Command label="Rido command menu" className="w-full">

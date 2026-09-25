@@ -1,7 +1,9 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView, type HTMLMotionProps } from "framer-motion";
 import { forwardRef, useRef } from "react";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+
 import { EASE, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
 
 const EASE_TUPLE = EASE as unknown as [number, number, number, number];
@@ -22,29 +24,34 @@ const itemVariants = {
   },
 };
 
-interface StaggerRevealProps {
+type StaggerRevealProps = Omit<HTMLMotionProps<"div">, "variants" | "initial" | "animate"> & {
   children: React.ReactNode;
-  className?: string;
   staggerDelay?: number;
-}
+};
 
 export function StaggerReveal({
   children,
   className,
   staggerDelay = STAGGER.text,
+  ...rest
 }: StaggerRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: SCROLL_MARGIN });
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
 
   if (reduce) {
-    return <div className={className}>{children}</div>;
+    return (
+      <div className={className} {...(rest as React.HTMLAttributes<HTMLDivElement>)}>
+        {children}
+      </div>
+    );
   }
 
   return (
     <motion.div
       ref={ref}
       className={className}
+      {...rest}
       variants={{
         ...containerVariants,
         show: { transition: { staggerChildren: staggerDelay } },
@@ -57,12 +64,17 @@ export function StaggerReveal({
   );
 }
 
-export const StaggerItem = forwardRef<HTMLDivElement, {
+type StaggerItemProps = Omit<HTMLMotionProps<"div">, "variants"> & {
   children: React.ReactNode;
-  className?: string;
-}>(function StaggerItem({ children, className }, externalRef) {
+};
+
+/** Forwards every other prop (aria-*, id, role…) to the rendered element. */
+export const StaggerItem = forwardRef<HTMLDivElement, StaggerItemProps>(function StaggerItem(
+  { children, ...rest },
+  externalRef
+) {
   return (
-    <motion.div ref={externalRef} variants={itemVariants} className={className}>
+    <motion.div ref={externalRef} variants={itemVariants} {...rest}>
       {children}
     </motion.div>
   );

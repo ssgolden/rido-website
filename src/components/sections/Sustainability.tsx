@@ -84,7 +84,7 @@ export function Sustainability() {
           </ScrollReveal>
         </div>
 
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1} tabIndex={0} role="region" aria-label={t.ariaLabel}>
           {t.commitments.map((item) => (
             <StaggerItem key={item.title}>
               <Card>

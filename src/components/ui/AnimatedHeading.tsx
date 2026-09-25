@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { cn } from "@/lib/utils";
 
 type AnimatedHeadingProps = {
@@ -42,7 +43,7 @@ export function AnimatedHeading({
   once = true,
   blurAmount = 10,
 }: AnimatedHeadingProps) {
-  const shouldReduce = useReducedMotion();
+  const shouldReduce = usePrefersReducedMotion();
 
   if (shouldReduce) {
     return <Tag className={className}>{text}</Tag>;

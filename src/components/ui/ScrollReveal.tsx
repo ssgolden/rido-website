@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import { useRef } from "react";
 import { EASE, SCROLL_MARGIN } from "@/lib/motion";
 
@@ -23,7 +24,7 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once, margin: SCROLL_MARGIN });
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
 
   const directionOffset = {
     up: { y: 40 },
