@@ -35,6 +35,10 @@ jobs:
         env:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
+          # Repository variable (Settings → Secrets and variables → Actions →
+          # Variables). Without it the waitlist form has no backend and only
+          # keeps emails in the visitor's own browser. See docs/WAITLIST-SETUP.md.
+          NEXT_PUBLIC_WAITLIST_URL: ${{ vars.NEXT_PUBLIC_WAITLIST_URL }}
 
       - name: Add .nojekyll
         run: touch out/.nojekyll

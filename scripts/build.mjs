@@ -15,8 +15,8 @@
  * Uses only Node built-ins. Do not run `next build` directly for export builds.
  */
 
-import { spawnSync } from "node:child_process";
-import { existsSync, renameSync, rmSync } from "node:fs";
+import { execFileSync, spawnSync } from "node:child_process";
+import { existsSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -29,6 +29,48 @@ const extraArgs = process.argv.slice(2);
 
 function log(message) {
   console.log(`[build] ${message}`);
+}
+
+// Sitemap <lastmod>: the date of the last commit, so it is stable for a given
+// commit yet moves whenever content actually changes. Falls back to today.
+if (!process.env.RIDO_LAST_MODIFIED) {
+  try {
+    process.env.RIDO_LAST_MODIFIED = execFileSync("git", ["log", "-1", "--format=%cs"], { cwd: root }).toString().trim();
+  } catch {
+    process.env.RIDO_LAST_MODIFIED = new Date().toISOString().slice(0, 10);
+  }
+}
+
+/**
+ * The App Router only lets the single root layout render <html>, so the
+ * Spanish pages are prerendered with lang="en" (the client patches it after
+ * hydration). For the static export, fix the emitted files so crawlers and
+ * screen readers get the right language from the first byte.
+ */
+function patchSpanishLang() {
+  const outDir = path.join(root, "out");
+  const targets = [path.join(outDir, "es.html")];
+  const esDir = path.join(outDir, "es");
+  const walk = (dir) => {
+    if (!existsSync(dir)) return;
+    for (const entry of readdirSync(dir)) {
+      const full = path.join(dir, entry);
+      if (statSync(full).isDirectory()) walk(full);
+      else if (entry.endsWith(".html")) targets.push(full);
+    }
+  };
+  walk(esDir);
+  let patched = 0;
+  for (const file of targets) {
+    if (!existsSync(file)) continue;
+    const html = readFileSync(file, "utf8");
+    const next = html.replace(/<html([^>]*)\slang="en"/, '<html$1 lang="es"');
+    if (next !== html) {
+      writeFileSync(file, next);
+      patched++;
+    }
+  }
+  log(`Set lang="es" on ${patched} Spanish page(s)`);
 }
 
 function runNextBuild() {
@@ -54,6 +96,13 @@ function runNextBuild() {
 // ---------------------------------------------------------------------------
 if (process.env.NEXT_OUTPUT !== "export") {
   process.exit(runNextBuild());
+}
+
+if (!process.env.NEXT_PUBLIC_WAITLIST_URL) {
+  console.warn(
+    "[build] WARNING: NEXT_PUBLIC_WAITLIST_URL is not set. The exported site has no waitlist " +
+      "backend — sign-ups will only be kept in each visitor's browser. See docs/WAITLIST-SETUP.md."
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -118,6 +167,7 @@ try {
     log("src/app/api not found; nothing to exclude");
   }
   exitCode = runNextBuild();
+  if (exitCode === 0) patchSpanishLang();
 } finally {
   restoreApiDir();
 }

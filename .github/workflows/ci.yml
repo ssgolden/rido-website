@@ -5,6 +5,13 @@ on:
   push:
     branches-ignore: [master]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Lint & Build
@@ -50,6 +57,7 @@ jobs:
         env:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
+          NEXT_PUBLIC_WAITLIST_URL: ${{ vars.NEXT_PUBLIC_WAITLIST_URL }}
 
   quality:
     name: Quality Gates (Lighthouse + axe)
@@ -71,6 +79,7 @@ jobs:
         env:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
+          NEXT_PUBLIC_WAITLIST_URL: ${{ vars.NEXT_PUBLIC_WAITLIST_URL }}
 
       - name: Lighthouse budgets
         run: npx lhci autorun --config=lighthouserc.json

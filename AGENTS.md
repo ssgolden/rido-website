@@ -19,9 +19,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Legal pages: Use `LegalPage` layout from `@/components/layout/LegalPage`
 - All sections need `id` and `aria-label` attributes
 - All interactive elements need `cursor-pointer` class
-- Use `useReducedMotion()` from framer-motion for animations that loop
+- Use `usePrefersReducedMotion()` from `@/hooks/usePrefersReducedMotion` for animations that loop. NOT framer's `useReducedMotion()`: it returns null on the server and true on the first client render, which causes hydration mismatches whenever the element tree differs
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
-- Fonts are self-hosted via `@fontsource-variable` packages imported in layout.tsx — zero external font requests (still not next/font — Turbopack bug on Windows)
+- Fonts are self-hosted WOFF2 files in `public/fonts/` declared via `@font-face` in `globals.css` — zero external font requests (not next/font — Turbopack bug on Windows; not `@fontsource-variable` — those packages were removed)
 - Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)

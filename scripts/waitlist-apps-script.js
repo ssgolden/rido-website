@@ -8,64 +8,89 @@
  *   4. Execute as: You
  *   5. Who has access: Anyone
  *   6. Copy the deployment URL (looks like https://script.google.com/macros/s/AKfy.../exec)
- *   7. Set the URL in Vercel/GitHub Secrets as NEXT_PUBLIC_WAITLIST_URL, then rebuild + deploy
+ *   7. Add it as the GitHub repository VARIABLE `NEXT_PUBLIC_WAITLIST_URL`
+ *      (Settings → Secrets and variables → Actions → Variables) and/or the
+ *      Vercel env var of the same name, then rebuild + deploy.
  *
- * Local dev (no env var): falls back to localStorage only.
+ * Security notes:
+ *   - Every cell is written as text and prefixed with an apostrophe when it
+ *     starts with = + - @ so a crafted submission can never become a formula
+ *     (formula injection could exfiltrate the sheet when opened).
+ *   - locale is whitelisted, nothing else from the request is stored.
+ *   - LockService serialises concurrent writes; CacheService throttles repeats.
  *
- * To view collected emails: open the linked Google Sheet (created below)
- * or check Apps Script logs.
+ * Local dev (no env var): the site falls back to localStorage only.
  */
 
 const SHEET_NAME = "Rido Waitlist";
+const EMAIL_RE = /^[^\s@=+\-@']{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 
 function getOrCreateSheet() {
   const ss = SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.create("Rido Waitlist");
   let sheet = ss.getSheetByName(SHEET_NAME);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_NAME);
-    sheet.appendRow(["timestamp", "email", "locale", "userAgent"]);
+    sheet.appendRow(["timestamp", "email", "locale"]);
     sheet.setFrozenRows(1);
   }
   return sheet;
 }
 
+function json(payload) {
+  return ContentService.createTextOutput(JSON.stringify(payload)).setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Never let a cell be interpreted as a formula. */
+function cellSafe(value) {
+  const s = String(value == null ? "" : value).slice(0, 254);
+  return /^[=+\-@\t\r]/.test(s) ? "'" + s : s;
+}
+
 function doPost(e) {
   try {
-    const body = JSON.parse(e.postData.contents || "{}");
-    const email = (body.email || "").toString().trim().toLowerCase();
-    const locale = (body.locale || "unknown").toString();
-    const ua = (body.userAgent || "").toString().slice(0, 200);
+    const body = JSON.parse((e && e.postData && e.postData.contents) || "{}");
+    const email = String(body.email || "").trim().toLowerCase();
+    const locale = body.locale === "es" ? "es" : "en";
 
-    // Basic validation
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return ContentService.createTextOutput(JSON.stringify({ ok: false, error: "invalid" }))
-        .setMimeType(ContentService.MimeType.JSON);
+    if (!EMAIL_RE.test(email) || email.length > 254) {
+      return json({ ok: false, error: "invalid" });
     }
 
-    const sheet = getOrCreateSheet();
+    // Throttle: one accepted write per address per minute (also absorbs double-clicks).
+    const cache = CacheService.getScriptCache();
+    const key = "w:" + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, email));
+    if (cache.get(key)) return json({ ok: true, duplicate: true });
+    cache.put(key, "1", 60);
 
-    // Dedupe
-    const existing = sheet.getDataRange().getValues().flat();
-    if (existing.some((cell) => cell === email)) {
-      return ContentService.createTextOutput(JSON.stringify({ ok: true, duplicate: true }))
-        .setMimeType(ContentService.MimeType.JSON);
+    const lock = LockService.getScriptLock();
+    lock.waitLock(10000);
+    try {
+      const sheet = getOrCreateSheet();
+      const lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        // Only the email column is compared, so a timestamp or locale can never collide.
+        const emails = sheet.getRange(2, 2, lastRow - 1, 1).getValues();
+        for (let i = 0; i < emails.length; i++) {
+          if (String(emails[i][0]).toLowerCase() === email) return json({ ok: true, duplicate: true });
+        }
+      }
+      sheet.appendRow([new Date().toISOString(), cellSafe(email), locale]);
+    } finally {
+      lock.releaseLock();
     }
-
-    sheet.appendRow([new Date().toISOString(), email, locale, ua]);
-
-    return ContentService.createTextOutput(JSON.stringify({ ok: true }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json({ ok: true });
   } catch (err) {
-    return ContentService.createTextOutput(JSON.stringify({ ok: false, error: "server" }))
-      .setMimeType(ContentService.MimeType.JSON);
+    return json({ ok: false, error: "server" });
   }
 }
 
-// Optional: hit the deployed URL with ?count=1 to read the public count.
-function doGet(e) {
+/** Public aggregate count (no emails). Cached for a minute to limit reads. */
+function doGet() {
+  const cache = CacheService.getScriptCache();
+  const cached = cache.get("count");
+  if (cached !== null) return json({ count: Number(cached) });
   const sheet = getOrCreateSheet();
-  const lastRow = sheet.getLastRow();
-  const count = Math.max(0, lastRow - 1); // minus header
-  return ContentService.createTextOutput(JSON.stringify({ count }))
-    .setMimeType(ContentService.MimeType.JSON);
+  const count = Math.max(0, sheet.getLastRow() - 1); // minus header
+  cache.put("count", String(count), 60);
+  return json({ count });
 }

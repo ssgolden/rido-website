@@ -53,3 +53,10 @@ That's intentional — local dev should not pollute the production sheet.
 
 Open the linked Google Sheet (script.google.com → project → Sheets icon), or from
 anywhere: `GET <deployed URL>?count=1` for just the count.
+
+## Where the variable is read
+
+`.github/workflows/deploy.yml` and `ci.yml` pass the **repository variable**
+`NEXT_PUBLIC_WAITLIST_URL` into the export build. Until the variable is set,
+`scripts/build.mjs` prints a warning and the live form keeps sign-ups only in
+each visitor's own browser.
