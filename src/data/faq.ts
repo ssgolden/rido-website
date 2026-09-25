@@ -53,8 +53,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Necesito carné de conducir?",
     },
     answer: {
-      en: "For e-scooters: no license is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no license is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations.",
-      es: "Para patinetes eléctricos: no se necesita carné en la mayoría de ciudades españolas para velocidades de hasta 25 km/h. Para bicis eléctricas: tampoco, ya que la ley española las considera bicicletas de pedaleo asistido. Consulta siempre la normativa local.",
+      en: "No. In Spain no licence is required for e-scooters limited to 25 km/h (personal mobility vehicles, VMP) or for pedal-assist e-bikes, which the law treats as bicycles. You must be at least 18 to ride with Rido.",
+      es: "No. En España no se necesita carné para patinetes eléctricos limitados a 25 km/h (vehículos de movilidad personal, VMP) ni para bicis de pedaleo asistido, que la ley considera bicicletas. Para usar Rido debes tener al menos 18 años.",
     },
     category: "getting-started",
   },
@@ -97,8 +97,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Tengo que llevar casco?",
     },
     answer: {
-      en: "We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app.",
-      es: "Te recomendamos encarecidamente llevar casco en cada trayecto. En muchas ciudades españolas es obligatorio para quienes van en patinete eléctrico. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app.",
+      en: "Yes on e-scooters: from 1 October 2026 helmet use is mandatory for e-scooter (VMP) riders across Spain. We include a helmet with every scooter and offer helmet rewards in the app. On e-bikes a helmet is strongly recommended.",
+      es: "Sí, en patinete: desde el 1 de octubre de 2026 el casco es obligatorio en toda España para quienes conducen un VMP. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app. En bici eléctrica es muy recomendable.",
     },
     category: "safety",
   },
@@ -120,7 +120,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "The Rido Pass is our rider membership — free unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
-      es: "El Rido Pass es nuestra membresía para usuarios frecuentes: desbloqueos gratis y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
+      es: "El Rido Pass es nuestra suscripción para usuarios frecuentes: desbloqueos gratis y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
     },
     category: "pricing",
   },

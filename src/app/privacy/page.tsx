@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { jsonLd } from "@/lib/jsonld";
 import { Shield } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Rido",
@@ -15,11 +17,11 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy" lastUpdated="January 2026">
+    <LegalPage title="Privacy Policy" lastUpdated="September 2026">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
@@ -77,7 +79,23 @@ export default function PrivacyPolicyPage() {
         <li><strong>Usage data</strong>: Information related to the use of the App and the service. This includes trip history, ride start and end times, and distance travelled. The legal basis is the performance of the contract and Rido&apos;s legitimate interest in improving its services.</li>
       </ul>
 
-      <h3>4.2 Special Categories of Data</h3>
+      <h3>4.2 Website waitlist and this website</h3>
+      <p>
+        Before launch, the only personal data this website collects is what you give us when you join the waitlist:
+      </p>
+      <ul>
+        <li><strong>Data</strong>: your email address and the language of the page you used (English or Spanish). We do not collect your name, device details or location through the waitlist form.</li>
+        <li><strong>Purpose</strong>: to email you when Rido launches and to send you your early-access invitation.</li>
+        <li><strong>Legal basis</strong>: your consent (Article 6(1)(a) GDPR), given when you submit the form. You may withdraw it at any time by emailing <a href="mailto:info@rido.bike">info@rido.bike</a>; we will delete your address.</li>
+        <li><strong>Processors</strong>: the address is stored in a Google Sheet through Google Apps Script (Google Ireland Limited / Google LLC, with Standard Contractual Clauses for any transfer outside the EEA). On our server-hosted preview, sign-ups may additionally be relayed by email through Resend, Inc. and appear in Vercel, Inc. function logs in redacted form. The website itself is served by GitHub Pages (GitHub, Inc.) and, for previews, by Vercel; like any web host they receive your IP address to deliver the pages.</li>
+        <li><strong>Retention</strong>: until launch communications are complete or until you withdraw consent, and in any case no longer than 24 months after launch.</li>
+        <li><strong>Local copy</strong>: when no backend is configured (for example on a local preview), the form keeps the address only in your own browser&apos;s local storage. It never leaves your device unless a backend is configured.</li>
+      </ul>
+      <p>
+        Website traffic is measured only with your consent and without cookies, as described in our <Link href="/politica-cookies">Cookie Policy</Link>.
+      </p>
+
+      <h3>4.3 Special Categories of Data</h3>
       <p>
         Rido does not process special categories of personal data (e.g., racial or ethnic origin, political opinions, religious beliefs, trade union membership, genetic data, biometric data, or data concerning health or sexual orientation).
       </p>
@@ -160,18 +178,9 @@ export default function PrivacyPolicyPage() {
         If you believe that the processing of your data infringes applicable regulations, you have the right to file a complaint with the Spanish Data Protection Agency (Agencia Española de Protección de Datos — AEPD), via <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>.
       </p>
 
-      <h2 id="cookies" className="legal-section">Cookie Policy</h2>
+      <h2 id="cookies" className="legal-section">Cookies and Similar Technologies</h2>
       <p>
-        Our website and app use cookies and similar tracking technologies to ensure proper functionality, analyze traffic, and enhance your experience. Cookies are small data files stored on your device when you visit our website.
-      </p>
-      <h3>Types of Cookies We Use</h3>
-      <ul>
-        <li><strong>Essential Cookies</strong>: Required for the website to function properly, including session management and security features.</li>
-        <li><strong>Analytical Cookies</strong>: Help us understand how visitors interact with our website, allowing us to improve our services.</li>
-        <li><strong>Functional Cookies</strong>: Enable enhanced functionality and personalization, such as remembering your preferences.</li>
-      </ul>
-      <p>
-        You can manage your cookie preferences through your browser settings. For more details on the specific cookies we use, please contact us at <a href="mailto:info@rido.bike">info@rido.bike</a>.
+        The Rido website does not set tracking cookies. The only items stored on your device (your consent choice, and the waitlist address when no backend is configured), the consent-based cookieless analytics we use, and the functional access cookie used on our private preview host are described in full in our <Link href="/politica-cookies">Cookie Policy</Link>, which forms part of this Privacy Policy.
       </p>
 
       <div className="legal-highlight mt-12">

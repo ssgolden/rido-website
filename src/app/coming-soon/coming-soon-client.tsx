@@ -37,8 +37,8 @@ const copy: Record<"en" | "es", typeof en> = {
     heading1: "Algo bueno",
     heading2: "está en camino.",
     sub: citiesAnnounced
-      ? "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé el primero en subirte."
-      : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera y sé el primero en subirte.",
+      ? "Patinetes y bicis eléctricas compartidas para Marbella, San Pedro, Cancelada, Estepona y El Paraíso. Únete a la lista de espera y sé de los primeros en subirte."
+      : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera y sé de los primeros en subirte.",
     emailPlaceholder: "tu@email.com",
     emailAria: "Correo electrónico",
     join: "Únete a la lista",
@@ -57,7 +57,7 @@ const copy: Record<"en" | "es", typeof en> = {
 
 const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 
-export function ComingSoon() {
+export function ComingSoon({ gateAvailable, year }: { gateAvailable: boolean; year: number }) {
   const router = useRouter();
   const [locale, setLocale] = useState<"en" | "es">("en");
   const t = copy[locale];
@@ -74,8 +74,9 @@ export function ComingSoon() {
     if (signupState === "busy") return;
     setSignupState("busy");
     try {
-      // Static-export: /api/waitlist is excluded; use the Apps Script web app URL.
-      // When hosted on a server with the API route present, fall back to it.
+      // Apps Script web app when configured; otherwise the server API route,
+      // which exists only on a server host (the static export excludes it).
+      if (!WAITLIST_URL && !gateAvailable) { setSignupState("error"); return; }
       const target = WAITLIST_URL || "/api/waitlist";
       const headers: Record<string, string> = WAITLIST_URL
         ? { "Content-Type": "text/plain;charset=utf-8" }
@@ -83,13 +84,12 @@ export function ComingSoon() {
       const res = await fetch(target, {
         method: "POST",
         headers,
-        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+        body: JSON.stringify({ email, locale }),
       });
       if (!res.ok) { setSignupState("error"); return; }
-      if (WAITLIST_URL) {
-        const json = await res.json().catch(() => ({}));
-        if (json.ok === false) { setSignupState("error"); return; }
-      }
+      // Success only on an explicit ok:true (never on an unparseable body).
+      const json = await res.json().catch(() => null);
+      if (!json || json.ok !== true) { setSignupState("error"); return; }
       setSignupState("done");
     } catch {
       setSignupState("error");
@@ -155,7 +155,7 @@ export function ComingSoon() {
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); if (signupState === "error") setSignupState("idle"); }}
                 placeholder={t.emailPlaceholder}
-                className="w-full glass rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder:text-muted-weak focus:outline-none focus-visible:outline-2 focus-visible:outline-rido-magenta"
+                className="w-full glass border border-white/25 rounded-xl pl-11 pr-4 py-3 text-sm text-white placeholder:text-muted-weak focus:outline-none focus-visible:outline-2 focus-visible:outline-rido-magenta"
               />
             </div>
             <Button type="submit" disabled={signupState === "busy"} className="shrink-0">
@@ -175,7 +175,8 @@ export function ComingSoon() {
           {t.langSwitch}
         </button>
 
-        {/* Team access — deliberately quiet */}
+        {/* Team access — deliberately quiet; server hosts only */}
+        {gateAvailable && (
         <div className="mt-12">
           {gateOpen ? (
             <form onSubmit={submitPassword} className="flex items-center gap-2 justify-center">
@@ -208,9 +209,10 @@ export function ComingSoon() {
             <p className="mt-2 text-xs text-red-400" role="alert">{t.wrongPassword}</p>
           )}
         </div>
+        )}
 
         <p className="mt-10 text-xs text-muted-weak">
-          © {new Date().getFullYear()} Go2 Place S.L. ·{" "}
+          © {year} Go2 Place S.L. ·{" "}
           <a href="mailto:info@rido.bike" className="hover:text-rido-magenta-light transition-colors">info@rido.bike</a>
         </p>
       </div>

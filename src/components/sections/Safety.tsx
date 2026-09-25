@@ -53,7 +53,7 @@ const copy = {
     sectionAria: "Información de seguridad",
     eyebrow: "Tu seguridad importa",
     headingBefore: "Circula",
-    headingHighlight: "Seguro",
+    headingHighlight: "seguro",
     intro: "La seguridad no es opcional: es la base de todo lo que hacemos.",
     complianceBanner: "Cumplimos al completo con la nueva normativa VMP española, en vigor desde el 1 de octubre de 2026.",
     compliancePoints: [
@@ -108,7 +108,7 @@ export function Safety() {
             </div>
           </ScrollReveal>
         </div>
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 gap-6" staggerDelay={0.1} tabIndex={0} role="region" aria-label={t.sectionAria}>
           {t.items.map((item, i) => {
             const Icon = safetyIcons[i];
             return (

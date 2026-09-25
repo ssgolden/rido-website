@@ -5,8 +5,9 @@ import { cities, citiesAnnounced } from "@/data/cities";
 export const dynamic = "force-static";
 
 const baseUrl = "https://rido.bike";
-// Use fixed date instead of new Date() so the sitemap is stable across builds
-const lastModified = "2026-06-19";
+// Set by scripts/build.mjs from the last commit date, so the value is stable
+// for a given commit and only moves when content actually changes.
+const lastModified = process.env.RIDO_LAST_MODIFIED ?? "2026-09-25";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { copyrightYear } from "@/lib/site";
 
 type FooterLink = { label: string; href: string; badge?: string };
 type FooterColumn = { heading: string; links: FooterLink[] };
@@ -12,7 +13,7 @@ type FooterColumn = { heading: string; links: FooterLink[] };
 // hrefs are code-level and identical across locales — legal pages are
 // EN-only this phase, so their links stay pointing at the English routes.
 const en = {
-  tagline1: "Shared micro-mobility for Spain.",
+  tagline1: "Shared micro-mobility for the Costa del Sol.",
   tagline2: "Move freely. Ride responsibly.",
   joinWaitlist: "Join the waitlist →",
   emailAria: "Email",
@@ -25,7 +26,6 @@ const en = {
         { label: "E-Bike", href: "#vehicles" },
         { label: "Pricing", href: "#pricing" },
         { label: "Cities", href: "#cities" },
-        { label: "Motion Lab", href: "/motion-lab", badge: "new" },
       ],
     },
     {
@@ -52,7 +52,7 @@ const en = {
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    tagline1: "Micromovilidad compartida para España.",
+    tagline1: "Micromovilidad compartida para la Costa del Sol.",
     tagline2: "Muévete con libertad. Viaja con responsabilidad.",
     joinWaitlist: "Únete a la lista de espera →",
     emailAria: "Correo electrónico",
@@ -65,7 +65,6 @@ const copy: Record<Locale, typeof en> = {
           { label: "Bici eléctrica", href: "#vehicles" },
           { label: "Precios", href: "#pricing" },
           { label: "Ciudades", href: "#cities" },
-          { label: "Motion Lab", href: "/motion-lab", badge: "nuevo" },
         ],
       },
       {
@@ -138,7 +137,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
                         ) : null}
                       </a>
                     ) : (
-                      <Link href={link.href} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
+                      <Link href={link.href} prefetch={false} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
                         {link.label}
                         {link.badge ? (
                           <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/30">
@@ -154,7 +153,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
           ))}
         </div>
         <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-muted-weak">© {new Date().getFullYear()} Go2 Place S.L. {t.rights}</p>
+          <p className="text-xs text-muted-weak">© {copyrightYear} Go2 Place S.L. · NIF B01745405 · {t.rights}</p>
           <LanguageSwitcher />
         </div>
       </div>

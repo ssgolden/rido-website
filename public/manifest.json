@@ -1,11 +1,11 @@
 {
-  "name": "Rido — Shared E-Scooters & E-Bikes in Spain",
+  "name": "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
   "short_name": "Rido",
   "description": "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0F172A",
-  "theme_color": "#DE0498",
+  "theme_color": "#0F172A",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
@@ -35,15 +35,5 @@
   ],
   "lang": "en",
   "dir": "ltr",
-  "prefer_related_applications": false,
-  "related_applications": [
-    {
-      "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.rido.app"
-    },
-    {
-      "platform": "itunes",
-      "url": "https://apps.apple.com/app/rido"
-    }
-  ]
+  "prefer_related_applications": false
 }

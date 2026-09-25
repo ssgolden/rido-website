@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { jsonLd } from "@/lib/jsonld";
 import { AlertTriangle, Scale } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function TermsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
@@ -49,20 +50,20 @@ export default function TermsPage() {
       </p>
       <p>Contact: <a href="mailto:info@rido.bike">info@rido.bike</a></p>
       <p>
-        Go2Place S.L. is the sole owner and operator of the Rido mobile application. By using Rido&apos;s services, the registered user (hereinafter, the &quot;User&quot;) agrees to comply with and be legally bound by these Terms.
+        Go2 Place S.L. is the sole owner and operator of the Rido mobile application. By using Rido&apos;s services, the registered user (hereinafter, the &quot;User&quot;) agrees to comply with and be legally bound by these Terms.
       </p>
 
       <h2 id="2-definitions" className="legal-section">2. Definitions</h2>
       <ul>
         <li><strong>Registered User</strong>: The natural person who, having completed the registration process in the App, contracts the services for their personal use or for a group. In the case of group rentals, the Registered User assumes full responsibility for all vehicles rented under their account.</li>
-        <li><strong>Services</strong>: The comprehensive range of services offered by Go2Place S.L., encompassing the rental of Vehicles, access to and use of the App and its associated software, the website, maintenance, and any other complementary technology or service.</li>
-        <li><strong>Vehicles</strong>: Electric personal mobility vehicles (PMVs), such as electric scooters, and any related equipment (e.g., charging stations, chargers) made available by Go2Place S.L. for rental.</li>
-        <li><strong>App</strong>: The &quot;Rido&quot; mobile application, exclusively owned by Go2Place S.L., serving as the primary platform for accessing and utilising the Services.</li>
+        <li><strong>Services</strong>: The comprehensive range of services offered by Go2 Place S.L., encompassing the rental of Vehicles, access to and use of the App and its associated software, the website, maintenance, and any other complementary technology or service.</li>
+        <li><strong>Vehicles</strong>: Electric personal mobility vehicles (PMVs), such as electric scooters, pedal-assist electric bicycles (EPACs), and any related equipment (e.g., charging stations, chargers) made available by Go2 Place S.L. for rental.</li>
+        <li><strong>App</strong>: The &quot;Rido&quot; mobile application, exclusively owned by Go2 Place S.L., serving as the primary platform for accessing and utilising the Services.</li>
       </ul>
 
       <h2 id="3-registration" className="legal-section">3. Registration and User Account</h2>
       <p>
-        To use the Services through the App, the User must create a user account and register. The information provided by the User to Go2Place S.L. must be truthful, accurate, and up-to-date at all times.
+        To use the Services through the App, the User must create a user account and register. The information provided by the User to Go2 Place S.L. must be truthful, accurate, and up-to-date at all times.
       </p>
 
       <div className="legal-highlight">
@@ -74,7 +75,7 @@ export default function TermsPage() {
 
       <h3>3.2 Payment Methods</h3>
       <p>
-        To use a Vehicle, the User must have a valid credit or debit card, a Rido charging card, or another certified payment method. Payment information is transmitted through a third-party payment service provider; therefore, Go2Place S.L. does not directly receive or store such information.
+        To use a Vehicle, the User must have a valid credit or debit card, a Rido charging card, or another certified payment method. Payment information is transmitted through a third-party payment service provider; therefore, Go2 Place S.L. does not directly receive or store such information.
       </p>
 
       <h3>3.3 Mobile Device</h3>
@@ -84,12 +85,12 @@ export default function TermsPage() {
 
       <h3>3.4 Fraudulent Conduct</h3>
       <p>
-        Go2Place S.L. treats fraudulent conduct with the utmost seriousness. Should suspicion arise that the User has provided incorrect information, Go2Place S.L. reserves the right to suspend the User&apos;s account until the accuracy of the information has been verified.
+        Go2 Place S.L. treats fraudulent conduct with the utmost seriousness. Should suspicion arise that the User has provided incorrect information, Go2 Place S.L. reserves the right to suspend the User&apos;s account until the accuracy of the information has been verified.
       </p>
 
       <h2 id="4-use" className="legal-section">4. Use of the Service and the App</h2>
       <p>
-        The User can use the Rido App to locate, reserve, and rent Vehicles. Go2Place S.L. reserves the right to accept or reject reservation requests. If a reservation via the App is rejected after the User&apos;s request, the User will receive the applicable refund if they were charged in the first place.
+        The User can use the Rido App to locate, reserve, and rent Vehicles. Go2 Place S.L. reserves the right to accept or reject reservation requests. If a reservation via the App is rejected after the User&apos;s request, the User will receive the applicable refund if they were charged in the first place.
       </p>
 
       <h2 id="5-defects" className="legal-section">5. Defects and Damages</h2>
@@ -99,14 +100,14 @@ export default function TermsPage() {
           <h3 className="!mt-0 !mb-0 text-white font-bold">Liability Notice</h3>
         </div>
         <p className="!mb-0">
-          Damage can be costly, with the repair of a single Vehicle potentially reaching up to <strong>€2,000</strong>. Should a User damage a Vehicle, Go2Place S.L. reserves the right to levy a fee equivalent to the cost of repairing the Vehicle.
+          Damage can be costly, with the repair of a single Vehicle potentially reaching up to <strong>€2,000</strong>. Should a User damage a Vehicle, Go2 Place S.L. reserves the right to levy a fee equivalent to the cost of repairing the Vehicle.
         </p>
       </div>
       <p>
-        Beyond conventional wear and tear, Go2Place S.L. expects the User to return the Vehicle in the same condition as it was at the commencement of the rental. Should the User damage the Vehicle (whether deliberately, through negligence, or by accident), or fail to return the Vehicle in the expected manner resulting in damage, they shall be liable for the costs arising from such damage.
+        Beyond conventional wear and tear, Go2 Place S.L. expects the User to return the Vehicle in the same condition as it was at the commencement of the rental. Should the User damage the Vehicle (whether deliberately, through negligence, or by accident), or fail to return the Vehicle in the expected manner resulting in damage, they shall be liable for the costs arising from such damage.
       </p>
       <p>
-        If a Vehicle is not returned or located within 48 hours of being rented by a User, Go2Place S.L. will presume the Vehicle has been lost or stolen and reserves the right to levy a fee equivalent to the cost of replacing the Vehicle. Depending on the circumstances, Go2Place S.L. may be required to file a police report against the User.
+        If a Vehicle is not returned or located within 48 hours of being rented by a User, Go2 Place S.L. will presume the Vehicle has been lost or stolen and reserves the right to levy a fee equivalent to the cost of replacing the Vehicle. Depending on the circumstances, Go2 Place S.L. may be required to file a police report against the User.
       </p>
       <p>
         The use of Rido&apos;s Vehicles carries inherent risks, including the potential for malfunction. These risks may result in property damage, injury, or even death to the User or third parties. By utilising our services, the User acknowledges and accepts these risks.
@@ -130,33 +131,33 @@ export default function TermsPage() {
 
       <h3>Parking Photo Requirement</h3>
       <p>
-        The User must take a parking photograph at the end of the ride; should this duty not be fulfilled, Go2Place S.L. reserves the right to charge a fee of <strong>€30</strong>.
+        The User must take a parking photograph at the end of the ride; should this duty not be fulfilled, Go2 Place S.L. reserves the right to charge a fee of <strong>€30</strong>.
       </p>
 
       <h3>Fines</h3>
       <p>
-        Any fines or costs incurred from third parties, particularly governmental institutions, due to reckless parking or a breach of these Terms and applicable law, are the User&apos;s responsibility. Should Go2Place S.L. be charged by third parties, those fines or costs will be debited from the User&apos;s account.
+        Any fines or costs incurred from third parties, particularly governmental institutions, due to reckless parking or a breach of these Terms and applicable law, are the User&apos;s responsibility. Should Go2 Place S.L. be charged by third parties, those fines or costs will be debited from the User&apos;s account.
       </p>
 
       <h2 id="7-financial" className="legal-section">7. Financial Terms and Conditions</h2>
       <p>
-        The User may rent access to Vehicles for a per-minute fee in accordance with Rido&apos;s price list, which is available in the App. Please note that Go2Place S.L. reserves the right to amend its prices. Rido&apos;s prices include applicable taxes (VAT) and other fees.
+        The User may rent access to Vehicles for a per-minute fee in accordance with Rido&apos;s price list, which is available in the App. Please note that Go2 Place S.L. reserves the right to amend its prices. Rido&apos;s prices include applicable taxes (VAT) and other fees.
       </p>
       <p>
         Payment of fees will be processed using the payment method selected by the User when setting up their account. All payments are processed through a third-party payment service provider.
       </p>
       <p>
-        Go2Place S.L. may, at its sole discretion, offer bonuses, discounts, or promotions. These offers shall be subject to their own specific terms and conditions, which will be communicated to the User. The sale or transfer of bonus points is prohibited.
+        Go2 Place S.L. may, at its sole discretion, offer bonuses, discounts, or promotions. These offers shall be subject to their own specific terms and conditions, which will be communicated to the User. The sale or transfer of bonus points is prohibited.
       </p>
 
       <h2 id="8-responsibilities" className="legal-section">8. User Responsibilities</h2>
       <p>
-        Safety is the paramount priority for Go2Place S.L. The User is responsible for:
+        Safety is the paramount priority for Go2 Place S.L. The User is responsible for:
       </p>
       <ul>
         <li>Determining the battery charge level and estimating whether it will reach the intended destination</li>
         <li>Not using Vehicles whilst under the influence of alcohol or any other intoxicating substances</li>
-        <li>Wearing an approved helmet (strongly recommended; compulsory where municipal ordinances mandate it)</li>
+        <li>Wearing an approved helmet — compulsory for e-scooter (PMV) riders throughout Spain from 1 October 2026, and strongly recommended on e-bikes</li>
         <li>Keeping both hands on the handlebars at all times — no items held in hand whilst operating the Vehicle</li>
         <li>Not transporting passengers or animals on the Vehicle</li>
         <li>Not securing the Vehicle with locks not provided by Rido</li>
@@ -168,13 +169,13 @@ export default function TermsPage() {
 
       <h2 id="9-privacy" className="legal-section">9. Data Protection and Privacy</h2>
       <p>
-        At Go2Place S.L., we are fully committed to protecting your privacy. The processing of your personal data is conducted with the utmost diligence and in strict adherence to current data protection regulations.
+        At Go2 Place S.L., we are fully committed to protecting your privacy. The processing of your personal data is conducted with the utmost diligence and in strict adherence to current data protection regulations.
       </p>
       <p>
-        Go2Place S.L. complies with the provisions of <strong>Regulation (EU) 2016/679</strong> (GDPR) and <strong>Organic Law 3/2018</strong> (LOPDGDD).
+        Go2 Place S.L. complies with the provisions of <strong>Regulation (EU) 2016/679</strong> (GDPR) and <strong>Organic Law 3/2018</strong> (LOPDGDD).
       </p>
       <p>
-        The Data Controller for your personal data is Go2Place S.L., with NIF B01745405 and its registered office at Calle Eneldo 3, C4, local 22 — Orihuela Costa — 03189.
+        The Data Controller for your personal data is Go2 Place S.L., with NIF B01745405 and its registered office at Calle Eneldo 3, C4, local 22 — Orihuela Costa — 03189.
       </p>
       <p>
         For full details, please refer to our <Link href="/privacy">Privacy Policy</Link>.
@@ -182,20 +183,20 @@ export default function TermsPage() {
 
       <h2 id="10-ip" className="legal-section">10. Intellectual Property</h2>
       <p>
-        The Vehicles and Services remain the exclusive property of Go2Place S.L., and the User&apos;s engagement with them does not confer any transfer of ownership rights. The use of the Vehicles and Services does not grant the User ownership of any intellectual property rights pertaining to Rido&apos;s Vehicles and Services or the content accessed by the User, save for the limited licence granted to the User herein.
+        The Vehicles and Services remain the exclusive property of Go2 Place S.L., and the User&apos;s engagement with them does not confer any transfer of ownership rights. The use of the Vehicles and Services does not grant the User ownership of any intellectual property rights pertaining to Rido&apos;s Vehicles and Services or the content accessed by the User, save for the limited licence granted to the User herein.
       </p>
       <p>
-        All rights therein (including all intellectual property) are vested in Go2Place S.L. or its licensors. The User is prohibited from using content from Rido&apos;s Vehicles and Services without Rido&apos;s express prior written permission or as otherwise permitted by law. These Terms do not grant the User the right to use any trademarks, branding, or logos associated with Rido&apos;s Vehicles and Services.
+        All rights therein (including all intellectual property) are vested in Go2 Place S.L. or its licensors. The User is prohibited from using content from Rido&apos;s Vehicles and Services without Rido&apos;s express prior written permission or as otherwise permitted by law. These Terms do not grant the User the right to use any trademarks, branding, or logos associated with Rido&apos;s Vehicles and Services.
       </p>
 
       <h2 id="11-modifications" className="legal-section">11. Modifications and Termination</h2>
       <h3>11.1 Modifications to the Terms</h3>
       <p>
-        Go2Place S.L. reserves the right to modify these Terms, prices, and services at any time. Such modifications shall become effective upon their publication on the website or within the App, and shall be binding upon the User. The User will be notified via the App of the updated Terms and, in order to continue utilising our services, must accept the updated Terms.
+        Go2 Place S.L. reserves the right to modify these Terms, prices, and services at any time. Such modifications shall become effective upon their publication on the website or within the App, and shall be binding upon the User. The User will be notified via the App of the updated Terms and, in order to continue utilising our services, must accept the updated Terms.
       </p>
       <h3>11.2 Termination for Breach</h3>
       <p>
-        Should the User culpably breach these Terms, Go2Place S.L. reserves the right to terminate the User&apos;s access to the Vehicles and Services, the App, and to deactivate and cancel the User&apos;s account. In the event of a minor infringement, Go2Place S.L. will notify the User and request that they cease the infringement. Should the User fail to comply, Go2Place S.L. may cancel their account and restrict access to the Vehicles and Services. In the event of such termination, the User shall not be entitled to reimbursement for any paid rental.
+        Should the User culpably breach these Terms, Go2 Place S.L. reserves the right to terminate the User&apos;s access to the Vehicles and Services, the App, and to deactivate and cancel the User&apos;s account. In the event of a minor infringement, Go2 Place S.L. will notify the User and request that they cease the infringement. Should the User fail to comply, Go2 Place S.L. may cancel their account and restrict access to the Vehicles and Services. In the event of such termination, the User shall not be entitled to reimbursement for any paid rental.
       </p>
 
       <h2 id="12-withdrawal" className="legal-section">12. Right of Withdrawal</h2>
@@ -213,7 +214,7 @@ export default function TermsPage() {
 
       <h2 id="13-cookies" className="legal-section">13. Cookie Policy</h2>
       <p>
-        Go2Place S.L. informs the User that the App and the Rido website use on-device storage and similar technologies to ensure correct functionality, remember preferences, and — with the User&apos;s consent — measure traffic. The website does not use advertising or cross-site tracking cookies.
+        Go2 Place S.L. informs the User that the App and the Rido website use on-device storage and similar technologies to ensure correct functionality, remember preferences, and — with the User&apos;s consent — measure traffic. The website does not use advertising or cross-site tracking cookies.
       </p>
       <p>
         For detailed information on the cookies utilised, their purpose, and management, please consult our <Link href="/politica-cookies">Cookie Policy</Link>.
@@ -226,12 +227,12 @@ export default function TermsPage() {
 
       <h2 id="15-odr" className="legal-section">15. Online Dispute Resolution (ODR Platform)</h2>
       <p>
-        In accordance with <strong>Regulation (EU) No 524/2013</strong>, Go2Place S.L. informs consumers of the existence of the European Commission&apos;s online dispute resolution platform, available at <a href="http://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr/</a>, through which consumers may submit their complaints.
+        In accordance with <strong>Regulation (EU) No 524/2013</strong>, Go2 Place S.L. informs consumers of the existence of the European Commission&apos;s online dispute resolution platform, available at <a href="http://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">ec.europa.eu/consumers/odr/</a>, through which consumers may submit their complaints.
       </p>
 
       <h2 id="16-feedback" className="legal-section">16. Feedback</h2>
       <p>
-        For any comments, requests, or if the User is dissatisfied with the services, please contact our customer support via our <strong>in-app chat</strong>.
+        For any comments, requests, or if the User is dissatisfied with the services, please contact our customer support at <a href="mailto:info@rido.bike">info@rido.bike</a> (in-app chat will be available once the App launches).
       </p>
 
       <div className="legal-highlight mt-12">

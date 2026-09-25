@@ -44,7 +44,7 @@ const copy: Record<Locale, PartnerCopy> = {
       {
         title: "Software and operations",
         description:
-          "Rider app, manager dashboard, geofencing, dynamic pricing, and 24/7 support tooling — already running, ready to deploy.",
+          "Rider app, manager dashboard, geofencing, dynamic pricing, and 24/7 support tooling.",
       },
       {
         title: "Aligned economics",
@@ -77,7 +77,7 @@ const copy: Record<Locale, PartnerCopy> = {
       {
         title: "Economía alineada",
         description:
-          "Reparto de ingresos local con una cuenta de resultados transparente. El valor que crea tu ciudad se queda en tu ciudad — no en una central lejana.",
+          "Reparto de ingresos local con una economía por vehículo transparente. El valor que crea tu ciudad se queda en tu ciudad — no en una central lejana.",
       },
     ],
     ctaLabel: "Hablemos de colaborar",
@@ -106,7 +106,7 @@ export function Partners() {
           </ScrollReveal>
         </div>
 
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1} tabIndex={0} role="region" aria-label={t.sectionAria}>
           {t.differentiators.map((d, i) => {
             const Icon = partnerIcons[i];
             return (

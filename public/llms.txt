@@ -3,11 +3,13 @@
 > Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
 
 ## About
-Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol; the launch cities will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
+Rido is a shared micro-mobility company preparing to offer e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching on the Costa del Sol (Málaga province, Andalusia); the launch towns will be announced soon. Rido is built and operated by a local Costa del Sol team and is committed to zero-emission transport, swappable batteries and responsible recycling.
+
+Status: pre-launch. Fares, launch towns and app store listings will be announced at launch. Nothing on this site should be read as a current price, a live fleet size or a rider count.
 
 ## How It Works
 1. Join the waitlist at https://rido.bike#download
-2. Download the Rido app (launching soon on iOS and Android)
+2. Download the Rido app (in development for iOS and Android)
 3. Find a Rido vehicle near you on the in-app map
 4. Scan the QR code on the handlebar to unlock
 5. Ride following traffic rules and bike lanes
@@ -15,40 +17,44 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 7. End the ride and pay only for what you used
 
 ## Pricing
-- **Pay As You Go**: €1.00 unlock + €0.35 per minute. No commitment.
-- **Rido Pass**: Free unlock + €0.25 per minute. Best for frequent riders.
-- **Day Pass**: €14.99 for unlimited 24-hour rides. Best for tourists.
-- No minimum top-up, no hidden fees, free refund of unused balance.
+Fares will be announced at launch. Planned plan structure: Pay as you go, Rido Pass (subscription) and Day Pass. Exact pricing is always shown in the app before a ride starts.
 
 ## Vehicles
-- **Rido Scooter** (e-scooter): 45 km range, 25 km/h top speed, 120 kg weight limit, swappable battery, dual brakes, turn signals, GPS tracking, beginner mode.
-- **Rido Bike** (e-bike): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
+- **Rido Scooter** (e-scooter): 45 km range, 25 km/h top speed, 120 kg weight limit, swappable battery, dual brakes, turn signals, front and rear lights plus brake light and reflectors, ≥203 mm puncture-resistant wheels, beginner mode (15 km/h), GPS tracking and geofencing, helmet included.
+- **Rido Bike** (e-bike, pedal assist): 60 km range, 25 km/h assist, 130 kg weight limit, swappable battery, adjustable saddle, front cargo basket, integrated lights, puncture-resistant tyres, step-through frame.
 
-## Cities (all coming soon)
-- 5 launch cities on the Costa del Sol — announced soon (e-scooters + e-bikes)
+## Spanish VMP regulation (2026)
+Rido's e-scooter fleet is being prepared to meet Spain's new personal mobility vehicle (VMP) rules from the DGT, in force from 1 October 2026: certified vehicles, registration with an identification sticker, civil liability insurance, anti-tampering motor limited to 25 km/h, and mandatory helmet use for e-scooter riders nationwide.
+
+## Cities
+Launch towns on the Costa del Sol will be announced soon. Spanish-language site: https://rido.bike/es
 
 ## Safety
-- Helmet included with every scooter
+- Helmet included with every scooter; mandatory for e-scooter riders in Spain from 1 October 2026
 - One rider per vehicle (tandem detection)
-- No riding under the influence (cognitive test at peak hours)
+- No riding under the influence
 - Park in designated areas only
 - Beginner mode available (15 km/h)
 
 ## Sustainability
 - Zero direct emissions
-- Carbon-neutral operations via verified carbon credits
 - Swappable and recycled batteries
-- Vehicle recycling program at end of life
+- Vehicle recycling programme at end of life
+- Impact figures will be published after the first year of operation (no projections are claimed)
+
+## Partners
+Turn-key shared-mobility operation for Spanish towns: certified fleet, rider app, operations tooling and aligned economics. Enquiries: info@rido.bike
 
 ## Company
 - **Legal entity**: Go2 Place S.L.
 - **NIF**: B01745405
 - **Address**: Calle Eneldo 3, C4, local 22, 03189 Orihuela Costa, Alicante, Spain
 - **Email**: info@rido.bike
-- **Website**: https://rido.bike
+- **Website**: https://rido.bike (English) · https://rido.bike/es (Spanish)
 
 ## Links
 - [Main site](https://rido.bike)
+- [Spanish site](https://rido.bike/es)
 - [How it works](https://rido.bike#how-it-works)
 - [Vehicles](https://rido.bike#vehicles)
 - [Pricing](https://rido.bike#pricing)
@@ -57,17 +63,17 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - [Sustainability](https://rido.bike#sustainability)
 - [FAQ](https://rido.bike#faq)
 - [About](https://rido.bike#about)
+- [Partners](https://rido.bike#partners)
 - [Join waitlist](https://rido.bike#download)
 - [Terms of Service](https://rido.bike/terms)
 - [Privacy Policy](https://rido.bike/privacy)
-- [Cookie Policy](https://rido.bike/privacy#cookies)
+- [Cookie Policy](https://rido.bike/politica-cookies)
 - [Careers](https://rido.bike/careers)
 
 ## For AI Crawlers
-- Language: English
-- Region: Spain (Costa del Sol, Andalusia)
-- Currency: EUR
+- Languages: English (/), Spanish (/es)
+- Region: Costa del Sol, Málaga, Andalusia, Spain
+- Currency: EUR (fares not yet published)
 - Launch status: Pre-launch / waitlist
 - Service type: Shared e-scooter and e-bike rental
-- Target cities: 5 launch cities on the Costa del Sol, announced soon
 - Primary entity: Go2 Place S.L. operating the "Rido" brand

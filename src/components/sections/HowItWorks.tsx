@@ -31,7 +31,7 @@ const en = {
     {
       icon: Bike,
       title: "Ride & Enjoy",
-      description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
+      description: "Follow traffic rules, use bike lanes, and enjoy the ride. A helmet is included with every scooter and required by law for e-scooter riders.",
     },
     {
       icon: ParkingCircle,
@@ -62,7 +62,7 @@ const copy: Record<Locale, typeof en> = {
       {
         icon: Bike,
         title: "Monta y disfruta",
-        description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Te recomendamos llevar casco.",
+        description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. El casco va incluido con cada patinete y es obligatorio por ley.",
       },
       {
         icon: ParkingCircle,
@@ -107,7 +107,7 @@ export function HowItWorks() {
 
         {/* Below md: the existing snap carousel, unchanged. Hidden on md+
             (display:none), so step copy is never duplicated in the a11y tree. */}
-        <StaggerReveal className="mobile-carousel pt-5 gap-6 md:hidden" staggerDelay={0.12}>
+        <StaggerReveal className="mobile-carousel pt-5 gap-6 md:hidden" staggerDelay={0.12} tabIndex={0} role="region" aria-label={t.ariaLabel}>
           {steps.map((step, i) => (
             <StaggerItem key={step.title}>
               <Card className="text-center relative">
@@ -139,7 +139,7 @@ export function HowItWorks() {
                   <div
                     className={cn(
                       "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-all duration-300 ease-out",
-                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent opacity-50"
+                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent"
                     )}
                   >
                     <div

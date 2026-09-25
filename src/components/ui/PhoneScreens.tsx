@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 import {
   BatteryMedium,
   Bike,
@@ -14,11 +15,59 @@ import {
   Timer,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/lib/i18n/locale-context";
+import type { Locale } from "@/lib/i18n/config";
 
 const EASE = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
 
+const en = {
+  findNearby: "Find a Rido near you",
+  createAccount: "Create your account",
+  firstInLine: "Be first in line at launch",
+  signUp: "Sign up",
+  scanToUnlock: "Scan to unlock",
+  pointAtQr: "Point at the QR code",
+  onHandlebar: "On the handlebar of any Rido",
+  riding: "Riding",
+  cruising: "Cruising",
+  endRide: "End ride",
+  parkAndEnd: "Park & end",
+  parkingZone: "Designated parking zone",
+  rideComplete: "Ride complete",
+  payOnlyUsed: "Pay only for what you used",
+  rideTime: "Ride time",
+  distance: "Distance",
+  done: "Done",
+  preview: "Illustrative app preview",
+};
+const copy: Record<Locale, typeof en> = {
+  en,
+  es: {
+    findNearby: "Busca un Rido cerca de ti",
+    createAccount: "Crea tu cuenta",
+    firstInLine: "Sé de los primeros en el lanzamiento",
+    signUp: "Registrarme",
+    scanToUnlock: "Escanea para desbloquear",
+    pointAtQr: "Apunta al código QR",
+    onHandlebar: "En el manillar de cualquier Rido",
+    riding: "En marcha",
+    cruising: "Circulando",
+    endRide: "Terminar viaje",
+    parkAndEnd: "Aparca y termina",
+    parkingZone: "Zona de aparcamiento designada",
+    rideComplete: "Viaje completado",
+    payOnlyUsed: "Pagas solo lo que usas",
+    rideTime: "Duración",
+    distance: "Distancia",
+    done: "Listo",
+    preview: "Vista previa ilustrativa de la app",
+  },
+};
+type Copy = typeof en;
+
 interface ScreenProps {
   reduced: boolean;
+  t: Copy;
 }
 
 /* Stylized product visualizations — deliberately illustrative, not fake
@@ -33,7 +82,7 @@ function ScreenLabel({ children }: { children: React.ReactNode }) {
 }
 
 /* Step 1 — Sign up: map with nearby pins + create-account card */
-function MapScreen() {
+function MapScreen({ t }: ScreenProps) {
   const pins = [
     { top: "26%", left: "22%" },
     { top: "38%", left: "62%" },
@@ -63,7 +112,7 @@ function MapScreen() {
       {/* search pill */}
       <div className="absolute top-11 left-4 right-4 h-9 rounded-full glass flex items-center gap-2 px-4">
         <Search className="w-3.5 h-3.5 text-muted" />
-        <span className="text-[11px] text-muted">Find a Rido near you</span>
+        <span className="text-[11px] text-muted">{t.findNearby}</span>
       </div>
       {/* sign-up card */}
       <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4">
@@ -72,12 +121,12 @@ function MapScreen() {
             <Bike className="w-4.5 h-4.5 text-rido-magenta" />
           </div>
           <div>
-            <p className="text-[11px] font-bold text-white">Create your account</p>
-            <p className="text-[10px] text-muted">Be first in line at launch</p>
+            <p className="text-[11px] font-bold text-white">{t.createAccount}</p>
+            <p className="text-[10px] text-muted">{t.firstInLine}</p>
           </div>
         </div>
         <div className="mt-3 h-8 rounded-lg bg-rido-magenta flex items-center justify-center text-[11px] font-semibold text-white">
-          Sign up
+          {t.signUp}
         </div>
       </div>
     </div>
@@ -85,13 +134,13 @@ function MapScreen() {
 }
 
 /* Step 2 — Scan & Unlock: QR scan frame with sweeping scan line */
-function ScanScreen({ reduced }: ScreenProps) {
+function ScanScreen({ reduced, t }: ScreenProps) {
   const scanLine = (
     <div className="absolute left-2 right-2 top-1/2 h-0.5 rounded-full bg-gradient-to-r from-transparent via-rido-magenta to-transparent" />
   );
   return (
     <div className="absolute inset-0 bg-gradient-to-b from-rido-navy-light to-rido-navy">
-      <ScreenLabel>Scan to unlock</ScreenLabel>
+      <ScreenLabel>{t.scanToUnlock}</ScreenLabel>
       {/* scan frame */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-36 h-36">
         <span className="absolute top-0 left-0 w-7 h-7 border-t-2 border-l-2 border-rido-magenta rounded-tl-xl" />
@@ -120,8 +169,8 @@ function ScanScreen({ reduced }: ScreenProps) {
           <QrCode className="w-4.5 h-4.5 text-rido-magenta" />
         </div>
         <div>
-          <p className="text-[11px] font-bold text-white">Point at the QR code</p>
-          <p className="text-[10px] text-muted">On the handlebar of any Rido</p>
+          <p className="text-[11px] font-bold text-white">{t.pointAtQr}</p>
+          <p className="text-[10px] text-muted">{t.onHandlebar}</p>
         </div>
       </div>
     </div>
@@ -129,10 +178,10 @@ function ScanScreen({ reduced }: ScreenProps) {
 }
 
 /* Step 3 — Ride: live riding stats with a route trace */
-function RideScreen() {
+function RideScreen({ t }: ScreenProps) {
   return (
     <div className="absolute inset-0 bg-rido-navy">
-      <ScreenLabel>Riding</ScreenLabel>
+      <ScreenLabel>{t.riding}</ScreenLabel>
       {/* speed */}
       <div className="absolute top-[18%] left-0 right-0 flex flex-col items-center">
         <div className="flex items-baseline gap-1.5">
@@ -141,7 +190,7 @@ function RideScreen() {
         </div>
         <div className="mt-1 flex items-center gap-1 text-rido-magenta-light">
           <Gauge className="w-3.5 h-3.5" />
-          <span className="text-[10px] font-semibold">Cruising</span>
+          <span className="text-[10px] font-semibold">{t.cruising}</span>
         </div>
       </div>
       {/* route trace */}
@@ -181,21 +230,21 @@ function RideScreen() {
       </div>
       {/* end-ride pill */}
       <div className="absolute bottom-5 left-4 right-4 h-9 rounded-xl border border-white/15 flex items-center justify-center text-[11px] font-semibold text-muted-strong">
-        End ride
+        {t.endRide}
       </div>
     </div>
   );
 }
 
 /* Step 4 — Park & End: designated parking zone + ride-complete check */
-function ParkScreen() {
+function ParkScreen({ t }: ScreenProps) {
   return (
     <div className="absolute inset-0 bg-rido-navy">
-      <ScreenLabel>Park &amp; end</ScreenLabel>
+      <ScreenLabel>{t.parkAndEnd}</ScreenLabel>
       {/* parking zone */}
       <div className="absolute top-[17%] left-6 right-6 h-36 rounded-2xl border-2 border-dashed border-rido-magenta/50 bg-rido-magenta/[0.06] flex flex-col items-center justify-center gap-2">
         <ParkingCircle className="w-8 h-8 text-rido-magenta" />
-        <span className="text-[10px] font-semibold text-muted-strong">Designated parking zone</span>
+        <span className="text-[10px] font-semibold text-muted-strong">{t.parkingZone}</span>
         <Bike className="w-4 h-4 text-muted" />
       </div>
       {/* ride complete */}
@@ -203,24 +252,24 @@ function ParkScreen() {
         <div className="flex items-center gap-3">
           <CheckCircle2 className="w-6 h-6 text-rido-green shrink-0" />
           <div>
-            <p className="text-[11px] font-bold text-white">Ride complete</p>
-            <p className="text-[10px] text-muted">Pay only for what you used</p>
+            <p className="text-[11px] font-bold text-white">{t.rideComplete}</p>
+            <p className="text-[10px] text-muted">{t.payOnlyUsed}</p>
           </div>
         </div>
         <div className="mt-3 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-muted">Ride time</span>
+            <span className="text-[10px] text-muted">{t.rideTime}</span>
             <span className="h-2 w-10 rounded-full bg-white/15" />
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-[10px] text-muted">Distance</span>
+            <span className="text-[10px] text-muted">{t.distance}</span>
             <span className="h-2 w-8 rounded-full bg-white/15" />
           </div>
         </div>
       </div>
       {/* done pill */}
       <div className="absolute bottom-5 left-4 right-4 h-9 rounded-xl bg-rido-magenta flex items-center justify-center text-[11px] font-semibold text-white">
-        Done
+        {t.done}
       </div>
     </div>
   );
@@ -248,7 +297,8 @@ interface PhoneMockupProps {
  * Purely decorative — always render with the surrounding step copy visible.
  */
 export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
-  const reduced = useReducedMotion() ?? false;
+  const reduced = usePrefersReducedMotion();
+  const t = copy[useLocale()];
   const active = Math.min(SCREENS.length - 1, Math.max(0, activeStep));
 
   return (
@@ -264,12 +314,12 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
             animate={{ opacity: i === active ? 1 : 0 }}
             transition={{ duration: reduced ? 0 : 0.45, ease: EASE }}
           >
-            <Component reduced={reduced} />
+            <Component reduced={reduced} t={t} />
           </motion.div>
         ))}
       </div>
       <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
-      <p className="mt-4 text-center text-[11px] text-muted-weak">Illustrative app preview</p>
+      <p className="mt-4 text-center text-[11px] text-muted-weak">{t.preview}</p>
     </div>
   );
 }

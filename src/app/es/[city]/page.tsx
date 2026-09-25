@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import NotFound from "@/app/not-found";
 import { cities, citiesAnnounced } from "@/data/cities";
 import { CityLanding, getCity, getCityMetadata } from "../../[city]/city-landing";
 
@@ -23,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { city: slug } = await params;
   const city = getCity(slug);
-  if (!city) return {};
+  if (!city) return { title: "Page Not Found — Rido", robots: { index: false, follow: false } };
   return getCityMetadata(city, "es");
 }
 
@@ -34,6 +34,8 @@ export default async function CityPageEs({
 }) {
   const { city: slug } = await params;
   const city = getCity(slug);
-  if (!city) notFound();
+  // Pre-announcement placeholder slug: render the branded 404 (a full page,
+  // not the bare error shell notFound() produces during static export).
+  if (!city) return <NotFound />;
   return <CityLanding city={city} locale="es" />;
 }

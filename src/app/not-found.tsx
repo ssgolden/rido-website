@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <main
-      id="not-found"
+      id="main-content"
       aria-labelledby="not-found-heading"
       className="relative min-h-dvh flex items-center justify-center overflow-hidden bg-rido-navy text-white px-4 sm:px-6 py-16 sm:py-24"
     >
@@ -75,12 +75,12 @@ export default function NotFound() {
           </Link>
         </div>
 
-        <div className="mt-14 flex items-center justify-center gap-6 text-white/30 text-sm">
-          <Link href="/privacy" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
+        <div className="mt-14 flex items-center justify-center gap-6 text-white/60 text-sm">
+          <Link href="/privacy" prefetch={false} className="hover:text-rido-magenta-light transition-colors cursor-pointer">
             Privacy Policy
           </Link>
           <span aria-hidden="true">·</span>
-          <Link href="/terms" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
+          <Link href="/terms" prefetch={false} className="hover:text-rido-magenta-light transition-colors cursor-pointer">
             Terms of Service
           </Link>
           <span aria-hidden="true">·</span>

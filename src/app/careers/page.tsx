@@ -1,25 +1,26 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { jsonLd } from "@/lib/jsonld";
 import { Briefcase } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Careers — Rido",
-  description: "Join the Rido team and help shape the future of micro-mobility in Spain. We're always looking for passionate people in operations, engineering, marketing, and more.",
+  description: "Join the Rido team and help launch shared micro-mobility on the Costa del Sol. We're always looking for passionate people in operations, engineering, marketing, and more.",
   alternates: { canonical: "https://rido.bike/careers" },
   openGraph: {
     title: "Careers — Rido",
-    description: "Join Rido and help shape the future of micro-mobility in Spain.",
+    description: "Join Rido and help launch shared micro-mobility on the Costa del Sol.",
     url: "https://rido.bike/careers",
   },
 };
 
 export default function CareersPage() {
   return (
-    <LegalPage title="Careers" lastUpdated="January 2026">
+    <LegalPage title="Careers" lastUpdated="September 2026">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
@@ -35,13 +36,13 @@ export default function CareersPage() {
           <h3 className="!mt-0 !mb-0 text-white font-bold">Join the Rido Team</h3>
         </div>
         <p className="!mb-0">
-          We&apos;re building the future of micro-mobility in Spain. Check back soon for open positions, or reach out to us directly.
+          We&apos;re preparing to launch shared micro-mobility on the Costa del Sol. Check back soon for open positions, or reach out to us directly.
         </p>
       </div>
 
       <h2 id="1-about" className="legal-section">1. About Rido</h2>
       <p>
-        Rido is a shared micro-mobility company operating e-scooters and e-bikes across Spain&apos;s most vibrant cities. Our mission is to provide sustainable, affordable transportation that helps reduce congestion and emissions.
+        Rido is a shared micro-mobility company preparing to launch e-scooters and e-bikes on the Costa del Sol. Our mission is to provide sustainable, affordable transportation that helps reduce congestion and emissions.
       </p>
       <p>
         We&apos;re a passionate team focused on:
@@ -49,7 +50,7 @@ export default function CareersPage() {
       <ul>
         <li>Making urban mobility accessible to everyone</li>
         <li>Building reliable, safe vehicles</li>
-        <li>Creating a sustainable future for Spanish cities</li>
+        <li>Creating a sustainable future for coastal towns</li>
         <li>Delivering exceptional customer experiences</li>
       </ul>
 

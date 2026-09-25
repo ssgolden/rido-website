@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { jsonLd } from "@/lib/jsonld";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowRight, Bike, ChevronDown, MapPin, Zap } from "lucide-react";
@@ -10,7 +11,6 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { cities, type City } from "@/data/cities";
-import { pricingTiers } from "@/data/pricing";
 
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
@@ -44,12 +44,6 @@ function vehicleNoun(city: City, locale: Locale): string {
   return both ? "e-scooters and e-bikes" : "e-scooters";
 }
 
-// Pricing facts sourced from src/data/pricing.ts so copy never drifts from the
-// pricing section. Price strings (€1.00 / €0.35/min / …) are locale-identical.
-const payg = pricingTiers.find((t) => t.id === "pay-as-you-go") ?? pricingTiers[0];
-const pass = pricingTiers.find((t) => t.id === "rido-pass") ?? pricingTiers[1];
-const day = pricingTiers.find((t) => t.id === "day-pass") ?? pricingTiers[2];
-
 // --- FAQ (honest: every town is comingSoon — never claim live availability) --
 export interface CityFaqItem {
   question: string;
@@ -72,7 +66,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
       },
       {
         question: `¿Cuánto costará montar en ${city.name}?`,
-        answer: `Paga por trayecto: ${payg.unlockFee} por desbloquear más ${payg.perMinute}. Con el Rido Pass el desbloqueo es gratis y pagas ${pass.perMinute}, y el Day Pass cuesta €${day.flatRate?.toFixed(2)} con viajes ilimitados durante 24 horas. Sin recarga mínima y sin costes ocultos: verás el precio exacto antes de cada viaje.`,
+        answer: `Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: sin recarga mínima y sin costes ocultos, y verás el precio exacto antes de cada viaje.`,
       },
       {
         question: `¿Qué vehículos habrá en ${city.name}?`,
@@ -94,7 +88,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
     },
     {
       question: `How much will a ride in ${city.name} cost?`,
-      answer: `Pay as you go: ${payg.unlockFee} to unlock plus ${payg.perMinute}. The Rido Pass gives you free unlocks at ${pass.perMinute}, and a €${day.flatRate?.toFixed(2)} Day Pass covers unlimited rides for 24 hours. No minimum top-up, no hidden fees — exact pricing is shown before every ride.`,
+      answer: `Fares will be announced at launch. What won't change: no minimum top-up, no hidden fees, and the exact price is shown before every ride.`,
     },
     {
       question: `Which vehicles will be available in ${city.name}?`,
@@ -115,14 +109,15 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
   };
   const noun = vehicleNoun(city, locale);
 
+  const both = city.vehicles.length === 2;
   const title =
     locale === "es"
-      ? `Alquiler de patinetes eléctricos en ${city.name} — Rido`
-      : `E-Scooter Rental in ${city.name} — Rido`;
+      ? `${both ? "Alquiler de patinetes y bicis eléctricas" : "Alquiler de patinetes eléctricos"} en ${city.name} — Rido`
+      : `${both ? "E-Scooter & E-Bike Rental" : "E-Scooter Rental"} in ${city.name} — Rido`;
   const description =
     locale === "es"
-      ? `Rido trae ${noun} compartidos a ${city.name}, en la ${city.region}. Lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar. Desde ${payg.unlockFee} por desbloquear + ${payg.perMinute}.`
-      : `Rido is bringing shared ${noun} to ${city.name} on the ${city.region}. Launching soon — join the waitlist and be first to ride. From ${payg.unlockFee} unlock + ${payg.perMinute}.`;
+      ? `Rido trae ${noun} compartidos a ${city.name}, en la ${city.region}. Lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar. Las tarifas se anunciarán en el lanzamiento.`
+      : `Rido is bringing shared ${noun} to ${city.name} on the ${city.region}. Launching soon — join the waitlist and be first to ride. Fares announced at launch.`;
 
   return {
     title,
@@ -137,7 +132,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       type: "website",
       url,
       siteName: "Rido",
-      locale: locale === "es" ? "es_ES" : "en_ES",
+      locale: locale === "es" ? "es_ES" : "en_GB",
       images: [
         {
           url: "/images/logo/rido-logo-wide.png",
@@ -156,7 +151,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
     },
     other: {
       "geo.position": `${city.lat};${city.lng}`,
-      "geo.region": "ES-AN",
+      "geo.region": "ES-MA",
       "geo.placename": `${city.name}, ${city.region}, Spain`,
       ICBM: `${city.lat}, ${city.lng}`,
     },
@@ -198,11 +193,9 @@ export function getCitySchemas(city: City, locale: Locale) {
       locale === "es"
         ? `Alquiler compartido de ${vehicleNoun(city, "es")} en ${city.name}, ${city.region}. Muy pronto.`
         : `Shared ${vehicleNoun(city, "en")} rental in ${city.name}, ${city.region}. Launching soon.`,
+    // Pre-launch: no price until fares are announced.
     offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "EUR",
-      lowPrice: pass.perMinuteValue.toFixed(2),
-      highPrice: (day.flatRate ?? 14.99).toFixed(2),
+      "@type": "Offer",
       availability: "https://schema.org/PreOrder",
     },
   };
@@ -256,7 +249,7 @@ const uiCopy = {
     vehiclesLabel: "Vehículos previstos",
     scooterChip: "Patinete eléctrico",
     bikeChip: "Bici eléctrica",
-    coverageHeading: "Dónde vamos a lanzar",
+    coverageHeading: "Dónde lanzaremos",
     coverageBody: (city: City) =>
       `${city.name} es una de las cinco localidades de lanzamiento en la Costa del Sol. Explora la zona de cobertura completa abajo.`,
     faqHeading: (city: City) => `Rido en ${city.name} — Preguntas frecuentes`,
@@ -275,13 +268,13 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
 
   return (
     <LocaleProvider locale={locale}>
-      <Navbar />
+      <Navbar anchorBase={homeHref === "/" ? "/" : homeHref} />
       <main id="main-content">
         {schemas.map((schema, i) => (
           <script
             key={i}
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+            dangerouslySetInnerHTML={{ __html: jsonLd(schema) }}
           />
         ))}
 

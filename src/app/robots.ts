@@ -9,37 +9,11 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-      },
-      {
-        userAgent: "GPTBot",
-        allow: "/",
-      },
-      {
-        userAgent: "ClaudeBot",
-        allow: "/",
-      },
-      {
-        userAgent: "PerplexityBot",
-        allow: "/",
-      },
-      {
-        userAgent: "Google-Extended",
-        allow: "/",
-      },
-      {
-        userAgent: "ChatGPT-User",
-        allow: "/",
-      },
-      {
-        userAgent: "OAI-SearchBot",
-        allow: "/",
-      },
-      {
-        userAgent: "BraveBot",
-        allow: "/",
+        // Operator/dev pages. They also carry noindex meta tags; the disallow
+        // saves crawl budget and keeps them out of link-discovery.
+        disallow: ["/waitlist-admin", "/motion-lab"],
       },
     ],
     sitemap: "https://rido.bike/sitemap.xml",
-    host: "https://rido.bike",
   };
 }

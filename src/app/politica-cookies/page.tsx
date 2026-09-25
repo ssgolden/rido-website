@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
+import { jsonLd } from "@/lib/jsonld";
 import { Cookie } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -15,11 +16,11 @@ export const metadata: Metadata = {
 
 export default function CookiePolicyPage() {
   return (
-    <LegalPage title="Cookie Policy" lastUpdated="July 2026">
+    <LegalPage title="Cookie Policy" lastUpdated="September 2026">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+          __html: jsonLd({
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
@@ -59,6 +60,12 @@ export default function CookiePolicyPage() {
           <strong>Consent-based, cookieless analytics (Vercel Analytics)</strong>: Only if you click &quot;Accept&quot; on our consent banner, we measure aggregate website traffic (page views, visit counts) using Vercel Analytics. If you decline — or simply do not respond to the banner — the analytics script is never loaded and no measurement takes place. Even when active, Vercel Analytics operates <strong>without cookies</strong> and without storing identifiers on your device; it does not track you across websites, and the data we receive is anonymous and aggregated.
         </li>
         <li>
+          <strong>Waitlist address (local storage, fallback only)</strong>: If you join the waitlist on a copy of the site that has no backend configured (for example a local or preview build), the form keeps your email address in your browser&apos;s local storage under the key <code>rido-waitlist-email</code> so that it is not lost. On the live site the address is sent to our waitlist backend instead (see the Privacy Policy). You can remove the entry at any time by clearing site data.
+        </li>
+        <li>
+          <strong>Team access cookie (private preview only)</strong>: On our password-protected preview host, entering the team password sets a strictly necessary cookie named <code>rido_gate</code> (HttpOnly, Secure, 30 days) so the preview stays unlocked. It contains no personal data and is never set on the public website.
+        </li>
+        <li>
           <strong>Self-hosted fonts</strong>: The typefaces used on our website are hosted on our own servers and delivered together with the rest of the website. No font files are requested from Google Fonts or any other third party, no cookies are set, and your IP address is not transmitted to any external font provider.
         </li>
       </ul>
@@ -84,7 +91,7 @@ export default function CookiePolicyPage() {
       <p>You are in control of the technologies described in this policy at all times:</p>
       <ul>
         <li>
-          <strong>Consent banner</strong>: On your first visit, you can accept or decline non-essential technologies via our banner. If you decline, analytics is never loaded. To change a previous choice, clear your browser&apos;s site data for rido.bike (which removes the <code>rido-cookie-consent</code> entry) and the banner will appear again on your next visit.
+          <strong>Consent banner</strong>: On your first visit, you can accept or decline non-essential technologies via our banner. If you decline (or press Escape), analytics is never loaded. To change a previous choice, clear your browser&apos;s site data for rido.bike (which removes the <code>rido-cookie-consent</code> entry) and the banner will appear again on your next visit. The banner is also shown again whenever this policy changes what we store.
         </li>
         <li>
           <strong>Browser settings</strong>: All major browsers (Chrome, Firefox, Safari, Edge) allow you to view, block, and delete cookies and site data, either globally or for specific websites. Consult your browser&apos;s help section for instructions. Please note that blocking all storage may affect the functioning of some websites.

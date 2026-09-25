@@ -6,6 +6,8 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { citiesAnnounced } from "@/data/cities";
+import { getHomeSchemas } from "@/lib/schema";
+import { jsonLd } from "@/lib/jsonld";
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })));
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })));
@@ -19,11 +21,14 @@ const Partners = dynamic(() => import("@/components/sections/Partners").then((m)
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
 
+// Page-level JSON-LD (WebPage, FAQPage, Products, Service) in Spanish.
+const homeSchemas = getHomeSchemas("es");
+
 export const metadata: Metadata = {
-  title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
+  title: "Rido — Patinetes y bicis eléctricas compartidas · Costa del Sol",
   description: citiesAnnounced
-    ? "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar en Marbella, Estepona y más. Cero emisiones, cero complicaciones."
-    : "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
+    ? "Patinetes y bicis eléctricas compartidas en la Costa del Sol. Únete a la lista de espera y sé de los primeros en montar en Marbella, Estepona y más."
+    : "Patinetes y bicis eléctricas compartidas llegan a la Costa del Sol. Ciudades de lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar.",
   alternates: {
     canonical: "https://rido.bike/es",
     languages: {
@@ -69,9 +74,12 @@ export default function HomeEs() {
       <Navbar />
       <ScrollProgress />
       <main id="main-content">
+        {homeSchemas.map((schema, i) => (
+          <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />
+        ))}
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Patinetes y bicicletas eléctricas compartidas en España</h1>
+            <p><strong>Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol</strong></p>
             <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido en la Costa del Sol. Cero emisiones, cero complicaciones.</p>
             <p>
               {citiesAnnounced

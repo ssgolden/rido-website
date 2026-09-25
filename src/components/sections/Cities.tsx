@@ -33,7 +33,7 @@ const copy = {
     citiesWord: "Ciudades",
     comingSoonEyebrow: "Próximamente",
     headingBefore: "Dónde",
-    headingHighlight: "Encontrarnos",
+    headingHighlight: "encontrarnos",
     intro: "Rido llega a la Costa del Sol. Estas son las ciudades a las que traemos nuestra flota.",
     comingSoonBadge: "Próximamente",
     eScooter: "Patinete eléctrico",
@@ -88,7 +88,7 @@ export function Cities() {
 
         {citiesAnnounced ? (
           /* City cards — restored site-wide when the launch towns are announced */
-          <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" staggerDelay={0.08}>
+          <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" staggerDelay={0.08} tabIndex={0} role="region" aria-label={t.sectionAria}>
             {cities.map((city) => (
               <StaggerItem key={city.slug}>
                 <div className="group glass rounded-2xl p-5 sm:p-6 border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-rido-magenta/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-rido-magenta/5">
