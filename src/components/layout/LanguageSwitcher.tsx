@@ -5,14 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 // Pages that have no Spanish version yet (legal pages this phase, plus
-// careers and the motion lab). On these, the Español link falls back to
-// the Spanish home page instead of a nonexistent /es/... route.
+// careers). On these, the Español link falls back to the Spanish home
+// page instead of a nonexistent /es/... route.
 const EN_ONLY_PATHS = new Set([
   "/privacy",
   "/terms",
   "/politica-cookies",
   "/careers",
-  "/motion-lab",
 ]);
 
 const linkClass = (active: boolean) =>

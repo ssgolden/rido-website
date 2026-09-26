@@ -51,7 +51,8 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_ORIGIN,
     siteName: "Rido",
-    locale: "en_ES",
+    locale: "en_GB",
+    alternateLocale: ["es_ES"],
     images: [
       {
         url: "/images/og/rido-og.png",

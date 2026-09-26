@@ -139,7 +139,8 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       type: "website",
       url,
       siteName: "Rido",
-      locale: locale === "es" ? "es_ES" : "en_ES",
+      locale: locale === "es" ? "es_ES" : "en_GB",
+      alternateLocale: locale === "es" ? ["en_GB"] : ["es_ES"],
       images: [
         {
           url: "/images/logo/rido-logo-wide.png",
