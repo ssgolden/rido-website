@@ -133,14 +133,16 @@ function HeroBackdrop({
     >
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-      <motion.div className="absolute inset-0" style={{ y: photoY }}>
+      {/* On a tall phone, object-cover slices this wide photo into unreadable
+          shapes. Keep the whole frame visible there; full-bleed cover from sm up. */}
+      <motion.div className="absolute inset-x-0 top-[18%] h-[34%] sm:inset-0 sm:h-full" style={{ y: photoY }}>
         <Image
           src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
           alt=""
           role="presentation"
           fill
           sizes="100vw"
-          className="object-cover opacity-[0.22]"
+          className="object-contain object-center opacity-[0.2] sm:object-cover sm:opacity-[0.22]"
           priority
           decoding="async"
         />
@@ -167,8 +169,8 @@ function HeroBackdrop({
             "linear-gradient(90deg, rgba(15,23,42,0.5), transparent 12%, transparent 88%, rgba(15,23,42,0.5))",
         }}
       />
-      <div className="absolute top-1/4 -right-24 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[100px] hero-orb hero-orb-1" />
-      <div className="absolute bottom-0 -left-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[90px] hero-orb hero-orb-2" />
+      <div className="absolute top-1/4 -right-16 w-[160px] h-[160px] sm:-right-24 sm:w-[700px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[80px] sm:blur-[100px] hero-orb hero-orb-1" />
+      <div className="absolute bottom-0 -left-16 w-[140px] h-[140px] sm:-left-24 sm:w-[500px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[70px] sm:blur-[90px] hero-orb hero-orb-2" />
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
         style={{ backgroundImage: `url("${NOISE_SVG}")` }}
@@ -211,7 +213,7 @@ export function Hero() {
       ref={sectionRef}
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative flex min-h-[calc(100dvh-var(--site-header-offset,5.5rem))] items-center justify-center overflow-hidden pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]"
+      className="relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center justify-center overflow-hidden pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))]"
     >
       {parkBackdrop && backdropEl
         ? createPortal(
@@ -221,7 +223,7 @@ export function Hero() {
         : <HeroBackdrop fixed={false} opacity={1} photoY={bgY} />}
 
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-6 sm:py-12 pb-12 sm:pb-20 [@media(max-height:860px)]:py-3 [@media(max-height:860px)]:pb-6 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
+        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-20 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
         style={{ opacity: contentOpacity }}
       >
         {/* Social-proof kicker */}
@@ -242,7 +244,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:mb-3 [@media(max-height:860px)]:sm:mb-4">
+          <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:sm:mb-4">
             {t.badge}
           </Badge>
         </ScrollReveal>
@@ -276,7 +278,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.65, duration: 0.6, ease: EASE_TUPLE }}
-          className="mt-6 sm:mt-7 [@media(max-height:860px)]:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+          className="mt-6 sm:mt-7 [@media(max-height:860px)]:sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
           {t.subheadline}
         </motion.p>
@@ -285,7 +287,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.8, duration: 0.55, ease: EASE_TUPLE }}
-          className="mt-8 sm:mt-10 [@media(max-height:860px)]:mt-5 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          className="mt-8 sm:mt-10 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
             href="#download"
@@ -316,7 +318,7 @@ export function Hero() {
         </motion.p>
 
         <StaggerReveal
-          className="mt-10 sm:mt-16 [@media(max-height:860px)]:mt-6 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
+          className="mt-10 sm:mt-16 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
           staggerDelay={STAGGER.grid}
         >
           {t.stats.map((s) => (

@@ -140,10 +140,10 @@ export function FAQ() {
               className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
               aria-label={t.searchAria} />
           </div>
-          <div className="flex gap-2 mb-6 overflow-x-auto pb-1">
+          <div className="flex flex-wrap gap-2 mb-6">
             {categoryIds.map((catId) => (
               <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
+                className={`min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {t.categories[catId]}
               </button>
             ))}

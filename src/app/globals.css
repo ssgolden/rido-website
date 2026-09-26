@@ -206,7 +206,11 @@
   @media (max-width: 47.9375rem) {
     .mobile-carousel {
       display: flex;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -214,10 +218,13 @@
     .mobile-carousel::-webkit-scrollbar {
       display: none;
     }
+    /* One card fills the row, with a short peek of the next as the swipe cue.
+       80% + center snap left the card cramped and the neighbor cut off. */
     .mobile-carousel > * {
-      flex: 0 0 auto;
-      width: min(80%, 20rem);
-      scroll-snap-align: center;
+      flex: 0 0 calc(100% - 2.5rem);
+      width: auto;
+      min-width: 0;
+      scroll-snap-align: start;
     }
   }
   .section-tint-magenta {
@@ -378,9 +385,16 @@
   }
 }
 
-/* The header lane owns the top of the viewport; the window itself must not scroll. */
+/* The header lane owns the top of the viewport; the window itself must not scroll.
+   Percentage height tracks the layout viewport. A locked 100dvh shell on Android
+   keeps the large viewport, so the URL bar covers the wordmark. */
+html:has([data-scroll-root]),
 body:has([data-scroll-root]) {
-  height: 100dvh;
+  height: 100%;
+  max-height: 100%;
+}
+body:has([data-scroll-root]) {
+  min-height: 0;
   overflow: hidden;
 }
 
