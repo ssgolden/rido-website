@@ -6,7 +6,7 @@
 Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol; the launch cities will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
 
 ## How It Works
-1. Join the waitlist at https://rido.bike#download
+1. Join the waitlist at https://www.rido.bike#download
 2. Download the Rido app (launching soon on iOS and Android)
 3. Find a Rido vehicle near you on the in-app map
 4. Scan the QR code on the handlebar to unlock
@@ -45,23 +45,23 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - **NIF**: B01745405
 - **Address**: Calle Eneldo 3, C4, local 22, 03189 Orihuela Costa, Alicante, Spain
 - **Email**: info@rido.bike
-- **Website**: https://rido.bike
+- **Website**: https://www.rido.bike
 
 ## Links
-- [Main site](https://rido.bike)
-- [How it works](https://rido.bike#how-it-works)
-- [Vehicles](https://rido.bike#vehicles)
-- [Pricing](https://rido.bike#pricing)
-- [Cities](https://rido.bike#cities)
-- [Safety](https://rido.bike#safety)
-- [Sustainability](https://rido.bike#sustainability)
-- [FAQ](https://rido.bike#faq)
-- [About](https://rido.bike#about)
-- [Join waitlist](https://rido.bike#download)
-- [Terms of Service](https://rido.bike/terms)
-- [Privacy Policy](https://rido.bike/privacy)
-- [Cookie Policy](https://rido.bike/privacy#cookies)
-- [Careers](https://rido.bike/careers)
+- [Main site](https://www.rido.bike)
+- [How it works](https://www.rido.bike#how-it-works)
+- [Vehicles](https://www.rido.bike#vehicles)
+- [Pricing](https://www.rido.bike#pricing)
+- [Cities](https://www.rido.bike#cities)
+- [Safety](https://www.rido.bike#safety)
+- [Sustainability](https://www.rido.bike#sustainability)
+- [FAQ](https://www.rido.bike#faq)
+- [About](https://www.rido.bike#about)
+- [Join waitlist](https://www.rido.bike#download)
+- [Terms of Service](https://www.rido.bike/terms)
+- [Privacy Policy](https://www.rido.bike/privacy)
+- [Cookie Policy](https://www.rido.bike/privacy#cookies)
+- [Careers](https://www.rido.bike/careers)
 
 ## For AI Crawlers
 - Language: English

@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { AlertTriangle, Scale } from "lucide-react";
+import { SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions — Rido",
   description: "Read Rido's terms and conditions for e-scooter and e-bike rental services in Spain. Covers user responsibilities, pricing, liability, and data protection.",
-  alternates: { canonical: "https://rido.bike/terms" },
+  alternates: { canonical: `${SITE_ORIGIN}/terms` },
   openGraph: {
     title: "Terms and Conditions — Rido",
     description: "Terms of service for Rido e-scooter and e-bike rentals in Spain.",
-    url: "https://rido.bike/terms",
+    url: `${SITE_ORIGIN}/terms`,
   },
 };
 
@@ -24,8 +25,8 @@ export default function TermsPage() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
-              { "@type": "ListItem", "position": 2, "name": "Terms and Conditions", "item": "https://rido.bike/terms" },
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_ORIGIN },
+              { "@type": "ListItem", "position": 2, "name": "Terms and Conditions", "item": `${SITE_ORIGIN}/terms` },
             ],
           }),
         }}

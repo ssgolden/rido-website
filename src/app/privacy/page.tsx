@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Shield } from "lucide-react";
+import { SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Rido",
   description: "Learn how Rido (Go2 Place S.L.) collects, uses, and protects your personal data. GDPR-compliant privacy policy for our shared e-scooter and e-bike services in Spain.",
-  alternates: { canonical: "https://rido.bike/privacy" },
+  alternates: { canonical: `${SITE_ORIGIN}/privacy` },
   openGraph: {
     title: "Privacy Policy — Rido",
     description: "How we protect your personal data. GDPR-compliant privacy policy.",
-    url: "https://rido.bike/privacy",
+    url: `${SITE_ORIGIN}/privacy`,
   },
 };
 
@@ -23,8 +24,8 @@ export default function PrivacyPolicyPage() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
-              { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://rido.bike/privacy" },
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_ORIGIN },
+              { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": `${SITE_ORIGIN}/privacy` },
             ],
           }),
         }}

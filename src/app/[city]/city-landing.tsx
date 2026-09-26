@@ -11,11 +11,12 @@ import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { cities, type City } from "@/data/cities";
 import { pricingTiers } from "@/data/pricing";
+import { SITE_ORIGIN } from "@/lib/site";
 
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
 
-const baseUrl = "https://rido.bike";
+const baseUrl = SITE_ORIGIN;
 
 export function getCity(slug: string): City | undefined {
   return cities.find((c) => c.slug === slug);

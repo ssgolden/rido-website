@@ -11,7 +11,7 @@ Deploy **rido.bike** via Netlify using the GitHub App connection.
 - **Auto-SSL** via Let's Encrypt (free, automatic)
 - **Custom domain** management in one place
 - **Instant rollbacks** via deploy history
-- **Redirect rules** handled natively (great for www → root)
+- **Redirect rules** handled natively. On the live site the apex (`https://rido.bike`) 301s to the canonical host `https://www.rido.bike`
 
 ---
 
@@ -26,13 +26,13 @@ Point your domain's DNS to Netlify's load balancer.
 
 > **Note:** Netlify will provide your actual subdomain URL after setup (e.g. `random-name-123.netlify.app`). Replace `rido-bike` with your actual subdomain throughout.
 
-### www Handling Options
+### Canonical host (already live)
 
-**Option A — Netlify Redirect (Recommended)**
-CNAME `www` pointing to your Netlify subdomain. Netlify handles the redirect to the root domain automatically.
+The public origin is **`https://www.rido.bike`**. Netlify 301-redirects the apex `https://rido.bike` to www. Canonicals, the sitemap, robots, and JSON-LD in this repo use www so they match that redirect.
 
-**Option B — CNAME Only**
-CNAME `www` → `rido-bike.netlify.app`. Netlify will serve content for both.
+No DNS change is required for this. Do not add a rule that sends www back to the apex — that would fight the canonical.
+
+Both hostnames should keep resolving (apex A record, www CNAME). Netlify's domain settings perform the apex → www redirect.
 
 ---
 
@@ -54,6 +54,10 @@ CNAME `www` → `rido-bike.netlify.app`. Netlify will serve content for both.
    |------------------|-------------|
    | `NEXT_OUTPUT`    | `export`    |
    | `CUSTOM_DOMAIN`  | `true`      |
+   | `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL (required for the live waitlist and signup count) |
+   | `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Search Console token. Leave unset to omit the meta tag. |
+
+   `NEXT_PUBLIC_*` values are inlined at build time. Set them before the first production deploy of `https://www.rido.bike`, then redeploy if they change. See section 8 and `docs/WAITLIST-SETUP.md`.
 
 7. Set build settings:
 
@@ -122,11 +126,13 @@ If you see **404 errors** after deploy, this is almost certainly the wrong publi
 5. **Save** the DNS records
 6. Wait for propagation (can take up to 48 hours, usually < 30 minutes)
 
-### Optional: Squarespace Redirect for www
+### Host redirect
 
-If Squarespace also has a built-in redirect feature:
-- Set redirect: `www.rido.bike` → `https://rido.bike`
-- Or rely on Netlify's redirect (CNAME approach above)
+Rely on Netlify for the redirect. If a host-level rule is also configured, it must point the same way as production:
+
+- `https://rido.bike/*` → `https://www.rido.bike/:splat` (301)
+
+A Squarespace rule that sends `www.rido.bike` to `https://rido.bike` would undo the canonical. Leave DNS records as they are.
 
 ---
 
@@ -150,15 +156,21 @@ Expected output: `Address: rido-bike.netlify.app` (or your actual subdomain)
 
 ### Check SSL
 
-Visit [https://rido.bike](https://rido.bike) — the browser should show a valid certificate with **rido.bike** as the subject.
+Visit [https://www.rido.bike](https://www.rido.bike) — the browser should show a valid certificate. The apex URL should bounce here rather than stay on the bare domain.
 
-### Check HTTP Redirect (if using www redirect)
+### Check the apex redirect
+
+```bash
+curl -I https://rido.bike
+```
+
+Expected: `HTTP/2 301` with `location: https://www.rido.bike/` (or the same host with a trailing path).
 
 ```bash
 curl -I https://www.rido.bike
 ```
 
-Expected: `HTTP/2 301` or `HTTP/2 302` redirecting to `https://rido.bike`
+Expected: `HTTP/2 200`.
 
 ---
 
@@ -219,13 +231,22 @@ You can add a `netlify.toml` to the repo root to codify these settings:
   CUSTOM_DOMAIN = "true"
 
 [[redirects]]
-  from = "https://www.rido.bike/*"
-  to = "https://rido.bike/:splat"
+  from = "https://rido.bike/*"
+  to = "https://www.rido.bike/:splat"
   status = 301
   force = true
 ```
 
-> This eliminates the need to configure build settings manually in the Netlify UI. Netlify reads `netlify.toml` automatically on each deploy.
+> This eliminates the need to configure build settings manually in the Netlify UI. Netlify reads `netlify.toml` automatically on each deploy. The redirect above documents the live direction (apex → www). Netlify domain settings already do this; adding the snippet does not require a DNS change.
+
+Also set these in the Netlify UI (they are inlined at **build time**, so change them and redeploy):
+
+| Key | Value |
+|-----|--------|
+| `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL. Required for the production waitlist and the live signup count on `https://www.rido.bike`. If unset, emails stay in the visitor's browser and the count stays hidden. |
+| `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Google Search Console token. The meta tag is omitted when this is unset. Do not commit the token. |
+
+Register Search Console for `https://www.rido.bike/`. See `docs/WAITLIST-SETUP.md` for the waitlist script.
 
 ---
 
@@ -242,6 +263,9 @@ You can add a `netlify.toml` to the repo root to codify these settings:
 | DNS A record      | `@` → `75.2.60.5`                             |
 | DNS CNAME (www)   | `www` → `*.netlify.app`                       |
 | SSL               | Automatic via Let's Encrypt                   |
+| Canonical origin  | `https://www.rido.bike` (apex 301s here)      |
+| `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL, set at build time |
+| `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Search Console token, build time |
 
 ---
 

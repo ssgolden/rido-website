@@ -6,6 +6,7 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { citiesAnnounced } from "@/data/cities";
+import { SITE_ORIGIN } from "@/lib/site";
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })));
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })));
@@ -25,11 +26,11 @@ export const metadata: Metadata = {
     ? "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar en Marbella, Estepona y más. Cero emisiones, cero complicaciones."
     : "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
   alternates: {
-    canonical: "https://rido.bike/es",
+    canonical: `${SITE_ORIGIN}/es`,
     languages: {
-      en: "https://rido.bike",
-      es: "https://rido.bike/es",
-      "x-default": "https://rido.bike",
+      en: SITE_ORIGIN,
+      es: `${SITE_ORIGIN}/es`,
+      "x-default": SITE_ORIGIN,
     },
   },
   openGraph: {
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     description:
       "Únete a la lista de espera y sé de los primeros en montar en patinetes y bicicletas eléctricas compartidas en la Costa del Sol. Cero emisiones, cero complicaciones.",
     type: "website",
-    url: "https://rido.bike/es",
+    url: `${SITE_ORIGIN}/es`,
     siteName: "Rido",
     locale: "es_ES",
     images: [

@@ -1,8 +1,9 @@
 import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
 import { cities, citiesAnnounced } from "@/data/cities";
+import { SITE_LAST_MODIFIED, SITE_ORIGIN } from "@/lib/site";
 
-const baseUrl = "https://rido.bike";
+const baseUrl = SITE_ORIGIN;
 
 /**
  * Centralized JSON-LD structured data for SEO and AI engines.
@@ -113,7 +114,7 @@ export const webPageSchema = {
   isPartOf: { "@id": websiteId },
   about: { "@id": brandId },
   inLanguage: "en",
-  dateModified: "2026-06-19",
+  dateModified: SITE_LAST_MODIFIED,
   primaryImageOfPage: heroImage,
 };
 
@@ -407,7 +408,7 @@ export const careersSchema = {
   "@id": `${baseUrl}/#careers`,
   title: "Open roles at Rido",
   description:
-    "Join the Rido team and help build shared micro-mobility for Spain. See https://rido.bike/careers for current openings.",
+    `Join the Rido team and help launch shared e-scooters and e-bikes on the Costa del Sol, from day one. See ${baseUrl}/careers for current openings.`,
   hiringOrganization: { "@id": orgId },
   employmentType: "FULL_TIME",
   jobLocationType: "TELECOMMUTE",

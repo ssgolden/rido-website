@@ -4,6 +4,7 @@ import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
 import { getAllSchemas } from "@/lib/schema";
+import { SITE_ORIGIN } from "@/lib/site";
 import { citiesAnnounced } from "@/data/cities";
 import { Toaster } from "@/components/animation/Toast";
 // Self-hosted variable fonts (bundled WOFF2, no external requests).
@@ -17,7 +18,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://rido.bike"),
+  metadataBase: new URL(SITE_ORIGIN),
   title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
   description: citiesAnnounced
     ? "Shared e-scooters and e-bikes coming to the Costa del Sol. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle."
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     description:
       "Join the waitlist and be first to ride shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.",
     type: "website",
-    url: "https://rido.bike",
+    url: SITE_ORIGIN,
     siteName: "Rido",
     locale: "en_ES",
     images: [
@@ -68,10 +69,10 @@ export const metadata: Metadata = {
     images: ["/images/og/rido-og.png"],
   },
   alternates: {
-    canonical: "https://rido.bike",
+    canonical: SITE_ORIGIN,
     languages: {
-      en: "https://rido.bike",
-      es: "https://rido.bike/es",
+      en: SITE_ORIGIN,
+      es: `${SITE_ORIGIN}/es`,
     },
   },
   other: {
@@ -99,9 +100,9 @@ export default function RootLayout({
             Turbopack bug, see AGENTS.md). */}
         <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/sora-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="alternate" hrefLang="en" href="https://rido.bike" />
-        <link rel="alternate" hrefLang="es" href="https://rido.bike/es" />
-        <link rel="alternate" hrefLang="x-default" href="https://rido.bike" />
+        <link rel="alternate" hrefLang="en" href={SITE_ORIGIN} />
+        <link rel="alternate" hrefLang="es" href={`${SITE_ORIGIN}/es`} />
+        <link rel="alternate" hrefLang="x-default" href={SITE_ORIGIN} />
 
         {/* Google Search Console verification — set NEXT_PUBLIC_GSC_VERIFICATION in env to enable */}
         {process.env.NEXT_PUBLIC_GSC_VERIFICATION ? (

@@ -182,7 +182,7 @@ So we built a fleet of shared e-scooters and e-bikes designed for Spain's street
 
 ## Waitlist
 
-Join the waitlist and be first to ride when Rido launches on the Costa del Sol. 1,200+ people already on the waitlist. No payment required to join.
+Join the waitlist and be first to ride when Rido launches on the Costa del Sol. No payment required to join.
 
 - iOS app: Coming soon
 - Android app: Coming soon
@@ -196,7 +196,7 @@ Join the waitlist and be first to ride when Rido launches on the Costa del Sol. 
 - **NIF**: B01745405
 - **Address**: Calle Eneldo 3, C4, local 22, 03189 Orihuela Costa, Alicante, Spain
 - **Email**: info@rido.bike
-- **Terms of Service**: https://rido.bike/terms
-- **Privacy Policy**: https://rido.bike/privacy
-- **Cookie Policy**: https://rido.bike/privacy#cookies
-- **Careers**: https://rido.bike/careers
+- **Terms of Service**: https://www.rido.bike/terms
+- **Privacy Policy**: https://www.rido.bike/privacy
+- **Cookie Policy**: https://www.rido.bike/privacy#cookies
+- **Careers**: https://www.rido.bike/careers
