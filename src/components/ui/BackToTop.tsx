@@ -3,21 +3,28 @@
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const root = useScrollRootNode();
+  const scrollTo = useScrollTo();
 
   useEffect(() => {
+    const target: HTMLElement | Window = root ?? window;
     const handleScroll = () => {
-      setVisible(window.scrollY > window.innerHeight * 0.5);
+      const top = root ? root.scrollTop : window.scrollY;
+      const height = root ? root.clientHeight : window.innerHeight;
+      setVisible(top > height * 0.5);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    handleScroll();
+    target.addEventListener("scroll", handleScroll, { passive: true });
+    return () => target.removeEventListener("scroll", handleScroll);
+  }, [root]);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    scrollTo(0);
   };
 
   return (

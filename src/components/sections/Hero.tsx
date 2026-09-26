@@ -3,8 +3,9 @@ import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useRef, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
 import { withBase } from "@/lib/basePath";
@@ -15,6 +16,7 @@ import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
 import { EASE, STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
+import { useHeroBackdropEl, useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
 // Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
 const NOISE_SVG =
@@ -114,47 +116,24 @@ const wordVariantsReduced = {
   visible: { opacity: 1, transition: { duration: 0.15 } },
 };
 
-export function Hero() {
-  const locale = useLocale();
-  const t = copy[locale];
-  const headlineWords = t.headlineWords;
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const bgYRaw = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const bgY = reduce ? "0%" : bgYRaw;
-  // Fade content but never below 0.25 — full-vanish bottom half reads gimmicky.
-  const contentOpacityRaw = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0.25]);
-  const contentOpacity = reduce ? 1 : contentOpacityRaw;
-  const cueOpacityRaw = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const cueOpacity = reduce ? 1 : cueOpacityRaw;
-
-  // Group indices: 0..2 line 1, 3..4 line 2.
-  const wordGroup = useMemo(() => new Set([3, 4]), []);
-  const variants = reduce ? wordVariantsReduced : wordVariants;
-
+function HeroBackdrop({
+  fixed,
+  opacity,
+  photoY,
+}: {
+  fixed: boolean;
+  opacity: number | MotionValue<number>;
+  photoY: string | MotionValue<string>;
+}) {
   return (
-    <section
-      ref={sectionRef}
-      id="hero"
-      aria-labelledby="hero-heading"
-      className="relative min-h-[100vh] min-h-dvh flex items-center justify-center overflow-hidden pt-[max(3.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]"
+    <motion.div
+      aria-hidden="true"
+      className={fixed ? "absolute inset-0" : "contents"}
+      style={fixed ? { opacity } : undefined}
     >
-      {/* Top edge highlight — premium dark panel cue */}
-      <div
-        aria-hidden="true"
-        className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
-      />
-
-      {/* Deep navy base + animated brand gradient */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-
-      {/* Lifestyle photo: full-bleed, subtle parallax. Lowered fetchpriority — H1 text is the real LCP. */}
-      <motion.div className="absolute inset-0" style={{ y: bgY }}>
+      <motion.div className="absolute inset-0" style={{ y: photoY }}>
         <Image
           src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
           alt=""
@@ -166,56 +145,83 @@ export function Hero() {
           decoding="async"
         />
       </motion.div>
-
-      {/* Brand color cast — scoped radial tint, not a lens gel over the whole frame */}
       <div
-        aria-hidden="true"
         className="absolute inset-0 mix-blend-soft-light"
         style={{
           background:
             "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)",
         }}
       />
-
-      {/* Vignette centered on the copy zone */}
       <div
-        aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
             "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15,23,42,0.65) 100%)",
         }}
       />
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
-      {/* Lateral falloff for ultrawide / orb clipping */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
       <div
-        aria-hidden="true"
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
             "linear-gradient(90deg, rgba(15,23,42,0.5), transparent 12%, transparent 88%, rgba(15,23,42,0.5))",
         }}
       />
-
-      {/* Ambient orbs — magenta primary stronger than green accent; motion-safe via CSS */}
+      <div className="absolute top-1/4 -right-24 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[100px] hero-orb hero-orb-1" />
+      <div className="absolute bottom-0 -left-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[90px] hero-orb hero-orb-2" />
       <div
-        aria-hidden="true"
-        className="absolute top-1/4 -right-24 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[100px] hero-orb hero-orb-1"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 -left-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[90px] hero-orb hero-orb-2"
-      />
-
-      {/* Film grain — lifted opacity, rendered above vignette so banded gradients get dithered */}
-      <div
-        aria-hidden="true"
         className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
         style={{ backgroundImage: `url("${NOISE_SVG}")` }}
       />
+    </motion.div>
+  );
+}
+
+export function Hero() {
+  const locale = useLocale();
+  const t = copy[locale];
+  const headlineWords = t.headlineWords;
+  const sectionRef = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
+  const scrollContainerRef = useScrollContainerRef();
+  const backdropEl = useHeroBackdropEl();
+
+  const { scrollYProgress } = useScroll({
+    container: scrollContainerRef,
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const bgYRaw = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
+  const bgY = reduce ? "0%" : bgYRaw;
+  // Fade content but never below 0.25 — full-vanish bottom half reads gimmicky.
+  const contentOpacityRaw = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0.25]);
+  const contentOpacity = reduce ? 1 : contentOpacityRaw;
+  const cueOpacityRaw = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+  const cueOpacity = reduce ? 1 : cueOpacityRaw;
+  const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
+  const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
+  const parkBackdrop = Boolean(backdropEl) && !reduce;
+
+  // Group indices: 0..2 line 1, 3..4 line 2.
+  const wordGroup = useMemo(() => new Set([3, 4]), []);
+  const variants = reduce ? wordVariantsReduced : wordVariants;
+
+  return (
+    <section
+      ref={sectionRef}
+      id="hero"
+      aria-labelledby="hero-heading"
+      className="relative flex min-h-[calc(100dvh-var(--site-header-offset,5.5rem))] items-center justify-center overflow-hidden pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]"
+    >
+      {parkBackdrop && backdropEl
+        ? createPortal(
+            <HeroBackdrop fixed opacity={backdropOpacity} photoY={bgY} />,
+            backdropEl
+          )
+        : <HeroBackdrop fixed={false} opacity={1} photoY={bgY} />}
 
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-6 sm:py-12 pb-12 sm:pb-20"
+        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-6 sm:py-12 pb-12 sm:pb-20 [@media(max-height:860px)]:py-3 [@media(max-height:860px)]:pb-6 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
         style={{ opacity: contentOpacity }}
       >
         {/* Social-proof kicker */}
@@ -236,7 +242,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <Badge variant="magenta" className="mb-5 sm:mb-7">
+          <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:mb-3 [@media(max-height:860px)]:sm:mb-4">
             {t.badge}
           </Badge>
         </ScrollReveal>
@@ -270,7 +276,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.65, duration: 0.6, ease: EASE_TUPLE }}
-          className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+          className="mt-6 sm:mt-7 [@media(max-height:860px)]:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
           {t.subheadline}
         </motion.p>
@@ -279,7 +285,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.8, duration: 0.55, ease: EASE_TUPLE }}
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          className="mt-8 sm:mt-10 [@media(max-height:860px)]:mt-5 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
             href="#download"
@@ -310,7 +316,7 @@ export function Hero() {
         </motion.p>
 
         <StaggerReveal
-          className="mt-10 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
+          className="mt-10 sm:mt-16 [@media(max-height:860px)]:mt-6 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
           staggerDelay={STAGGER.grid}
         >
           {t.stats.map((s) => (

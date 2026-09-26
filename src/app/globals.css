@@ -123,6 +123,8 @@
   :root {
     --background: 248 250 252;
     --foreground: 15 23 42;
+    /* Fallback until SiteShell measures the header lane. */
+    --site-header-offset: 5.5rem;
   }
   .dark {
     --background: 15 23 42;
@@ -336,6 +338,16 @@
   section[id] {
     @apply scroll-mt-16 sm:scroll-mt-24;
   }
+  /* Marketing pages scroll in #page-scroll, below the header lane. The
+     section scroll-margin above was compensating for a fixed nav over the
+     viewport; inside the lane it would stack with this padding and push
+     titles too far down. 1.25rem keeps the eyebrow clear of the lane edge. */
+  [data-scroll-root] {
+    scroll-padding-top: 1.25rem;
+  }
+  [data-scroll-root] section[id] {
+    scroll-margin-top: 0;
+  }
   .safe-left {
     padding-left: max(0.75rem, env(safe-area-inset-left));
   }
@@ -360,6 +372,12 @@
   .shimmer-border::before {
     animation: none;
   }
+}
+
+/* The header lane owns the top of the viewport; the window itself must not scroll. */
+body:has([data-scroll-root]) {
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* Neutral scrollbar with brand accent on hover — full-saturation magenta chrome reads as

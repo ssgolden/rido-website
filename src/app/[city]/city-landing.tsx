@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowRight, Bike, ChevronDown, MapPin, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { Badge } from "@/components/ui/Badge";
 import { CoverageMap } from "@/components/ui/CoverageMap";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -276,7 +277,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
 
   return (
     <LocaleProvider locale={locale}>
-      <Navbar />
+      <SiteShell header={<Navbar />}>
       <main id="main-content">
         {schemas.map((schema, i) => (
           <script
@@ -290,7 +291,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
         <section
           id="city-hero"
           aria-label={t.heroAria(city)}
-          className="relative overflow-hidden pt-32 sm:pt-40 pb-12 sm:pb-20 px-4 sm:px-6"
+          className="relative overflow-hidden pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15 hero-gradient" aria-hidden="true" />
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" aria-hidden="true" />
@@ -417,6 +418,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
       </main>
       <Footer locale={locale} />
       <BackToTop />
+      </SiteShell>
     </LocaleProvider>
   );
 }
