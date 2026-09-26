@@ -2,9 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { forwardRef, useRef } from "react";
-import { EASE, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
-
-const EASE_TUPLE = EASE as unknown as [number, number, number, number];
+import { DURATION, EASE, REVEAL, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
 
 const containerVariants = {
   hidden: {},
@@ -14,11 +12,11 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: REVEAL.y },
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, ease: EASE_TUPLE },
+    transition: { duration: DURATION.entrance, ease: EASE },
   },
 };
 
@@ -26,12 +24,15 @@ interface StaggerRevealProps {
   children: React.ReactNode;
   className?: string;
   staggerDelay?: number;
+  /** Pause before the first child. Use so a block waits for the heading above it. */
+  delay?: number;
 }
 
 export function StaggerReveal({
   children,
   className,
   staggerDelay = STAGGER.text,
+  delay = 0,
 }: StaggerRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: SCROLL_MARGIN });
@@ -47,7 +48,7 @@ export function StaggerReveal({
       className={className}
       variants={{
         ...containerVariants,
-        show: { transition: { staggerChildren: staggerDelay } },
+        show: { transition: { staggerChildren: staggerDelay, delayChildren: delay } },
       }}
       initial="hidden"
       animate={isInView ? "show" : "hidden"}

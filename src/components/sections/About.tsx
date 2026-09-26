@@ -3,6 +3,7 @@
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 // User-visible strings per locale.
@@ -69,7 +70,7 @@ export function About() {
               <p className="text-muted leading-relaxed">{t.para2}</p>
               <div className="mt-8 space-y-4">
                 {t.milestones.map((m, i) => (
-                  <ScrollReveal key={m.year} delay={0.1 * i}>
+                  <ScrollReveal key={m.year} delay={STAGGER.text * i}>
                     <div className="flex items-center gap-4">
                       <span className="text-rido-magenta-light font-bold text-sm w-12 shrink-0">{m.year}</span>
                       <div className="h-px flex-1 bg-gradient-to-r from-rido-magenta/40 to-transparent" />
@@ -80,7 +81,7 @@ export function About() {
               </div>
             </div>
           </ScrollReveal>
-          <StaggerReveal className="grid grid-cols-1 gap-4" staggerDelay={0.15}>
+          <StaggerReveal className="grid grid-cols-1 gap-4" staggerDelay={STAGGER.grid}>
             {t.values.map((value) => (
               <StaggerItem key={value.title}>
                 <div className={`bg-rido-navy-light/50 rounded-2xl p-6 flex items-start gap-4 border-l-4 ${value.borderClass}`}>

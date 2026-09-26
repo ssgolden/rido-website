@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X, Download } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { DURATION, EASE } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
@@ -69,6 +70,7 @@ function useScrolledPast(threshold: number, root: HTMLElement | null) {
 export function Navbar() {
   const locale = useLocale();
   const t = copy[locale];
+  const reduce = useReducedMotion();
   const navLinks = t.navLinks;
   const scrollRoot = useScrollRootNode();
   const scrollTo = useScrollTo();
@@ -118,17 +120,17 @@ export function Navbar() {
 
   return (
     <nav
-      className={cn("relative z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}
+      className={cn("relative z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-[background-color,box-shadow,border-color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
         <a href="#" onClick={(e) => { e.preventDefault(); scrollTo(0); }} aria-label={t.homeAria} className="min-w-0 shrink-0 group relative">
-          <span className="absolute inset-0 bg-rido-magenta/0 group-hover:bg-rido-magenta/20 blur-xl rounded-lg transition-all duration-500" />
+          <span className="absolute inset-0 bg-rido-magenta/0 group-hover:bg-rido-magenta/20 blur-xl rounded-lg transition-all duration-200" />
           <span className="relative z-10 block sm:hidden"><RidoLogo variant="full" size="sm" priority /></span>
           <span className="relative z-10 hidden sm:block"><RidoLogo variant="full" size="md" priority /></span>
         </a>
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} onClick={(e) => followAnchor(e, link.href)} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
+            <a key={link.href} href={link.href} onClick={(e) => followAnchor(e, link.href)} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("nav-link text-sm transition-colors duration-200 cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
@@ -144,7 +146,7 @@ export function Navbar() {
           </Button>
           <button
             ref={hamburgerRef}
-            className="text-white cursor-pointer p-3 min-h-[44px] min-w-[44px]"
+            className="text-white cursor-pointer p-3 min-h-[44px] min-w-[44px] rounded-xl hover:bg-white/10 active:bg-white/15 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? t.closeMenu : t.openMenu}
             aria-expanded={mobileOpen}
@@ -160,7 +162,7 @@ export function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            transition={reduce ? { duration: 0 } : { duration: DURATION.micro, ease: EASE }}
             className="md:hidden overflow-hidden max-h-[calc(100dvh-5rem)] overflow-y-auto"
             data-lenis-prevent=""
           >

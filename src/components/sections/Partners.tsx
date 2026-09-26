@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 interface PartnerCopy {
@@ -106,13 +107,13 @@ export function Partners() {
           </ScrollReveal>
         </div>
 
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={STAGGER.grid}>
           {t.differentiators.map((d, i) => {
             const Icon = partnerIcons[i];
             return (
               <StaggerItem key={d.title}>
                 <Card className="h-full group hover:border-rido-magenta/30">
-                  <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center mb-4 transition-all duration-200 group-hover:bg-rido-magenta/20 group-hover:scale-110">
+                  <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center mb-4 transition-colors duration-200 group-hover:bg-rido-magenta/20">
                     <Icon className="w-6 h-6 text-rido-magenta-light" aria-hidden="true" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">{d.title}</h3>
@@ -123,15 +124,15 @@ export function Partners() {
           })}
         </StaggerReveal>
 
-        <ScrollReveal delay={0.25}>
+        <ScrollReveal delay={STAGGER.grid}>
           <div className="mt-10 flex justify-center">
             <a
               href="mailto:info@rido.bike?subject=Partner%20inquiry%20—%20Rido"
               aria-label={t.ctaAria}
-              className="group inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 active:scale-[0.98] active:duration-75 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer"
+              className="group btn-lift inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer"
             >
               <span>{t.ctaLabel}</span>
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
             </a>
           </div>
         </ScrollReveal>

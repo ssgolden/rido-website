@@ -14,7 +14,7 @@ import { vehicles } from "@/data/vehicles";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
-import { EASE, STAGGER } from "@/lib/motion";
+import { DURATION, EASE, REVEAL, STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
 import { useHeroBackdropEl, useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
@@ -99,21 +99,18 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
   );
 }
 
-const EASE_TUPLE = EASE as unknown as [number, number, number, number];
-
 const wordVariants = {
-  hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: REVEAL.y },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE_TUPLE },
+    transition: { duration: DURATION.entrance, ease: EASE },
   },
 };
 
 const wordVariantsReduced = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
+  hidden: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0 } },
 };
 
 function HeroBackdrop({
@@ -227,7 +224,7 @@ export function Hero() {
         style={{ opacity: contentOpacity }}
       >
         {/* Social-proof kicker */}
-        <ScrollReveal delay={0.05}>
+        <ScrollReveal>
           <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
@@ -243,7 +240,7 @@ export function Hero() {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal delay={0.1}>
+        <ScrollReveal delay={STAGGER.text}>
           <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:sm:mb-4">
             {t.badge}
           </Badge>
@@ -253,11 +250,11 @@ export function Hero() {
         <motion.h1
           id="hero-heading"
           className="text-display-2xl font-extrabold text-balance"
-          initial="hidden"
+          initial={reduce ? "visible" : "hidden"}
           animate="visible"
           variants={{
             hidden: {},
-            visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: 0.15 } },
+            visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: reduce ? 0 : 0.12 } },
           }}
         >
           {headlineWords.map((w, i) => (
@@ -275,32 +272,32 @@ export function Hero() {
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 8 }}
+          initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.65, duration: 0.6, ease: EASE_TUPLE }}
+          transition={{ delay: reduce ? 0 : 0.28, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="mt-6 sm:mt-7 [@media(max-height:860px)]:sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
           {t.subheadline}
         </motion.p>
 
         <motion.div
-          initial={{ opacity: 0, y: 12 }}
+          initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.8, duration: 0.55, ease: EASE_TUPLE }}
+          transition={{ delay: reduce ? 0 : 0.4, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="mt-8 sm:mt-10 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
             href="#download"
-            className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 active:translate-y-0 active:scale-[0.98] active:duration-75 will-change-transform transform-gpu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
+            className="group btn-lift relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
           >
             <Magnetic className="contents">
               <span className="relative z-10">{t.ctaPrimary}</span>
-              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" aria-hidden="true" />
+              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
             </Magnetic>
           </a>
           <a
             href="#how-it-works"
-            className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] transition-all duration-300 ease-out hover:bg-white/[0.1] hover:border-white/25 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] active:duration-75 will-change-transform transform-gpu focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
+            className="group btn-lift relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] hover:bg-white/[0.1] hover:border-white/25 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
           >
             <span>{t.ctaSecondary}</span>
           </a>
@@ -308,9 +305,9 @@ export function Hero() {
 
         {/* Microcopy under CTAs */}
         <motion.p
-          initial={{ opacity: 0 }}
+          initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: reduce ? 0 : 0.95, duration: 0.5 }}
+          transition={{ delay: reduce ? 0 : 0.48, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="mt-5 inline-flex items-center gap-2 text-xs text-muted-strong"
         >
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
@@ -320,6 +317,7 @@ export function Hero() {
         <StaggerReveal
           className="mt-10 sm:mt-16 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
           staggerDelay={STAGGER.grid}
+          delay={reduce ? 0 : 0.45}
         >
           {t.stats.map((s) => (
             <HeroStat key={s.label} stat={s} />

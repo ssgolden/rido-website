@@ -14,7 +14,7 @@ import { BackToTop } from "@/components/ui/BackToTop";
 function SectionSkeleton({ tall = false }: { tall?: boolean }) {
   return (
     <div
-      className={`${tall ? "min-h-[80vh]" : "min-h-[50vh]"} py-16 sm:py-24 px-4 sm:px-6 flex items-center justify-center`}
+      className={`${tall ? "min-h-[80vh]" : "min-h-[50vh]"} py-12 sm:py-24 px-4 sm:px-6 flex items-center justify-center`}
       aria-hidden="true"
     >
       <div className="max-w-7xl mx-auto w-full">

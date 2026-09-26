@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { DURATION, EASE, REVEAL, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
 
 interface SectionHeadingProps {
   eyebrow?: React.ReactNode;
@@ -15,21 +16,17 @@ interface SectionHeadingProps {
 }
 
 const wordVariants = {
-  hidden: { opacity: 0, filter: "blur(10px)", y: 20 },
+  hidden: { opacity: 0, y: REVEAL.y },
   visible: {
     opacity: 1,
-    filter: "blur(0px)",
     y: 0,
-    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+    transition: { duration: DURATION.entrance, ease: EASE },
   },
 };
 
 function AnimatedWord({ text, className }: { text: string; className?: string }) {
   return (
-    <motion.span
-      className={cn("inline-block will-change-transform", className)}
-      variants={wordVariants}
-    >
+    <motion.span className={cn("inline-block", className)} variants={wordVariants}>
       {text}
     </motion.span>
   );
@@ -85,7 +82,7 @@ export function SectionHeading({
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: stagger ?? 0.08,
+        staggerChildren: stagger ?? STAGGER.text,
       },
     },
   };
@@ -107,10 +104,10 @@ export function SectionHeading({
       {eyebrow && (
         <motion.p
           className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3"
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: REVEAL.y }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: SCROLL_MARGIN }}
+          transition={{ duration: DURATION.entrance, ease: EASE }}
         >
           {eyebrow}
         </motion.p>
@@ -121,7 +118,7 @@ export function SectionHeading({
           variants={container}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: SCROLL_MARGIN }}
           aria-label={[before, highlight, after].filter(Boolean).join(" ")}
         >
           <WordGroup
