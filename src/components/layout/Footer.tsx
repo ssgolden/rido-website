@@ -25,7 +25,6 @@ const en = {
         { label: "E-Bike", href: "#vehicles" },
         { label: "Pricing", href: "#pricing" },
         { label: "Cities", href: "#cities" },
-        { label: "Motion Lab", href: "/motion-lab", badge: "new" },
       ],
     },
     {
@@ -65,7 +64,6 @@ const copy: Record<Locale, typeof en> = {
           { label: "Bici eléctrica", href: "#vehicles" },
           { label: "Precios", href: "#pricing" },
           { label: "Ciudades", href: "#cities" },
-          { label: "Motion Lab", href: "/motion-lab", badge: "nuevo" },
         ],
       },
       {
