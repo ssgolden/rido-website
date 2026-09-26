@@ -6,7 +6,6 @@ import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-re
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { postWaitlistSignup, WAITLIST_URL } from "@/lib/waitlist";
 
 interface DownloadCopy {
   sectionAria: string;
@@ -89,6 +88,9 @@ const copy = {
 } as const satisfies Record<Locale, DownloadCopy>;
 
 const WAITLIST_KEY = "rido-waitlist-email";
+// Optional Apps Script URL. Unset (this launch): the form keeps the email in
+// localStorage only and never invents a live count.
+const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 
 function WaitlistForm() {
   const locale = useLocale();
@@ -117,11 +119,18 @@ function WaitlistForm() {
       }
 
       if (WAITLIST_URL) {
-        await postWaitlistSignup(WAITLIST_URL, {
-          email,
-          locale,
-          userAgent: navigator.userAgent,
+        const res = await fetch(WAITLIST_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            email,
+            locale,
+            userAgent: navigator.userAgent,
+          }),
         });
+        if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
+        const json = await res.json().catch(() => ({}));
+        if (json.ok === false && json.error !== "invalid") throw new Error(json.error || "waitlist rejected");
       }
 
       setStatus("success");

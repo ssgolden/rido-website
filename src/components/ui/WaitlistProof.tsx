@@ -1,16 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { fetchWaitlistCount, WAITLIST_URL } from "@/lib/waitlist";
 
 /**
  * WaitlistProof — fetches the live count from the Apps Script web app
- * (`GET ?count=1` returns `{count: number}`) and renders it with an avatar stack.
+ * (GET returns `{count: number}`) and renders it with an avatar stack.
  *
  * When NEXT_PUBLIC_WAITLIST_URL is unset (local dev / static preview), the
  * component renders a no-count version of the kicker instead of fabricating
  * a number. Never displays a fake count.
  */
+
+const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 
 const AVATAR_PALETTE = ["#DE0498", "#F23DB5", "#22C55E", "#FDE803", "#8B5CF6"];
 
@@ -45,9 +46,16 @@ export function WaitlistProof({
   useEffect(() => {
     if (!WAITLIST_URL) return;
     let cancelled = false;
-    fetchWaitlistCount(WAITLIST_URL).then((n) => {
-      if (!cancelled && n !== null && n > 0) setCount(n);
-    });
+    fetch(WAITLIST_URL)
+      .then((r) => r.json())
+      .then((data) => {
+        if (!cancelled && typeof data.count === "number" && data.count >= 0) {
+          setCount(data.count);
+        }
+      })
+      .catch(() => {
+        /* backend unreachable — leave null, render fallback */
+      });
     return () => {
       cancelled = true;
     };

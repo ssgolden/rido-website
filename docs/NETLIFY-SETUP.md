@@ -54,10 +54,8 @@ Both hostnames should keep resolving (apex A record, www CNAME). Netlify's domai
    |------------------|-------------|
    | `NEXT_OUTPUT`    | `export`    |
    | `CUSTOM_DOMAIN`  | `true`      |
-   | `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL (required for the live waitlist and signup count) |
-   | `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Search Console token. Leave unset to omit the meta tag. |
 
-   `NEXT_PUBLIC_*` values are inlined at build time. Set them before the first production deploy of `https://www.rido.bike`, then redeploy if they change. See section 8 and `docs/WAITLIST-SETUP.md`.
+   Optional, not required for this launch: `NEXT_PUBLIC_GSC_VERIFICATION` (Search Console token; the meta tag is omitted when unset) and `NEXT_PUBLIC_WAITLIST_URL` (a later waitlist backend). Leave both unset. With the waitlist variable unset, signups stay in the visitor's browser and the hero shows no live count. See `docs/WAITLIST-SETUP.md`. The public site is `https://www.rido.bike`.
 
 7. Set build settings:
 
@@ -239,14 +237,12 @@ You can add a `netlify.toml` to the repo root to codify these settings:
 
 > This eliminates the need to configure build settings manually in the Netlify UI. Netlify reads `netlify.toml` automatically on each deploy. The redirect above documents the live direction (apex → www). Netlify domain settings already do this; adding the snippet does not require a DNS change.
 
-Also set these in the Netlify UI (they are inlined at **build time**, so change them and redeploy):
+Optional build-time variables (leave unset for this launch; they are inlined, so a later change needs a redeploy):
 
 | Key | Value |
 |-----|--------|
-| `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL. Required for the production waitlist and the live signup count on `https://www.rido.bike`. If unset, emails stay in the visitor's browser and the count stays hidden. |
-| `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Google Search Console token. The meta tag is omitted when this is unset. Do not commit the token. |
-
-Register Search Console for `https://www.rido.bike/`. See `docs/WAITLIST-SETUP.md` for the waitlist script.
+| `NEXT_PUBLIC_GSC_VERIFICATION` | Search Console token. Omitted from the page when unset. Do not commit the token. Register the property as `https://www.rido.bike/` when you add it. |
+| `NEXT_PUBLIC_WAITLIST_URL` | Not used for this launch. A later PR can point it at a waitlist backend. Until then the form keeps the honest local fallback and does not show a live count. |
 
 ---
 
@@ -264,7 +260,7 @@ Register Search Console for `https://www.rido.bike/`. See `docs/WAITLIST-SETUP.m
 | DNS CNAME (www)   | `www` → `*.netlify.app`                       |
 | SSL               | Automatic via Let's Encrypt                   |
 | Canonical origin  | `https://www.rido.bike` (apex 301s here)      |
-| `NEXT_PUBLIC_WAITLIST_URL` | Apps Script `/exec` URL, set at build time |
+| `NEXT_PUBLIC_WAITLIST_URL` | Leave unset for this launch (local fallback, no live count) |
 | `NEXT_PUBLIC_GSC_VERIFICATION` | Optional Search Console token, build time |
 
 ---

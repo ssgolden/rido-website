@@ -8,8 +8,7 @@
  *   4. Execute as: You
  *   5. Who has access: Anyone
  *   6. Copy the deployment URL (looks like https://script.google.com/macros/s/AKfy.../exec)
- *   7. Set NEXT_PUBLIC_WAITLIST_URL on Netlify (build-time env) to that /exec URL,
- *      then rebuild + deploy. The public site is https://www.rido.bike.
+ *   7. Set the URL in Vercel/GitHub Secrets as NEXT_PUBLIC_WAITLIST_URL, then rebuild + deploy
  *
  * Local dev (no env var): falls back to localStorage only.
  *
@@ -62,8 +61,7 @@ function doPost(e) {
   }
 }
 
-// Public count. GET the deployment URL, or GET ?count=1 — same JSON `{ count }`.
-// Keep this a simple GET (no custom headers). A CORS preflight will not succeed.
+// Optional: hit the deployed URL with ?count=1 to read the public count.
 function doGet(e) {
   const sheet = getOrCreateSheet();
   const lastRow = sheet.getLastRow();

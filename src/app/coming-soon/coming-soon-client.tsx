@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Mail, Lock, Check } from "lucide-react";
 import { citiesAnnounced } from "@/data/cities";
-import { postWaitlistSignup, WAITLIST_URL } from "@/lib/waitlist";
 
 const en = {
   badge: "Launching soon on the Costa del Sol",
@@ -56,6 +55,8 @@ const copy: Record<"en" | "es", typeof en> = {
   },
 };
 
+const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+
 export function ComingSoon() {
   const router = useRouter();
   const [locale, setLocale] = useState<"en" | "es">("en");
@@ -75,22 +76,19 @@ export function ComingSoon() {
     try {
       // Static-export: /api/waitlist is excluded; use the Apps Script web app URL.
       // When hosted on a server with the API route present, fall back to it.
+      const target = WAITLIST_URL || "/api/waitlist";
+      const headers: Record<string, string> = WAITLIST_URL
+        ? { "Content-Type": "text/plain;charset=utf-8" }
+        : { "Content-Type": "application/json" };
+      const res = await fetch(target, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+      });
+      if (!res.ok) { setSignupState("error"); return; }
       if (WAITLIST_URL) {
-        await postWaitlistSignup(WAITLIST_URL, {
-          email,
-          locale,
-          userAgent: navigator.userAgent,
-        });
-      } else {
-        const res = await fetch("/api/waitlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
-        });
-        if (!res.ok) {
-          setSignupState("error");
-          return;
-        }
+        const json = await res.json().catch(() => ({}));
+        if (json.ok === false) { setSignupState("error"); return; }
       }
       setSignupState("done");
     } catch {
