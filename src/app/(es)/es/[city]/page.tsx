@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cities, citiesAnnounced } from "@/data/cities";
-import { CityLanding, getCity, getCityMetadata } from "../../[city]/city-landing";
+import { CityLanding, getCity, getCityMetadata } from "../../../(en)/[city]/city-landing";
 
 // Static export: only the five launch-town slugs exist; anything else 404s at build time.
 export const dynamicParams = false;

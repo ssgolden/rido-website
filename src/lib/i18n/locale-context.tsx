@@ -19,8 +19,8 @@ export function LocaleProvider({
   locale: Locale;
   children: React.ReactNode;
 }) {
-  // The root layout hardcodes <html lang="en">; nested routes cannot
-  // change it in the App Router, so reflect the active locale here.
+  // Locale root layouts set <html lang> for the first paint. Keep this in
+  // sync if a client tree is ever rendered under the other document.
   useEffect(() => {
     document.documentElement.lang = locale;
   }, [locale]);

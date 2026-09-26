@@ -120,7 +120,7 @@ export function FAQ() {
 
   return (
     <section id="faq" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6">
-      {/* FAQPage schema is also injected globally in src/lib/schema.ts (English, from the canonical faqItems export); this interactive section renders the active locale's copy. */}
+      {/* FAQPage JSON-LD is injected by the locale root layout (EN on /, ES on /es). */}
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12">
           <SectionHeading

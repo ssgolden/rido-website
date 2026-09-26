@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { NotFoundView } from "@/components/layout/NotFoundView";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Page Not Found — Rido",
@@ -8,13 +7,6 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-// Unmatched URLs sit outside both locale root layouts, so this file owns <html>.
 export default function NotFound() {
-  return (
-    <html lang="en" className="dark">
-      <body className="font-sans overflow-x-hidden bg-rido-navy">
-        <NotFoundView locale="en" />
-      </body>
-    </html>
-  );
+  return <NotFoundView locale="en" />;
 }

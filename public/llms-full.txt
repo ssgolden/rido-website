@@ -104,19 +104,19 @@ Every Rido ride replaces a car trip. Here's the impact we're projected to make.
 
 ## Pricing
 
-### Pay As You Go
-- Unlock fee: €1.00
-- Per minute: €0.35/min
+Fares will be announced at launch. The public site does not list unlock fees, per-minute rates, or day-pass prices.
+
+### Pay as you go
 - No commitment. Ride when you need it.
+- Price: announced at launch.
 
 ### Rido Pass (Most Popular)
-- Unlock fee: Free
-- Per minute: €0.25/min
-- Unlimited unlocks + reduced per-minute rate.
+- Frequent-rider membership.
+- Price: announced at launch.
 
 ### Day Pass (Best for Tourists)
-- €14.99 flat rate
-- Unlimited rides for 24 hours.
+- A full day of riding.
+- Price: announced at launch.
 
 **No-Surprise Guarantee**: No minimum top-up required, no hidden fees after your ride, free refund of unused balance, exact pricing shown before every ride.
 
@@ -146,10 +146,10 @@ Park in designated areas shown in the app. These are typically bike rack zones o
 We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app.
 
 ### How much does it cost?
-Pay As You Go: €1.00 unlock + €0.35 per minute. Rido Pass: Free unlock + €0.25 per minute. Day Pass: €14.99 for unlimited 24-hour rides. No minimum top-up, no hidden fees.
+Fares will be announced at launch. What will not change: you always see the price before every ride, with no minimum top-up and no hidden fees.
 
 ### What is the Rido Pass?
-The Rido Pass gives you free unlocks and a reduced per-minute rate of €0.25/min (instead of €0.35/min). It's perfect for frequent riders who want to save on every ride.
+The Rido Pass is the frequent-rider membership. Exact pricing will be announced at launch.
 
 ### Can I get a refund for unused balance?
 Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details.
@@ -198,5 +198,5 @@ Join the waitlist and be first to ride when Rido launches on the Costa del Sol. 
 - **Email**: info@rido.bike
 - **Terms of Service**: https://www.rido.bike/terms
 - **Privacy Policy**: https://www.rido.bike/privacy
-- **Cookie Policy**: https://www.rido.bike/privacy#cookies
+- **Cookie Policy**: https://www.rido.bike/politica-cookies
 - **Careers**: https://www.rido.bike/careers

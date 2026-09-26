@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Shield } from "lucide-react";
 import { OG_LOCALE_EN, SITE_ORIGIN } from "@/lib/site";
@@ -164,16 +165,11 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="cookies" className="legal-section">Cookie Policy</h2>
       <p>
-        Our website and app use cookies and similar tracking technologies to ensure proper functionality, analyze traffic, and enhance your experience. Cookies are small data files stored on your device when you visit our website.
+        The Rido website does not set traditional tracking cookies. When you answer the consent banner, that choice is stored in this browser&apos;s local storage so we do not ask again. Cookieless analytics (Vercel Analytics) load only if you choose Accept. If you decline, or do not answer, the analytics script never loads. We do not use advertising cookies or cross-site tracking.
       </p>
-      <h3>Types of Cookies We Use</h3>
-      <ul>
-        <li><strong>Essential Cookies</strong>: Required for the website to function properly, including session management and security features.</li>
-        <li><strong>Analytical Cookies</strong>: Help us understand how visitors interact with our website, allowing us to improve our services.</li>
-        <li><strong>Functional Cookies</strong>: Enable enhanced functionality and personalization, such as remembering your preferences.</li>
-      </ul>
       <p>
-        You can manage your cookie preferences through your browser settings. For more details on the specific cookies we use, please contact us at <a href="mailto:info@rido.bike">info@rido.bike</a>.
+        What runs on your device, the legal basis, and how to withdraw consent are set out in the{" "}
+        <Link href="/politica-cookies" className="cursor-pointer">Cookie Policy</Link>.
       </p>
 
       <div className="legal-highlight mt-12">

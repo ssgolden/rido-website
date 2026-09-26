@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Rido — Coming Soon to the Costa del Sol",
   description:
     "Shared e-scooters and e-bikes are coming to the Costa del Sol. Join the waitlist and be first to ride when Rido launches.",
+  robots: { index: false, follow: false },
   alternates: { canonical: `${SITE_ORIGIN}/coming-soon` },
   openGraph: {
     title: "Rido — Coming Soon to the Costa del Sol",
