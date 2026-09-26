@@ -2,7 +2,8 @@ import Link from "next/link";
 
 interface LegalPageProps {
   title: string;
-  lastUpdated: string;
+  /** Omit on pages that are not dated legal documents. */
+  lastUpdated?: string;
   children: React.ReactNode;
 }
 
@@ -25,8 +26,10 @@ export function LegalPage({ title, lastUpdated, children }: LegalPageProps) {
           </ol>
         </nav>
 
-        <h1 className="text-3xl md:text-4xl font-black mb-2">{title}</h1>
-        <p className="text-sm text-muted mb-12">Last updated: {lastUpdated}</p>
+        <h1 className={`text-3xl md:text-4xl font-black ${lastUpdated ? "mb-2" : "mb-12"}`}>{title}</h1>
+        {lastUpdated ? (
+          <p className="text-sm text-muted mb-12">Last updated: {lastUpdated}</p>
+        ) : null}
 
         <div className="legal-content text-white/70 leading-relaxed space-y-6">
           {children}

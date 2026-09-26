@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { AlertTriangle, Scale } from "lucide-react";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions — Rido",
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
     title: "Terms and Conditions — Rido",
     description: "Terms of service for Rido e-scooter and e-bike rentals in Spain.",
     url: `${SITE_ORIGIN}/terms`,
+    locale: OG_LOCALE_EN,
   },
 };
 

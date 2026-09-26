@@ -164,12 +164,9 @@ export function AnimationShowcase() {
 
         <DemoCard icon={<Zap className="w-4 h-4" />} title="react-spring" desc="Spring-physics count-up. No rAF jank, no setState in a loop.">
           <div className="text-5xl font-black tabular-nums text-rido-magenta">
-            <NumberCounter value={1247} suffix="+" />
+            <NumberCounter value={48} />
           </div>
-          <p className="text-sm text-muted mt-1">riders on the waitlist (live)</p>
-          <div className="mt-4 text-3xl font-bold tabular-nums text-white">
-            €<NumberCounter value={1499} /> flat rate
-          </div>
+          <p className="text-sm text-muted mt-1">Spring count-up. Not a live total.</p>
         </DemoCard>
 
         <DemoCard icon={<Layers className="w-4 h-4" />} title="simplex-noise" desc="Procedural noise field — the Vercel/Linear atmospheric layer.">

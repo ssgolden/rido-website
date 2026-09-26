@@ -12,7 +12,7 @@ import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { cities, type City } from "@/data/cities";
 import { pricingTiers } from "@/data/pricing";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
@@ -139,7 +139,8 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       type: "website",
       url,
       siteName: "Rido",
-      locale: locale === "es" ? "es_ES" : "en_ES",
+      locale: locale === "es" ? OG_LOCALE_ES : OG_LOCALE_EN,
+      alternateLocale: locale === "es" ? [OG_LOCALE_EN] : [OG_LOCALE_ES],
       images: [
         {
           url: "/images/logo/rido-logo-wide.png",

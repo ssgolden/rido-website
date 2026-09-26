@@ -12,6 +12,10 @@
  *   of the build and ALWAYS restored afterwards (try/finally + signal +
  *   exit handlers), even if the build fails or is interrupted.
  *
+ *   Sandbox routes (coming-soon, waitlist-admin) are excluded the same way
+ *   so the public static site 404s them. They stay in server builds: the
+ *   Vercel password gate still redirects to /coming-soon.
+ *
  * Uses only Node built-ins. Do not run `next build` directly for export builds.
  */
 
@@ -22,8 +26,28 @@ import process from "node:process";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const apiDir = path.join(root, "src", "app", "api");
-const excludedDir = path.join(root, ".export-excluded-api");
+
+/** Directories lifted out of src/app for the static export, then restored. */
+const exclusions = [
+  {
+    label: "src/app/api",
+    from: path.join(root, "src", "app", "api"),
+    to: path.join(root, ".export-excluded-api"),
+  },
+  {
+    label: "src/app/(en)/coming-soon",
+    from: path.join(root, "src", "app", "(en)", "coming-soon"),
+    to: path.join(root, ".export-excluded-coming-soon"),
+  },
+  {
+    label: "src/app/(en)/waitlist-admin",
+    from: path.join(root, "src", "app", "(en)", "waitlist-admin"),
+    to: path.join(root, ".export-excluded-waitlist-admin"),
+  },
+];
+
+/** Labels currently sitting in their excluded location. */
+const moved = new Set();
 
 const extraArgs = process.argv.slice(2);
 
@@ -57,38 +81,40 @@ if (process.env.NEXT_OUTPUT !== "export") {
 }
 
 // ---------------------------------------------------------------------------
-// Static export build: exclude src/app/api while `next build` runs.
+// Static export build: exclude API routes and sandbox pages.
 // ---------------------------------------------------------------------------
 
-let apiMoved = false;
-
-/** Move src/app/api back into place. Idempotent — safe to call multiple times. */
-function restoreApiDir() {
-  if (!apiMoved) return;
-  if (!existsSync(excludedDir)) {
-    apiMoved = false;
+function restoreOne(item) {
+  if (!moved.has(item.label)) return;
+  if (!existsSync(item.to)) {
+    moved.delete(item.label);
     return;
   }
-  if (existsSync(apiDir)) {
+  if (existsSync(item.from)) {
     console.error(
-      "[build] WARNING: both src/app/api and .export-excluded-api exist; " +
-        "leaving .export-excluded-api in place for manual inspection."
+      `[build] WARNING: both ${item.label} and its excluded copy exist; ` +
+        "leaving the excluded copy in place for manual inspection."
     );
     return;
   }
-  renameSync(excludedDir, apiDir);
-  apiMoved = false;
-  log("Restored src/app/api from .export-excluded-api");
+  renameSync(item.to, item.from);
+  moved.delete(item.label);
+  log(`Restored ${item.label}`);
 }
 
-// Recover from a previously crashed/killed run that left the api dir excluded.
-if (existsSync(excludedDir)) {
-  if (existsSync(apiDir)) {
-    log("Found stale .export-excluded-api alongside src/app/api; deleting stale copy");
-    rmSync(excludedDir, { recursive: true, force: true });
+function restoreAll() {
+  for (const item of exclusions) restoreOne(item);
+}
+
+// Recover from a previously crashed/killed run that left a directory excluded.
+for (const item of exclusions) {
+  if (!existsSync(item.to)) continue;
+  if (existsSync(item.from)) {
+    log(`Found stale excluded copy of ${item.label}; deleting stale copy`);
+    rmSync(item.to, { recursive: true, force: true });
   } else {
-    log("Recovering from previous interrupted run: restoring src/app/api");
-    renameSync(excludedDir, apiDir);
+    log(`Recovering from previous interrupted run: restoring ${item.label}`);
+    renameSync(item.to, item.from);
   }
 }
 
@@ -100,25 +126,27 @@ for (const [signal, code] of [
   ["SIGTERM", 143],
 ]) {
   process.on(signal, () => {
-    restoreApiDir();
+    restoreAll();
     process.exit(code);
   });
 }
 
 // Last-resort safety net (renameSync is synchronous, so it is allowed here).
-process.on("exit", restoreApiDir);
+process.on("exit", restoreAll);
 
 let exitCode = 1;
 try {
-  if (existsSync(apiDir)) {
-    log("Static export build: excluding src/app/api -> .export-excluded-api");
-    renameSync(apiDir, excludedDir);
-    apiMoved = true;
-  } else {
-    log("src/app/api not found; nothing to exclude");
+  for (const item of exclusions) {
+    if (!existsSync(item.from)) {
+      log(`${item.label} not found; nothing to exclude`);
+      continue;
+    }
+    log(`Static export build: excluding ${item.label}`);
+    renameSync(item.from, item.to);
+    moved.add(item.label);
   }
   exitCode = runNextBuild();
 } finally {
-  restoreApiDir();
+  restoreAll();
 }
 process.exit(exitCode);

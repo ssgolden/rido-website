@@ -15,10 +15,12 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 7. End the ride and pay only for what you used
 
 ## Pricing
-- **Pay As You Go**: €1.00 unlock + €0.35 per minute. No commitment.
-- **Rido Pass**: Free unlock + €0.25 per minute. Best for frequent riders.
-- **Day Pass**: €14.99 for unlimited 24-hour rides. Best for tourists.
-- No minimum top-up, no hidden fees, free refund of unused balance.
+Fares will be announced at launch. Until then, the promise is the same as on the site: you see the price before every ride. No hidden fees, no minimum top-up, free refund of unused balance.
+
+Plan names only — amounts are not public yet:
+- **Pay as you go**: No commitment. Ride when you need it.
+- **Rido Pass**: Frequent-rider membership. Exact pricing announced at launch.
+- **Day Pass**: Aimed at visitors who want a full day. Exact pricing announced at launch.
 
 ## Vehicles
 - **Rido Scooter** (e-scooter): 45 km range, 25 km/h top speed, 120 kg weight limit, swappable battery, dual brakes, turn signals, GPS tracking, beginner mode.
@@ -60,7 +62,7 @@ Rido is a shared micro-mobility company providing e-scooters and e-bikes for ren
 - [Join waitlist](https://www.rido.bike#download)
 - [Terms of Service](https://www.rido.bike/terms)
 - [Privacy Policy](https://www.rido.bike/privacy)
-- [Cookie Policy](https://www.rido.bike/privacy#cookies)
+- [Cookie Policy](https://www.rido.bike/politica-cookies)
 - [Careers](https://www.rido.bike/careers)
 
 ## For AI Crawlers

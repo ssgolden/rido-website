@@ -1,13 +1,15 @@
 import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
 import { cities, citiesAnnounced } from "@/data/cities";
+import { faqItemsByLocale } from "@/data/faq";
+import type { Locale } from "@/lib/i18n/config";
 import { SITE_LAST_MODIFIED, SITE_ORIGIN } from "@/lib/site";
 
 const baseUrl = SITE_ORIGIN;
 
 /**
  * Centralized JSON-LD structured data for SEO and AI engines.
- * All schemas are injected into the <head> via layout.tsx.
+ * All schemas are injected into the <head> via the locale root layouts.
  *
  * June 2026 best practices applied:
  * - Schema.org v28+ types where available
@@ -91,15 +93,7 @@ export const websiteSchema = {
   name: "Rido",
   url: baseUrl,
   publisher: { "@id": orgId },
-  inLanguage: "en",
-  potentialAction: {
-    "@type": "SearchAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: `${baseUrl}/?q={search_term_string}`,
-    },
-    "query-input": "required name=search_term_string",
-  },
+  inLanguage: ["en", "es"],
 };
 
 export const webPageSchema = {
@@ -361,21 +355,22 @@ export const cityServiceSchemas = citiesAnnounced
     ];
 
 // --- FAQPage ---------------------------------------------------------------
-import { faqItems } from "@/data/faq";
-
-export const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "@id": `${baseUrl}/#faq`,
-  mainEntity: faqItems.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
-};
+export function getFaqSchema(locale: Locale) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": locale === "es" ? `${baseUrl}/es#faq` : `${baseUrl}/#faq`,
+    inLanguage: locale,
+    mainEntity: faqItemsByLocale[locale].map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
 
 // --- CarbonFootprint / sustainability ---------------------------------------
 export const sustainabilitySchema = {
@@ -401,25 +396,12 @@ export const sustainabilitySchema = {
     "Rido offsets 100% of operational emissions through verified carbon credits, uses swappable and recycled batteries, and recycles every vehicle at end of life.",
 };
 
-// --- Careers / JobPosting placeholder ---------------------------------------
-export const careersSchema = {
-  "@context": "https://schema.org",
-  "@type": "JobPosting",
-  "@id": `${baseUrl}/#careers`,
-  title: "Open roles at Rido",
-  description:
-    `Join the Rido team and help launch shared e-scooters and e-bikes on the Costa del Sol, from day one. See ${baseUrl}/careers for current openings.`,
-  hiringOrganization: { "@id": orgId },
-  employmentType: "FULL_TIME",
-  jobLocationType: "TELECOMMUTE",
-  validThrough: "2026-12-31",
-  url: `${baseUrl}/careers`,
-};
-
 /**
  * Returns all JSON-LD scripts as an array of objects for rendering in <head>.
+ * FAQ copy follows the page locale. No JobPosting (no open roles) and no
+ * SearchAction (the site has no /?q= search).
  */
-export function getAllSchemas() {
+export function getAllSchemas(locale: Locale = "en") {
   return [
     organizationSchema,
     brandSchema,
@@ -430,9 +412,8 @@ export function getAllSchemas() {
     breadcrumbSchema,
     speakableSchema,
     softwareApplicationSchema,
-    faqSchema,
+    getFaqSchema(locale),
     sustainabilitySchema,
-    careersSchema,
     ...productSchemas,
     ...cityServiceSchemas,
   ];
