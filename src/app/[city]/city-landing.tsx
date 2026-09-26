@@ -317,7 +317,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
             {/* Vehicle availability chips */}
             <ScrollReveal delay={0.22}>
               <div className="mt-6 flex items-center justify-center gap-2 flex-wrap" aria-label={t.vehiclesLabel}>
-                <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-white/40">
+                <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-muted">
                   <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
                   {city.name}, {city.region}
                 </span>

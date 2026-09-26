@@ -53,9 +53,11 @@
   --color-rido-green: #22C55E;
   --color-rido-yellow: #FDE803;
   --color-rido-cloud: #F8FAFC;
-  --color-muted: rgb(148 163 184); /* slate-400, ~6.1:1 on navy */
-  --color-muted-strong: rgb(203 213 225); /* slate-300, ~8.8:1 on navy */
-  --color-muted-weak: rgb(124 139 163); /* #7C8BA3, ~5.2:1 on navy - AA-compliant for body text */
+  /* Secondary text on navy (#0F172A). Ratios are vs that background.
+     strong 14.5:1, muted 11.4:1, weak 8.7:1 — all clear at a glance, still stepped under white. */
+  --color-muted: #C5D0DE;
+  --color-muted-strong: #E2E8F0;
+  --color-muted-weak: #A8B7C9;
   --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Sora Variable", "Sora Fallback", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   /* Fluid display scale — floor tuned so "Costa del Sol" (NBSP-joined) fits at 320–360px */
@@ -161,11 +163,13 @@
 }
 
 @layer utilities {
+  /* Bind the text utilities to the theme tokens. Do not @apply slate here:
+     that compiles to a fixed palette color and ignores --color-muted*. */
   .text-muted {
-    @apply text-slate-400;
+    color: var(--color-muted);
   }
   .text-muted-strong {
-    @apply text-slate-300;
+    color: var(--color-muted-strong);
   }
   .text-muted-weak {
     color: var(--color-muted-weak);

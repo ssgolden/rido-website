@@ -97,7 +97,7 @@ export function CookieConsent() {
               </div>
               <div className="flex-1 min-w-0">
                 <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
-                <p className="text-sm text-white/70 leading-relaxed">
+                <p className="text-sm text-muted-strong leading-relaxed">
                   {t.body}{" "}
                   <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
@@ -110,7 +110,7 @@ export function CookieConsent() {
               </div>
               <button
                 onClick={handleDecline}
-                className="text-white/60 hover:text-white transition-colors cursor-pointer p-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy rounded"
+                className="text-muted-strong hover:text-white transition-colors cursor-pointer p-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy rounded"
                 aria-label={t.close}
               >
                 <X className="w-4 h-4" />

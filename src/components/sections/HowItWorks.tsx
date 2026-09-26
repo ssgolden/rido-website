@@ -142,7 +142,7 @@ export function HowItWorks() {
                   <div
                     className={cn(
                       "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-all duration-300 ease-out",
-                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent opacity-50"
+                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent"
                     )}
                   >
                     <div
@@ -168,7 +168,7 @@ export function HowItWorks() {
                           )}
                         />
                       </div>
-                      <h3 className="font-bold text-lg mb-2">{step.title}</h3>
+                      <h3 className={cn("font-bold text-lg mb-2", active ? "text-white" : "text-muted-strong")}>{step.title}</h3>
                       <p className="text-sm text-muted leading-relaxed">
                         {step.description}
                       </p>

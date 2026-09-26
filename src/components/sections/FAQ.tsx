@@ -82,7 +82,7 @@ function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string;
       <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group" aria-expanded={isOpen} aria-controls={answerId}>
         <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors pr-4 text-sm sm:text-base">{question}</span>
         <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} className="shrink-0">
-          <ChevronDown className="w-5 h-5 text-white/40" />
+          <ChevronDown className="w-5 h-5 text-muted" />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -137,7 +137,7 @@ export function FAQ() {
           <div className="relative mb-4">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
             <input type="text" placeholder={t.searchPlaceholder} value={search} onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
-              className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
+              className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
               aria-label={t.searchAria} />
           </div>
           <div className="flex gap-2 mb-6 overflow-x-auto pb-1">

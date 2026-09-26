@@ -85,7 +85,7 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
   const finalValue = isText ? stat.text : stat.value.toLocaleString();
   return (
     <StaggerItem ref={ref} className="text-center min-w-0" aria-label={`${finalValue} ${stat.label}`}>
-      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-white/60" aria-hidden="true" />
+      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-muted-strong" aria-hidden="true" />
       <p
         aria-hidden="true"
         className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight tabular-nums ${stat.green ? "text-rido-green" : "text-white"}`}
@@ -94,7 +94,7 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
       >
         {displayValue}
       </p>
-      <p className="mt-1 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">{stat.label}</p>
+      <p className="mt-1 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">{stat.label}</p>
     </StaggerItem>
   );
 }
@@ -226,7 +226,7 @@ export function Hero() {
       >
         {/* Social-proof kicker */}
         <ScrollReveal delay={0.05}>
-          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">
+          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
@@ -309,7 +309,7 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: reduce ? 0 : 0.95, duration: 0.5 }}
-          className="mt-5 inline-flex items-center gap-2 text-xs text-white/70"
+          className="mt-5 inline-flex items-center gap-2 text-xs text-muted-strong"
         >
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
           {t.microcopy}
@@ -330,7 +330,7 @@ export function Hero() {
         href="#how-it-works"
         aria-label={t.scrollAria}
         style={{ opacity: cueOpacity }}
-        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 hidden [@media(min-height:700px)]:flex flex-col items-center gap-2 text-white/60 hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
+        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 hidden [@media(min-height:700px)]:flex flex-col items-center gap-2 text-muted-strong hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
       >
         <span className="text-[11px] uppercase tracking-[0.15em]">{t.scrollLabel}</span>
         <span className="relative flex h-9 w-6 rounded-full border border-white/15 backdrop-blur bg-white/[0.04] shadow-[0_0_12px_rgba(222,4,152,0.25)] justify-center pt-1.5">
