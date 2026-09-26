@@ -401,23 +401,9 @@ export const sustainabilitySchema = {
     "Rido offsets 100% of operational emissions through verified carbon credits, uses swappable and recycled batteries, and recycles every vehicle at end of life.",
 };
 
-// --- Careers / JobPosting placeholder ---------------------------------------
-export const careersSchema = {
-  "@context": "https://schema.org",
-  "@type": "JobPosting",
-  "@id": `${baseUrl}/#careers`,
-  title: "Open roles at Rido",
-  description:
-    `Join the Rido team and help launch shared e-scooters and e-bikes on the Costa del Sol, from day one. See ${baseUrl}/careers for current openings.`,
-  hiringOrganization: { "@id": orgId },
-  employmentType: "FULL_TIME",
-  jobLocationType: "TELECOMMUTE",
-  validThrough: "2026-12-31",
-  url: `${baseUrl}/careers`,
-};
-
 /**
  * Returns all JSON-LD scripts as an array of objects for rendering in <head>.
+ * No JobPosting: /careers does not list roles.
  */
 export function getAllSchemas() {
   return [
@@ -432,7 +418,6 @@ export function getAllSchemas() {
     softwareApplicationSchema,
     faqSchema,
     sustainabilitySchema,
-    careersSchema,
     ...productSchemas,
     ...cityServiceSchemas,
   ];

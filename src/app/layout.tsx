@@ -4,7 +4,7 @@ import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
 import { getAllSchemas } from "@/lib/schema";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 import { citiesAnnounced } from "@/data/cities";
 import { Toaster } from "@/components/animation/Toast";
 // Self-hosted variable fonts (bundled WOFF2, no external requests).
@@ -51,8 +51,8 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_ORIGIN,
     siteName: "Rido",
-    locale: "en_GB",
-    alternateLocale: ["es_ES"],
+    locale: OG_LOCALE_EN,
+    alternateLocale: [OG_LOCALE_ES],
     images: [
       {
         url: "/images/og/rido-og.png",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Cookie } from "lucide-react";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Cookie Policy — Rido",
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     title: "Cookie Policy — Rido",
     description: "Which cookies and similar technologies Rido uses, and how to manage your consent.",
     url: `${SITE_ORIGIN}/politica-cookies`,
+    locale: OG_LOCALE_EN,
   },
 };
 

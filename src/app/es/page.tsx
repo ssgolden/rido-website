@@ -7,7 +7,7 @@ import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { citiesAnnounced } from "@/data/cities";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })));
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })));
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     type: "website",
     url: `${SITE_ORIGIN}/es`,
     siteName: "Rido",
-    locale: "es_ES",
-    alternateLocale: ["en_GB"],
+    locale: OG_LOCALE_ES,
+    alternateLocale: [OG_LOCALE_EN],
     images: [
       {
         url: "/images/og/rido-og.png",

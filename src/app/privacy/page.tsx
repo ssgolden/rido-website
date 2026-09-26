@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Shield } from "lucide-react";
-import { SITE_ORIGIN } from "@/lib/site";
+import { OG_LOCALE_EN, SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Rido",
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     title: "Privacy Policy — Rido",
     description: "How we protect your personal data. GDPR-compliant privacy policy.",
     url: `${SITE_ORIGIN}/privacy`,
+    locale: OG_LOCALE_EN,
   },
 };
 
