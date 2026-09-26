@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Navbar } from "@/components/layout/Navbar";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
@@ -67,7 +68,7 @@ function Divider() {
 export default function HomeEs() {
   return (
     <LocaleProvider locale="es">
-      <Navbar />
+      <SiteShell header={<Navbar />}>
       <ScrollProgress />
       <main id="main-content">
         <noscript>
@@ -105,6 +106,7 @@ export default function HomeEs() {
       </main>
       <Footer locale="es" />
       <BackToTop />
+      </SiteShell>
     </LocaleProvider>
   );
 }

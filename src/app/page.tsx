@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import { citiesAnnounced } from "@/data/cities";
 import { Navbar } from "@/components/layout/Navbar";
+import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
@@ -47,8 +48,7 @@ function Divider() {
 
 export default function Home() {
   return (
-    <>
-      <Navbar />
+    <SiteShell header={<Navbar />}>
       <ScrollProgress />
       <main id="main-content">
         <noscript>
@@ -86,6 +86,6 @@ export default function Home() {
       </main>
       <Footer />
       <BackToTop />
-    </>
+    </SiteShell>
   );
 }

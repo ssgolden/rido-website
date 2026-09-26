@@ -3,8 +3,9 @@ import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
+import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useRef, useMemo } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
 import { withBase } from "@/lib/basePath";
@@ -15,6 +16,7 @@ import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
 import { EASE, STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
+import { useHeroBackdropEl, useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
 // Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
 const NOISE_SVG =
@@ -83,7 +85,7 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
   const finalValue = isText ? stat.text : stat.value.toLocaleString();
   return (
     <StaggerItem ref={ref} className="text-center min-w-0" aria-label={`${finalValue} ${stat.label}`}>
-      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-white/60" aria-hidden="true" />
+      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-muted-strong" aria-hidden="true" />
       <p
         aria-hidden="true"
         className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight tabular-nums ${stat.green ? "text-rido-green" : "text-white"}`}
@@ -92,7 +94,7 @@ function HeroStat({ stat }: { stat: HeroStatData }) {
       >
         {displayValue}
       </p>
-      <p className="mt-1 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">{stat.label}</p>
+      <p className="mt-1 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">{stat.label}</p>
     </StaggerItem>
   );
 }
@@ -114,14 +116,80 @@ const wordVariantsReduced = {
   visible: { opacity: 1, transition: { duration: 0.15 } },
 };
 
+function HeroBackdrop({
+  fixed,
+  opacity,
+  photoY,
+}: {
+  fixed: boolean;
+  opacity: number | MotionValue<number>;
+  photoY: string | MotionValue<string>;
+}) {
+  return (
+    <motion.div
+      aria-hidden="true"
+      className={fixed ? "absolute inset-0" : "contents"}
+      style={fixed ? { opacity } : undefined}
+    >
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
+      {/* On a tall phone, object-cover slices this wide photo into unreadable
+          shapes. Keep the whole frame visible there; full-bleed cover from sm up. */}
+      <motion.div className="absolute inset-x-0 top-[18%] h-[34%] sm:inset-0 sm:h-full" style={{ y: photoY }}>
+        <Image
+          src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
+          alt=""
+          role="presentation"
+          fill
+          sizes="100vw"
+          className="object-contain object-center opacity-[0.2] sm:object-cover sm:opacity-[0.22]"
+          priority
+          decoding="async"
+        />
+      </motion.div>
+      <div
+        className="absolute inset-0 mix-blend-soft-light"
+        style={{
+          background:
+            "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15,23,42,0.65) 100%)",
+        }}
+      />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(15,23,42,0.5), transparent 12%, transparent 88%, rgba(15,23,42,0.5))",
+        }}
+      />
+      <div className="absolute top-1/4 -right-16 w-[160px] h-[160px] sm:-right-24 sm:w-[700px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[80px] sm:blur-[100px] hero-orb hero-orb-1" />
+      <div className="absolute bottom-0 -left-16 w-[140px] h-[140px] sm:-left-24 sm:w-[500px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[70px] sm:blur-[90px] hero-orb hero-orb-2" />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
+        style={{ backgroundImage: `url("${NOISE_SVG}")` }}
+      />
+    </motion.div>
+  );
+}
+
 export function Hero() {
   const locale = useLocale();
   const t = copy[locale];
   const headlineWords = t.headlineWords;
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
+  const scrollContainerRef = useScrollContainerRef();
+  const backdropEl = useHeroBackdropEl();
 
   const { scrollYProgress } = useScroll({
+    container: scrollContainerRef,
     target: sectionRef,
     offset: ["start start", "end start"],
   });
@@ -132,6 +200,9 @@ export function Hero() {
   const contentOpacity = reduce ? 1 : contentOpacityRaw;
   const cueOpacityRaw = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
   const cueOpacity = reduce ? 1 : cueOpacityRaw;
+  const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
+  const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
+  const parkBackdrop = Boolean(backdropEl) && !reduce;
 
   // Group indices: 0..2 line 1, 3..4 line 2.
   const wordGroup = useMemo(() => new Set([3, 4]), []);
@@ -142,85 +213,22 @@ export function Hero() {
       ref={sectionRef}
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative min-h-[100vh] min-h-dvh flex items-center justify-center overflow-hidden pt-[max(3.5rem,env(safe-area-inset-top))] pb-[max(1.5rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))]"
+      className="relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center justify-center overflow-hidden pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))]"
     >
-      {/* Top edge highlight — premium dark panel cue */}
-      <div
-        aria-hidden="true"
-        className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"
-      />
-
-      {/* Deep navy base + animated brand gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-
-      {/* Lifestyle photo: full-bleed, subtle parallax. Lowered fetchpriority — H1 text is the real LCP. */}
-      <motion.div className="absolute inset-0" style={{ y: bgY }}>
-        <Image
-          src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
-          alt=""
-          role="presentation"
-          fill
-          sizes="100vw"
-          className="object-cover opacity-[0.22]"
-          priority
-          decoding="async"
-        />
-      </motion.div>
-
-      {/* Brand color cast — scoped radial tint, not a lens gel over the whole frame */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 mix-blend-soft-light"
-        style={{
-          background:
-            "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)",
-        }}
-      />
-
-      {/* Vignette centered on the copy zone */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15,23,42,0.65) 100%)",
-        }}
-      />
-      <div aria-hidden="true" className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
-      {/* Lateral falloff for ultrawide / orb clipping */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(15,23,42,0.5), transparent 12%, transparent 88%, rgba(15,23,42,0.5))",
-        }}
-      />
-
-      {/* Ambient orbs — magenta primary stronger than green accent; motion-safe via CSS */}
-      <div
-        aria-hidden="true"
-        className="absolute top-1/4 -right-24 w-[400px] sm:w-[700px] h-[400px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[100px] hero-orb hero-orb-1"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 -left-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[90px] hero-orb hero-orb-2"
-      />
-
-      {/* Film grain — lifted opacity, rendered above vignette so banded gradients get dithered */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
-        style={{ backgroundImage: `url("${NOISE_SVG}")` }}
-      />
+      {parkBackdrop && backdropEl
+        ? createPortal(
+            <HeroBackdrop fixed opacity={backdropOpacity} photoY={bgY} />,
+            backdropEl
+          )
+        : <HeroBackdrop fixed={false} opacity={1} photoY={bgY} />}
 
       <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-6 sm:py-12 pb-12 sm:pb-20"
+        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-20 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
         style={{ opacity: contentOpacity }}
       >
         {/* Social-proof kicker */}
         <ScrollReveal delay={0.05}>
-          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-white/60">
+          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
@@ -236,7 +244,7 @@ export function Hero() {
         </ScrollReveal>
 
         <ScrollReveal delay={0.1}>
-          <Badge variant="magenta" className="mb-5 sm:mb-7">
+          <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:sm:mb-4">
             {t.badge}
           </Badge>
         </ScrollReveal>
@@ -270,7 +278,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.65, duration: 0.6, ease: EASE_TUPLE }}
-          className="mt-6 sm:mt-7 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
+          className="mt-6 sm:mt-7 [@media(max-height:860px)]:sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
           {t.subheadline}
         </motion.p>
@@ -279,7 +287,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.8, duration: 0.55, ease: EASE_TUPLE }}
-          className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
+          className="mt-8 sm:mt-10 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
         >
           <a
             href="#download"
@@ -303,14 +311,14 @@ export function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: reduce ? 0 : 0.95, duration: 0.5 }}
-          className="mt-5 inline-flex items-center gap-2 text-xs text-white/70"
+          className="mt-5 inline-flex items-center gap-2 text-xs text-muted-strong"
         >
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
           {t.microcopy}
         </motion.p>
 
         <StaggerReveal
-          className="mt-10 sm:mt-16 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
+          className="mt-10 sm:mt-16 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
           staggerDelay={STAGGER.grid}
         >
           {t.stats.map((s) => (
@@ -324,7 +332,7 @@ export function Hero() {
         href="#how-it-works"
         aria-label={t.scrollAria}
         style={{ opacity: cueOpacity }}
-        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 hidden [@media(min-height:700px)]:flex flex-col items-center gap-2 text-white/60 hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
+        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 hidden [@media(min-height:700px)]:flex flex-col items-center gap-2 text-muted-strong hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
       >
         <span className="text-[11px] uppercase tracking-[0.15em]">{t.scrollLabel}</span>
         <span className="relative flex h-9 w-6 rounded-full border border-white/15 backdrop-blur bg-white/[0.04] shadow-[0_0_12px_rgba(222,4,152,0.25)] justify-center pt-1.5">

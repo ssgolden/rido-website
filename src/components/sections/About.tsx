@@ -63,7 +63,7 @@ export function About() {
               <p className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3">{t.eyebrow}</p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <blockquote className="relative mb-6 pl-6 border-l-4 border-rido-magenta">
-                <p className="text-white/70 text-lg italic leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
+                <p className="text-muted-strong text-lg italic leading-relaxed">&ldquo;{t.quote}&rdquo;</p>
               </blockquote>
               <p className="text-muted leading-relaxed mb-6">{t.para1}</p>
               <p className="text-muted leading-relaxed">{t.para2}</p>

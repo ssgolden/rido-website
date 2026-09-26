@@ -10,6 +10,7 @@ import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
 // User-visible strings per locale.
 const en = {
@@ -78,14 +79,16 @@ export function HowItWorks() {
   const t = copy[locale];
   const steps = t.steps;
   // Desktop scroll-telling: map scroll progress through the two-column
-  // track onto a step index. position:sticky + useScroll stays in sync
-  // with Lenis because Lenis animates the native window scroll position.
+  // track onto a step index. The page scrolls inside #page-scroll (below the
+  // header lane), so useScroll must listen to that element, not the window.
   const scrollTrackRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useScrollContainerRef();
   const [activeStep, setActiveStep] = useState(0);
   const { scrollYProgress } = useScroll({
+    container: scrollContainerRef,
     target: scrollTrackRef,
-    // 0 when the track's top reaches the viewport middle,
-    // 1 when its bottom reaches the viewport middle.
+    // 0 when the track's top reaches the scrollport middle,
+    // 1 when its bottom reaches the scrollport middle.
     offset: ["start 0.5", "end 0.5"],
   });
   useMotionValueEvent(scrollYProgress, "change", (progress) => {
@@ -139,7 +142,7 @@ export function HowItWorks() {
                   <div
                     className={cn(
                       "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-all duration-300 ease-out",
-                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent opacity-50"
+                      active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent"
                     )}
                   >
                     <div
@@ -165,7 +168,7 @@ export function HowItWorks() {
                           )}
                         />
                       </div>
-                      <h3 className="font-bold text-lg mb-2">{step.title}</h3>
+                      <h3 className={cn("font-bold text-lg mb-2", active ? "text-white" : "text-muted-strong")}>{step.title}</h3>
                       <p className="text-sm text-muted leading-relaxed">
                         {step.description}
                       </p>
@@ -179,7 +182,7 @@ export function HowItWorks() {
           {/* Sticky column — plain divs only: a transformed ancestor would
               re-root position:sticky, so no motion wrappers here. */}
           <div className="relative">
-            <div className="sticky top-24 flex justify-center lg:justify-end lg:pr-6 xl:pr-16 py-4">
+            <div className="sticky top-6 flex justify-center lg:justify-end lg:pr-6 xl:pr-16 py-4">
               <PhoneMockup activeStep={activeStep} />
             </div>
           </div>

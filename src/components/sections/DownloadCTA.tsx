@@ -222,7 +222,7 @@ function WaitlistForm() {
             disabled={status === "loading"}
             aria-label={t.emailAria}
             aria-invalid={status === "error"}
-            className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
+            className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
           />
         </div>
         <button
@@ -268,7 +268,7 @@ export function DownloadCTA() {
                 {t.whatHappens.map((step, i) => (
                   <li key={step} className="flex items-start gap-3 text-sm">
                     <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-rido-magenta/15 border border-rido-magenta/40 text-rido-magenta-light text-[10px] font-bold shrink-0">{i + 1}</span>
-                    <span className="text-white/80 leading-snug">{step}</span>
+                    <span className="text-muted-strong leading-snug">{step}</span>
                   </li>
                 ))}
               </ol>
@@ -279,7 +279,7 @@ export function DownloadCTA() {
             <ScrollReveal delay={0.25}>
               <div className="mt-6 flex items-center justify-center lg:justify-start mb-8">
                 <div className="glass rounded-xl px-5 py-4 border border-white/10 max-w-md">
-                  <p className="text-sm text-white/80">{t.appsNote}</p>
+                  <p className="text-sm text-muted-strong">{t.appsNote}</p>
                 </div>
               </div>
             </ScrollReveal>

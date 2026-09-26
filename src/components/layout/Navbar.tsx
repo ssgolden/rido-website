@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore, type MouseEvent } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
@@ -9,6 +9,7 @@ import { Menu, X, Download } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
 
 const en = {
   homeAria: "Rido home",
@@ -43,9 +44,10 @@ const copy: Record<Locale, typeof en> = {
   },
 };
 
-function useScrolledPast(threshold: number) {
+function useScrolledPast(threshold: number, root: HTMLElement | null) {
   return useSyncExternalStore(
     (callback) => {
+      const target: HTMLElement | Window = root ?? window;
       let ticking = false;
       const handleScroll = () => {
         if (!ticking) {
@@ -56,10 +58,10 @@ function useScrolledPast(threshold: number) {
           ticking = true;
         }
       };
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      return () => window.removeEventListener("scroll", handleScroll);
+      target.addEventListener("scroll", handleScroll, { passive: true });
+      return () => target.removeEventListener("scroll", handleScroll);
     },
-    () => window.scrollY > threshold,
+    () => (root ? root.scrollTop : window.scrollY) > threshold,
     () => false
   );
 }
@@ -68,7 +70,15 @@ export function Navbar() {
   const locale = useLocale();
   const t = copy[locale];
   const navLinks = t.navLinks;
-  const scrolled = useScrolledPast(20);
+  const scrollRoot = useScrollRootNode();
+  const scrollTo = useScrollTo();
+  const scrolled = useScrolledPast(20, scrollRoot);
+  const followAnchor = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (!href.startsWith("#") || href.length < 2) return;
+    event.preventDefault();
+    scrollTo(href);
+    if (window.location.hash !== href) history.pushState(null, "", href);
+  };
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const hamburgerRef = useRef<HTMLButtonElement>(null);
@@ -100,40 +110,35 @@ export function Navbar() {
     const sectionIds = copy.en.navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) setActiveSection(entry.target.id); }); },
-      { rootMargin: "-45% 0px -45% 0px" }
+      { root: scrollRoot, rootMargin: "-45% 0px -45% 0px" }
     );
     sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
-  }, []);
+  }, [scrollRoot]);
 
   return (
     <nav
-      className={cn("fixed z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}
-      style={{
-        top: "max(0.75rem, env(safe-area-inset-top))",
-        left: "max(0.75rem, env(safe-area-inset-left))",
-        right: "max(0.75rem, env(safe-area-inset-right))",
-      }}
+      className={cn("relative z-50 rounded-2xl px-4 py-2.5 sm:px-6 sm:py-3 transition-all duration-300", scrolled ? "glass-strong shadow-lg" : "bg-transparent backdrop-blur-none")}
     >
       <div className="flex items-center justify-between max-w-7xl mx-auto">
-        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }} aria-label={t.homeAria} className="min-w-0 shrink-0 group relative">
+        <a href="#" onClick={(e) => { e.preventDefault(); scrollTo(0); }} aria-label={t.homeAria} className="min-w-0 shrink-0 group relative">
           <span className="absolute inset-0 bg-rido-magenta/0 group-hover:bg-rido-magenta/20 blur-xl rounded-lg transition-all duration-500" />
           <span className="relative z-10 block sm:hidden"><RidoLogo variant="full" size="sm" priority /></span>
           <span className="relative z-10 hidden sm:block"><RidoLogo variant="full" size="md" priority /></span>
         </a>
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
+            <a key={link.href} href={link.href} onClick={(e) => followAnchor(e, link.href)} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("text-sm transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")}>{link.label}</a>
           ))}
         </div>
         <div className="hidden md:flex items-center gap-3">
           <Magnetic>
-            <Button as="a" href="#download" size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
+            <Button as="a" href="#download" onClick={(e) => followAnchor(e, "#download")} size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
           </Magnetic>
         </div>
         {/* Mobile: keep a compact Join CTA visible next to the hamburger — primary conversion action on the dominant traffic class */}
         <div className="flex md:hidden items-center gap-2">
-          <Button as="a" href="#download" size="sm" className="gap-1.5 min-h-[44px] px-4">
+          <Button as="a" href="#download" onClick={(e) => followAnchor(e, "#download")} size="sm" className="gap-1.5 min-h-[44px] px-4">
             <Download className="w-4 h-4" />
             <span>{t.joinShort}</span>
           </Button>
@@ -157,12 +162,13 @@ export function Navbar() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
             className="md:hidden overflow-hidden max-h-[calc(100dvh-5rem)] overflow-y-auto"
+            data-lenis-prevent=""
           >
             <div className="mt-3 pb-3 border-t border-white/10">
               {navLinks.map((link) => (
-                <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={() => setMobileOpen(false)}>{link.label}</a>
+                <a key={link.href} href={link.href} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={(e) => { followAnchor(e, link.href); setMobileOpen(false); }}>{link.label}</a>
               ))}
-              <div className="mt-3"><Button as="a" href="#download" onClick={() => setMobileOpen(false)} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
+              <div className="mt-3"><Button as="a" href="#download" onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>
           </motion.div>
         )}

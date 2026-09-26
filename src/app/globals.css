@@ -53,9 +53,11 @@
   --color-rido-green: #22C55E;
   --color-rido-yellow: #FDE803;
   --color-rido-cloud: #F8FAFC;
-  --color-muted: rgb(148 163 184); /* slate-400, ~6.1:1 on navy */
-  --color-muted-strong: rgb(203 213 225); /* slate-300, ~8.8:1 on navy */
-  --color-muted-weak: rgb(124 139 163); /* #7C8BA3, ~5.2:1 on navy - AA-compliant for body text */
+  /* Secondary text on navy (#0F172A). Ratios are vs that background.
+     strong 14.5:1, muted 11.4:1, weak 8.7:1 — all clear at a glance, still stepped under white. */
+  --color-muted: #C5D0DE;
+  --color-muted-strong: #E2E8F0;
+  --color-muted-weak: #A8B7C9;
   --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Sora Variable", "Sora Fallback", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   /* Fluid display scale — floor tuned so "Costa del Sol" (NBSP-joined) fits at 320–360px */
@@ -123,6 +125,8 @@
   :root {
     --background: 248 250 252;
     --foreground: 15 23 42;
+    /* Fallback until SiteShell measures the header lane. */
+    --site-header-offset: 5.5rem;
   }
   .dark {
     --background: 15 23 42;
@@ -159,11 +163,13 @@
 }
 
 @layer utilities {
+  /* Bind the text utilities to the theme tokens. Do not @apply slate here:
+     that compiles to a fixed palette color and ignores --color-muted*. */
   .text-muted {
-    @apply text-slate-400;
+    color: var(--color-muted);
   }
   .text-muted-strong {
-    @apply text-slate-300;
+    color: var(--color-muted-strong);
   }
   .text-muted-weak {
     color: var(--color-muted-weak);
@@ -200,7 +206,11 @@
   @media (max-width: 47.9375rem) {
     .mobile-carousel {
       display: flex;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
@@ -208,10 +218,13 @@
     .mobile-carousel::-webkit-scrollbar {
       display: none;
     }
+    /* One card fills the row, with a short peek of the next as the swipe cue.
+       80% + center snap left the card cramped and the neighbor cut off. */
     .mobile-carousel > * {
-      flex: 0 0 auto;
-      width: min(80%, 20rem);
-      scroll-snap-align: center;
+      flex: 0 0 calc(100% - 2.5rem);
+      width: auto;
+      min-width: 0;
+      scroll-snap-align: start;
     }
   }
   .section-tint-magenta {
@@ -336,6 +349,16 @@
   section[id] {
     @apply scroll-mt-16 sm:scroll-mt-24;
   }
+  /* Marketing pages scroll in #page-scroll, below the header lane. The
+     section scroll-margin above was compensating for a fixed nav over the
+     viewport; inside the lane it would stack with this padding and push
+     titles too far down. 1.25rem keeps the eyebrow clear of the lane edge. */
+  [data-scroll-root] {
+    scroll-padding-top: 1.25rem;
+  }
+  [data-scroll-root] section[id] {
+    scroll-margin-top: 0;
+  }
   .safe-left {
     padding-left: max(0.75rem, env(safe-area-inset-left));
   }
@@ -360,6 +383,19 @@
   .shimmer-border::before {
     animation: none;
   }
+}
+
+/* The header lane owns the top of the viewport; the window itself must not scroll.
+   Percentage height tracks the layout viewport. A locked 100dvh shell on Android
+   keeps the large viewport, so the URL bar covers the wordmark. */
+html:has([data-scroll-root]),
+body:has([data-scroll-root]) {
+  height: 100%;
+  max-height: 100%;
+}
+body:has([data-scroll-root]) {
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Neutral scrollbar with brand accent on hover — full-saturation magenta chrome reads as

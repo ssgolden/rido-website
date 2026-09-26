@@ -94,7 +94,7 @@ export function Pricing() {
               {noSurpriseGuarantees.map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm">
                   <Check className="w-4 h-4 text-rido-green shrink-0" />
-                  <span className="text-white/70">{item}</span>
+                  <span className="text-muted-strong">{item}</span>
                 </div>
               ))}
             </div>
