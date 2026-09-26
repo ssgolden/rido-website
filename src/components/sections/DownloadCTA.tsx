@@ -56,7 +56,7 @@ const copy = {
     phoneTabs: ["Map", "Ride", "Pay"],
     whatHappens: [
       "We confirm your spot by email",
-      "You get the app invite at launch",
+      "When the iOS & Android app ships, waitlist members get first access",
       "Your first ride is on us",
     ],
   },
@@ -81,15 +81,15 @@ const copy = {
     phoneTabs: ["Mapa", "Viaje", "Pago"],
     whatHappens: [
       "Confirmamos tu plaza por correo",
-      "Recibes la invitación de la app en el lanzamiento",
+      "Cuando salgan las apps de iOS y Android, quienes estén en la lista tendrán acceso primero",
       "Tu primer viaje corre por nuestra cuenta",
     ],
   },
 } as const satisfies Record<Locale, DownloadCopy>;
 
 const WAITLIST_KEY = "rido-waitlist-email";
-// Public Apps Script web app URL. Set via NEXT_PUBLIC_WAITLIST_URL at build time.
-// Local dev / static preview falls back to localStorage only.
+// Optional Apps Script URL. Unset (this launch): the form keeps the email in
+// localStorage only and never invents a live count.
 const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 
 function WaitlistForm() {
@@ -264,7 +264,7 @@ export function DownloadCTA() {
               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">{t.intro}</p>
               {/* 3-step "what happens after you join" preview — sets expectation + lifts submit rate */}
-              <ol className="mt-6 mb-6 inline-flex flex-col sm:flex-row items-start lg:items-start gap-3 sm:gap-5 text-left max-w-lg">
+              <ol className="mt-6 mb-6 flex flex-col items-start gap-3 text-left max-w-lg mx-auto lg:mx-0">
                 {t.whatHappens.map((step, i) => (
                   <li key={step} className="flex items-start gap-3 text-sm">
                     <span className="mt-0.5 inline-flex items-center justify-center w-5 h-5 rounded-full bg-rido-magenta/15 border border-rido-magenta/40 text-rido-magenta-light text-[10px] font-bold shrink-0">{i + 1}</span>

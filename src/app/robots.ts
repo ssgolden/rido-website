@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { SITE_ORIGIN } from "@/lib/site";
 
 // Force static generation so this route is compatible with `output: "export"`
 export const dynamic = "force-static";
@@ -39,7 +40,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
       },
     ],
-    sitemap: "https://rido.bike/sitemap.xml",
-    host: "https://rido.bike",
+    sitemap: `${SITE_ORIGIN}/sitemap.xml`,
+    host: SITE_ORIGIN,
   };
 }

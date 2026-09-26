@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next";
 import { cities, citiesAnnounced } from "@/data/cities";
+import { SITE_LAST_MODIFIED, SITE_ORIGIN } from "@/lib/site";
 
 // Force static generation so this route is compatible with `output: "export"`
 export const dynamic = "force-static";
 
-const baseUrl = "https://rido.bike";
-// Use fixed date instead of new Date() so the sitemap is stable across builds
-const lastModified = "2026-06-19";
+const baseUrl = SITE_ORIGIN;
+// Build date (UTC). Honest lastmod for this deploy — not a frozen or future date.
+const lastModified = SITE_LAST_MODIFIED;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

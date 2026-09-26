@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/layout/LegalPage";
 import { Cookie } from "lucide-react";
+import { SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Cookie Policy — Rido",
   description: "Learn which cookies and similar technologies Rido (Go2 Place S.L.) uses on its website, why we use them, and how you can manage or withdraw your consent.",
-  alternates: { canonical: "https://rido.bike/politica-cookies" },
+  alternates: { canonical: `${SITE_ORIGIN}/politica-cookies` },
   openGraph: {
     title: "Cookie Policy — Rido",
     description: "Which cookies and similar technologies Rido uses, and how to manage your consent.",
-    url: "https://rido.bike/politica-cookies",
+    url: `${SITE_ORIGIN}/politica-cookies`,
   },
 };
 
@@ -23,8 +24,8 @@ export default function CookiePolicyPage() {
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://rido.bike" },
-              { "@type": "ListItem", "position": 2, "name": "Cookie Policy", "item": "https://rido.bike/politica-cookies" },
+              { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_ORIGIN },
+              { "@type": "ListItem", "position": 2, "name": "Cookie Policy", "item": `${SITE_ORIGIN}/politica-cookies` },
             ],
           }),
         }}

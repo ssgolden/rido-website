@@ -18,21 +18,22 @@ script URL you deploy once.
 6. Click **Deploy**. Google will ask for permissions — grant Sheets access.
 7. Copy the **Web app URL** (looks like `https://script.google.com/macros/s/AKfycbz.../exec`).
 
-## Wire into the site
+## This launch
 
-Set the URL as a build-time env var and redeploy:
+Do not set a waitlist backend for the current www launch. Leave `NEXT_PUBLIC_WAITLIST_URL` unset on Netlify. The public site is **`https://www.rido.bike`** (the apex 301s to www).
+
+With the variable unset, the form saves the email in that browser's `localStorage` only, and the hero shows "Waitlist now open — be first to ride" with no number. That fallback is intentional. A live count waits for a later change that actually connects a backend.
+
+## Wire into the site (later)
+
+When a backend exists, the URL is a **build-time** env var. Next inlines it into the static export, so changing it requires a new deploy. Do not invent a URL here.
 
 ```bash
-# .env.local (local dev)
-NEXT_PUBLIC_WAITLIST_URL=https://script.google.com/macros/s/AKfy.../exec
-
-# GitHub Pages deploy (GitHub repo → Settings → Secrets → Actions)
-# Add repository variable: NEXT_PUBLIC_WAITLIST_URL = <the /exec URL>
-
-# Vercel: Project Settings → Environment Variables → NEXT_PUBLIC_WAITLIST_URL
+# .env.local (local dev, only after a real web app URL exists)
+# NEXT_PUBLIC_WAITLIST_URL=<deployed web app /exec URL>
 ```
 
-Then `npm run build` and deploy as usual.
+**Netlify:** Site configuration → Environment variables, next to `NEXT_OUTPUT=export` and `CUSTOM_DOMAIN=true`. Not required for this launch.
 
 ## What you get
 
@@ -41,13 +42,13 @@ Then `npm run build` and deploy as usual.
 - **Count endpoint** → `GET <URL>` returns `{ "count": N }` — used by `WaitlistProof`
   in the Hero to render "N people on the waitlist" with an avatar stack. When the
   env var is unset, the kicker falls back to "Waitlist now open — be first to ride"
-  (no number, no fabrication).
-- **CORS**: Apps Script handles it via the `?postData.contents` JSON body.
+  (no number, no fabrication). Live proof stays off until a backend is connected.
+- **CORS**: Apps Script handles it via the `text/plain` JSON body.
 
 ## Local dev / static preview
 
 Without `NEXT_PUBLIC_WAITLIST_URL` set, the form saves to `localStorage` as before.
-That's intentional — local dev should not pollute the production sheet.
+That's intentional — local dev and this production launch should not depend on a sheet.
 
 ## Viewing collected emails
 
