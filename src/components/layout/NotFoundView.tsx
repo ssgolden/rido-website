@@ -76,7 +76,7 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
         <div className="mt-10 flex justify-center">
           <Link
             href={homeHref}
-            className="btn-ripple inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+            className="btn-ripple btn-lift inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>{t.home}</span>
@@ -84,15 +84,15 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
         </div>
 
         <div className="mt-14 flex items-center justify-center gap-6 text-white/30 text-sm">
-          <Link href="/privacy" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
+          <Link href="/privacy" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.privacy}
           </Link>
           <span aria-hidden="true">·</span>
-          <Link href="/terms" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
+          <Link href="/terms" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.terms}
           </Link>
           <span aria-hidden="true">·</span>
-          <a href="mailto:info@rido.bike" className="hover:text-rido-magenta-light transition-colors cursor-pointer">
+          <a href="mailto:info@rido.bike" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.contact}
           </a>
         </div>

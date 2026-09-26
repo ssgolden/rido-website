@@ -16,8 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-
-const EASE = [0.25, 0.46, 0.45, 0.94] as [number, number, number, number];
+import { DURATION, EASE, REVEAL } from "@/lib/motion";
 
 const en = {
   findNearby: "Find a Rido near you",
@@ -317,8 +316,11 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
             key={key}
             className="absolute inset-0 pointer-events-none"
             initial={false}
-            animate={{ opacity: i === active ? 1 : 0 }}
-            transition={{ duration: reduced ? 0 : 0.45, ease: EASE }}
+            animate={{
+              opacity: i === active ? 1 : 0,
+              y: i === active || reduced ? 0 : REVEAL.y / 2,
+            }}
+            transition={{ duration: reduced ? 0 : DURATION.entrance, ease: EASE }}
           >
             <Component reduced={reduced} />
           </motion.div>

@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 // Pre-launch: no projected impact numbers — commitments only. Real impact
@@ -84,7 +85,7 @@ export function Sustainability() {
           </ScrollReveal>
         </div>
 
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6" staggerDelay={STAGGER.grid}>
           {t.commitments.map((item) => (
             <StaggerItem key={item.title}>
               <Card>

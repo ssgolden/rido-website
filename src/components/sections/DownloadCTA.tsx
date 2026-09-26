@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
+import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { DURATION, EASE, STAGGER } from "@/lib/motion";
 
 interface DownloadCopy {
   sectionAria: string;
@@ -95,6 +97,7 @@ const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
 function WaitlistForm() {
   const locale = useLocale();
   const t = copy[locale];
+  const reduce = useReducedMotion();
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorKey, setErrorKey] = useState<"invalid" | "generic" | null>(null);
@@ -143,9 +146,9 @@ function WaitlistForm() {
   if (status === "success") {
     return (
       <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        initial={reduce ? false : { opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
         className="glass rounded-2xl p-6 text-center max-w-md mx-auto lg:mx-0"
         role="status"
         aria-live="polite"
@@ -154,9 +157,9 @@ function WaitlistForm() {
         <motion.svg
           viewBox="0 0 64 64"
           className="w-14 h-14 mx-auto mb-3"
-          initial={{ opacity: 0 }}
+          initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: reduce ? 0 : DURATION.micro }}
         >
           <motion.circle
             cx="32"
@@ -166,10 +169,10 @@ function WaitlistForm() {
             stroke="#22C55E"
             strokeWidth="3"
             strokeLinecap="round"
-            initial={{ pathLength: 0, rotate: -90 }}
+            initial={reduce ? false : { pathLength: 0, rotate: -90 }}
             animate={{ pathLength: 1, rotate: -90 }}
             style={{ transformOrigin: "center" }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           />
           <motion.path
             d="M20 33 L28 41 L45 24"
@@ -178,23 +181,23 @@ function WaitlistForm() {
             strokeWidth="4"
             strokeLinecap="round"
             strokeLinejoin="round"
-            initial={{ pathLength: 0 }}
+            initial={reduce ? false : { pathLength: 0 }}
             animate={{ pathLength: 1 }}
-            transition={{ delay: 0.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: reduce ? 0 : 0.32, duration: reduce ? 0 : DURATION.micro, ease: EASE }}
           />
         </motion.svg>
         <motion.h3
-          initial={{ opacity: 0, y: 8 }}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.4 }}
+          transition={{ delay: reduce ? 0 : 0.36, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-lg font-bold mb-1"
         >
           {t.successTitle}
         </motion.h3>
         <motion.p
-          initial={{ opacity: 0, y: 8 }}
+          initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.4 }}
+          transition={{ delay: reduce ? 0 : 0.42, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-sm text-muted"
         >
           {t.successBody}
@@ -222,13 +225,13 @@ function WaitlistForm() {
             disabled={status === "loading"}
             aria-label={t.emailAria}
             aria-invalid={status === "error"}
-            className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text disabled:opacity-60"
+            className="field w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta focus:ring-offset-2 focus:ring-offset-rido-navy cursor-text disabled:opacity-60"
           />
         </div>
         <button
           type="submit"
           disabled={status === "loading"}
-          className="btn-ripple inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 cursor-pointer hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 px-6 py-3 text-sm whitespace-nowrap disabled:opacity-60 disabled:cursor-wait"
+          className="btn-ripple btn-lift inline-flex items-center justify-center font-semibold rounded-xl cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30 px-6 py-3 text-sm whitespace-nowrap disabled:opacity-60 disabled:cursor-wait"
         >
           {status === "loading" ? (
             <Loader2 className="w-4 h-4 animate-spin" />
@@ -259,9 +262,9 @@ export function DownloadCTA() {
 
       <div className="relative max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div className="text-center lg:text-left">
-            <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
+          <StaggerReveal className="text-center lg:text-left" staggerDelay={STAGGER.text}>
+            <StaggerItem>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-6">{t.headingBefore}<span className="text-gradient-brand">{t.headingHighlight}</span>{t.headingAfter}</h2>
               <p className="text-lg text-muted max-w-lg mx-auto lg:mx-0 mb-4">{t.intro}</p>
               {/* 3-step "what happens after you join" preview — sets expectation + lifts submit rate */}
               <ol className="mt-6 mb-6 flex flex-col items-start gap-3 text-left max-w-lg mx-auto lg:mx-0">
@@ -272,18 +275,18 @@ export function DownloadCTA() {
                   </li>
                 ))}
               </ol>
-            </ScrollReveal>
-            <ScrollReveal delay={0.15}>
+            </StaggerItem>
+            <StaggerItem>
               <WaitlistForm />
-            </ScrollReveal>
-            <ScrollReveal delay={0.25}>
+            </StaggerItem>
+            <StaggerItem>
               <div className="mt-6 flex items-center justify-center lg:justify-start mb-8">
                 <div className="glass rounded-xl px-5 py-4 border border-white/10 max-w-md">
                   <p className="text-sm text-muted-strong">{t.appsNote}</p>
                 </div>
               </div>
-            </ScrollReveal>
-            <ScrollReveal delay={0.35}>
+            </StaggerItem>
+            <StaggerItem>
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 text-muted-weak text-sm">
                 {t.trustSignals.map((text, i) => {
                   const Icon = trustSignalIcons[i];
@@ -295,18 +298,23 @@ export function DownloadCTA() {
                   );
                 })}
               </div>
-            </ScrollReveal>
-            <ScrollReveal delay={0.5}>
+            </StaggerItem>
+            <StaggerItem>
               <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-muted-weak text-xs">
                 <Shield className="w-3.5 h-3.5" />
                 <span>{t.complianceLine}</span>
               </div>
-            </ScrollReveal>
-          </div>
+            </StaggerItem>
+          </StaggerReveal>
 
-          <ScrollReveal delay={0.15} direction="right">
-            <div className="flex justify-center lg:justify-end">
-              <motion.div initial={{ y: 30 }} animate={shouldReduce ? { y: 0 } : { y: [30, -10, 30] }} transition={shouldReduce ? { duration: 0.3 } : { duration: 6, repeat: Infinity, ease: "easeInOut" }} className="relative">
+          <ScrollReveal delay={STAGGER.grid} direction="right">
+            <div className="flex justify-center lg:justify-end py-2">
+              <motion.div
+                initial={false}
+                animate={shouldReduce ? { y: 0 } : { y: [0, -8, 0] }}
+                transition={shouldReduce ? { duration: 0 } : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="relative"
+              >
                 <div className="relative w-[260px] sm:w-[280px] h-[520px] sm:h-[560px] rounded-[40px] border-4 border-white/20 bg-rido-navy shadow-2xl shadow-rido-magenta/20 overflow-hidden">
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-rido-navy rounded-b-[20px] z-20" />
                   <div className="absolute inset-0 flex items-center justify-center">

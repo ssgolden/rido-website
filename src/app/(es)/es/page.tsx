@@ -9,17 +9,36 @@ import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { citiesAnnounced } from "@/data/cities";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
-const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })));
-const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })));
-const Cities = dynamic(() => import("@/components/sections/Cities").then((m) => ({ default: m.Cities })));
-const Safety = dynamic(() => import("@/components/sections/Safety").then((m) => ({ default: m.Safety })));
-const Sustainability = dynamic(() => import("@/components/sections/Sustainability").then((m) => ({ default: m.Sustainability })));
-const Pricing = dynamic(() => import("@/components/sections/Pricing").then((m) => ({ default: m.Pricing })));
-const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })));
-const About = dynamic(() => import("@/components/sections/About").then((m) => ({ default: m.About })));
-const Partners = dynamic(() => import("@/components/sections/Partners").then((m) => ({ default: m.Partners })));
-const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
-const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
+function SectionSkeleton({ tall = false }: { tall?: boolean }) {
+  return (
+    <div
+      className={`${tall ? "min-h-[80vh]" : "min-h-[50vh]"} py-12 sm:py-24 px-4 sm:px-6 flex items-center justify-center`}
+      aria-hidden="true"
+    >
+      <div className="max-w-7xl mx-auto w-full">
+        <div className="mx-auto max-w-md space-y-3">
+          <div className="h-3 w-32 mx-auto rounded bg-white/5" />
+          <div className="h-8 w-3/4 mx-auto rounded bg-white/5" />
+          <div className="h-4 w-full mx-auto rounded bg-white/[0.04]" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const loading = () => <SectionSkeleton />;
+
+const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })), { loading });
+const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })), { loading });
+const Cities = dynamic(() => import("@/components/sections/Cities").then((m) => ({ default: m.Cities })), { loading });
+const Safety = dynamic(() => import("@/components/sections/Safety").then((m) => ({ default: m.Safety })), { loading });
+const Sustainability = dynamic(() => import("@/components/sections/Sustainability").then((m) => ({ default: m.Sustainability })), { loading });
+const Pricing = dynamic(() => import("@/components/sections/Pricing").then((m) => ({ default: m.Pricing })), { loading });
+const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })), { loading });
+const About = dynamic(() => import("@/components/sections/About").then((m) => ({ default: m.About })), { loading });
+const Partners = dynamic(() => import("@/components/sections/Partners").then((m) => ({ default: m.Partners })), { loading });
+const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })), { loading });
+const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
 export const metadata: Metadata = {
   title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",

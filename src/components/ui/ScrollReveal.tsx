@@ -2,7 +2,7 @@
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
-import { EASE, SCROLL_MARGIN } from "@/lib/motion";
+import { DURATION, EASE, REVEAL, SCROLL_MARGIN } from "@/lib/motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export function ScrollReveal({
   className,
   delay = 0,
   direction = "up",
-  duration = 0.6,
+  duration = DURATION.entrance,
   once = true,
 }: ScrollRevealProps) {
   const ref = useRef(null);
@@ -26,10 +26,10 @@ export function ScrollReveal({
   const reduce = useReducedMotion();
 
   const directionOffset = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 },
+    up: { y: REVEAL.y },
+    down: { y: -REVEAL.y },
+    left: { x: REVEAL.x },
+    right: { x: -REVEAL.x },
     none: {},
   };
 
@@ -47,7 +47,7 @@ export function ScrollReveal({
           ? { opacity: 1, x: 0, y: 0 }
           : { opacity: 0, ...directionOffset[direction] }
       }
-      transition={{ duration, delay, ease: EASE as unknown as [number, number, number, number] }}
+      transition={{ duration, delay, ease: EASE }}
     >
       {children}
     </motion.div>

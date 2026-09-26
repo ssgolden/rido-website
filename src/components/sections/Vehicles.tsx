@@ -9,7 +9,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { DURATION, EASE, STAGGER } from "@/lib/motion";
 
 import { withBase } from "@/lib/basePath";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -51,6 +52,7 @@ export function Vehicles() {
   const vCopy = getVehicleCopy(v, locale);
   const [mainImageError, setMainImageError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
+  const reduce = useReducedMotion();
 
   // Apply basePath prefix at render time so it works in both SSR and client.
   // MUST be called in the component (not in the data file) because
@@ -81,13 +83,13 @@ export function Vehicles() {
           />
         </div>
 
-        <ScrollReveal delay={0.1}>
+        <ScrollReveal delay={STAGGER.text}>
           <div className="flex justify-center gap-4 mb-12 relative">
             {vehicles.map((vehicle, i) => (
               <button
                 key={vehicle.id}
                 onClick={() => handleVehicleChange(i)}
-                className={`relative px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm transition-colors duration-200 cursor-pointer ${
+                className={`relative px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${
                   i === active
                     ? "text-white"
                     : "text-muted-strong hover:text-white hover:bg-white/10"
@@ -97,7 +99,7 @@ export function Vehicles() {
                   <motion.div
                     layoutId="vehicle-tab-bg"
                     className="absolute inset-0 bg-rido-magenta rounded-xl shadow-lg shadow-rido-magenta/25"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                    transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
                   />
                 )}
                 <span className="relative z-10">{vehicle.name}</span>
@@ -107,23 +109,34 @@ export function Vehicles() {
         </ScrollReveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ScrollReveal direction="left" delay={0.2}>
-            <Card className="overflow-hidden p-0 group">
+          <ScrollReveal direction="left" delay={STAGGER.grid}>
+            <Card className="overflow-hidden p-0">
               <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
                 {mainImageError ? (
                   <div className="absolute inset-0 flex items-center justify-center text-muted text-sm">
                     {t.imageUnavailable}
                   </div>
                 ) : (
-                  <Image
-                    src={vehicleImages[activeImage]}
-                    alt={vCopy.imageAlt}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    priority={active === 0 && activeImage === 0}
-                    onError={() => setMainImageError(true)}
-                  />
+                  <AnimatePresence initial={false}>
+                    <motion.div
+                      key={`${v.id}-${activeImage}`}
+                      className="absolute inset-0"
+                      initial={reduce ? false : { opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
+                    >
+                      <Image
+                        src={vehicleImages[activeImage]}
+                        alt={vCopy.imageAlt}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
+                        priority={active === 0 && activeImage === 0}
+                        onError={() => setMainImageError(true)}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
                 )}
               </div>
               {vehicleImages.length > 1 && (
@@ -132,7 +145,7 @@ export function Vehicles() {
                     <button
                       key={img}
                       onClick={() => handleThumbnailClick(i)}
-                      className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 ${
+                      className={`relative w-16 h-16 rounded-lg overflow-hidden transition-[opacity,box-shadow] duration-200 cursor-pointer hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${
                         i === activeImage
                           ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"
                           : "opacity-60"
@@ -160,7 +173,7 @@ export function Vehicles() {
             </Card>
           </ScrollReveal>
 
-          <ScrollReveal direction="right" delay={0.3}>
+          <ScrollReveal direction="right" delay={STAGGER.grid * 2}>
             <div className="flex flex-col justify-center gap-6">
               <div>
                 <Badge variant="magenta" className="mb-3 cursor-default">
@@ -172,7 +185,7 @@ export function Vehicles() {
 
               <p className="text-muted leading-relaxed">{vCopy.description}</p>
 
-              <StaggerReveal className="grid grid-cols-2 gap-4" staggerDelay={0.08}>
+              <StaggerReveal className="grid grid-cols-2 gap-4" staggerDelay={STAGGER.text}>
                 {vCopy.specs.map((spec) => (
                   <StaggerItem key={spec.label} className="glass rounded-xl p-4 text-center">
                     <p className="text-lg font-bold text-rido-magenta-light">{spec.value}</p>

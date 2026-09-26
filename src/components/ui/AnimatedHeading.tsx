@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { DURATION, EASE, REVEAL, SCROLL_MARGIN } from "@/lib/motion";
 
 type AnimatedHeadingProps = {
   text: string;
@@ -38,9 +39,9 @@ export function AnimatedHeading({
   className,
   variant = "chars",
   stagger,
-  duration = 0.5,
+  duration = DURATION.entrance,
   once = true,
-  blurAmount = 10,
+  blurAmount = 0,
 }: AnimatedHeadingProps) {
   const shouldReduce = useReducedMotion();
 
@@ -60,7 +61,7 @@ export function AnimatedHeading({
         variants={customStagger}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once, margin: "-50px" }}
+        viewport={{ once, margin: SCROLL_MARGIN }}
         aria-label={text}
       >
         {parts.map((part, i) => {
@@ -69,12 +70,12 @@ export function AnimatedHeading({
             return (
               <motion.span
                 key={`${part}-${i}`}
-                className="inline-block will-change-transform"
+                className="inline-block"
                 variants={{
-                  hidden: { opacity: 0, filter: `blur(${blurAmount}px)`, y: 20 },
-                  visible: { opacity: 1, filter: "blur(0px)", y: 0 },
+                  hidden: { opacity: 0, y: REVEAL.y, ...(blurAmount > 0 ? { filter: `blur(${blurAmount}px)` } : {}) },
+                  visible: { opacity: 1, y: 0, ...(blurAmount > 0 ? { filter: "blur(0px)" } : {}) },
                 }}
-                transition={{ duration, ease: [0.25, 0.46, 0.45, 0.94] }}
+                transition={{ duration, ease: EASE }}
               >
                 {part}
                 <span className="inline-block">&nbsp;</span>
@@ -93,12 +94,12 @@ export function AnimatedHeading({
           return (
             <motion.span
               key={`${part}-${i}`}
-              className="inline-block will-change-transform"
+              className="inline-block"
               variants={{
-                hidden: { opacity: 0, filter: `blur(${blurAmount}px)`, y: 20 },
-                visible: { opacity: 1, filter: "blur(0px)", y: 0 },
+                hidden: { opacity: 0, y: REVEAL.y, ...(blurAmount > 0 ? { filter: `blur(${blurAmount}px)` } : {}) },
+                visible: { opacity: 1, y: 0, ...(blurAmount > 0 ? { filter: "blur(0px)" } : {}) },
               }}
-              transition={{ duration, ease: [0.25, 0.46, 0.45, 0.94] }}
+              transition={{ duration, ease: EASE }}
             >
               {part}
             </motion.span>

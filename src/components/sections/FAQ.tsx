@@ -6,7 +6,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { DURATION, EASE, STAGGER } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -77,17 +78,19 @@ const copy = {
 
 function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string; answer: string; isOpen: boolean; onToggle: () => void; id: string }) {
   const answerId = `faq-answer-${id}`;
+  const reduce = useReducedMotion();
+  const panelTransition = { duration: reduce ? 0 : DURATION.micro, ease: EASE };
   return (
     <div className="border-b border-white/10 last:border-b-0">
-      <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group" aria-expanded={isOpen} aria-controls={answerId}>
-        <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors pr-4 text-sm sm:text-base">{question}</span>
-        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ type: "spring", stiffness: 300, damping: 25 }} className="shrink-0">
+      <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy" aria-expanded={isOpen} aria-controls={answerId}>
+        <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors duration-200 pr-4 text-sm sm:text-base">{question}</span>
+        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={panelTransition} className="shrink-0">
           <ChevronDown className="w-5 h-5 text-muted" />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
-          <motion.div id={answerId} initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2, ease: "easeInOut" }} className="overflow-hidden" role="region">
+          <motion.div id={answerId} initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={panelTransition} className="overflow-hidden" role="region">
             <p className="pb-5 text-sm text-muted leading-relaxed pr-8">{answer}</p>
           </motion.div>
         )}
@@ -122,7 +125,7 @@ export function FAQ() {
     <section id="faq" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6">
       {/* FAQPage JSON-LD is injected by the locale root layout (EN on /, ES on /es). */}
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
+        <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
             eyebrow={t.eyebrow}
             before={t.headingBefore}
@@ -133,17 +136,17 @@ export function FAQ() {
             <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
           </ScrollReveal>
         </div>
-        <ScrollReveal delay={0.1}>
+        <ScrollReveal delay={STAGGER.text}>
           <div className="relative mb-4">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" />
             <input type="text" placeholder={t.searchPlaceholder} value={search} onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
-              className="w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta/50 cursor-text"
+              className="field w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta focus:ring-offset-2 focus:ring-offset-rido-navy cursor-text"
               aria-label={t.searchAria} />
           </div>
           <div className="flex flex-wrap gap-2 mb-6">
             {categoryIds.map((catId) => (
               <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }}
-                className={`min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 cursor-pointer ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
+                className={`min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {t.categories[catId]}
               </button>
             ))}

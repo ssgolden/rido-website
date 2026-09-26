@@ -3,7 +3,8 @@
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
@@ -66,6 +67,7 @@ export function CookieConsent() {
   const shouldShow = useShouldShowConsent();
   const [dismissed, setDismissed] = useState(false);
   const visible = shouldShow && !dismissed;
+  const reduce = useReducedMotion();
 
   const handleAccept = () => {
     safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
@@ -81,10 +83,10 @@ export function CookieConsent() {
     <AnimatePresence>
       {visible && (
         <motion.div
-          initial={{ y: 100, opacity: 0 }}
+          initial={reduce ? false : { y: REVEAL.y, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          exit={reduce ? { opacity: 0 } : { y: REVEAL.y, opacity: 0 }}
+          transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6"
           role="dialog"
           aria-modal="false"

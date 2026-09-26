@@ -8,6 +8,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 const copy = {
@@ -61,7 +62,7 @@ export function Pricing() {
         </div>
 
         {/* Plan cards — names + descriptions stay, prices replaced by "to be announced" pill */}
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6 mb-10 sm:mb-16" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-3 gap-6 mb-10 sm:mb-16" staggerDelay={STAGGER.grid}>
           {pricingTiers.map((tier) => (
             <StaggerItem key={tier.id} className={tier.popular ? "order-first md:order-none lg:-translate-y-3 lg:scale-[1.03]" : undefined}>
               <div className={tier.popular ? "shimmer-border" : ""}>

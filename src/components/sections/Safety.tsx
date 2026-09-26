@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 interface SafetyItemCopy {
@@ -108,14 +109,14 @@ export function Safety() {
             </div>
           </ScrollReveal>
         </div>
-        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 gap-6" staggerDelay={0.1}>
+        <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 gap-6" staggerDelay={STAGGER.grid}>
           {t.items.map((item, i) => {
             const Icon = safetyIcons[i];
             return (
               <StaggerItem key={item.title}>
                 <Card className="flex items-start gap-5 group hover:border-rido-magenta/30">
-                  <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center shrink-0 transition-all duration-200 group-hover:bg-rido-magenta/20 group-hover:scale-110">
-                    <Icon className="w-6 h-6 text-rido-magenta transition-transform duration-200 group-hover:scale-110" />
+                  <div className="w-12 h-12 rounded-2xl bg-rido-magenta/10 flex items-center justify-center shrink-0 transition-colors duration-200 group-hover:bg-rido-magenta/20">
+                    <Icon className="w-6 h-6 text-rido-magenta" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-lg mb-1">{item.title}</h3>

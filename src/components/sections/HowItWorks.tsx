@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
+import { STAGGER } from "@/lib/motion";
 
 // User-visible strings per locale.
 const en = {
@@ -110,7 +111,7 @@ export function HowItWorks() {
 
         {/* Below md: the existing snap carousel, unchanged. Hidden on md+
             (display:none), so step copy is never duplicated in the a11y tree. */}
-        <StaggerReveal className="mobile-carousel pt-5 gap-6 md:hidden" staggerDelay={0.12}>
+        <StaggerReveal className="mobile-carousel pt-5 gap-6 md:hidden" staggerDelay={STAGGER.grid}>
           {steps.map((step, i) => (
             <StaggerItem key={step.title}>
               <Card className="text-center relative">
@@ -134,20 +135,20 @@ export function HowItWorks() {
         {/* md+: scroll-telling — steps list left, pinned phone right whose
             screen crossfades to match the active step. */}
         <div ref={scrollTrackRef} className="hidden md:grid md:grid-cols-2 gap-12 lg:gap-20">
-          <StaggerReveal className="flex flex-col gap-6 lg:gap-8 py-4" staggerDelay={0.12}>
+          <StaggerReveal className="flex flex-col gap-6 lg:gap-8 py-4" staggerDelay={STAGGER.grid}>
             {steps.map((step, i) => {
               const active = i === activeStep;
               return (
                 <StaggerItem key={step.title}>
                   <div
                     className={cn(
-                      "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-all duration-300 ease-out",
+                      "flex gap-5 rounded-2xl border p-6 lg:p-8 transition-[background-color,border-color,box-shadow,transform,color] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                       active ? "glass border-rido-magenta/40 scale-[1.02]" : "border-transparent"
                     )}
                   >
                     <div
                       className={cn(
-                        "w-8 h-8 shrink-0 rounded-full text-sm font-bold flex items-center justify-center transition-colors duration-300 ease-out",
+                        "w-8 h-8 shrink-0 rounded-full text-sm font-bold flex items-center justify-center transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                         active ? "bg-rido-magenta text-white" : "border border-white/20 text-muted"
                       )}
                       aria-hidden="true"
@@ -157,13 +158,13 @@ export function HowItWorks() {
                     <div>
                       <div
                         className={cn(
-                          "mb-3 w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-300 ease-out",
+                          "mb-3 w-12 h-12 rounded-2xl flex items-center justify-center transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                           active ? "bg-rido-magenta/20" : "bg-white/5"
                         )}
                       >
                         <step.icon
                           className={cn(
-                            "w-6 h-6 transition-colors duration-300 ease-out",
+                            "w-6 h-6 transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
                             active ? "text-rido-magenta" : "text-muted"
                           )}
                         />

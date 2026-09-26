@@ -8,6 +8,7 @@ import { CoverageMap } from "@/components/ui/CoverageMap";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
+import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
 const copy = {
@@ -52,7 +53,7 @@ export function Cities() {
   const t = copy[locale];
 
   return (
-    <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-16 px-4 sm:px-6 relative overflow-hidden">
+    <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-rido-magenta/5 blur-3xl pointer-events-none" />
 
@@ -88,10 +89,10 @@ export function Cities() {
 
         {citiesAnnounced ? (
           /* City cards — restored site-wide when the launch towns are announced */
-          <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" staggerDelay={0.08}>
+          <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" staggerDelay={STAGGER.grid}>
             {cities.map((city) => (
               <StaggerItem key={city.slug}>
-                <div className="group glass rounded-2xl p-5 sm:p-6 border border-white/10 transition-all duration-300 hover:bg-white/10 hover:border-rido-magenta/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-rido-magenta/5">
+                <div className="group card-lift glass rounded-2xl p-5 sm:p-6 border border-white/10 hover:bg-white/10 hover:border-rido-magenta/30 hover:shadow-lg hover:shadow-rido-magenta/5">
                   <div className="flex items-start gap-4">
                     <div className="relative w-11 h-11 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0 group-hover:bg-rido-magenta/20 transition-colors">
                       <MapPin className="w-5 h-5 text-rido-magenta relative z-10" />
@@ -122,9 +123,9 @@ export function Cities() {
           </StaggerReveal>
         ) : (
           /* Pre-announcement teaser — one on-brand card, zero town names */
-          <ScrollReveal delay={0.15}>
+          <ScrollReveal delay={STAGGER.grid}>
             <div className="max-w-xl mx-auto">
-              <div className="glass rounded-2xl p-6 sm:p-8 border border-white/10 text-center transition-all duration-300 hover:bg-white/10 hover:border-rido-magenta/30">
+              <div className="card-lift glass rounded-2xl p-6 sm:p-8 border border-white/10 text-center hover:bg-white/10 hover:border-rido-magenta/30">
                 <div className="relative w-12 h-12 mx-auto rounded-xl bg-rido-magenta/10 flex items-center justify-center">
                   <MapPin className="w-6 h-6 text-rido-magenta relative z-10" />
                   <div className="absolute inset-0 rounded-xl bg-rido-magenta/20 city-pulse-ring" />

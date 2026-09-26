@@ -105,7 +105,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
             <p className="mt-3 text-sm text-muted leading-relaxed max-w-xs">{t.tagline1}<br />{t.tagline2}</p>
             <div className="flex items-center gap-3 mt-5">
               {socialLinks.map((social) => (
-                <a key={social.labelKey} href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined} rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined} aria-label={t[social.labelKey]} className="w-9 h-9 rounded-lg bg-white/5 hover:bg-rido-magenta/20 flex items-center justify-center transition-all duration-200 hover:scale-110 group" suppressHydrationWarning>
+                <a key={social.labelKey} href={social.href} target={social.href.startsWith("http") ? "_blank" : undefined} rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined} aria-label={t[social.labelKey]} className="btn-lift w-9 h-9 rounded-lg bg-white/5 hover:bg-rido-magenta/20 flex items-center justify-center cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy" suppressHydrationWarning>
                   <social.icon className="w-4 h-4 text-muted group-hover:text-rido-magenta transition-colors" />
                 </a>
               ))}
@@ -114,7 +114,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
               <a
                 href="#download"
                 suppressHydrationWarning
-                className="inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-lg border-2 border-rido-magenta text-rido-magenta-light font-semibold transition-all duration-200 hover:bg-rido-magenta/10 hover:scale-105 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+                className="btn-lift inline-flex items-center gap-2 px-4 py-2 min-h-[44px] rounded-lg border-2 border-rido-magenta text-rido-magenta-light font-semibold hover:bg-rido-magenta/10 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
               >
                 {t.joinWaitlist}
               </a>
@@ -127,7 +127,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
                 {column.links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("http") || link.href.startsWith("#") ? (
-                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
+                      <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})} className="nav-link inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
                         {link.label}
                         {link.badge ? (
                           <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/30">
@@ -136,7 +136,7 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
                         ) : null}
                       </a>
                     ) : (
-                      <Link href={link.href} className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors cursor-pointer">
+                      <Link href={link.href} className="nav-link inline-flex items-center gap-1.5 text-sm text-muted hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
                         {link.label}
                         {link.badge ? (
                           <span className="px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider rounded bg-rido-magenta/15 text-rido-magenta-light border border-rido-magenta/30">
