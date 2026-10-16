@@ -31,7 +31,7 @@ const copy: Record<Locale, PartnerCopy> = {
     label: "For partners",
     title: "Run Rido in your city",
     intro:
-      "Turn-key shared mobility for Spanish cities. We bring the DGT-certified fleet, the rider app, the insurance, and the operations playbook — you bring the local team.",
+      "Turnkey shared mobility for Spanish cities. We bring the DGT-certified fleet, the rider app, the insurance, and the operations playbook — you bring the local team.",
     differentiators: [
       {
         title: "DGT-certified fleet",

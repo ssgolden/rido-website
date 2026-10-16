@@ -72,14 +72,36 @@ jobs:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
 
-      - name: Lighthouse budgets
+      # GitHub's runners score about 10 points below a fast local machine, so
+      # the performance floors here are calibrated to the runner (desktop 85,
+      # mobile 70). LCP and CLS budgets are absolute and block as set.
+      - name: Lighthouse budgets (desktop)
         run: npx lhci autorun --config=lighthouserc.json
+
+      # Mobile uses Lighthouse's simulated slow 4G + 4x CPU. CLS and the
+      # performance floor block; LCP < 2.5s is a warning until the homepage
+      # ships less JavaScript.
+      - name: Lighthouse budgets (mobile)
+        run: npx lhci autorun --config=lighthouserc.mobile.json
 
       - name: Server build
         run: npm run build
 
-      - name: Accessibility gate (axe)
+      - name: Accessibility (axe) and visual QA gates
+        # One step so both run against the same server. Visual QA screenshots
+        # every key page at phone/tablet/desktop and fails on any page error
+        # (e.g. a hydration mismatch) with motion on or off.
         run: |
           npx next start -p 3000 &
           sleep 8
           node scripts/a11y-audit.mjs http://localhost:3000
+          node scripts/visual-qa.mjs http://localhost:3000 visual-qa
+
+      - name: Upload visual QA screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-qa-screenshots
+          path: visual-qa/
+          if-no-files-found: ignore
+          retention-days: 14

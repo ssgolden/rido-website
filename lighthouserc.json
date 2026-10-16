@@ -5,10 +5,13 @@
       "url": [
         "http://localhost/index.html",
         "http://localhost/es.html",
+        "http://localhost/torrevieja.html",
+        "http://localhost/es/torrevieja.html",
+        "http://localhost/partners.html",
         "http://localhost/careers.html",
         "http://localhost/politica-cookies.html"
       ],
-      "numberOfRuns": 1,
+      "numberOfRuns": 2,
       "settings": {
         "preset": "desktop",
         "chromeFlags": "--no-sandbox --headless=new --disable-gpu"
@@ -35,15 +38,21 @@
           }
         ],
         "categories:performance": [
-          "warn",
+          "error",
           {
-            "minScore": 0.8
+            "minScore": 0.85
           }
         ],
         "cumulative-layout-shift": [
           "error",
           {
             "maxNumericValue": 0.05
+          }
+        ],
+        "largest-contentful-paint": [
+          "error",
+          {
+            "maxNumericValue": 1800
           }
         ]
       }

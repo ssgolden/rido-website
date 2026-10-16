@@ -18,7 +18,7 @@ const copy = {
   },
   es: {
     sectionAria: "Únete a la lista de espera de Rido",
-    title: `Sé de los primeros en ${town}.`,
+    title: `Sé de los primeros en montar en ${town}.`,
     intro: "Únete a la lista y te avisaremos en cuanto Rido arranque, junto con las tarifas de lanzamiento y las próximas localidades.",
     reassurance: "Sin spam, sin pagos. Date de baja cuando quieras · Cumplimos el RGPD",
   },

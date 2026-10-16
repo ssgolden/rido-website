@@ -327,7 +327,8 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           />
         ))}
 
-        {/* Hero: copy + inline waitlist form, product image on sand. */}
+        {/* Hero: copy + inline waitlist form, product image on sand. Static (no
+            reveals): it is above the fold and holds the LCP element. */}
         <section
           id="city-hero"
           aria-label={t.heroAria(city)}
@@ -339,38 +340,31 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
 
           <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
             <div className="text-center lg:text-left">
-              <ScrollReveal>
-                <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
-                  <span className="h-1.5 w-1.5 rounded-full bg-rido-green" aria-hidden="true" />
-                  {t.badge}
-                </span>
-              </ScrollReveal>
-              <ScrollReveal delay={0.08}>
-                <h1 className="mt-6 font-display text-4xl sm:text-5xl md:text-6xl font-black text-balance">{t.heroTitle(city)}</h1>
-              </ScrollReveal>
-              <ScrollReveal delay={0.16}>
-                <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">{t.heroBody(city)}</p>
-              </ScrollReveal>
-              <ScrollReveal delay={0.24} className="mt-8 flex justify-center lg:justify-start">
+              <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
+                <span className="h-1.5 w-1.5 rounded-full bg-rido-green" aria-hidden="true" />
+                {t.badge}
+              </span>
+              <h1 className="mt-6 font-display text-4xl sm:text-5xl md:text-6xl font-black text-balance">{t.heroTitle(city)}</h1>
+              <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">{t.heroBody(city)}</p>
+              <div className="mt-8 flex justify-center lg:justify-start">
                 <WaitlistForm placement="city-hero" sharePath={cityPath} className="max-w-lg" />
-              </ScrollReveal>
-              <ScrollReveal delay={0.3}>
-                <ul className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted" aria-label={t.vehiclesLabel}>
-                  {city.vehicles.map((v) => (
-                    <li key={v} className="inline-flex items-center gap-1.5">
-                      {v === "e-scooter" ? <Zap className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" /> : <Bike className="w-4 h-4 text-rido-green" aria-hidden="true" />}
-                      {v === "e-scooter" ? t.scooterChip : t.bikeChip}
-                    </li>
-                  ))}
-                  <li className="inline-flex items-center gap-1.5">
-                    <HardHat className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" />
-                    {t.helmetChip}
+              </div>
+              <ul className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted" aria-label={t.vehiclesLabel}>
+                {city.vehicles.map((v) => (
+                  <li key={v} className="inline-flex items-center gap-1.5">
+                    {v === "e-scooter" ? <Zap className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" /> : <Bike className="w-4 h-4 text-rido-green" aria-hidden="true" />}
+                    {v === "e-scooter" ? t.scooterChip : t.bikeChip}
                   </li>
-                </ul>
-              </ScrollReveal>
+                ))}
+                <li className="inline-flex items-center gap-1.5">
+                  <HardHat className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" />
+                  {t.helmetChip}
+                </li>
+              </ul>
             </div>
 
-            <ScrollReveal delay={0.12} className="mx-auto w-full max-w-md lg:max-w-none">
+            {/* LCP element on phones: rendered visible from the first paint (no reveal). */}
+            <div className="mx-auto w-full max-w-md lg:max-w-none">
               <ImageFrame
                 src={withBase(vehicles[0].cutouts[0])}
                 alt={t.imageAlt}
@@ -385,7 +379,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
                   {city.name}
                 </span>
               </ImageFrame>
-            </ScrollReveal>
+            </div>
           </div>
         </section>
 

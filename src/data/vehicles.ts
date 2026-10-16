@@ -35,7 +35,7 @@ export const vehicles: Vehicle[] = [
     type: "e-scooter",
     tagline: "Glide through the city",
     description:
-      "Our top-tier e-scooter with a wide deck, powerful brakes, and up to 45 km of range. Built for urban explorers who demand safety and style.",
+      "A wide deck, brakes front and rear and up to 45 km of range, with a certified helmet docked on the stem. Made for getting around town.",
     specs: [
       { label: "Range", value: "45 km" },
       { label: "Top speed", value: "25 km/h" },
@@ -48,7 +48,7 @@ export const vehicles: Vehicle[] = [
       "Registered fleet with ID sticker",
       "Civil liability insurance included",
       "Anti-tampering motor, 25 km/h by design",
-      "Front and rear lights + brake light + reflectors",
+      "Front and rear lights, brake light and reflectors",
       "Dual brakes (front + rear)",
       "≥203 mm puncture-resistant wheels",
       "Turn signals",
@@ -68,9 +68,9 @@ export const vehicles: Vehicle[] = [
     id: "e-bike",
     name: "Rido Bike",
     type: "e-bike",
-    tagline: "Pedal further, effort less",
+    tagline: "Go further with less effort",
     description:
-      "Our electric-assist bike with smooth pedal support, an adjustable saddle, and a sturdy front basket. Perfect for longer commutes and carrying essentials.",
+      "Smooth electric pedal assist, an adjustable saddle and a sturdy front basket. Made for longer trips and the weekly shop.",
     specs: [
       { label: "Range", value: "60 km" },
       { label: "Assist speed", value: "25 km/h" },
@@ -79,13 +79,11 @@ export const vehicles: Vehicle[] = [
     ],
     features: [
       "Electric pedal assist",
-      "DGT certified — Spain's new 2026 VMP rules",
-      "Registered fleet with ID sticker",
       "Civil liability insurance included",
-      "Front and rear integrated lights + reflectors",
+      "Front and rear integrated lights and reflectors",
       "Adjustable saddle height",
       "Front cargo basket",
-      "Puncture-resistant tires",
+      "Puncture-resistant tyres",
       "Step-through frame design",
     ],
     image: "/images/bike/rido-bike-side.jpg",
@@ -107,7 +105,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
   "e-scooter": {
     tagline: "Deslízate por la ciudad",
     description:
-      "Nuestro patinete eléctrico de primera con plataforma ancha, frenos potentes y hasta 45 km de autonomía. Hecho para exploradores urbanos que exigen seguridad y estilo.",
+      "Plataforma ancha, freno delantero y trasero y hasta 45 km de autonomía, con un casco certificado acoplado en la barra. Pensado para moverte por la ciudad.",
     specs: [
       { label: "Autonomía", value: "45 km" },
       { label: "Velocidad máxima", value: "25 km/h" },
@@ -132,7 +130,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
   "e-bike": {
     tagline: "Pedalea más lejos con menos esfuerzo",
     description:
-      "Nuestra bici con asistencia eléctrica, pedaleo suave, sillín ajustable y una cesta delantera resistente. Perfecta para trayectos largos y para llevar lo esencial.",
+      "Pedaleo asistido suave, sillín ajustable y una cesta delantera resistente. Pensada para trayectos más largos y para hacer la compra.",
     specs: [
       { label: "Autonomía", value: "60 km" },
       { label: "Velocidad asistida", value: "25 km/h" },
@@ -141,8 +139,6 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
     ],
     features: [
       "Pedaleo asistido eléctrico",
-      "Certificado DGT — nueva normativa VMP 2026",
-      "Flota inscrita con etiqueta identificativa",
       "Seguro de responsabilidad civil incluido",
       "Luces integradas delanteras y traseras con catadióptricos",
       "Sillín de altura ajustable",

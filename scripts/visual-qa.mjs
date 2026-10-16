@@ -8,6 +8,10 @@
  * Defaults: baseUrl http://localhost:3000, outDir .visual-qa/
  * Requires the app to be running (npm run build && npx next start).
  *
+ * Also a gate: any uncaught page error (e.g. a React hydration mismatch) fails
+ * the run, checked with reduced motion (the screenshot pass) and again with
+ * motion on, since the two take different code paths.
+ *
  * Uses playwright-core with the system Chromium. In the Claude Code cloud
  * environment the browser lives at /opt/pw-browsers/chromium; elsewhere set
  * CHROMIUM_PATH or install Chrome/Chromium on PATH.
@@ -29,6 +33,9 @@ const PAGES = [
   { path: "/terms", name: "terms", fullPage: false },
   { path: "/careers", name: "careers", fullPage: false },
   { path: "/torrevieja", name: "city-torrevieja", fullPage: true },
+  { path: "/es/torrevieja", name: "city-torrevieja-es", fullPage: true },
+  { path: "/es/partners", name: "partners-es", fullPage: false },
+  { path: "/waitlist-confirmed", name: "waitlist-confirmed", fullPage: false },
 ];
 
 const VIEWPORTS = [
@@ -76,6 +83,11 @@ const browser = await chromium.launch(
 );
 
 let failures = 0;
+const pageErrors = [];
+// Answer the consent banner (declined) so it never covers a screenshot.
+const declineConsent = () =>
+  localStorage.setItem("rido-cookie-consent", JSON.stringify({ accepted: false, timestamp: Date.now() }));
+
 for (const vp of VIEWPORTS) {
   const context = await browser.newContext({
     viewport: { width: vp.width, height: vp.height },
@@ -85,9 +97,13 @@ for (const vp of VIEWPORTS) {
     colorScheme: "dark",
     reducedMotion: "reduce", // deterministic screenshots — no mid-animation frames
   });
+  await context.addInitScript(declineConsent);
   const page = await context.newPage();
+  let current = "";
+  page.on("pageerror", (err) => pageErrors.push(`${current} [${vp.name}, reduced motion]: ${err.message}`));
 
   for (const target of PAGES) {
+    current = target.path;
     const url = `${baseUrl}${target.path}`;
     const file = `${outDir}/${target.name}--${vp.name}.png`;
     try {
@@ -131,6 +147,29 @@ for (const vp of VIEWPORTS) {
   }
   await context.close();
 }
+
+// Motion-on pass: no screenshots, just load each page and catch errors.
+{
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: "no-preference" });
+  await context.addInitScript(declineConsent);
+  const page = await context.newPage();
+  let current = "";
+  page.on("pageerror", (err) => pageErrors.push(`${current} [phone, motion on]: ${err.message}`));
+  for (const target of PAGES) {
+    current = target.path;
+    try {
+      await page.goto(`${baseUrl}${target.path}`, { waitUntil: "networkidle", timeout: 30000 });
+      await page.waitForTimeout(500);
+    } catch (err) {
+      console.error(`[visual-qa] FAIL ${target.path} (motion on): ${err.message}`);
+      failures++;
+    }
+  }
+  await context.close();
+}
+
+for (const e of pageErrors) console.error(`[visual-qa] PAGE ERROR ${e}`);
+failures += pageErrors.length;
 
 await browser.close();
 console.log(

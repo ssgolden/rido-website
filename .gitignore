@@ -54,3 +54,4 @@ next-env.d.ts
 
 # scripts/build.mjs parks excluded routes here during an export build
 .export-excluded-*/
+visual-qa/

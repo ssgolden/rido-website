@@ -19,7 +19,7 @@ const en = {
   steps: [
     { icon: Smartphone, title: "Sign up early", description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready." },
     { icon: QrCode, title: "Scan & unlock", description: "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll." },
-    { icon: Bike, title: "Ride & enjoy", description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet on — it's the law, and we include one." },
+    { icon: Bike, title: "Ride & enjoy", description: "Follow traffic rules, use cycle lanes and enjoy the ride. Helmet on — it's the law, and we include one." },
     { icon: ParkingCircle, title: "Park & end ride", description: "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used." },
   ],
 };
@@ -29,7 +29,7 @@ const copy: Record<Locale, typeof en> = {
   es: {
     ariaLabel: "Cómo funciona",
     label: "Cómo funciona",
-    title: "Apúntate, escanea, rueda, aparca. Así de fácil.",
+    title: "Apúntate, escanea, monta, aparca. Así de fácil.",
     stepsLabel: "Pasos",
     goTo: (n: number, title: string) => `Ir al paso ${n}: ${title}`,
     steps: [
