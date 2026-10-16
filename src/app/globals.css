@@ -405,6 +405,17 @@
   .legal-highlight { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
   .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }
   .legal-section { @apply scroll-mt-24; }
+  .legal-toc { @apply bg-white/[0.03] border border-white/10 rounded-xl p-4 sm:p-5 my-8; }
+  .legal-toc ol { @apply !mb-0 text-sm sm:columns-2 gap-8; }
+  .legal-toc li { @apply break-inside-avoid; }
+  .legal-toc a { @apply no-underline text-muted hover:text-rido-magenta-light; }
+  /* Tables scroll inside their own box on phones instead of widening the page. */
+  .legal-table-wrap { @apply overflow-x-auto rounded-xl border border-white/10 my-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta; }
+  .legal-table { @apply w-full min-w-[34rem] text-sm text-left border-collapse; }
+  .legal-table th, .legal-table td { @apply px-4 py-3 align-top border-b border-white/10; }
+  .legal-table thead th { @apply bg-white/[0.04] text-white font-semibold; }
+  .legal-table tbody th { @apply text-white font-medium; }
+  .legal-table tbody tr:last-child th, .legal-table tbody tr:last-child td { @apply border-b-0; }
   section[id] {
     @apply scroll-mt-16 sm:scroll-mt-24;
   }
