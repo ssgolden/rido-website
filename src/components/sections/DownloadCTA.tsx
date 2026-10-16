@@ -19,7 +19,9 @@ interface DownloadCopy {
   emailAria: string;
   submit: string;
   errorInvalid: string;
-  errorGeneric: string;
+  /** Shown when the sign-up could not be delivered. Wraps a mailto link to info@rido.bike. */
+  errorGenericBefore: string;
+  errorGenericAfter: string;
   successTitle: string;
   successBody: string;
   appsNote: string;
@@ -47,7 +49,8 @@ const copy = {
     emailAria: "Email address for waitlist",
     submit: "Join Waitlist",
     errorInvalid: "Please enter a valid email address.",
-    errorGeneric: "Something went wrong. Please try again.",
+    errorGenericBefore: "We couldn't save your email just now. Write to ",
+    errorGenericAfter: " and we'll add you by hand.",
     successTitle: "You're on the list!",
     successBody: "We'll email you the moment Rido launches on the Costa del Sol. Get ready to ride.",
     appsNote: "iOS and Android apps in development. Join the waitlist to get an early-access invite the moment they ship.",
@@ -72,7 +75,8 @@ const copy = {
     emailAria: "Correo electrónico para la lista de espera",
     submit: "Unirme a la lista",
     errorInvalid: "Introduce una dirección de correo electrónico válida.",
-    errorGeneric: "Algo ha salido mal. Vuelve a intentarlo.",
+    errorGenericBefore: "No hemos podido guardar tu correo ahora mismo. Escríbenos a ",
+    errorGenericAfter: " y te apuntamos a mano.",
     successTitle: "¡Ya estás en la lista!",
     successBody: "Te escribiremos en cuanto Rido llegue a la Costa del Sol. Prepárate para arrancar.",
     appsNote: "Apps de iOS y Android en desarrollo. Únete a la lista para recibir una invitación de acceso anticipado en cuanto salgan.",
@@ -90,9 +94,12 @@ const copy = {
 } as const satisfies Record<Locale, DownloadCopy>;
 
 const WAITLIST_KEY = "rido-waitlist-email";
-// Optional Apps Script URL. Unset (this launch): the form keeps the email in
-// localStorage only and never invents a live count.
+// Optional Apps Script URL. When unset, the form posts to /api/waitlist (server
+// hosts only). On a static host that route does not exist, so the request fails
+// and the visitor sees the email fallback instead of a false "You're on the list".
 const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+const WAITLIST_ENDPOINT = WAITLIST_URL || "/api/waitlist";
+const CONTACT_EMAIL = "info@rido.bike";
 
 function WaitlistForm() {
   const locale = useLocale();
@@ -114,26 +121,30 @@ function WaitlistForm() {
     setErrorKey(null);
 
     try {
-      // Persist locally as backup, then POST to the configured backend when set.
-      const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
-      if (!existing.includes(email)) {
-        existing.push(email);
-        localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
-      }
+      // Deliver to the Apps Script web app when configured, else to the
+      // server route. Success is only reported once a backend accepted it.
+      const res = await fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        // Apps Script needs text/plain to avoid a CORS preflight; the Next
+        // route parses JSON.
+        headers: {
+          "Content-Type": WAITLIST_URL ? "text/plain;charset=utf-8" : "application/json",
+        },
+        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+      });
+      if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
+      const json = await res.json().catch(() => ({}));
+      if (json.ok === false) throw new Error(json.error || "waitlist rejected");
 
-      if (WAITLIST_URL) {
-        const res = await fetch(WAITLIST_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            email,
-            locale,
-            userAgent: navigator.userAgent,
-          }),
-        });
-        if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
-        const json = await res.json().catch(() => ({}));
-        if (json.ok === false && json.error !== "invalid") throw new Error(json.error || "waitlist rejected");
+      // Local copy for this browser only (read by /waitlist-admin in dev).
+      try {
+        const existing: string[] = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
+        if (!existing.includes(email)) {
+          existing.push(email);
+          localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
+        }
+      } catch {
+        // Storage blocked — the backend already has the sign-up.
       }
 
       setStatus("success");
@@ -241,7 +252,22 @@ function WaitlistForm() {
         </button>
       </div>
       {status === "error" && errorKey && (
-        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">{errorKey === "invalid" ? t.errorInvalid : t.errorGeneric}</p>
+        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">
+          {errorKey === "invalid" ? (
+            t.errorInvalid
+          ) : (
+            <>
+              {t.errorGenericBefore}
+              <a
+                href={`mailto:${CONTACT_EMAIL}?subject=Waitlist`}
+                className="underline underline-offset-2 text-white hover:text-rido-magenta-light transition-colors cursor-pointer"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              {t.errorGenericAfter}
+            </>
+          )}
+        </p>
       )}
     </form>
   );

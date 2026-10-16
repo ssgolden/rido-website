@@ -25,7 +25,8 @@ const orgId = `${baseUrl}/#organization`;
 const brandId = `${baseUrl}/#brand`;
 const websiteId = `${baseUrl}/#website`;
 const logoUrl = `${baseUrl}/images/logo/rido-logo.png`;
-const heroImage = `${baseUrl}/images/lifestyle/rido-rider-street.jpg`;
+// Real product photo. The lifestyle/ "rider-street" files are the wordmark, not a photo.
+const heroImage = `${baseUrl}/images/scooter/rido-scooter-product.jpg`;
 
 // --- Organization / Brand graph -------------------------------------------
 export const organizationSchema = {

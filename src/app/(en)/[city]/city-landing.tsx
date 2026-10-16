@@ -155,7 +155,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/lifestyle/rido-rider-street.jpg"],
+      images: ["/images/og/rido-og.png"],
     },
     other: {
       "geo.position": `${city.lat};${city.lng}`,

@@ -28,7 +28,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
 - Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
 - Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
-- Hero background image opacity is 12% (not 7%)
+- Hero has NO photo layer: gradient + orbs + noise only. `public/images/lifestyle/rido-rider-street*.jpg` are the wordmark on white, not photos — never fade them over navy. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
 - App screenshot images removed from HowItWorks and DownloadCTA sections
 - GitHub Pages deployment uses `basePath: "/rido-website"` with `NEXT_OUTPUT=export` env var
 - Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)

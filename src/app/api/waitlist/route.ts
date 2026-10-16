@@ -45,7 +45,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
           from: process.env.EMAIL_FROM ?? "Rido Waitlist <onboarding@resend.dev>",
           to: [NOTIFY_EMAIL],
           subject: `New waitlist sign-up: ${email}`,
-          text: `Email: ${email}\nLanguage: ${locale}\nTime: ${new Date().toISOString()}\nSource: rido.bike coming-soon page`,
+          text: `Email: ${email}\nLanguage: ${locale}\nTime: ${new Date().toISOString()}\nSource: rido.bike waitlist form`,
         }),
       });
       if (!resp.ok) {

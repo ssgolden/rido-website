@@ -6,9 +6,7 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
 import { useCountUp } from "@/hooks/useCountUp";
-import { withBase } from "@/lib/basePath";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { vehicles } from "@/data/vehicles";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -116,11 +114,9 @@ const wordVariantsReduced = {
 function HeroBackdrop({
   fixed,
   opacity,
-  photoY,
 }: {
   fixed: boolean;
   opacity: number | MotionValue<number>;
-  photoY: string | MotionValue<string>;
 }) {
   return (
     <motion.div
@@ -130,20 +126,10 @@ function HeroBackdrop({
     >
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-      {/* On a tall phone, object-cover slices this wide photo into unreadable
-          shapes. Keep the whole frame visible there; full-bleed cover from sm up. */}
-      <motion.div className="absolute inset-x-0 top-[18%] h-[34%] sm:inset-0 sm:h-full" style={{ y: photoY }}>
-        <Image
-          src={withBase("/images/lifestyle/rido-rider-street@3x.jpg")}
-          alt=""
-          role="presentation"
-          fill
-          sizes="100vw"
-          className="object-contain object-center opacity-[0.2] sm:object-cover sm:opacity-[0.22]"
-          priority
-          decoding="async"
-        />
-      </motion.div>
+      {/* No photo layer yet: the only lifestyle files are the wordmark and
+          white-background product renders, which read as a ghost logo / light
+          band when faded over navy. Add a real Costa del Sol photo here once
+          docs/ASSET-BRIEF.md deliverable B exists. */}
       <div
         className="absolute inset-0 mix-blend-soft-light"
         style={{
@@ -190,8 +176,6 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  const bgYRaw = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const bgY = reduce ? "0%" : bgYRaw;
   // Fade content but never below 0.25 — full-vanish bottom half reads gimmicky.
   const contentOpacityRaw = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0.25]);
   const contentOpacity = reduce ? 1 : contentOpacityRaw;
@@ -214,10 +198,10 @@ export function Hero() {
     >
       {parkBackdrop && backdropEl
         ? createPortal(
-            <HeroBackdrop fixed opacity={backdropOpacity} photoY={bgY} />,
+            <HeroBackdrop fixed opacity={backdropOpacity} />,
             backdropEl
           )
-        : <HeroBackdrop fixed={false} opacity={1} photoY={bgY} />}
+        : <HeroBackdrop fixed={false} opacity={1} />}
 
       <motion.div
         className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-20 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
