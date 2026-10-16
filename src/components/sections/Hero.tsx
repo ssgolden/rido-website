@@ -102,6 +102,10 @@ export function Hero() {
   });
   const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
   const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
+  // Signature moment: the scooter rides out of its frame as the hero scrolls
+  // away. Always a MotionValue (zero range under reduced motion) so SSR and
+  // client styles match.
+  const rideX = useTransform(scrollYProgress, [0.05, 0.75], reduce ? ["0%", "0%"] : ["0%", "75%"]);
   const parkBackdrop = Boolean(backdropEl) && !reduce;
   const variants = reduce ? wordVariantsReduced : wordVariants;
   const highlightFrom = t.headlineWords.length - t.highlightCount;
@@ -191,6 +195,7 @@ export function Hero() {
             sizes="(max-width: 1024px) 90vw, 45vw"
             priority
             imageClassName="drop-shadow-[0_30px_40px_rgba(15,23,42,0.25)]"
+            imageWrapperStyle={{ x: rideX }}
             aspect="aspect-[5/4] lg:aspect-[4/5]"
             className="shadow-2xl shadow-black/40"
           >
