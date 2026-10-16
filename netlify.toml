@@ -1,0 +1,9 @@
+# Netlify config kept deliberately small: build command, publish directory and
+# env vars stay in the Netlify UI (see docs/NETLIFY-SETUP.md). This file only
+# makes the functions location explicit.
+#
+# netlify/functions/waitlist.mjs serves /api/waitlist (its own `config.path`)
+# and stores sign-ups in Netlify Blobs. See docs/WAITLIST-SETUP.md.
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"

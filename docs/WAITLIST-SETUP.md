@@ -18,11 +18,37 @@ script URL you deploy once.
 6. Click **Deploy**. Google will ask for permissions — grant Sheets access.
 7. Copy the **Web app URL** (looks like `https://script.google.com/macros/s/AKfycbz.../exec`).
 
-## This launch
+## This launch: Netlify Function (live on www.rido.bike)
 
-Do not set a waitlist backend for the current www launch. Leave `NEXT_PUBLIC_WAITLIST_URL` unset on Netlify. The public site is **`https://www.rido.bike`** (the apex 301s to www).
+`www.rido.bike` is a static export on Netlify, so the Next.js route in
+`src/app/api/waitlist` does not exist there. Instead,
+`netlify/functions/waitlist.mjs` answers **`POST /api/waitlist`** and stores
+every sign-up in **Netlify Blobs** (store `waitlist`, one entry per email, so
+re-submits are de-duplicated). It needs no setup and no env vars to start
+collecting — leave `NEXT_PUBLIC_WAITLIST_URL` unset and both forms post there.
 
-With the variable unset, the homepage and coming-soon forms post to `/api/waitlist`, which exists only on a server host (Vercel). On a static host (Netlify / GitHub Pages) that request fails and the visitor sees an honest fallback — "write to info@rido.bike and we'll add you by hand" — instead of a false success. The hero still shows "Waitlist now open — be first to ride" with no number. A live count waits for a later change that actually connects a backend. Note: on a static host, set this variable before launch or the only working path is the email fallback.
+**See the sign-ups**
+
+- Netlify UI → the site → **Blobs** → store `waitlist`.
+- Or set `WAITLIST_ADMIN_TOKEN` (Site configuration → Environment variables,
+  any long random string), redeploy, then:
+
+  ```bash
+  curl -H "Authorization: Bearer $WAITLIST_ADMIN_TOKEN" \
+    "https://www.rido.bike/api/waitlist?format=csv" -o rido-waitlist.csv
+  ```
+
+  Without the token the export endpoint returns 401.
+
+**Optional email alert per sign-up:** set `RESEND_API_KEY` (and optionally
+`NOTIFY_EMAIL`, default info@rido.bike, and `EMAIL_FROM`).
+
+The GitHub Pages mirror has no functions; there the forms show the
+"email info@rido.bike" fallback instead of a false success.
+
+The Google Apps Script below remains an alternative (a Google Sheet as the
+store). Setting `NEXT_PUBLIC_WAITLIST_URL` switches both forms to it and
+bypasses the Netlify Function.
 
 ## Wire into the site (later)
 
