@@ -51,3 +51,6 @@ next-env.d.ts
 # Dev smoke tests (not part of production)
 /scripts/smoke-*.mts
 .lighthouseci/
+
+# scripts/build.mjs parks excluded routes here during an export build
+.export-excluded-*/

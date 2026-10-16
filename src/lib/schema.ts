@@ -1,6 +1,6 @@
 import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
-import { cities, citiesAnnounced } from "@/data/cities";
+import { announcedCities, primaryCity, regionsWithUnannouncedTowns } from "@/data/cities";
 import { faqItemsByLocale } from "@/data/faq";
 import type { Locale } from "@/lib/i18n/config";
 import { SITE_LAST_MODIFIED, SITE_ORIGIN } from "@/lib/site";
@@ -25,7 +25,8 @@ const orgId = `${baseUrl}/#organization`;
 const brandId = `${baseUrl}/#brand`;
 const websiteId = `${baseUrl}/#website`;
 const logoUrl = `${baseUrl}/images/logo/rido-logo.png`;
-const heroImage = `${baseUrl}/images/lifestyle/rido-rider-street.jpg`;
+// Real product photo. The lifestyle/ "rider-street" files are the wordmark, not a photo.
+const heroImage = `${baseUrl}/images/scooter/rido-scooter-product.jpg`;
 
 // --- Organization / Brand graph -------------------------------------------
 export const organizationSchema = {
@@ -70,6 +71,7 @@ export const organizationSchema = {
     "Sustainable transport",
     "Electric vehicles",
     "Spain mobility",
+    "Costa Blanca transport",
     "Costa del Sol transport",
   ],
 };
@@ -80,7 +82,7 @@ export const brandSchema = {
   "@id": brandId,
   name: "Rido",
   description:
-    "Rido is a shared e-scooter and e-bike micro-mobility brand launching on the Costa del Sol, Spain.",
+    "Rido is a shared e-scooter and e-bike micro-mobility brand launching in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow.",
   logo: logoUrl,
   url: baseUrl,
   parentOrganization: { "@id": orgId },
@@ -100,10 +102,9 @@ export const webPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": `${baseUrl}/`,
-  name: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
-  description: citiesAnnounced
-    ? "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle."
-    : "Shared e-scooters and e-bikes coming to the Costa del Sol, Spain. Launch cities announced soon — join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
+  name: "Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain",
+  description:
+    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
   url: baseUrl,
   isPartOf: { "@id": websiteId },
   about: { "@id": brandId },
@@ -120,7 +121,7 @@ export const localBusinessSchema = {
   name: "Rido",
   alternateName: "Go2 Place S.L.",
   description:
-    "Shared e-scooters and e-bikes on the Costa del Sol, Spain. Zero-emission micro-mobility available via mobile app. Launching 2026.",
+    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow. Zero-emission micro-mobility via a mobile app. Launching 2026.",
   url: baseUrl,
   logo: logoUrl,
   image: heroImage,
@@ -136,32 +137,26 @@ export const localBusinessSchema = {
     postalCode: "03189",
     addressCountry: "ES",
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 36.5099,
-    longitude: -4.8862,
-  },
-  hasMap: citiesAnnounced
-    ? "https://www.google.com/maps/place/Marbella,+M%C3%A1laga,+Spain"
-    : "https://www.google.com/maps/place/Costa+del+Sol,+Spain",
-  // Pre-announcement, the served area is the region only — no town names.
-  areaServed: citiesAnnounced
-    ? cities.map((city) => ({
-        "@type": "City",
-        name: city.name,
-        containedInPlace: {
-          "@type": "AdministrativeArea",
-          name: city.region,
+  ...(primaryCity
+    ? {
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: primaryCity.lat,
+          longitude: primaryCity.lng,
         },
-      }))
-    : [{ "@type": "AdministrativeArea", name: "Costa del Sol" }],
+        hasMap: `https://www.google.com/maps/place/${encodeURIComponent(primaryCity.name)},+Spain`,
+      }
+    : {}),
+  // Announced towns by name; regions with unannounced towns by region only.
+  areaServed: [
+    ...announcedCities.map((city) => ({
+      "@type": "City",
+      name: city.name,
+      containedInPlace: { "@type": "AdministrativeArea", name: city.region },
+    })),
+    ...regionsWithUnannouncedTowns.map((region) => ({ "@type": "AdministrativeArea", name: region })),
+  ],
   serviceType: ["E-Scooter Rental", "E-Bike Rental"],
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    opens: "00:00",
-    closes: "23:59",
-  },
   potentialAction: {
     "@type": "ReserveAction",
     target: `${baseUrl}/#download`,
@@ -191,7 +186,7 @@ export const howToSchema = {
   "@type": "HowTo",
   name: "How to Ride a Rido E-Scooter or E-Bike",
   description:
-    "A step-by-step guide to finding, unlocking, riding, and parking a Rido shared e-scooter or e-bike on the Costa del Sol.",
+    "A step-by-step guide to finding, unlocking, riding, and parking a Rido shared e-scooter or e-bike.",
   totalTime: "PT15M",
   step: [
     {
@@ -212,7 +207,7 @@ export const howToSchema = {
       "@type": "HowToStep",
       position: 3,
       name: "Ride & Enjoy",
-      text: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
+      text: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmets are mandatory for e-scooter riders in Spain, and one is included with every scooter.",
     },
     {
       "@type": "HowToStep",
@@ -248,32 +243,7 @@ export const productSchemas = vehicles.map((vehicle) => ({
   isRelatedTo: { "@id": `${baseUrl}/#localbusiness` },
 }));
 
-// --- SoftwareApplication / App --------------------------------------------
-export const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": `${baseUrl}/#app`,
-  name: "Rido",
-  applicationCategory: "TravelApplication",
-  operatingSystem: "iOS, Android",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "EUR",
-  },
-  description:
-    "Find, unlock, and ride shared e-scooters and e-bikes on the Costa del Sol. Scan QR codes, track rides, and pay per minute.",
-  publisher: { "@id": orgId },
-  featureList: [
-    "Find vehicles near you on the map",
-    "Scan QR code to unlock",
-    "Real-time battery levels",
-    "Pricing shown before every ride",
-    "Helmet rewards program",
-    "Beginner mode (15 km/h)",
-    "Tandem detection",
-  ],
-};
+// No SoftwareApplication markup until the app is actually published.
 
 // --- Breadcrumbs -----------------------------------------------------------
 export const breadcrumbSchema = {
@@ -294,7 +264,7 @@ export const speakableSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": `${baseUrl}/#speakable`,
-  name: "Rido — Shared E-Scooters & E-Bikes in Spain",
+  name: "Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain",
   url: baseUrl,
   speakable: {
     "@type": "SpeakableSpecification",
@@ -303,56 +273,46 @@ export const speakableSchema = {
 };
 
 // --- Services per city ------------------------------------------------------
-// Pre-announcement (citiesAnnounced === false) the per-town Service nodes are
-// replaced by a single region-level Service so no town name reaches JSON-LD.
-export const cityServiceSchemas = citiesAnnounced
-  ? cities.map((city) => ({
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "@id": `${baseUrl}/#service-${city.slug}`,
-      serviceType:
-        city.vehicles.length === 2 ? "E-Scooter & E-Bike Rental" : "E-Scooter Rental",
-      provider: { "@id": `${baseUrl}/#localbusiness` },
-      areaServed: {
-        "@type": "Place",
+// One Service per announced town, plus one region-level Service for each
+// region whose towns are not announced yet (no town names reach JSON-LD).
+export const cityServiceSchemas = [
+  ...announcedCities.map((city) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${baseUrl}/#service-${city.slug}`,
+    serviceType: city.vehicles.length === 2 ? "E-Scooter & E-Bike Rental" : "E-Scooter Rental",
+    provider: { "@id": `${baseUrl}/#localbusiness` },
+    areaServed: {
+      "@type": "Place",
+      name: city.name,
+      geo: { "@type": "GeoCoordinates", latitude: city.lat, longitude: city.lng },
+      containedInPlace: {
+        "@type": "City",
         name: city.name,
-        geo: {
-          "@type": "GeoCoordinates",
-          latitude: city.lat,
-          longitude: city.lng,
-        },
-        containedInPlace: {
-          "@type": "City",
-          name: city.name,
-          containedInPlace: { "@type": "AdministrativeArea", name: city.region },
-        },
+        containedInPlace: { "@type": "AdministrativeArea", name: city.region },
       },
-      description: `Shared ${city.vehicles
-        .map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike"))
-        .join(" and ")} rental in ${city.name}, ${city.region}. Coming soon.`,
-      offers: {
-        "@type": "AggregateOffer",
-        availability: "https://schema.org/PreOrder",
-        // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
-      },
-    }))
-  : [
-      {
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "@id": `${baseUrl}/#service-costa-del-sol`,
-        serviceType: "E-Scooter & E-Bike Rental",
-        provider: { "@id": `${baseUrl}/#localbusiness` },
-        areaServed: { "@type": "AdministrativeArea", name: "Costa del Sol" },
-        description:
-          "Shared e-scooter and e-bike rental on the Costa del Sol, Spain. First launch locations announced soon.",
-        offers: {
-          "@type": "AggregateOffer",
-          availability: "https://schema.org/PreOrder",
-          // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
-        },
-      },
-    ];
+    },
+    description: `Shared ${city.vehicles.map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike")).join(" and ")} rental in ${city.name}, ${city.region}. Launching in the coming weeks.`,
+    offers: {
+      "@type": "AggregateOffer",
+      availability: "https://schema.org/PreOrder",
+      // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
+    },
+  })),
+  ...regionsWithUnannouncedTowns.map((region) => ({
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${baseUrl}/#service-${region.toLowerCase().replace(/\s+/g, "-")}`,
+    serviceType: "E-Scooter & E-Bike Rental",
+    provider: { "@id": `${baseUrl}/#localbusiness` },
+    areaServed: { "@type": "AdministrativeArea", name: region },
+    description: `Shared e-scooter and e-bike rental on the ${region}, Spain. Launch locations announced soon.`,
+    offers: {
+      "@type": "AggregateOffer",
+      availability: "https://schema.org/PreOrder",
+    },
+  })),
+];
 
 // --- FAQPage ---------------------------------------------------------------
 export function getFaqSchema(locale: Locale) {
@@ -385,21 +345,16 @@ export const sustainabilitySchema = {
     "Micromobility emissions reduction",
     "Vehicle recycling",
   ],
-  hasCredential: [
-    {
-      "@type": "EducationalOccupationalCredential",
-      credentialCategory: "EnvironmentalClaim",
-      name: "Carbon-neutral operations via verified carbon credits",
-    },
-  ],
+  // Pre-launch: commitments, not audited results. No credential markup until
+  // a real certification exists.
   description:
-    "Rido offsets 100% of operational emissions through verified carbon credits, uses swappable and recycled batteries, and recycles every vehicle at end of life.",
+    "Rido commits to offsetting 100% of operational emissions through verified carbon credits, to swappable and recycled batteries, and to recycling every vehicle at end of life. Audited impact figures will be published after the first year of operation.",
 };
 
 /**
  * Returns all JSON-LD scripts as an array of objects for rendering in <head>.
- * FAQ copy follows the page locale. No JobPosting (no open roles) and no
- * SearchAction (the site has no /?q= search).
+ * FAQ copy follows the page locale. No JobPosting (no open roles), no
+ * SearchAction (the site has no /?q= search), no SoftwareApplication (no app yet).
  */
 export function getAllSchemas(locale: Locale = "en") {
   return [
@@ -411,7 +366,6 @@ export function getAllSchemas(locale: Locale = "en") {
     howToSchema,
     breadcrumbSchema,
     speakableSchema,
-    softwareApplicationSchema,
     getFaqSchema(locale),
     sustainabilitySchema,
     ...productSchemas,

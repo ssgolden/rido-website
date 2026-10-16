@@ -5,6 +5,10 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
+import { cities, primaryCity } from "@/data/cities";
+
+const plannedCostaDelSol = cities.filter((c) => c.region === "Costa del Sol").length;
+const firstTown = primaryCity?.name ?? "Torrevieja";
 
 // User-visible strings per locale.
 const en = {
@@ -12,14 +16,14 @@ const en = {
   eyebrow: "Our Story",
   headingBefore: "Born in ",
   headingHighlight: "Spain",
-  headingAfter: ", Built for Spanish Cities",
+  headingAfter: ", Built for the Coast",
   quote: "Moving through your city should be easy, affordable, and clean.",
   para1: "Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.",
-  para2: "So we built a fleet of shared e-scooters and e-bikes designed for Spain's streets, Spain's weather, and Spain's people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.",
+  para2: "So we're building a fleet of shared e-scooters and e-bikes designed for coastal towns — their streets, their weather, and their people. Every vehicle will be serviced in-house, every ride will be insured, and every kilometre replaces a car trip.",
   milestones: [
     { year: "2025", event: "Rido founded in Spain" },
-    { year: "2026", event: "Costa del Sol launch — 5 cities planned" },
-    { year: "2027", event: "Expanding across Andalusia" },
+    { year: "2026", event: `${firstTown} launch on the Costa Blanca` },
+    { year: "Next", event: `Costa del Sol — ${plannedCostaDelSol} towns planned` },
   ],
   values: [
     { title: "Freedom", description: "Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go.", dotClass: "bg-rido-magenta", borderClass: "border-rido-magenta" },
@@ -35,14 +39,14 @@ const copy: Record<Locale, typeof en> = {
     eyebrow: "Nuestra historia",
     headingBefore: "Nacido en ",
     headingHighlight: "España",
-    headingAfter: ", creado para las ciudades españolas",
+    headingAfter: ", creado para la costa",
     quote: "Moverte por tu ciudad debería ser fácil, asequible y limpio.",
     para1: "Rido nació de una convicción sencilla. Veíamos carriles bici vacíos, calles saturadas y ciudades que merecen un aire mejor.",
-    para2: "Así que creamos una flota de patinetes y bicis eléctricas compartidas diseñada para las calles de España, su clima y su gente. Cada vehículo se mantiene en nuestros propios talleres, cada viaje está asegurado y cada kilómetro sustituye un trayecto en coche.",
+    para2: "Así que estamos creando una flota de patinetes y bicis eléctricas compartidas diseñada para los pueblos de costa: sus calles, su clima y su gente. Cada vehículo se mantendrá en nuestros propios talleres, cada viaje irá asegurado y cada kilómetro sustituye un trayecto en coche.",
     milestones: [
       { year: "2025", event: "Rido se funda en España" },
-      { year: "2026", event: "Lanzamiento en la Costa del Sol — 5 ciudades previstas" },
-      { year: "2027", event: "Expansión por toda Andalucía" },
+      { year: "2026", event: `Lanzamiento en ${firstTown}, Costa Blanca` },
+      { year: "Luego", event: `Costa del Sol — ${plannedCostaDelSol} localidades previstas` },
     ],
     values: [
       { title: "Libertad", description: "Muévete a tu ritmo. Sin horarios, sin esperas, sin líos de aparcamiento. Escanea y listo.", dotClass: "bg-rido-magenta", borderClass: "border-rido-magenta" },

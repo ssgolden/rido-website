@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { m, useInView, useReducedMotion } from "framer-motion";
 import { forwardRef, useRef } from "react";
 import { DURATION, EASE, REVEAL, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
 
@@ -43,7 +43,7 @@ export function StaggerReveal({
   }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={className}
       variants={{
@@ -54,7 +54,7 @@ export function StaggerReveal({
       animate={isInView ? "show" : "hidden"}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -63,8 +63,8 @@ export const StaggerItem = forwardRef<HTMLDivElement, {
   className?: string;
 }>(function StaggerItem({ children, className }, externalRef) {
   return (
-    <motion.div ref={externalRef} variants={itemVariants} className={className}>
+    <m.div ref={externalRef} variants={itemVariants} className={className}>
       {children}
-    </motion.div>
+    </m.div>
   );
 });

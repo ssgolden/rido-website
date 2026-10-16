@@ -97,8 +97,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Tengo que llevar casco?",
     },
     answer: {
-      en: "We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app.",
-      es: "Te recomendamos encarecidamente llevar casco en cada trayecto. En muchas ciudades españolas es obligatorio para quienes van en patinete eléctrico. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app.",
+      en: "Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.",
+      es: "Sí. Desde el 1 de octubre de 2026, la normativa VMP española hace obligatorio el casco para quienes van en patinete eléctrico en todo el país. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app.",
     },
     category: "safety",
   },
@@ -119,8 +119,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Qué es el Rido Pass?",
     },
     answer: {
-      en: "The Rido Pass is our rider membership — free unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
-      es: "El Rido Pass es nuestra membresía para usuarios frecuentes: desbloqueos gratis y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
+      en: "The Rido Pass is our rider membership — unlimited unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
+      es: "El Rido Pass es nuestra membresía para usuarios frecuentes: desbloqueos ilimitados y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
     },
     category: "pricing",
   },

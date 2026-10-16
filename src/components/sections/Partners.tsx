@@ -45,7 +45,7 @@ const copy: Record<Locale, PartnerCopy> = {
       {
         title: "Software and operations",
         description:
-          "Rider app, manager dashboard, geofencing, dynamic pricing, and 24/7 support tooling — already running, ready to deploy.",
+          "Rider app, manager dashboard, geofencing, dynamic pricing, and support tooling — one platform, built for our own launch and shared with every partner city.",
       },
       {
         title: "Aligned economics",
@@ -73,7 +73,7 @@ const copy: Record<Locale, PartnerCopy> = {
       {
         title: "Software y operaciones",
         description:
-          "App del usuario, panel de operaciones, geocercado, precios dinámicos y soporte 24/7 — en marcha y listo para desplegar.",
+          "App del usuario, panel de operaciones, geocercado, precios dinámicos y herramientas de soporte — una sola plataforma, creada para nuestro propio lanzamiento y compartida con cada ciudad socia.",
       },
       {
         title: "Economía alineada",

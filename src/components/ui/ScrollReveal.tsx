@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion } from "framer-motion";
+import { m, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { DURATION, EASE, REVEAL, SCROLL_MARGIN } from "@/lib/motion";
 
@@ -38,7 +38,7 @@ export function ScrollReveal({
   }
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, ...directionOffset[direction] }}
@@ -50,6 +50,6 @@ export function ScrollReveal({
       transition={{ duration, delay, ease: EASE }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

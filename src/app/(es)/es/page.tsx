@@ -6,7 +6,6 @@ import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
-import { citiesAnnounced } from "@/data/cities";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
 function SectionSkeleton({ tall = false }: { tall?: boolean }) {
@@ -41,10 +40,9 @@ const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").th
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
 export const metadata: Metadata = {
-  title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
-  description: citiesAnnounced
-    ? "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar en Marbella, Estepona y más. Cero emisiones, cero complicaciones."
-    : "Patinetes y bicicletas eléctricas compartidas llegan a la Costa del Sol. Las ciudades de lanzamiento se anunciarán muy pronto — únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
+  title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
+  description:
+    "Patinetes y bicicletas eléctricas compartidas que llegan a Torrevieja, en la Costa Blanca, en las próximas semanas, y después a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
   alternates: {
     canonical: `${SITE_ORIGIN}/es`,
     languages: {
@@ -54,9 +52,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
+    title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
     description:
-      "Únete a la lista de espera y sé de los primeros en montar en patinetes y bicicletas eléctricas compartidas en la Costa del Sol. Cero emisiones, cero complicaciones.",
+      "Llegamos a Torrevieja en las próximas semanas. Únete a la lista de espera y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
     type: "website",
     url: `${SITE_ORIGIN}/es`,
     siteName: "Rido",
@@ -67,16 +65,16 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.png",
         width: 1200,
         height: 630,
-        alt: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
+        alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
+    title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
     description:
-      "Únete a la lista de espera y sé de los primeros en montar en la Costa del Sol. Cero emisiones, cero complicaciones.",
+      "Llegamos a Torrevieja en las próximas semanas. Únete a la lista de espera y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
     images: ["/images/og/rido-og.png"],
   },
 };
@@ -93,13 +91,9 @@ export default function HomeEs() {
       <main id="main-content">
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Patinetes y bicicletas eléctricas compartidas en España</h1>
-            <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido en la Costa del Sol. Cero emisiones, cero complicaciones.</p>
-            <p>
-              {citiesAnnounced
-                ? "Muy pronto en Marbella, San Pedro de Alcántara, Cancelada, Estepona y El Paraíso."
-                : "Muy pronto en la Costa del Sol — las ciudades de lanzamiento se anunciarán en breve."}
-            </p>
+            <h1>Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol</h1>
+            <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido. Cero emisiones, cero complicaciones.</p>
+            <p>Llegamos a Torrevieja, en la Costa Blanca, en las próximas semanas, y después a la Costa del Sol.</p>
           </div>
         </noscript>
         <Hero />

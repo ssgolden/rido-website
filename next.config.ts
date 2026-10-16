@@ -14,24 +14,10 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [64, 128, 256],
   },
-  // Tree-shake barrel imports for heavy packages so they never leak into
-  // the homepage vendor chunk. Especially important for framer-motion and
-  // lucide-react which are imported in many places.
+  // Tree-shake barrel imports for framer-motion and lucide-react, which are
+  // imported in many places.
   experimental: {
-    optimizePackageImports: [
-      "lucide-react",
-      "framer-motion",
-      "@react-three/fiber",
-      "@react-three/drei",
-      "three",
-      "gsap",
-      "@react-spring/web",
-      "@use-gesture/react",
-      "cmdk",
-      "vaul",
-      "sonner",
-      "simplex-noise",
-    ],
+    optimizePackageImports: ["lucide-react", "framer-motion"],
   },
 };
 

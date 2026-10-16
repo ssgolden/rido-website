@@ -48,6 +48,7 @@ export function SiteShell({
   return (
     <div
       className="relative flex h-full min-h-0 max-h-[100svh] flex-col overflow-hidden"
+      data-site-shell=""
       data-chrome-top={chromeTop}
       style={
         {

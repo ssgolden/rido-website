@@ -28,9 +28,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
 - Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
 - Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
-- Hero background image opacity is 12% (not 7%)
+- Hero has NO photo layer: gradient + orbs + noise only. `public/images/lifestyle/rido-rider-street*.jpg` are the wordmark on white, not photos — never fade them over navy. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
 - App screenshot images removed from HowItWorks and DownloadCTA sections
-- GitHub Pages deployment uses `basePath: "/rido-website"` with `NEXT_OUTPUT=export` env var
+- Static export: `NEXT_OUTPUT=export CUSTOM_DOMAIN=true` (no basePath — deploy.yml and Netlify both build this way). Only a bare `NEXT_OUTPUT=export` without `CUSTOM_DOMAIN` uses `basePath: "/rido-website"` (GitHub Pages project URL)
 - Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)
 - **CRITICAL:** Call `withBase()` at RENDER TIME (inside components), NOT in data files. Data files are initialized once and shared between SSR and client, but `basePath` differs between server and browser. Calling `withBase()` at data init time produces wrong URLs client-side.
 - `withBase()` uses `getBasePath()` which detects basePath at runtime: `process.env.NEXT_OUTPUT` for SSR, `window.location.pathname.startsWith("/rido-website")` for client
@@ -38,11 +38,15 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
 ## Build & Deploy Invariants
-- Live site (rido.bike) deploys via GitHub Pages static export (`.github/workflows/deploy.yml`, master pushes). `npm run build` runs `scripts/build.mjs`: a plain `next build` for server hosts, and an API-route-excluding build when `NEXT_OUTPUT=export` (route handlers cannot be statically exported).
+- Hosting: `https://www.rido.bike` is served by Netlify from the static export (`docs/NETLIFY-SETUP.md`; the apex 301s to www — see `src/lib/site.ts`). `.github/workflows/deploy.yml` publishes the same export to GitHub Pages on master pushes. Vercel (`vercel.json`, `src/proxy.ts`, `src/app/api`) is the optional server host and the only place API routes and the password gate run. `npm run build` runs `scripts/build.mjs`: a plain `next build` for server hosts, and an API-route-excluding build when `NEXT_OUTPUT=export` (route handlers cannot be statically exported).
 - GitHub Pages CANNOT serve custom response headers — `public/_headers` (and any `headers()` in next.config.ts) only take effect on a server host (Vercel/Netlify).
 - Do NOT enable next-intl locale routing until an `app/[locale]/` structure exists — otherwise every page 404s (rewrites target nonexistent locale paths).
 - Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
 - Pre-launch gate: `src/proxy.ts` redirects everything to /coming-soon when the `GATE_PASSWORD` env var is set (Vercel only — the password lives in Vercel project settings, NEVER in this public repo). Unset the var to launch. GitHub Pages export ignores the proxy; API routes are excluded from export by `scripts/build.mjs`.
+
+## Launch Geography
+- Torrevieja (Costa Blanca) is the first, announced launch town. Five Costa del Sol towns are planned but unannounced.
+- `src/data/cities.ts` has a per-town `announced` flag. Public surfaces read `announcedCities` / `regionsWithUnannouncedTowns`, never `cities`, so unannounced town names never leak. Flip a town's flag on its announcement day, then hand-edit `public/llms*.txt`.
 
 ## File Conventions
 - Sections in `src/components/sections/`

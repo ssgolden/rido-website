@@ -283,18 +283,27 @@
   .section-tint-green {
     background: linear-gradient(180deg, rgba(34, 197, 94, 0.03), transparent);
   }
+  /* Animated 1px magenta ring around a Card (rounded-2xl). The gradient is
+     masked to the border only — the Card is translucent glass, so an unmasked
+     fill would wash the whole card magenta. */
   .shimmer-border {
     position: relative;
+    border-radius: var(--radius-2xl, 1rem);
   }
   .shimmer-border::before {
     content: "";
     position: absolute;
     inset: -1px;
     border-radius: inherit;
-    background: linear-gradient(90deg, transparent, rgba(222, 4, 152, 0.4), transparent);
+    padding: 1px;
+    background: linear-gradient(90deg, transparent, rgba(222, 4, 152, 0.7), transparent);
     background-size: 200% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
     animation: shimmer 3s ease-in-out infinite;
-    z-index: -1;
   }
   .scroll-progress {
     position: fixed;

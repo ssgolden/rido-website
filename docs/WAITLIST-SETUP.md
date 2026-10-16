@@ -22,7 +22,7 @@ script URL you deploy once.
 
 Do not set a waitlist backend for the current www launch. Leave `NEXT_PUBLIC_WAITLIST_URL` unset on Netlify. The public site is **`https://www.rido.bike`** (the apex 301s to www).
 
-With the variable unset, the form saves the email in that browser's `localStorage` only, and the hero shows "Waitlist now open — be first to ride" with no number. That fallback is intentional. A live count waits for a later change that actually connects a backend.
+With the variable unset, the homepage and coming-soon forms post to `/api/waitlist`, which exists only on a server host (Vercel). On a static host (Netlify / GitHub Pages) that request fails and the visitor sees an honest fallback — "write to info@rido.bike and we'll add you by hand" — instead of a false success. The hero still shows "Waitlist now open — be first to ride" with no number. A live count waits for a later change that actually connects a backend. Note: on a static host, set this variable before launch or the only working path is the email fallback.
 
 ## Wire into the site (later)
 

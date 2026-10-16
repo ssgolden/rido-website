@@ -9,7 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { DURATION, EASE, STAGGER } from "@/lib/motion";
 
 import { withBase } from "@/lib/basePath";
@@ -96,7 +96,7 @@ export function Vehicles() {
                 }`}
               >
                 {i === active && (
-                  <motion.div
+                  <m.div
                     layoutId="vehicle-tab-bg"
                     className="absolute inset-0 bg-rido-magenta rounded-xl shadow-lg shadow-rido-magenta/25"
                     transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
@@ -118,7 +118,7 @@ export function Vehicles() {
                   </div>
                 ) : (
                   <AnimatePresence initial={false}>
-                    <motion.div
+                    <m.div
                       key={`${v.id}-${activeImage}`}
                       className="absolute inset-0"
                       initial={reduce ? false : { opacity: 0 }}
@@ -135,7 +135,7 @@ export function Vehicles() {
                         priority={active === 0 && activeImage === 0}
                         onError={() => setMainImageError(true)}
                       />
-                    </motion.div>
+                    </m.div>
                   </AnimatePresence>
                 )}
               </div>

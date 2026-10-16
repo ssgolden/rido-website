@@ -1,31 +1,33 @@
 import type { Metadata } from "next";
 import { RootDocument, rootViewport } from "@/components/layout/RootDocument";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
-import { citiesAnnounced } from "@/data/cities";
+import { primaryCity } from "@/data/cities";
 import "../globals.css";
 
 export const viewport = rootViewport;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
-  title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
-  description: citiesAnnounced
-    ? "Shared e-scooters and e-bikes coming to the Costa del Sol. Join the Rido waitlist and be first to ride in Marbella, Estepona, and more. Zero emissions, zero hassle."
-    : "Shared e-scooters and e-bikes coming to the Costa del Sol. Launch cities announced soon — join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
+  title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
+  description:
+    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
   keywords: [
     "rido",
     "e-scooter",
     "e-bike",
     "shared mobility",
     "Spain",
+    "Torrevieja",
+    "Costa Blanca",
     "Costa del Sol",
-    ...(citiesAnnounced ? ["Marbella", "Estepona", "San Pedro de Alcántara"] : []),
     "electric scooter",
     "electric bike",
     "micromobility",
     "rent scooter Spain",
     "alquiler patinete",
     "alquiler bici eléctrica",
+    "alquiler patinete Torrevieja",
+    "e-scooter Torrevieja",
   ],
   icons: {
     icon: "/favicon.svg",
@@ -33,9 +35,9 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
   openGraph: {
-    title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
+    title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
     description:
-      "Join the waitlist and be first to ride shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.",
+      "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride shared e-scooters and e-bikes. Zero emissions, zero hassle.",
     type: "website",
     url: SITE_ORIGIN,
     siteName: "Rido",
@@ -46,15 +48,15 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.png",
         width: 1200,
         height: 630,
-        alt: "Rido — Shared E-Scooters & E-Bikes on Spain's Costa del Sol",
+        alt: "Rido — Shared e-scooters and e-bikes, launching soon in Torrevieja",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol",
-    description: "Join the waitlist and be first to ride on the Costa del Sol. Zero emissions, zero hassle.",
+    title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
+    description: "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride. Zero emissions, zero hassle.",
     images: ["/images/og/rido-og.png"],
   },
   alternates: {
@@ -65,12 +67,14 @@ export const metadata: Metadata = {
       "x-default": SITE_ORIGIN,
     },
   },
-  other: {
-    "geo.position": "36.5099;-4.8862",
-    "geo.region": "ES-A",
-    "geo.placename": citiesAnnounced ? "Marbella, Costa del Sol, Spain" : "Costa del Sol, Spain",
-    ICBM: "36.5099, -4.8862",
-  },
+  other: primaryCity
+    ? {
+        "geo.position": `${primaryCity.lat};${primaryCity.lng}`,
+        "geo.region": primaryCity.isoRegion,
+        "geo.placename": `${primaryCity.name}, ${primaryCity.region}, Spain`,
+        ICBM: `${primaryCity.lat}, ${primaryCity.lng}`,
+      }
+    : {},
 };
 
 export default function EnglishLayout({

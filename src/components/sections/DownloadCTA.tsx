@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { DURATION, EASE, STAGGER } from "@/lib/motion";
@@ -19,7 +19,9 @@ interface DownloadCopy {
   emailAria: string;
   submit: string;
   errorInvalid: string;
-  errorGeneric: string;
+  /** Shown when the sign-up could not be delivered. Wraps a mailto link to info@rido.bike. */
+  errorGenericBefore: string;
+  errorGenericAfter: string;
   successTitle: string;
   successBody: string;
   appsNote: string;
@@ -42,16 +44,17 @@ const copy = {
     headingBefore: "Ready to ",
     headingHighlight: "Ride",
     headingAfter: "?",
-    intro: "Join the waitlist and be first to ride when Rido launches on the Costa del Sol.",
+    intro: "Join the waitlist and be first to ride when Rido launches in Torrevieja — and on the Costa del Sol after that.",
     emailPlaceholder: "your@email.com",
     emailAria: "Email address for waitlist",
     submit: "Join Waitlist",
     errorInvalid: "Please enter a valid email address.",
-    errorGeneric: "Something went wrong. Please try again.",
+    errorGenericBefore: "We couldn't save your email just now. Write to ",
+    errorGenericAfter: " and we'll add you by hand.",
     successTitle: "You're on the list!",
-    successBody: "We'll email you the moment Rido launches on the Costa del Sol. Get ready to ride.",
+    successBody: "We'll email you the moment Rido launches near you. Get ready to ride.",
     appsNote: "iOS and Android apps in development. Join the waitlist to get an early-access invite the moment they ship.",
-    trustSignals: ["Be first to ride", "No payment now", "Costa del Sol launch"],
+    trustSignals: ["Be first to ride", "No payment now", "Torrevieja launch"],
     complianceLine: "Insured rides · GDPR compliant · Data protected",
     phoneTagline: "Move freely",
     phoneCta: "Scan & Ride",
@@ -59,7 +62,7 @@ const copy = {
     whatHappens: [
       "We confirm your spot by email",
       "When the iOS & Android app ships, waitlist members get first access",
-      "Your first ride is on us",
+      "Launch fares and the first towns are announced to the waitlist first",
     ],
   },
   es: {
@@ -67,16 +70,17 @@ const copy = {
     headingBefore: "¿Todo listo para ",
     headingHighlight: "moverte",
     headingAfter: "?",
-    intro: "Únete a la lista de espera y sé de los primeros en subirte cuando Rido llegue a la Costa del Sol.",
+    intro: "Únete a la lista de espera y sé de los primeros en subirte cuando Rido llegue a Torrevieja, y después a la Costa del Sol.",
     emailPlaceholder: "tu@email.com",
     emailAria: "Correo electrónico para la lista de espera",
     submit: "Unirme a la lista",
     errorInvalid: "Introduce una dirección de correo electrónico válida.",
-    errorGeneric: "Algo ha salido mal. Vuelve a intentarlo.",
+    errorGenericBefore: "No hemos podido guardar tu correo ahora mismo. Escríbenos a ",
+    errorGenericAfter: " y te apuntamos a mano.",
     successTitle: "¡Ya estás en la lista!",
-    successBody: "Te escribiremos en cuanto Rido llegue a la Costa del Sol. Prepárate para arrancar.",
+    successBody: "Te escribiremos en cuanto Rido llegue a tu zona. Prepárate para arrancar.",
     appsNote: "Apps de iOS y Android en desarrollo. Únete a la lista para recibir una invitación de acceso anticipado en cuanto salgan.",
-    trustSignals: ["Sé de los primeros en moverte", "Sin pagos por ahora", "Lanzamiento en la Costa del Sol"],
+    trustSignals: ["Sé de los primeros en moverte", "Sin pagos por ahora", "Lanzamiento en Torrevieja"],
     complianceLine: "Trayectos asegurados · Cumplimos el RGPD · Datos protegidos",
     phoneTagline: "Muévete con libertad",
     phoneCta: "Escanea y rueda",
@@ -84,15 +88,18 @@ const copy = {
     whatHappens: [
       "Confirmamos tu plaza por correo",
       "Cuando salgan las apps de iOS y Android, quienes estén en la lista tendrán acceso primero",
-      "Tu primer viaje corre por nuestra cuenta",
+      "Las tarifas y las primeras ciudades se anuncian primero a la lista",
     ],
   },
 } as const satisfies Record<Locale, DownloadCopy>;
 
 const WAITLIST_KEY = "rido-waitlist-email";
-// Optional Apps Script URL. Unset (this launch): the form keeps the email in
-// localStorage only and never invents a live count.
+// Optional Apps Script URL. When unset, the form posts to /api/waitlist (server
+// hosts only). On a static host that route does not exist, so the request fails
+// and the visitor sees the email fallback instead of a false "You're on the list".
 const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+const WAITLIST_ENDPOINT = WAITLIST_URL || "/api/waitlist";
+const CONTACT_EMAIL = "info@rido.bike";
 
 function WaitlistForm() {
   const locale = useLocale();
@@ -114,26 +121,30 @@ function WaitlistForm() {
     setErrorKey(null);
 
     try {
-      // Persist locally as backup, then POST to the configured backend when set.
-      const existing = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
-      if (!existing.includes(email)) {
-        existing.push(email);
-        localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
-      }
+      // Deliver to the Apps Script web app when configured, else to the
+      // server route. Success is only reported once a backend accepted it.
+      const res = await fetch(WAITLIST_ENDPOINT, {
+        method: "POST",
+        // Apps Script needs text/plain to avoid a CORS preflight; the Next
+        // route parses JSON.
+        headers: {
+          "Content-Type": WAITLIST_URL ? "text/plain;charset=utf-8" : "application/json",
+        },
+        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+      });
+      if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
+      const json = await res.json().catch(() => ({}));
+      if (json.ok === false) throw new Error(json.error || "waitlist rejected");
 
-      if (WAITLIST_URL) {
-        const res = await fetch(WAITLIST_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({
-            email,
-            locale,
-            userAgent: navigator.userAgent,
-          }),
-        });
-        if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
-        const json = await res.json().catch(() => ({}));
-        if (json.ok === false && json.error !== "invalid") throw new Error(json.error || "waitlist rejected");
+      // Local copy for this browser only (read by /waitlist-admin in dev).
+      try {
+        const existing: string[] = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
+        if (!existing.includes(email)) {
+          existing.push(email);
+          localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
+        }
+      } catch {
+        // Storage blocked — the backend already has the sign-up.
       }
 
       setStatus("success");
@@ -145,7 +156,7 @@ function WaitlistForm() {
 
   if (status === "success") {
     return (
-      <motion.div
+      <m.div
         initial={reduce ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
@@ -154,14 +165,14 @@ function WaitlistForm() {
         aria-live="polite"
       >
         {/* Choreographed success: ring draws itself then check draws inside */}
-        <motion.svg
+        <m.svg
           viewBox="0 0 64 64"
           className="w-14 h-14 mx-auto mb-3"
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : DURATION.micro }}
         >
-          <motion.circle
+          <m.circle
             cx="32"
             cy="32"
             r="28"
@@ -174,7 +185,7 @@ function WaitlistForm() {
             style={{ transformOrigin: "center" }}
             transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           />
-          <motion.path
+          <m.path
             d="M20 33 L28 41 L45 24"
             fill="none"
             stroke="#22C55E"
@@ -185,24 +196,24 @@ function WaitlistForm() {
             animate={{ pathLength: 1 }}
             transition={{ delay: reduce ? 0 : 0.32, duration: reduce ? 0 : DURATION.micro, ease: EASE }}
           />
-        </motion.svg>
-        <motion.h3
+        </m.svg>
+        <m.h3
           initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.36, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-lg font-bold mb-1"
         >
           {t.successTitle}
-        </motion.h3>
-        <motion.p
+        </m.h3>
+        <m.p
           initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.42, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-sm text-muted"
         >
           {t.successBody}
-        </motion.p>
-      </motion.div>
+        </m.p>
+      </m.div>
     );
   }
 
@@ -210,7 +221,7 @@ function WaitlistForm() {
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto lg:mx-0">
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
-          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" aria-hidden="true" />
           <input
             type="email"
             inputMode="email"
@@ -241,7 +252,22 @@ function WaitlistForm() {
         </button>
       </div>
       {status === "error" && errorKey && (
-        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">{errorKey === "invalid" ? t.errorInvalid : t.errorGeneric}</p>
+        <p className="text-sm text-red-400 mt-2 text-center lg:text-left" role="alert">
+          {errorKey === "invalid" ? (
+            t.errorInvalid
+          ) : (
+            <>
+              {t.errorGenericBefore}
+              <a
+                href={`mailto:${CONTACT_EMAIL}?subject=Waitlist`}
+                className="underline underline-offset-2 text-white hover:text-rido-magenta-light transition-colors cursor-pointer"
+              >
+                {CONTACT_EMAIL}
+              </a>
+              {t.errorGenericAfter}
+            </>
+          )}
+        </p>
       )}
     </form>
   );
@@ -292,7 +318,7 @@ export function DownloadCTA() {
                   const Icon = trustSignalIcons[i];
                   return (
                     <div key={text} className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 text-rido-magenta/60" />
+                      <Icon className="w-4 h-4 text-rido-magenta/60" aria-hidden="true" />
                       <span>{text}</span>
                     </div>
                   );
@@ -301,7 +327,7 @@ export function DownloadCTA() {
             </StaggerItem>
             <StaggerItem>
               <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-muted-weak text-xs">
-                <Shield className="w-3.5 h-3.5" />
+                <Shield className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{t.complianceLine}</span>
               </div>
             </StaggerItem>
@@ -309,7 +335,7 @@ export function DownloadCTA() {
 
           <ScrollReveal delay={STAGGER.grid} direction="right">
             <div className="flex justify-center lg:justify-end py-2">
-              <motion.div
+              <m.div
                 initial={false}
                 animate={shouldReduce ? { y: 0 } : { y: [0, -8, 0] }}
                 transition={shouldReduce ? { duration: 0 } : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -334,7 +360,7 @@ export function DownloadCTA() {
                   </div>
                 </div>
                 <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
-              </motion.div>
+              </m.div>
             </div>
           </ScrollReveal>
         </div>

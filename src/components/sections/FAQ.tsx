@@ -6,7 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { DURATION, EASE, STAGGER } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
@@ -84,15 +84,15 @@ function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string;
     <div className="border-b border-white/10 last:border-b-0">
       <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy" aria-expanded={isOpen} aria-controls={answerId}>
         <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors duration-200 pr-4 text-sm sm:text-base">{question}</span>
-        <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={panelTransition} className="shrink-0">
+        <m.div animate={{ rotate: isOpen ? 180 : 0 }} transition={panelTransition} className="shrink-0">
           <ChevronDown className="w-5 h-5 text-muted" />
-        </motion.div>
+        </m.div>
       </button>
       <AnimatePresence initial={false}>
         {isOpen && (
-          <motion.div id={answerId} initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={panelTransition} className="overflow-hidden" role="region">
+          <m.div id={answerId} initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={panelTransition} className="overflow-hidden" role="region">
             <p className="pb-5 text-sm text-muted leading-relaxed pr-8">{answer}</p>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

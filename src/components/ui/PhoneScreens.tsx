@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import {
   BatteryMedium,
   Bike,
@@ -156,14 +156,14 @@ function ScanScreen({ reduced }: ScreenProps) {
         {reduced ? (
           scanLine
         ) : (
-          <motion.div
+          <m.div
             aria-hidden="true"
             animate={{ y: [-52, 52, -52] }}
             transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
             className="absolute inset-x-0 top-1/2"
           >
             {scanLine}
-          </motion.div>
+          </m.div>
         )}
       </div>
       {/* helper card */}
@@ -312,7 +312,7 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
         {/* notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-rido-navy rounded-b-[20px] z-20" />
         {SCREENS.map(({ key, Component }, i) => (
-          <motion.div
+          <m.div
             key={key}
             className="absolute inset-0 pointer-events-none"
             initial={false}
@@ -323,7 +323,7 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
             transition={{ duration: reduced ? 0 : DURATION.entrance, ease: EASE }}
           >
             <Component reduced={reduced} />
-          </motion.div>
+          </m.div>
         ))}
       </div>
       <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
