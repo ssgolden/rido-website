@@ -148,6 +148,17 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
+      en: "How sustainable is Rido?",
+      es: "¿Es Rido sostenible?",
+    },
+    answer: {
+      en: "Our vehicles have zero direct emissions. From the first ride we will offset 100% of our operational emissions through verified carbon credits and green energy, use swappable batteries that are recycled at end of life, and recycle every vehicle. We will publish audited figures after our first year.",
+      es: "Nuestros vehículos no tienen emisiones directas. Desde el primer viaje compensaremos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde, usaremos baterías intercambiables que se reciclan al final de su vida útil y reciclaremos cada vehículo. Publicaremos cifras auditadas tras el primer año.",
+    },
+    category: "safety",
+  },
+  {
+    question: {
       en: "Is my ride insured?",
       es: "¿Está asegurado mi trayecto?",
     },

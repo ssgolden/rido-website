@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import { useScroll, useMotionValueEvent } from "framer-motion";
 import { Card } from "@/components/ui/Card";
 import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
@@ -16,28 +16,27 @@ import { STAGGER } from "@/lib/motion";
 // User-visible strings per locale.
 const en = {
   ariaLabel: "How it works",
-  eyebrow: "Simple as 1-2-3",
-  headingBefore: "How It",
-  headingHighlight: "Works",
+  label: "How it works",
+  title: "Join, scan, ride, park. That's it.",
   steps: [
     {
       icon: Smartphone,
-      title: "Sign Up Early",
+      title: "Sign up early",
       description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.",
     },
     {
       icon: QrCode,
-      title: "Scan & Unlock",
+      title: "Scan & unlock",
       description: "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll.",
     },
     {
       icon: Bike,
-      title: "Ride & Enjoy",
+      title: "Ride & enjoy",
       description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet on — it's the law, and we include one.",
     },
     {
       icon: ParkingCircle,
-      title: "Park & End Ride",
+      title: "Park & end ride",
       description: "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used.",
     },
   ],
@@ -47,9 +46,8 @@ const copy: Record<Locale, typeof en> = {
   en,
   es: {
     ariaLabel: "Cómo funciona",
-    eyebrow: "Tan fácil como 1-2-3",
-    headingBefore: "Cómo",
-    headingHighlight: "funciona",
+    label: "Cómo funciona",
+    title: "Apúntate, escanea, rueda, aparca. Así de fácil.",
     steps: [
       {
         icon: Smartphone,
@@ -98,16 +96,9 @@ export function HowItWorks() {
   });
 
   return (
-    <section id="how-it-works" aria-label={t.ariaLabel} className="py-12 sm:py-24 px-4 sm:px-6">
+    <section id="how-it-works" aria-label={t.ariaLabel} className="py-16 sm:py-24 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10 sm:mb-16">
-          <SectionHeading
-            eyebrow={t.eyebrow}
-            before={t.headingBefore}
-            highlight={t.headingHighlight}
-            className="text-3xl sm:text-4xl md:text-5xl font-black"
-          />
-        </div>
+        <SectionHeader label={t.label} title={t.title} />
 
         {/* Below md: the existing snap carousel, unchanged. Hidden on md+
             (display:none), so step copy is never duplicated in the a11y tree. */}

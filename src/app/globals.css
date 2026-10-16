@@ -58,6 +58,16 @@
   --color-muted: #C5D0DE;
   --color-muted-strong: #E2E8F0;
   --color-muted-weak: #A8B7C9;
+  /* Light "sand" surface for image bands and editorial sections (Phase B).
+     Text on sand uses the ink scale. Ratios vs sand #F5EEE4:
+     ink 15.5:1, ink-muted 6.6:1, ink-weak 5.4:1, magenta-dark 5.0:1.
+     Plain magenta (#DE0498) is 4.0:1 on sand: fills and large text only. */
+  --color-navy-deep: #0B1222;
+  --color-sand: #F5EEE4;
+  --color-sand-deep: #EADFCF;
+  --color-ink: #0F172A;
+  --color-ink-muted: #475569;
+  --color-ink-weak: #586174;
   --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Sora Variable", "Sora Fallback", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   /* Fluid display scale — floor tuned so "Costa del Sol" (NBSP-joined) fits at 320–360px */
@@ -405,6 +415,13 @@
   .legal-highlight { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
   .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }
   .legal-section { @apply scroll-mt-24; }
+  /* Sunlit placeholder surface for ImageFrame until real photography lands. */
+  .image-frame-sun {
+    background:
+      radial-gradient(90% 70% at 78% 18%, rgba(255, 255, 255, 0.9), transparent 60%),
+      radial-gradient(70% 60% at 15% 100%, rgba(222, 4, 152, 0.10), transparent 70%),
+      linear-gradient(160deg, var(--color-sand) 0%, var(--color-sand-deep) 100%);
+  }
   .legal-toc { @apply bg-white/[0.03] border border-white/10 rounded-xl p-4 sm:p-5 my-8; }
   .legal-toc ol { @apply !mb-0 text-sm sm:columns-2 gap-8; }
   .legal-toc li { @apply break-inside-avoid; }

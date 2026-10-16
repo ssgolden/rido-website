@@ -7,7 +7,9 @@ import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "
  * Magnetic — wraps a primary CTA so it subtly attracts toward the cursor.
  *
  * - Active ONLY on `(pointer: fine)` devices (mouse/trackpad) — never touch.
- * - Disabled entirely under prefers-reduced-motion: children render unchanged.
+ * - Disabled under prefers-reduced-motion: the wrapper still renders (so server
+ *   and client HTML match — useReducedMotion() is null during SSR) but no
+ *   pointer handlers are attached, so nothing ever moves.
  * - Transform-only (translate), so there is zero layout shift.
  * - Gentle spring pulls toward the pointer (max ±8px) and settles back on leave.
  * - Purely presentational wrapper: the child keeps all of its own semantics,
@@ -42,11 +44,8 @@ export function Magnetic({ children, className = "inline-block" }: MagneticProps
     return () => mq.removeEventListener("change", update);
   }, []);
 
-  // Reduced motion: render children untouched — no wrapper transform at all.
-  if (reduceMotion) return <>{children}</>;
-
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!finePointer || !ref.current) return;
+    if (reduceMotion || !finePointer || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
     const relY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);

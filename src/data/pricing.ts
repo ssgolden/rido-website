@@ -76,31 +76,3 @@ export const pricingTiersByLocale: Record<Locale, PricingTier[]> = {
  * offer catalog (src/lib/schema.ts) keeps emitting English on the EN page.
  */
 export const pricingTiers: PricingTier[] = pricingTiersByLocale.en;
-
-const guaranteeSources: readonly LocalizedString[] = [
-  {
-    en: "No minimum top-up required",
-    es: "Sin recarga mínima obligatoria",
-  },
-  {
-    en: "No hidden fees after your ride",
-    es: "Sin costes ocultos después del trayecto",
-  },
-  {
-    en: "Free refund of unused balance",
-    es: "Reembolso gratuito del saldo no utilizado",
-  },
-  {
-    en: "Exact pricing shown before every ride",
-    es: "Precio exacto visible antes de cada trayecto",
-  },
-];
-
-/** Per-locale guarantee bullets — `Record<Locale, ...>` forces every locale to exist. */
-export const noSurpriseGuaranteesByLocale: Record<Locale, string[]> = {
-  en: guaranteeSources.map((g) => g.en),
-  es: guaranteeSources.map((g) => g.es),
-};
-
-/** Canonical English list (back-compat alias). */
-export const noSurpriseGuarantees: string[] = noSurpriseGuaranteesByLocale.en;

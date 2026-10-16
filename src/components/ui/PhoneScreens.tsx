@@ -153,18 +153,15 @@ function ScanScreen({ reduced }: ScreenProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           <QrCode className="w-14 h-14 text-white/25" />
         </div>
-        {reduced ? (
-          scanLine
-        ) : (
-          <m.div
-            aria-hidden="true"
-            animate={{ y: [-52, 52, -52] }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-x-0 top-1/2"
-          >
-            {scanLine}
-          </m.div>
-        )}
+        {/* Same wrapper either way so server and client HTML match; reduced motion keeps the line still. */}
+        <m.div
+          aria-hidden="true"
+          animate={reduced ? { y: 0 } : { y: [-52, 52, -52] }}
+          transition={reduced ? { duration: 0 } : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-x-0 top-1/2"
+        >
+          {scanLine}
+        </m.div>
       </div>
       {/* helper card */}
       <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4 flex items-center gap-3">
@@ -318,7 +315,9 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
             initial={false}
             animate={{
               opacity: i === active ? 1 : 0,
-              y: i === active || reduced ? 0 : REVEAL.y / 2,
+              // Inactive screens are invisible; keeping their offset independent of
+              // `reduced` keeps SSR and client styles identical.
+              y: i === active ? 0 : REVEAL.y / 2,
             }}
             transition={{ duration: reduced ? 0 : DURATION.entrance, ease: EASE }}
           >

@@ -33,21 +33,17 @@ export function ScrollReveal({
     none: {},
   };
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
-
+  // Same element and start state on server and client (useReducedMotion() is
+  // null during SSR), so hydration always matches. Reduced motion shows the
+  // content immediately with a zero-length transition — nothing moves.
+  const shown = isInView || Boolean(reduce);
   return (
     <m.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, ...directionOffset[direction] }}
-      animate={
-        isInView
-          ? { opacity: 1, x: 0, y: 0 }
-          : { opacity: 0, ...directionOffset[direction] }
-      }
-      transition={{ duration, delay, ease: EASE }}
+      animate={shown ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...directionOffset[direction] }}
+      transition={reduce ? { duration: 0 } : { duration, delay, ease: EASE }}
     >
       {children}
     </m.div>

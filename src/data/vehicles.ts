@@ -12,6 +12,8 @@ export interface Vehicle {
   features: string[];
   image: string;
   images: string[];
+  /** Transparent cut-outs of `images`, same order (public/images/cutouts). Used on the site; JSON-LD keeps `image`. */
+  cutouts: string[];
   imageAlt: string;
 }
 
@@ -21,8 +23,13 @@ export type VehicleCopy = Pick<
   "tagline" | "description" | "specs" | "features" | "imageAlt"
 >;
 
+/** "/images/scooter/x.jpg" -> "/images/cutouts/x.webp". Pure string; call withBase() at render time. */
+const toCutout = (path: string) => path.replace(/^\/images\/[^/]+\/(.+)\.[a-z]+$/, "/images/cutouts/$1.webp");
+
+const defineVehicle = (v: Omit<Vehicle, "cutouts">): Vehicle => ({ ...v, cutouts: v.images.map(toCutout) });
+
 export const vehicles: Vehicle[] = [
-  {
+  defineVehicle({
     id: "e-scooter",
     name: "Rido Scooter",
     type: "e-scooter",
@@ -31,8 +38,8 @@ export const vehicles: Vehicle[] = [
       "Our top-tier e-scooter with a wide deck, powerful brakes, and up to 45 km of range. Built for urban explorers who demand safety and style.",
     specs: [
       { label: "Range", value: "45 km" },
-      { label: "Top Speed", value: "25 km/h" },
-      { label: "Weight Limit", value: "120 kg" },
+      { label: "Top speed", value: "25 km/h" },
+      { label: "Weight limit", value: "120 kg" },
       { label: "Battery", value: "Swappable" },
     ],
     features: [
@@ -56,8 +63,8 @@ export const vehicles: Vehicle[] = [
       "/images/scooter/rido-scooter-handlebars.jpeg",
     ],
     imageAlt: "Rido e-scooter",
-  },
-  {
+  }),
+  defineVehicle({
     id: "e-bike",
     name: "Rido Bike",
     type: "e-bike",
@@ -66,8 +73,8 @@ export const vehicles: Vehicle[] = [
       "Our electric-assist bike with smooth pedal support, an adjustable saddle, and a sturdy front basket. Perfect for longer commutes and carrying essentials.",
     specs: [
       { label: "Range", value: "60 km" },
-      { label: "Assist Speed", value: "25 km/h" },
-      { label: "Weight Limit", value: "130 kg" },
+      { label: "Assist speed", value: "25 km/h" },
+      { label: "Weight limit", value: "130 kg" },
       { label: "Battery", value: "Swappable" },
     ],
     features: [
@@ -89,7 +96,7 @@ export const vehicles: Vehicle[] = [
       "/images/bike/rido-bike-lifestyle.jpg",
     ],
     imageAlt: "Rido e-bike electric-assist bicycle",
-  },
+  }),
 ];
 
 // Spanish copy, parallel to `vehicles` and keyed by vehicle id. English

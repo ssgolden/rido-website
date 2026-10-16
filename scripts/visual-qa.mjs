@@ -23,7 +23,7 @@ const PAGES = [
   { path: "/", name: "home", fullPage: true },
   { path: "/es", name: "home-es", fullPage: true },
   { path: "/coming-soon", name: "coming-soon-full", fullPage: true },
-  { path: "/#pricing", name: "pricing-anchor", fullPage: false },
+  { path: "/partners", name: "partners", fullPage: true },
   { path: "/politica-cookies", name: "cookie-policy", fullPage: false },
   { path: "/privacy", name: "privacy", fullPage: false },
   { path: "/terms", name: "terms", fullPage: false },
