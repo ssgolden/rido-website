@@ -56,7 +56,7 @@ const copy = {
     sectionAria: "Preguntas frecuentes",
     label: "Preguntas frecuentes",
     title: "Resolvemos tus dudas",
-    intro: "Precios, seguridad, normas y todo lo demás para rodar con Rido.",
+    intro: "Precios, seguridad, normas y todo lo demás para moverte con Rido.",
     searchPlaceholder: "Busca una pregunta…",
     searchAria: "Buscar en las preguntas frecuentes",
     categories: {

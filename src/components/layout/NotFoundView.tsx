@@ -9,7 +9,7 @@ const copy = {
     titleBefore: "Wrong",
     titleHighlight: "turn.",
     body: "This page doesn't exist — but the ride back home does.",
-    home: "Back to Home",
+    home: "Back to home",
     privacy: "Privacy Policy",
     terms: "Terms of Service",
     contact: "Contact",

@@ -49,11 +49,11 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "Do I need a driver's license?",
+      en: "Do I need a driving licence?",
       es: "¿Necesito carné de conducir?",
     },
     answer: {
-      en: "For e-scooters: no license is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no license is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations.",
+      en: "For e-scooters: no licence is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no licence is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations.",
       es: "Para patinetes eléctricos: no se necesita carné en la mayoría de ciudades españolas para velocidades de hasta 25 km/h. Para bicis eléctricas: tampoco, ya que la ley española las considera bicicletas de pedaleo asistido. Consulta siempre la normativa local.",
     },
     category: "getting-started",
@@ -71,11 +71,11 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "Can I ride in bike lanes?",
+      en: "Can I ride in cycle lanes?",
       es: "¿Puedo circular por el carril bici?",
     },
     answer: {
-      en: "Yes! In Spain, e-scooters and e-bikes are permitted in bike lanes and on roads with speed limits up to 30 km/h. Always avoid sidewalks and pedestrian zones.",
+      en: "Yes! In Spain, e-scooters and e-bikes are permitted in cycle lanes and on roads with speed limits up to 30 km/h. Always avoid pavements and pedestrian zones.",
       es: "¡Sí! En España, los patinetes y las bicis eléctricas pueden circular por carriles bici y por vías con límite de hasta 30 km/h. Evita siempre las aceras y las zonas peatonales.",
     },
     category: "safety",
@@ -86,7 +86,7 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Dónde aparco al terminar?",
     },
     answer: {
-      en: "Park in designated areas shown in the app. These are typically bike rack zones or marked parking areas. Keep sidewalks clear for pedestrians and accessibility.",
+      en: "Park in designated areas shown in the app. These are typically cycle-rack zones or marked parking areas. Keep pavements clear for pedestrians and accessibility.",
       es: "Aparca en las zonas designadas que muestra la app, normalmente aparcamientos de bicis o zonas señalizadas. Deja las aceras libres para los peatones y la accesibilidad.",
     },
     category: "safety",

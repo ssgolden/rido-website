@@ -8,14 +8,14 @@ import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Partner with Rido — Run shared e-scooters in your city",
   description:
-    "Turn-key shared mobility for Spanish cities: DGT-certified fleet, rider app, insurance and operations playbook. You bring the local team.",
+    "Turnkey shared mobility for Spanish cities: DGT-certified fleet, rider app, insurance and operations playbook. You bring the local team.",
   alternates: {
     canonical: `${SITE_ORIGIN}/partners`,
     languages: { en: `${SITE_ORIGIN}/partners`, es: `${SITE_ORIGIN}/es/partners`, "x-default": `${SITE_ORIGIN}/partners` },
   },
   openGraph: {
     title: "Partner with Rido",
-    description: "Turn-key shared mobility for Spanish cities.",
+    description: "Turnkey shared mobility for Spanish cities.",
     url: `${SITE_ORIGIN}/partners`,
     locale: OG_LOCALE_EN,
     alternateLocale: [OG_LOCALE_ES],
