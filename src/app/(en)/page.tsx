@@ -31,19 +31,12 @@ const loading = () => <SectionSkeleton />;
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })), { loading });
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })), { loading });
-const Cities = dynamic(() => import("@/components/sections/Cities").then((m) => ({ default: m.Cities })), { loading });
+const Launch = dynamic(() => import("@/components/sections/Launch").then((m) => ({ default: m.Launch })), { loading });
 const Safety = dynamic(() => import("@/components/sections/Safety").then((m) => ({ default: m.Safety })), { loading });
-const Sustainability = dynamic(() => import("@/components/sections/Sustainability").then((m) => ({ default: m.Sustainability })), { loading });
-const Pricing = dynamic(() => import("@/components/sections/Pricing").then((m) => ({ default: m.Pricing })), { loading });
 const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })), { loading });
-const About = dynamic(() => import("@/components/sections/About").then((m) => ({ default: m.About })), { loading });
-const Partners = dynamic(() => import("@/components/sections/Partners").then((m) => ({ default: m.Partners })), { loading });
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })), { loading });
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
-function Divider() {
-  return <div className="section-divider max-w-7xl mx-auto" />;
-}
 
 export default function Home() {
   return (
@@ -58,25 +51,11 @@ export default function Home() {
           </div>
         </noscript>
         <Hero />
-        <Divider />
+        <Launch />
         <HowItWorks />
-        <Divider />
         <Vehicles />
-        <Divider />
-        <Cities />
-        <Divider />
         <Safety />
-        <Divider />
-        <Sustainability />
-        <Divider />
-        <Pricing />
-        <Divider />
         <FAQ />
-        <Divider />
-        <About />
-        <Divider />
-        <Partners />
-        <Divider />
         <DownloadCTA />
       </main>
       <Footer />

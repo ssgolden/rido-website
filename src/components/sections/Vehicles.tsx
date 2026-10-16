@@ -2,46 +2,50 @@
 
 import { useState } from "react";
 import { vehicles, getVehicleCopy } from "@/data/vehicles";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { Check } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import Image from "next/image";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { DURATION, EASE, STAGGER } from "@/lib/motion";
-
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { withBase } from "@/lib/basePath";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { cn } from "@/lib/utils";
 
-// User-visible strings per locale. Vehicle-specific copy (taglines,
-// descriptions, specs, features) lives in src/data/vehicles.ts.
+// Vehicle-specific copy (taglines, descriptions, specs, features) lives in src/data/vehicles.ts.
 const en = {
   ariaLabel: "Our vehicles",
-  eyebrow: "Our Fleet",
-  headingBefore: "Choose Your",
-  headingHighlight: "Ride",
-  badgeScooter: "E-Scooter",
-  badgeBike: "E-Bike",
+  label: "The fleet",
+  title: "Choose your ride",
+  tabsLabel: "Choose a vehicle",
+  badgeScooter: "E-scooter",
+  badgeBike: "E-bike",
   imageUnavailable: "Image unavailable",
   thumbAlt: (name: string, index: number) => `${name} view ${index}`,
+  specsLabel: "Specifications",
+  featuresLabel: "Included",
 };
 
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
     ariaLabel: "Nuestros vehículos",
-    eyebrow: "Nuestra flota",
-    headingBefore: "Elige tu",
-    headingHighlight: "vehículo",
+    label: "La flota",
+    title: "Elige tu vehículo",
+    tabsLabel: "Elige un vehículo",
     badgeScooter: "Patinete eléctrico",
     badgeBike: "Bici eléctrica",
     imageUnavailable: "Imagen no disponible",
     thumbAlt: (name: string, index: number) => `${name}, vista ${index}`,
+    specsLabel: "Especificaciones",
+    featuresLabel: "Incluye",
   },
 };
+
+const focusRing =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-sand";
 
 export function Vehicles() {
   const locale = useLocale();
@@ -54,10 +58,8 @@ export function Vehicles() {
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
   const reduce = useReducedMotion();
 
-  // Apply basePath prefix at render time so it works in both SSR and client.
-  // MUST be called in the component (not in the data file) because
-  // withBase() depends on the runtime environment.
-  const vehicleImages = v.images.map(withBase);
+  // withBase() at render time — basePath differs between SSR and client.
+  const vehicleImages = v.cutouts.map(withBase);
 
   const handleVehicleChange = (index: number) => {
     setActive(index);
@@ -66,39 +68,27 @@ export function Vehicles() {
     setThumbErrors({});
   };
 
-  const handleThumbnailClick = (index: number) => {
-    setActiveImage(index);
-    setMainImageError(false);
-  };
-
   return (
-    <section id="vehicles" aria-label={t.ariaLabel} className="py-12 sm:py-24 px-4 sm:px-6 relative section-tint-magenta">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-10 sm:mb-16">
-          <SectionHeading
-            eyebrow={t.eyebrow}
-            before={t.headingBefore}
-            highlight={t.headingHighlight}
-            className="text-3xl sm:text-4xl md:text-5xl font-black"
-          />
-        </div>
-
-        <ScrollReveal delay={STAGGER.text}>
-          <div className="flex justify-center gap-4 mb-12 relative">
+    <Section id="vehicles" label={t.ariaLabel} tone="sand">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10 sm:mb-14">
+        <SectionHeader label={t.label} title={t.title} align="left" tone="sand" className="!mb-0" />
+        <ScrollReveal>
+          <div role="group" aria-label={t.tabsLabel} className="inline-flex rounded-full bg-ink/5 p-1 ring-1 ring-ink/10">
             {vehicles.map((vehicle, i) => (
               <button
                 key={vehicle.id}
+                aria-pressed={i === active}
                 onClick={() => handleVehicleChange(i)}
-                className={`relative px-4 py-2.5 sm:px-6 sm:py-3 rounded-xl font-semibold text-sm transition-colors duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${
-                  i === active
-                    ? "text-white"
-                    : "text-muted-strong hover:text-white hover:bg-white/10"
-                }`}
+                className={cn(
+                  "relative min-h-11 px-5 sm:px-6 rounded-full font-semibold text-sm transition-colors duration-200 cursor-pointer",
+                  focusRing,
+                  i === active ? "text-white" : "text-ink-muted hover:text-ink"
+                )}
               >
                 {i === active && (
-                  <m.div
+                  <m.span
                     layoutId="vehicle-tab-bg"
-                    className="absolute inset-0 bg-rido-magenta rounded-xl shadow-lg shadow-rido-magenta/25"
+                    className="absolute inset-0 rounded-full bg-ink"
                     transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
                   />
                 )}
@@ -107,105 +97,98 @@ export function Vehicles() {
             ))}
           </div>
         </ScrollReveal>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ScrollReveal direction="left" delay={STAGGER.grid}>
-            <Card className="overflow-hidden p-0">
-              <div className="relative aspect-[4/3] bg-gradient-to-br from-white/5 to-rido-magenta/10 flex items-center justify-center">
-                {mainImageError ? (
-                  <div className="absolute inset-0 flex items-center justify-center text-muted text-sm">
-                    {t.imageUnavailable}
-                  </div>
-                ) : (
-                  <AnimatePresence initial={false}>
-                    <m.div
-                      key={`${v.id}-${activeImage}`}
-                      className="absolute inset-0"
-                      initial={reduce ? false : { opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
-                    >
-                      <Image
-                        src={vehicleImages[activeImage]}
-                        alt={vCopy.imageAlt}
-                        fill
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="object-cover"
-                        priority={active === 0 && activeImage === 0}
-                        onError={() => setMainImageError(true)}
-                      />
-                    </m.div>
-                  </AnimatePresence>
-                )}
-              </div>
-              {vehicleImages.length > 1 && (
-                <div className="flex gap-2 p-3 bg-white/5">
-                  {vehicleImages.map((img, i) => (
-                    <button
-                      key={img}
-                      onClick={() => handleThumbnailClick(i)}
-                      className={`relative w-16 h-16 rounded-lg overflow-hidden transition-[opacity,box-shadow] duration-200 cursor-pointer hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${
-                        i === activeImage
-                          ? "ring-2 ring-rido-magenta ring-offset-2 ring-offset-rido-navy"
-                          : "opacity-60"
-                      }`}
-                    >
-                      {thumbErrors[i] ? (
-                        <div className="w-full h-full flex items-center justify-center bg-white/10 text-muted text-[10px] text-center px-1">
-                          {t.imageUnavailable}
-                        </div>
-                      ) : (
-                        <Image
-                          src={img}
-                          alt={t.thumbAlt(v.name, i + 1)}
-                          fill
-                          loading="lazy"
-                          className="object-cover"
-                          sizes="64px"
-                          onError={() => setThumbErrors((prev) => ({ ...prev, [i]: true }))}
-                        />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </Card>
-          </ScrollReveal>
-
-          <ScrollReveal direction="right" delay={STAGGER.grid * 2}>
-            <div className="flex flex-col justify-center gap-6">
-              <div>
-                <Badge variant="magenta" className="mb-3 cursor-default">
-                  {v.type === "e-scooter" ? t.badgeScooter : t.badgeBike}
-                </Badge>
-                <h3 className="text-3xl font-black">{v.name}</h3>
-                <p className="text-rido-magenta-light font-semibold mt-1">{vCopy.tagline}</p>
-              </div>
-
-              <p className="text-muted leading-relaxed">{vCopy.description}</p>
-
-              <StaggerReveal className="grid grid-cols-2 gap-4" staggerDelay={STAGGER.text}>
-                {vCopy.specs.map((spec) => (
-                  <StaggerItem key={spec.label} className="glass rounded-xl p-4 text-center">
-                    <p className="text-lg font-bold text-rido-magenta-light">{spec.value}</p>
-                    <p className="text-xs text-muted">{spec.label}</p>
-                  </StaggerItem>
-                ))}
-              </StaggerReveal>
-
-              <div className="grid grid-cols-2 gap-2">
-                {vCopy.features.map((feature) => (
-                  <div key={feature} className="flex items-center gap-2 text-sm">
-                    <Check className="w-4 h-4 text-rido-green shrink-0" />
-                    <span className="text-muted-strong">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </ScrollReveal>
-        </div>
       </div>
-    </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-16 items-start">
+        <ScrollReveal delay={STAGGER.text}>
+          <div className="image-frame-sun relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-black/5">
+            {mainImageError ? (
+              <div className="absolute inset-0 flex items-center justify-center text-ink-muted text-sm">{t.imageUnavailable}</div>
+            ) : (
+              <AnimatePresence initial={false}>
+                <m.div
+                  key={`${v.id}-${activeImage}`}
+                  className="absolute inset-0"
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
+                >
+                  <Image
+                    src={vehicleImages[activeImage]}
+                    alt={vCopy.imageAlt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    className="object-contain p-6 sm:p-10 drop-shadow-[0_24px_30px_rgba(15,23,42,0.18)]"
+                    onError={() => setMainImageError(true)}
+                  />
+                </m.div>
+              </AnimatePresence>
+            )}
+          </div>
+          {vehicleImages.length > 1 && (
+            <div className="mt-4 flex gap-3">
+              {vehicleImages.map((img, i) => (
+                <button
+                  key={img}
+                  onClick={() => {
+                    setActiveImage(i);
+                    setMainImageError(false);
+                  }}
+                  aria-label={t.thumbAlt(v.name, i + 1)}
+                  aria-pressed={i === activeImage}
+                  className={cn(
+                    "image-frame-sun relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden cursor-pointer transition-[box-shadow,opacity] duration-200",
+                    focusRing,
+                    i === activeImage ? "ring-2 ring-ink" : "ring-1 ring-black/5 opacity-70 hover:opacity-100"
+                  )}
+                >
+                  {thumbErrors[i] ? (
+                    <span className="absolute inset-0 flex items-center justify-center text-ink-muted text-[10px] text-center px-1">{t.imageUnavailable}</span>
+                  ) : (
+                    <Image
+                      src={img}
+                      alt=""
+                      fill
+                      loading="lazy"
+                      sizes="80px"
+                      className="object-contain p-1.5"
+                      onError={() => setThumbErrors((prev) => ({ ...prev, [i]: true }))}
+                    />
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </ScrollReveal>
+
+        <ScrollReveal delay={STAGGER.grid}>
+          <p className="text-sm font-semibold text-rido-magenta-dark">{v.type === "e-scooter" ? t.badgeScooter : t.badgeBike}</p>
+          <h3 className="mt-1 font-display text-3xl sm:text-4xl font-black text-ink">{v.name}</h3>
+          <p className="mt-1 text-lg font-semibold text-ink-muted">{vCopy.tagline}</p>
+          <p className="mt-5 text-ink-muted leading-relaxed">{vCopy.description}</p>
+
+          <h4 className="sr-only">{t.specsLabel}</h4>
+          <dl className="mt-8 grid grid-cols-2 border-t border-ink/10">
+            {vCopy.specs.map((spec, i) => (
+              <div key={spec.label} className={cn("py-5 border-b border-ink/10", i % 2 === 0 ? "pr-4" : "pl-4 border-l")}>
+                <dt className="text-sm text-ink-muted">{spec.label}</dt>
+                <dd className="mt-1 font-display text-2xl sm:text-3xl font-black text-ink">{spec.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <h4 className="mt-8 text-sm font-semibold text-ink">{t.featuresLabel}</h4>
+          <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+            {vCopy.features.map((feature) => (
+              <li key={feature} className="flex items-start gap-2 text-sm text-ink-muted">
+                <Check className="mt-0.5 w-4 h-4 shrink-0 text-rido-magenta-dark" aria-hidden="true" />
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </ScrollReveal>
+      </div>
+    </Section>
   );
 }

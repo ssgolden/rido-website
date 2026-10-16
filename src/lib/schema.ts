@@ -254,7 +254,7 @@ export const breadcrumbSchema = {
     { "@type": "ListItem", position: 1, name: "Home", item: baseUrl },
     { "@type": "ListItem", position: 2, name: "How It Works", item: `${baseUrl}/#how-it-works` },
     { "@type": "ListItem", position: 3, name: "Vehicles", item: `${baseUrl}/#vehicles` },
-    { "@type": "ListItem", position: 4, name: "Pricing", item: `${baseUrl}/#pricing` },
+    { "@type": "ListItem", position: 4, name: "FAQ", item: `${baseUrl}/#faq` },
     { "@type": "ListItem", position: 5, name: "Cities", item: `${baseUrl}/#cities` },
   ],
 };
@@ -268,7 +268,7 @@ export const speakableSchema = {
   url: baseUrl,
   speakable: {
     "@type": "SpeakableSpecification",
-    cssSelector: ["#how-it-works h2, #how-it-works h3", "#pricing h2, #pricing h3", "#faq h2, #faq button"],
+    cssSelector: ["#how-it-works h2, #how-it-works h3", "#safety h2, #safety h4", "#faq h2, #faq button"],
   },
 };
 
@@ -338,7 +338,7 @@ export const sustainabilitySchema = {
   "@type": "Organization",
   "@id": `${baseUrl}/#sustainability`,
   name: "Rido Sustainability",
-  url: `${baseUrl}/#sustainability`,
+  url: `${baseUrl}/#safety`,
   knowsAbout: [
     "Carbon neutral operations",
     "Swappable electric vehicle batteries",

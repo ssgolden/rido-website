@@ -65,6 +65,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
       },
     })),
     {
+      url: `${baseUrl}/partners`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.5,
+      alternates: {
+        languages: {
+          en: `${baseUrl}/partners`,
+          es: `${baseUrl}/es/partners`,
+          "x-default": `${baseUrl}/partners`,
+        },
+      },
+    },
+    {
+      url: `${baseUrl}/es/partners`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.4,
+      alternates: {
+        languages: {
+          en: `${baseUrl}/partners`,
+          es: `${baseUrl}/es/partners`,
+          "x-default": `${baseUrl}/partners`,
+        },
+      },
+    },
+    {
       url: `${baseUrl}/careers`,
       lastModified,
       changeFrequency: "monthly",

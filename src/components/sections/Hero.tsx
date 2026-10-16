@@ -1,164 +1,88 @@
 "use client";
-import { Badge } from "@/components/ui/Badge";
-import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
-import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
+import { ArrowRight, HardHat, BadgeCheck, MapPin, Shield } from "lucide-react";
 import { m, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
-import { useRef, useMemo } from "react";
+import { useRef } from "react";
 import { createPortal } from "react-dom";
-import { useCountUp } from "@/hooks/useCountUp";
-import { Magnetic } from "@/components/ui/Magnetic";
-import { vehicles } from "@/data/vehicles";
-import { cities } from "@/data/cities";
+import { withBase } from "@/lib/basePath";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import type { LucideIcon } from "lucide-react";
 import { DURATION, EASE, REVEAL, STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
+import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { ImageFrame } from "@/components/ui/ImageFrame";
+import { vehicles } from "@/data/vehicles";
+import { primaryCity } from "@/data/cities";
 import { useHeroBackdropEl, useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
-// Noise overlay (SVG turbulence) — used to break gradient banding on dark surfaces.
+// Noise overlay (SVG turbulence) — breaks gradient banding on dark surfaces.
 const NOISE_SVG =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>'
   );
 
-type HeroStatData = {
-  icon: LucideIcon;
-  value: number;
-  suffix: string;
-  label: string;
-  text?: string;
-  green?: boolean;
-};
+const town = primaryCity?.name ?? "Torrevieja";
 
-// User-visible strings per locale.
 const en = {
-  waitlistKicker: "Waitlist now open — be first to ride",
+  waitlistKicker: "Waitlist now open",
   waitlistSingular: "{count} person on the waitlist",
   waitlistPlural: "{count} people on the waitlist",
-  badge: "Launching soon in Torrevieja",
-  headlineWords: ["Move", "Freely", "Along", "the", "Coast"],
+  badge: `Launching soon in ${town}`,
+  /** Last `highlightCount` words get the brand gradient — the only gradient text on the page. */
+  headlineWords: ["Move", "freely", "along", "the", "coast."],
+  highlightCount: 2,
   subheadline:
-    "Cheaper than a taxi, cleaner than a rental car, and run by people who live here. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
-  ctaPrimary: "Join the Waitlist",
-  ctaSecondary: "See How It Works",
-  microcopy: "No spam, unsubscribe anytime · GDPR compliant",
-  scrollAria: "Scroll to next section",
-  scrollLabel: "Scroll",
-  stats: [
-    { icon: MapPin, value: cities.length, suffix: "", label: "Planned Cities" },
-    { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
-    { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
-  ] as HeroStatData[],
+    "Shared e-scooters and e-bikes, run by people who live here. Cheaper than a taxi, cleaner than a rental car. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
+  microcopy: "No spam. One email when we launch near you.",
+  secondary: "See how it works",
+  imageAlt: "The Rido e-scooter in brand magenta, with its helmet docked on the stem",
+  chipsLabel: "Highlights",
+  chips: ["Helmet included", "DGT certified", `${town} launch`],
 };
 
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    waitlistKicker: "Lista de espera abierta — sé de los primeros en moverte",
+    waitlistKicker: "Lista de espera abierta",
     waitlistSingular: "{count} persona en la lista de espera",
     waitlistPlural: "{count} personas en la lista de espera",
-    badge: "Muy pronto en Torrevieja",
-    headlineWords: ["Muévete", "libremente", "por", "la", "costa"],
+    badge: `Muy pronto en ${town}`,
+    headlineWords: ["Muévete", "libre", "por", "la", "costa."],
+    highlightCount: 2,
     subheadline:
-      "Más barato que un taxi, más limpio que un coche de alquiler, y gestionado por gente que vive aquí. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
-    ctaPrimary: "Unirme a la lista",
-    ctaSecondary: "Cómo funciona",
-    microcopy: "Sin spam, date de baja cuando quieras · Cumplimos el RGPD",
-    scrollAria: "Desliza a la siguiente sección",
-    scrollLabel: "Desliza",
-    stats: [
-      { icon: MapPin, value: cities.length, suffix: "", label: "Ciudades planificadas" },
-      { icon: Bike, value: vehicles.length, suffix: "", label: "Tipos de vehículo" },
-      { icon: Leaf, value: 0, suffix: "", label: "Emisiones directas", text: "Cero", green: true },
-    ] as HeroStatData[],
+      "Patinetes y bicis eléctricas compartidas, gestionadas por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
+    microcopy: "Sin spam. Un correo cuando lleguemos a tu zona.",
+    secondary: "Cómo funciona",
+    imageAlt: "El patinete eléctrico Rido en magenta, con el casco acoplado en la barra",
+    chipsLabel: "Lo esencial",
+    chips: ["Casco incluido", "Certificado DGT", `Lanzamiento en ${town}`],
   },
 };
 
-function HeroStat({ stat }: { stat: HeroStatData }) {
-  const isText = stat.text !== undefined;
-  const { count, ref, visible } = useCountUp(stat.value, { duration: 1600 });
-  const displayValue = isText ? stat.text : count.toLocaleString();
-  const finalValue = isText ? stat.text : stat.value.toLocaleString();
-  return (
-    <StaggerItem ref={ref} className="text-center min-w-0" aria-label={`${finalValue} ${stat.label}`}>
-      <stat.icon className="w-3.5 h-3.5 mx-auto mb-2 text-muted-strong" aria-hidden="true" />
-      <p
-        aria-hidden="true"
-        className={`text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight tabular-nums ${stat.green ? "text-rido-green" : "text-white"}`}
-        style={{ opacity: visible ? 1 : 0 }}
-        suppressHydrationWarning
-      >
-        {displayValue}
-      </p>
-      <p className="mt-1 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">{stat.label}</p>
-    </StaggerItem>
-  );
-}
+const chipIcons = [HardHat, BadgeCheck, MapPin] as const;
 
 const wordVariants = {
   hidden: { opacity: 0, y: REVEAL.y },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: DURATION.entrance, ease: EASE },
-  },
+  visible: { opacity: 1, y: 0, transition: { duration: DURATION.entrance, ease: EASE } },
 };
-
 const wordVariantsReduced = {
   hidden: { opacity: 1, y: 0 },
   visible: { opacity: 1, y: 0, transition: { duration: 0 } },
 };
 
-function HeroBackdrop({
-  fixed,
-  opacity,
-}: {
-  fixed: boolean;
-  opacity: number | MotionValue<number>;
-}) {
+function HeroBackdrop({ fixed, opacity }: { fixed: boolean; opacity: number | MotionValue<number> }) {
   return (
-    <m.div
-      aria-hidden="true"
-      className={fixed ? "absolute inset-0" : "contents"}
-      style={fixed ? { opacity } : undefined}
-    >
+    <m.div aria-hidden="true" className={fixed ? "absolute inset-0" : "contents"} style={fixed ? { opacity } : undefined}>
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
-      {/* No photo layer yet: the only lifestyle files are the wordmark and
-          white-background product renders, which read as a ghost logo / light
-          band when faded over navy. Add a real lifestyle photo here once
-          docs/ASSET-BRIEF.md deliverable B exists. */}
       <div
         className="absolute inset-0 mix-blend-soft-light"
-        style={{
-          background:
-            "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)",
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at 50% 50%, transparent 45%, rgba(15,23,42,0.65) 100%)",
-        }}
+        style={{ background: "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)" }}
       />
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(15,23,42,0.5), transparent 12%, transparent 88%, rgba(15,23,42,0.5))",
-        }}
-      />
       <div className="absolute top-1/4 -right-16 w-[160px] h-[160px] sm:-right-24 sm:w-[700px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[80px] sm:blur-[100px] hero-orb hero-orb-1" />
       <div className="absolute bottom-0 -left-16 w-[140px] h-[140px] sm:-left-24 sm:w-[500px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[70px] sm:blur-[90px] hero-orb hero-orb-2" />
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
-        style={{ backgroundImage: `url("${NOISE_SVG}")` }}
-      />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("${NOISE_SVG}")` }} />
     </m.div>
   );
 }
@@ -166,7 +90,6 @@ function HeroBackdrop({
 export function Hero() {
   const locale = useLocale();
   const t = copy[locale];
-  const headlineWords = t.headlineWords;
   const sectionRef = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const scrollContainerRef = useScrollContainerRef();
@@ -177,152 +100,118 @@ export function Hero() {
     target: sectionRef,
     offset: ["start start", "end start"],
   });
-  // Fade content but never below 0.25 — full-vanish bottom half reads gimmicky.
-  const contentOpacityRaw = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.85, 0.25]);
-  const contentOpacity = reduce ? 1 : contentOpacityRaw;
-  const cueOpacityRaw = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-  const cueOpacity = reduce ? 1 : cueOpacityRaw;
   const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
   const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
   const parkBackdrop = Boolean(backdropEl) && !reduce;
-
-  // Group indices: 0..2 line 1, 3..4 line 2.
-  const wordGroup = useMemo(() => new Set([3, 4]), []);
   const variants = reduce ? wordVariantsReduced : wordVariants;
+  const highlightFrom = t.headlineWords.length - t.highlightCount;
+  const enter = (delay: number) => ({
+    initial: reduce ? false : { opacity: 0, y: REVEAL.y },
+    animate: { opacity: 1, y: 0 },
+    transition: { delay: reduce ? 0 : delay, duration: reduce ? 0 : DURATION.entrance, ease: EASE },
+  });
 
   return (
     <section
       ref={sectionRef}
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center justify-center overflow-hidden pt-6 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))]"
+      className="relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center overflow-hidden pt-6 pb-[max(3rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6"
     >
       {parkBackdrop && backdropEl
-        ? createPortal(
-            <HeroBackdrop fixed opacity={backdropOpacity} />,
-            backdropEl
-          )
+        ? createPortal(<HeroBackdrop fixed opacity={backdropOpacity} />, backdropEl)
         : <HeroBackdrop fixed={false} opacity={1} />}
 
-      <m.div
-        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-28 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
-        style={{ opacity: contentOpacity }}
-      >
-        {/* Social-proof kicker */}
-        <ScrollReveal>
-          <div className="mb-3 sm:mb-4 inline-flex items-center gap-2 text-[11px] sm:text-xs uppercase tracking-[0.15em] text-muted-strong">
-            <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
+      <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
+        <div className="text-center lg:text-left">
+          <m.div {...enter(0)} className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-6">
+            <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
+              <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-rido-green" />
+              </span>
+              {t.badge}
             </span>
-            <span>
-              <WaitlistProof
-                singular={t.waitlistSingular}
-                plural={t.waitlistPlural}
-                fallbackKicker={t.waitlistKicker}
-              />
+            <span className="text-xs sm:text-sm text-muted">
+              <WaitlistProof singular={t.waitlistSingular} plural={t.waitlistPlural} fallbackKicker={t.waitlistKicker} />
             </span>
-          </div>
-        </ScrollReveal>
+          </m.div>
 
-        <ScrollReveal delay={STAGGER.text}>
-          <Badge variant="magenta" className="mb-5 sm:mb-7 [@media(max-height:860px)]:sm:mb-4">
-            {t.badge}
-          </Badge>
-        </ScrollReveal>
-
-        {/* Headline — animate="visible" so first paint reveals the H1. Spaces rendered as sibling text nodes for SR correctness. */}
-        <m.h1
-          id="hero-heading"
-          className="text-display-2xl font-extrabold text-balance"
-          initial={reduce ? "visible" : "hidden"}
-          animate="visible"
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: reduce ? 0 : 0.12 } },
-          }}
-        >
-          {headlineWords.map((w, i) => (
-            <span key={`${w}-${i}`}>
-              <m.span
-                className={`inline-block ${wordGroup.has(i) ? "text-gradient-brand" : ""}`}
-                variants={variants}
-              >
-                {w}
-              </m.span>
-              {i < headlineWords.length - 1 ? " " : ""}
-              {i === 2 ? <br className="hidden sm:inline" aria-hidden="true" /> : null}
-            </span>
-          ))}
-        </m.h1>
-
-        <m.p
-          initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.28, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="mt-6 sm:mt-7 [@media(max-height:860px)]:sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
-        >
-          {t.subheadline}
-        </m.p>
-
-        <m.div
-          initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.4, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="mt-8 sm:mt-10 [@media(max-height:860px)]:sm:mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
-        >
-          <a
-            href="#download"
-            className="group btn-lift relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
+          <m.h1
+            id="hero-heading"
+            className="text-display-2xl font-black text-balance"
+            initial={reduce ? "visible" : "hidden"}
+            animate="visible"
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: reduce ? 0 : 0.08 } } }}
           >
-            <Magnetic className="contents">
-              <span className="relative z-10">{t.ctaPrimary}</span>
-              <ArrowRight className="relative z-10 w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
-            </Magnetic>
-          </a>
-          <a
-            href="#how-it-works"
-            className="group btn-lift relative inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] hover:bg-white/[0.1] hover:border-white/25 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy w-full max-w-[320px] sm:w-auto"
+            {t.headlineWords.map((w, i) => (
+              <span key={`${w}-${i}`}>
+                <m.span className={`inline-block ${i >= highlightFrom ? "text-gradient-brand" : ""}`} variants={variants}>
+                  {w}
+                </m.span>
+                {i < t.headlineWords.length - 1 ? " " : ""}
+              </span>
+            ))}
+          </m.h1>
+
+          <m.p
+            {...enter(0.24)}
+            className="mt-6 text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed"
           >
-            <span>{t.ctaSecondary}</span>
-          </a>
+            {t.subheadline}
+          </m.p>
+
+          <m.div {...enter(0.36)} className="mt-8 flex justify-center lg:justify-start">
+            <WaitlistForm className="max-w-lg" />
+          </m.div>
+
+          <m.div
+            {...enter(0.44)}
+            className="mt-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 justify-center lg:justify-start text-sm"
+          >
+            <span className="inline-flex items-center gap-2 text-muted">
+              <Shield className="w-3.5 h-3.5" aria-hidden="true" />
+              {t.microcopy}
+            </span>
+            <a
+              href="#how-it-works"
+              className="group inline-flex items-center gap-1.5 min-h-11 font-semibold text-white hover:text-rido-magenta-light transition-colors cursor-pointer"
+            >
+              {t.secondary}
+              <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
+            </a>
+          </m.div>
+        </div>
+
+        {/* Image slot: product render on sand until the Torrevieja photo shoot lands. */}
+        <m.div {...enter(0.2)} className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <ImageFrame
+            src={withBase(vehicles[0].cutouts[0])}
+            alt={t.imageAlt}
+            sizes="(max-width: 1024px) 90vw, 45vw"
+            priority
+            imageClassName="drop-shadow-[0_30px_40px_rgba(15,23,42,0.25)]"
+            aspect="aspect-[5/4] lg:aspect-[4/5]"
+            className="shadow-2xl shadow-black/40"
+          >
+            <ul className="absolute bottom-3 left-3 right-3 sm:bottom-5 sm:left-5 sm:right-5 flex flex-wrap gap-2" aria-label={t.chipsLabel}>
+              {t.chips.map((chip, i) => {
+                const Icon = chipIcons[i];
+                return (
+                  <li
+                    key={chip}
+                    // Two chips on phones so the row never wraps over the vehicle.
+                    className={`${i === 2 ? "hidden sm:inline-flex" : "inline-flex"} items-center gap-1.5 rounded-full bg-white/85 backdrop-blur px-3 py-1.5 text-xs font-semibold text-ink ring-1 ring-black/5`}
+                  >
+                    <Icon className="w-3.5 h-3.5 text-rido-magenta-dark" aria-hidden="true" />
+                    {chip}
+                  </li>
+                );
+              })}
+            </ul>
+          </ImageFrame>
         </m.div>
-
-        {/* Microcopy under CTAs */}
-        <m.p
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: reduce ? 0 : 0.48, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="mt-5 inline-flex items-center gap-2 text-xs text-muted-strong"
-        >
-          <Shield className="w-3.5 h-3.5" aria-hidden="true" />
-          {t.microcopy}
-        </m.p>
-
-        <StaggerReveal
-          className="mt-10 sm:mt-16 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
-          staggerDelay={STAGGER.grid}
-          delay={reduce ? 0 : 0.45}
-        >
-          {t.stats.map((s) => (
-            <HeroStat key={s.label} stat={s} />
-          ))}
-        </StaggerReveal>
-      </m.div>
-
-      {/* Scroll cue — pill + inner dot + magenta glow. Phones and short viewports hide it:
-          on those the stats row sits where the cue would land (it overlapped the labels). */}
-      <m.a
-        href="#how-it-works"
-        aria-label={t.scrollAria}
-        style={{ opacity: cueOpacity }}
-        className="group absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:[@media(min-height:861px)]:flex flex-col items-center gap-2 text-muted-strong hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
-      >
-        <span className="text-[11px] uppercase tracking-[0.15em]">{t.scrollLabel}</span>
-        <span className="relative flex h-9 w-6 rounded-full border border-white/15 backdrop-blur bg-white/[0.04] shadow-[0_0_12px_rgba(222,4,152,0.25)] justify-center pt-1.5">
-          <span className="block h-1.5 w-1.5 rounded-full bg-rido-magenta shadow-[0_0_6px_rgba(222,4,152,0.6)] motion-safe:animate-[scroll-dot_2s_ease-in-out_infinite]" />
-        </span>
-      </m.a>
+      </div>
     </section>
   );
 }

@@ -20,6 +20,11 @@ const itemVariants = {
   },
 };
 
+const itemVariantsReduced = {
+  hidden: { opacity: 0, y: REVEAL.y },
+  show: { opacity: 1, y: 0, transition: { duration: 0 } },
+};
+
 interface StaggerRevealProps {
   children: React.ReactNode;
   className?: string;
@@ -38,20 +43,18 @@ export function StaggerReveal({
   const isInView = useInView(ref, { once: true, margin: SCROLL_MARGIN });
   const reduce = useReducedMotion();
 
-  if (reduce) {
-    return <div className={className}>{children}</div>;
-  }
-
+  // Same element and start state on server and client so hydration matches;
+  // reduced motion reveals every child at once with zero-length transitions.
   return (
     <m.div
       ref={ref}
       className={className}
       variants={{
         ...containerVariants,
-        show: { transition: { staggerChildren: staggerDelay, delayChildren: delay } },
+        show: { transition: reduce ? { staggerChildren: 0, delayChildren: 0 } : { staggerChildren: staggerDelay, delayChildren: delay } },
       }}
       initial="hidden"
-      animate={isInView ? "show" : "hidden"}
+      animate={isInView || reduce ? "show" : "hidden"}
     >
       {children}
     </m.div>
@@ -62,8 +65,9 @@ export const StaggerItem = forwardRef<HTMLDivElement, {
   children: React.ReactNode;
   className?: string;
 }>(function StaggerItem({ children, className }, externalRef) {
+  const reduce = useReducedMotion();
   return (
-    <m.div ref={externalRef} variants={itemVariants} className={className}>
+    <m.div ref={externalRef} variants={reduce ? itemVariantsReduced : itemVariants} className={className}>
       {children}
     </m.div>
   );

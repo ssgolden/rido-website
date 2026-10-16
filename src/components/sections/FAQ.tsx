@@ -2,7 +2,7 @@
 
 import { faqItemsByLocale, type Category } from "@/data/faq";
 import { ChevronDown, Search, Mail } from "lucide-react";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
@@ -20,9 +20,8 @@ const categoryIds: readonly CategoryFilter[] = ["all", "getting-started", "prici
 
 interface FaqCopy {
   sectionAria: string;
-  eyebrow: string;
-  headingBefore: string;
-  headingHighlight: string;
+  label: string;
+  title: string;
   intro: string;
   searchPlaceholder: string;
   searchAria: string;
@@ -36,10 +35,9 @@ interface FaqCopy {
 const copy = {
   en: {
     sectionAria: "Frequently asked questions",
-    eyebrow: "Got Questions?",
-    headingBefore: "Frequently",
-    headingHighlight: "Asked",
-    intro: "Everything you need to know about riding with Rido.",
+    label: "FAQ",
+    title: "Questions, answered",
+    intro: "Pricing, safety, rules and everything else about riding with Rido.",
     searchPlaceholder: "Search questions...",
     searchAria: "Search frequently asked questions",
     categories: {
@@ -56,10 +54,9 @@ const copy = {
   },
   es: {
     sectionAria: "Preguntas frecuentes",
-    eyebrow: "¿Tienes dudas?",
-    headingBefore: "Preguntas",
-    headingHighlight: "frecuentes",
-    intro: "Todo lo que necesitas saber para rodar con Rido.",
+    label: "Preguntas frecuentes",
+    title: "Resolvemos tus dudas",
+    intro: "Precios, seguridad, normas y todo lo demás para rodar con Rido.",
     searchPlaceholder: "Busca una pregunta...",
     searchAria: "Buscar en las preguntas frecuentes",
     categories: {
@@ -122,20 +119,10 @@ export function FAQ() {
   const hiddenCount = filteredItems.length - visibleItems.length;
 
   return (
-    <section id="faq" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6">
+    <section id="faq" aria-label={t.sectionAria} className="py-16 sm:py-24 px-4 sm:px-6">
       {/* FAQPage JSON-LD is injected by the locale root layout (EN on /, ES on /es). */}
       <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-10 sm:mb-16">
-          <SectionHeading
-            eyebrow={t.eyebrow}
-            before={t.headingBefore}
-            highlight={t.headingHighlight}
-            className="text-3xl sm:text-4xl md:text-5xl font-black"
-          />
-          <ScrollReveal>
-            <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
-          </ScrollReveal>
-        </div>
+        <SectionHeader label={t.label} title={t.title} intro={t.intro} />
         <ScrollReveal delay={STAGGER.text}>
           <div className="relative mb-4">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" />
