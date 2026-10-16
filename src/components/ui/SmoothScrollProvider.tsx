@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 
 /** How long to keep waiting for a lazily-mounted hash target (next/dynamic sections). */
 const HASH_RESOLVE_TIMEOUT_MS = 5000;
@@ -103,14 +103,27 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     const coarsePointerMq = window.matchMedia("(pointer: coarse)");
 
     let lenis: Lenis | null = null;
+    let LenisCtor: typeof Lenis | null = null;
+    let contentObserver: ResizeObserver | null = null;
+    let disposed = false;
 
     const shouldEnable = () =>
       !reducedMotionMq.matches && !coarsePointerMq.matches;
 
-    const start = () => {
+    // Lenis is loaded on demand: it never runs on touch devices or with
+    // reduced motion, so those visitors never download it.
+    const start = async () => {
       if (lenis) return;
+      if (!LenisCtor) {
+        try {
+          LenisCtor = (await import("lenis")).default;
+        } catch {
+          return; // native scrolling keeps working
+        }
+      }
+      if (disposed || lenis || !shouldEnable()) return;
       const root = scrollRef.current;
-      lenis = new Lenis({
+      lenis = new LenisCtor({
         autoRaf: true,
         lerp: 0.1,
         wheelMultiplier: 1,
@@ -122,16 +135,27 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
           : {}),
       });
       lenisRef.current = lenis;
+      // Lenis watches the wrapper, which here is also the fixed-height scroll
+      // lane, so it never notices the page growing (FAQ answers opening, "Show
+      // all", the map arriving) and stops short of the bottom. Watch the lane's
+      // children and re-measure.
+      if (root && typeof ResizeObserver !== "undefined") {
+        const instance = lenis;
+        contentObserver = new ResizeObserver(() => instance.resize());
+        for (const child of Array.from(root.children)) contentObserver.observe(child);
+      }
     };
 
     const stop = () => {
+      contentObserver?.disconnect();
+      contentObserver = null;
       lenis?.destroy();
       lenis = null;
       lenisRef.current = null;
     };
 
     const sync = () => {
-      if (shouldEnable()) start();
+      if (shouldEnable()) void start();
       else stop();
     };
 
@@ -169,6 +193,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     }
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(rafId);
       reducedMotionMq.removeEventListener("change", sync);
       coarsePointerMq.removeEventListener("change", sync);

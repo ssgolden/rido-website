@@ -117,7 +117,7 @@ function MapScreen() {
         <span className="text-[11px] text-muted">{t.findNearby}</span>
       </div>
       {/* sign-up card */}
-      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4">
+      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-flat-strong p-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-rido-magenta/20 flex items-center justify-center shrink-0">
             <Bike className="w-4.5 h-4.5 text-rido-magenta" />
@@ -136,7 +136,7 @@ function MapScreen() {
 }
 
 /* Step 2 — Scan & Unlock: QR scan frame with sweeping scan line */
-function ScanScreen({ reduced }: ScreenProps) {
+function ScanScreen() {
   const t = usePhoneCopy();
   const scanLine = (
     <div className="absolute left-2 right-2 top-1/2 h-0.5 rounded-full bg-gradient-to-r from-transparent via-rido-magenta to-transparent" />
@@ -153,18 +153,14 @@ function ScanScreen({ reduced }: ScreenProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           <QrCode className="w-14 h-14 text-white/25" />
         </div>
-        {/* Same wrapper either way so server and client HTML match; reduced motion keeps the line still. */}
-        <m.div
-          aria-hidden="true"
-          animate={reduced ? { y: 0 } : { y: [-52, 52, -52] }}
-          transition={reduced ? { duration: 0 } : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-x-0 top-1/2"
-        >
+        {/* CSS keyframe (globals.css .phone-scan-line): runs on the compositor and
+            stops under reduced motion, instead of a 60 fps JS loop from page load. */}
+        <div aria-hidden="true" className="phone-scan-line absolute inset-x-0 top-1/2">
           {scanLine}
-        </m.div>
+        </div>
       </div>
       {/* helper card */}
-      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4 flex items-center gap-3">
+      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-flat-strong p-4 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-rido-magenta/20 flex items-center justify-center shrink-0">
           <QrCode className="w-4.5 h-4.5 text-rido-magenta" />
         </div>
@@ -250,7 +246,7 @@ function ParkScreen() {
         <Bike className="w-4 h-4 text-muted" />
       </div>
       {/* ride complete */}
-      <div className="absolute bottom-[5.5rem] left-4 right-4 rounded-2xl glass-strong p-4">
+      <div className="absolute bottom-[5.5rem] left-4 right-4 rounded-2xl glass-flat-strong p-4">
         <div className="flex items-center gap-3">
           <CheckCircle2 className="w-6 h-6 text-rido-green shrink-0" />
           <div>

@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="cookies" className="legal-section">Cookie Policy</h2>
       <p>
-        The Rido website does not set traditional tracking cookies. When you answer the consent banner, that choice is stored in this browser&apos;s local storage so we do not ask again. Cookieless analytics (Vercel Analytics) and our own anonymous counts of waitlist-form views, submissions and share clicks run only if you choose Accept. If you decline, or do not answer, neither runs. We do not use advertising cookies or cross-site tracking.
+        The Rido website does not set traditional tracking cookies. When you answer the consent banner, that choice is stored in this browser&apos;s local storage so we do not ask again. Cookieless analytics (Vercel Analytics, only on pages served from Vercel&apos;s hosting) and our own anonymous counts of waitlist-form views, submissions and share clicks run only if you choose Accept. If you decline, or do not answer, neither runs. We do not use advertising cookies or cross-site tracking.
       </p>
       <p>
         What runs on your device, the legal basis, and how to withdraw consent are set out in the{" "}

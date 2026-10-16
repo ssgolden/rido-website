@@ -92,7 +92,8 @@ export function CookieConsent() {
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
         >
-          <div className="max-w-4xl mx-auto glass-strong rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
+          {/* Solid on phones: a full-width blur over the scrolling page is re-rendered every frame. */}
+          <div className="max-w-4xl mx-auto glass-strong max-sm:bg-rido-navy/95 max-sm:backdrop-blur-none rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
             <div className="flex items-start gap-4">
               {/* Icon is decorative; dropped on phones so the card stays compact and the hero CTAs stay visible. */}
               <div className="hidden sm:flex w-10 h-10 rounded-xl bg-rido-magenta/10 items-center justify-center shrink-0" aria-hidden="true">
@@ -102,7 +103,7 @@ export function CookieConsent() {
                 <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
                 <p className="text-sm text-muted-strong leading-relaxed">
                   {t.body}{" "}
-                  <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
+                  <Link href="/politica-cookies" prefetch={false} className="text-white underline cursor-pointer hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
                   </Link>
                 </p>

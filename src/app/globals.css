@@ -83,7 +83,6 @@
   --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
   --animate-shimmer: shimmer 3s ease-in-out infinite;
-  --animate-hero-gradient: hero-gradient 15s ease-in-out infinite;
   --animate-hero-orb-1: hero-orb-1 12s ease-in-out infinite;
   --animate-hero-orb-2: hero-orb-2 18s ease-in-out infinite;
   --animate-hero-orb-3: hero-orb-3 14s ease-in-out infinite;
@@ -110,10 +109,6 @@
   @keyframes shimmer {
     0% { background-position: -200% 50%; }
     100% { background-position: 200% 50%; }
-  }
-  @keyframes hero-gradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
   }
   @keyframes hero-orb-1 {
     0%, 100% { transform: translate(0, 0) scale(1); }
@@ -197,14 +192,32 @@
     -webkit-text-fill-color: transparent;
     animation: shimmer 4s ease-in-out infinite;
   }
-  /* Top-edge highlight — premium "floating panel" cue (Linear/Vercel signature) */
+  /* Top-edge highlight — premium "floating panel" cue (Linear/Vercel signature).
+     .glass and .glass-flat-strong have no backdrop-filter: over the site's flat
+     or gradient surfaces a blur changes nothing visible but costs GPU time on
+     every scroll frame. Keep the blurred .glass-strong for surfaces that float
+     over real content (sticky navbar, cookie banner on larger screens). */
   .glass {
-    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    @apply bg-white/5 border border-white/10;
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 1px 0 0 rgba(255, 255, 255, 0.04);
   }
   .glass-strong {
     @apply bg-white/10 backdrop-blur-2xl border border-white/20;
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+  .glass-flat-strong {
+    @apply bg-white/10 border border-white/20;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  }
+  /* Phone mock-up scan line (PhoneScreens.tsx): compositor-only, still under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .phone-scan-line {
+      animation: phone-scan 2.8s ease-in-out infinite;
+    }
+  }
+  @keyframes phone-scan {
+    0%, 100% { transform: translateY(-52px); }
+    50% { transform: translateY(52px); }
   }
   /* Micro-interactions — 200ms, same curve as EASE in src/lib/motion.ts.
      Transform lives only in these classes so it doesn't fight Tailwind scales. */
@@ -319,10 +332,11 @@
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
     height: 3px;
     background: linear-gradient(90deg, #DE0498, #F23DB5);
     z-index: 9999;
-    transition: width 50ms linear;
+    transform-origin: 0 50%;
   }
   .btn-ripple {
     position: relative;
@@ -348,9 +362,10 @@
     opacity: 1;
     transition: 0s;
   }
-  .hero-gradient {
-    background-size: 200% 200%;
-    animation: hero-gradient 15s ease-in-out infinite;
+  /* Hero orbs pause once the fixed hero backdrop has faded out (Hero.tsx sets
+     data-idle on the backdrop container), so nothing animates off-screen. */
+  [data-idle] .hero-orb {
+    animation-play-state: paused;
   }
   /* Hero orbs — only animate when motion is allowed; two 700px blurred blobs repainting
      every frame is the single most expensive paint on the page. */
@@ -362,6 +377,13 @@
     .hero-orb-1 { animation-name: hero-orb-1; animation-duration: 12s; }
     .hero-orb-2 { animation-name: hero-orb-2; animation-duration: 18s; }
     .hero-orb-3 { animation-name: hero-orb-3; animation-duration: 14s; }
+  }
+  /* Coverage-map poster: animate only while the panel is near the viewport. */
+  .coverage-map:not([data-inview]) .dash-flow,
+  .coverage-map:not([data-inview]) .dash-flow-short,
+  .coverage-map:not([data-inview]) .city-pulse-ring,
+  .coverage-map:not([data-inview]) .city-dot-pulse {
+    animation-play-state: paused;
   }
   @keyframes city-pulse-ring {
     0% { transform: scale(1); opacity: 0.4; }

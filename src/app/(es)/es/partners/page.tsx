@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     url: `${SITE_ORIGIN}/es/partners`,
     locale: OG_LOCALE_ES,
     alternateLocale: [OG_LOCALE_EN],
-    images: [{ url: "/images/og/rido-og.png", width: 1200, height: 630, alt: "Rido — patinetes y bicis eléctricas compartidas" }],
+    images: [{ url: "/images/og/rido-og.jpg", width: 1200, height: 630, alt: "Rido — patinetes y bicis eléctricas compartidas" }],
   },
 };
 

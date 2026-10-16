@@ -58,11 +58,11 @@ export const metadata: Metadata = {
     alternateLocale: [OG_LOCALE_EN],
     images: [
       {
-        url: "/images/og/rido-og.png",
+        url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
         alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
     description:
       "Llegamos a Torrevieja en las próximas semanas. Únete a la lista de espera y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
-    images: ["/images/og/rido-og.png"],
+    images: ["/images/og/rido-og.jpg"],
   },
 };
 

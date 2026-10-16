@@ -2,13 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import "maplibre-gl/dist/maplibre-gl.css";
 import { announcedCities, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { useScrollRootNode } from "@/components/ui/SmoothScrollProvider";
 import type { Map as MapLibreMap, LngLatBoundsLike } from "maplibre-gl";
 
 type MapLibreModule = typeof import("maplibre-gl");
+
+/**
+ * The library and its stylesheet load together, only when the map is about to
+ * be shown, so the 70 KB maplibre stylesheet is no longer render-blocking on
+ * every page that has a map.
+ */
+const loadMapLibre = () =>
+  Promise.all([import("maplibre-gl"), import("maplibre-gl/dist/maplibre-gl.css")]).then(([lib]) => lib);
 
 const copy = {
   en: {
@@ -309,7 +317,7 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
 
     let lib: MapLibreModule;
     try {
-      lib = await import("maplibre-gl");
+      lib = await loadMapLibre();
     } catch {
       setStatus("fallback");
       return;
@@ -386,26 +394,46 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
     map.on("error", fail);
   }, [showCities, towns]);
 
-  // Lazy trigger: only pull in maplibre-gl when the panel approaches the viewport.
+  // The page scrolls inside the #page-scroll lane, not the window: observers
+  // must use it as their root or the pre-load margin is clipped away.
+  const scrollRoot = useScrollRootNode();
+
+  // Lazy trigger: start the map when the panel comes within 500px of the
+  // viewport. The same observer flags the panel as in view so the SVG poster's
+  // animations pause while it is off-screen (CSS [data-inview] rule).
   useEffect(() => {
     const el = wrapRef.current;
-    if (!el || startedRef.current) return;
+    if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
+      el.setAttribute("data-inview", "");
       void initMap();
       return;
     }
     const io = new IntersectionObserver(
       (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          io.disconnect();
-          void initMap();
-        }
+        const visible = entries.some((e) => e.isIntersecting);
+        el.toggleAttribute("data-inview", visible);
+        if (visible && !startedRef.current) void initMap();
       },
-      { rootMargin: "500px 0px" }
+      { root: scrollRoot, rootMargin: "500px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
-  }, [initMap]);
+  }, [initMap, scrollRoot]);
+
+  // Warm the library during idle time after the visitor first scrolls, so the
+  // ~270 KB script is parsed before the map arrives instead of mid-scroll.
+  useEffect(() => {
+    const target: HTMLElement | Window = scrollRoot ?? window;
+    const onFirstScroll = () => {
+      target.removeEventListener("scroll", onFirstScroll);
+      const warm = () => void import("maplibre-gl").catch(() => {});
+      if ("requestIdleCallback" in window) window.requestIdleCallback(warm, { timeout: 3000 });
+      else setTimeout(warm, 1500);
+    };
+    target.addEventListener("scroll", onFirstScroll, { passive: true });
+    return () => target.removeEventListener("scroll", onFirstScroll);
+  }, [scrollRoot]);
 
   // Teardown on unmount.
   useEffect(() => {

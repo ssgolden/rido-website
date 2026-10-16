@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     alternateLocale: [OG_LOCALE_EN],
     images: [
       {
-        url: "/images/og/rido-og.png",
+        url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
         alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },

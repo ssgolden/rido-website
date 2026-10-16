@@ -61,7 +61,9 @@ export function RootDocument({
             above it never animates and stays at its `initial` state. */}
         <LazyMotionRoot>
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
-          <ConsentAwareAnalytics />
+          {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
+              which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
+          {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
           <ClientCookieConsent />
         </LazyMotionRoot>
       </body>

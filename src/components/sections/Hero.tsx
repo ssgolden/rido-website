@@ -1,6 +1,6 @@
 "use client";
 import { ArrowRight, HardHat, BadgeCheck, MapPin, Shield } from "lucide-react";
-import { m, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, useReducedMotion, useMotionValueEvent, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { withBase } from "@/lib/basePath";
@@ -74,15 +74,24 @@ function HeroBackdrop({ fixed, opacity }: { fixed: boolean; opacity: number | Mo
   return (
     <m.div aria-hidden="true" className={fixed ? "absolute inset-0" : "contents"} style={fixed ? { opacity } : undefined}>
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
+      {/* Static layers only: no filters, no blend modes, no animated backgrounds.
+          The orbs are radial gradients (a blurred circle repainted every frame
+          was the most expensive paint on the page) and only drift via transform. */}
+      <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20" />
       <div
-        className="absolute inset-0 mix-blend-soft-light"
-        style={{ background: "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.35), transparent 70%)" }}
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(60% 80% at 80% 20%, rgba(222,4,152,0.14), transparent 70%)" }}
       />
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-rido-navy/40 via-transparent to-rido-navy" />
-      <div className="absolute top-1/4 -right-16 w-[160px] h-[160px] sm:-right-24 sm:w-[700px] sm:h-[700px] rounded-full bg-rido-magenta/15 blur-[80px] sm:blur-[100px] hero-orb hero-orb-1" />
-      <div className="absolute bottom-0 -left-16 w-[140px] h-[140px] sm:-left-24 sm:w-[500px] sm:h-[500px] rounded-full bg-rido-green/8 blur-[70px] sm:blur-[90px] hero-orb hero-orb-2" />
-      <div className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay" style={{ backgroundImage: `url("${NOISE_SVG}")` }} />
+      <div
+        className="absolute top-[10%] -right-40 w-[320px] h-[320px] sm:-right-56 sm:w-[920px] sm:h-[920px] hero-orb hero-orb-1"
+        style={{ background: "radial-gradient(closest-side, rgba(222,4,152,0.15), transparent)" }}
+      />
+      <div
+        className="absolute -bottom-24 -left-36 w-[280px] h-[280px] sm:-left-48 sm:w-[700px] sm:h-[700px] hero-orb hero-orb-2"
+        style={{ background: "radial-gradient(closest-side, rgba(34,197,94,0.08), transparent)" }}
+      />
+      <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: `url("${NOISE_SVG}")` }} />
     </m.div>
   );
 }
@@ -102,6 +111,12 @@ export function Hero() {
   });
   const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
   const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
+  // Once the fixed backdrop has faded out, pause its orb animation (CSS
+  // [data-idle] rule). A DOM attribute, not React state: no re-render, and the
+  // portal container only exists on the client.
+  useMotionValueEvent(backdropOpacityRaw, "change", (v) => {
+    backdropEl?.toggleAttribute("data-idle", v <= 0.01);
+  });
   // Signature moment: the scooter rides out of its frame as the hero scrolls
   // away. Always a MotionValue (zero range under reduced motion) so SSR and
   // client styles match.
