@@ -28,7 +28,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
 - Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
 - Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
-- Hero has NO photo layer: gradient + orbs + noise only. `public/images/lifestyle/rido-rider-street*.jpg` are the wordmark on white, not photos — never fade them over navy. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
+- Hero has NO photo layer: gradient + orbs + noise only, as static layers (no filters, blend modes or animated backgrounds; orbs are radial gradients drifting by transform). The old `images/lifestyle/` files were the wordmark on white, not photos, and have been deleted. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
 - App screenshot images removed from HowItWorks and DownloadCTA sections
 - Static export: `NEXT_OUTPUT=export CUSTOM_DOMAIN=true` (no basePath — deploy.yml and Netlify both build this way). Only a bare `NEXT_OUTPUT=export` without `CUSTOM_DOMAIN` uses `basePath: "/rido-website"` (GitHub Pages project URL)
 - Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)
@@ -47,7 +47,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Launch Geography
 - Torrevieja (Costa Blanca) is the first, announced launch town. Five Costa del Sol towns are planned but unannounced.
-- `src/data/cities.ts` has a per-town `announced` flag. Public surfaces read `announcedCities` / `regionsWithUnannouncedTowns`, never `cities`, so unannounced town names never leak. Flip a town's flag on its announcement day, then hand-edit `public/llms*.txt`.
+- `src/data/cities.ts` ships to every browser, so it holds announced towns only (`announcedCities`) plus a per-region count (`plannedTowns`). Unannounced towns live in `src/data/cities.planned.ts`, which nothing may import; `scripts/check-town-leak.mjs` (CI) fails if their names reach the export. On announcement day move the town from the planned file into `announcedCities`, lower its `plannedTowns` count, then hand-edit `public/llms*.txt`.
 
 ## File Conventions
 - Sections in `src/components/sections/`

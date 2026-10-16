@@ -9,6 +9,7 @@ import { DURATION, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { track, type Placement } from "@/lib/analytics";
 import { ShareInvite } from "@/components/ui/ShareInvite";
+import { isValidEmail } from "@/lib/email";
 
 const copy = {
   en: {
@@ -18,6 +19,7 @@ const copy = {
     errorInvalid: "Please enter a valid email address.",
     errorGenericBefore: "We couldn't save your email just now. Write to ",
     errorGenericAfter: " and we'll add you by hand.",
+    errorBusy: "We're getting a lot of sign-ups right now. Please try again in a few minutes.",
     successTitle: "You're on the list!",
     successBody: "We'll email you the moment Rido launches near you.",
     pendingTitle: "Check your inbox",
@@ -30,6 +32,7 @@ const copy = {
     errorInvalid: "Introduce una dirección de correo electrónico válida.",
     errorGenericBefore: "No hemos podido guardar tu correo ahora mismo. Escríbenos a ",
     errorGenericAfter: " y te apuntamos a mano.",
+    errorBusy: "Estamos recibiendo muchas inscripciones ahora mismo. Inténtalo de nuevo en unos minutos.",
     successTitle: "¡Ya estás en la lista!",
     successBody: "Te escribiremos en cuanto Rido llegue a tu zona.",
     pendingTitle: "Revisa tu correo",
@@ -37,7 +40,6 @@ const copy = {
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
-const WAITLIST_KEY = "rido-waitlist-email";
 // Apps Script URL when configured; otherwise /api/waitlist (Netlify Function on
 // the static site, Next route on Vercel). Success is shown only after a backend
 // accepts the sign-up — never on a local-only save.
@@ -68,10 +70,11 @@ export function WaitlistForm({
   const inputId = useId();
   const errorId = `${inputId}-error`;
   const formRef = useRef<HTMLFormElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [pending, setPending] = useState(false);
-  const [errorKey, setErrorKey] = useState<"invalid" | "generic" | null>(null);
+  const [errorKey, setErrorKey] = useState<"invalid" | "busy" | "generic" | null>(null);
 
   // One "view" per form per page load, once at least half of it is on screen.
   useEffect(() => {
@@ -93,7 +96,7 @@ export function WaitlistForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     track("waitlist_submit", { placement, locale });
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!isValidEmail(email)) {
       setStatus("error");
       setErrorKey("invalid");
       track("waitlist_error", { placement, locale, detail: "invalid" });
@@ -106,19 +109,15 @@ export function WaitlistForm({
         method: "POST",
         // Apps Script needs text/plain to avoid a CORS preflight; the API parses JSON.
         headers: { "Content-Type": WAITLIST_URL ? "text/plain;charset=utf-8" : "application/json" },
-        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+        body: JSON.stringify({ email, locale, company: honeypotRef.current?.value ?? "" }),
       });
-      if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
       const json = await res.json().catch(() => ({}));
-      if (json.ok === false) throw new Error(json.error || "waitlist rejected");
-      try {
-        const existing: string[] = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
-        if (!existing.includes(email)) {
-          existing.push(email);
-          localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
-        }
-      } catch {
-        // Storage blocked — the backend already has the sign-up.
+      if (!res.ok || json.ok === false) {
+        const reason = json.error === "invalid_email" ? "invalid" : json.error === "busy" ? "busy" : "generic";
+        setStatus("error");
+        setErrorKey(reason);
+        track("waitlist_error", { placement, locale, detail: reason });
+        return;
       }
       setPending(json.pending === true);
       setStatus("success");
@@ -157,7 +156,14 @@ export function WaitlistForm({
       noValidate
       className={cn("w-full max-w-md", align === "center" ? "mx-auto" : "", className)}
     >
-      <div className="flex flex-col sm:flex-row gap-2 rounded-2xl sm:bg-white/[0.06] sm:p-1.5 sm:ring-1 sm:ring-white/15 sm:backdrop-blur-xl">
+      {/* Honeypot for bots: off-screen, skipped by keyboard and screen readers. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Company
+          <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2 rounded-2xl sm:bg-white/[0.06] sm:p-1.5 sm:ring-1 sm:ring-white/15">
         <label htmlFor={inputId} className="sr-only">{t.emailLabel}</label>
         <div className="relative flex-1">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" aria-hidden="true" />
@@ -198,6 +204,8 @@ export function WaitlistForm({
         <p id={errorId} className={cn("text-sm text-red-300 mt-2", align === "center" ? "text-center" : "")} role="alert">
           {errorKey === "invalid" ? (
             t.errorInvalid
+          ) : errorKey === "busy" ? (
+            t.errorBusy
           ) : (
             <>
               {t.errorGenericBefore}

@@ -27,6 +27,9 @@ jobs:
           # The eslint react-hooks rules are memory-hungry on this codebase
           NODE_OPTIONS: --max-old-space-size=4096
 
+      - name: Function tests (waitlist, events)
+        run: npm test
+
       - name: Build
         run: npm run build
 
@@ -50,6 +53,9 @@ jobs:
         env:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
+
+      - name: Unannounced towns must not ship
+        run: node scripts/check-town-leak.mjs out
 
   quality:
     name: Quality Gates (Lighthouse + axe)
@@ -93,7 +99,9 @@ jobs:
         # (e.g. a hydration mismatch) with motion on or off.
         run: |
           npx next start -p 3000 &
-          sleep 8
+          # Wait until the server answers (up to 60s) instead of a fixed sleep.
+          for i in $(seq 1 60); do curl -sf -o /dev/null http://localhost:3000/ && break; sleep 1; done
+          curl -sf -o /dev/null http://localhost:3000/ || { echo "server did not start"; exit 1; }
           node scripts/a11y-audit.mjs http://localhost:3000
           node scripts/visual-qa.mjs http://localhost:3000 visual-qa
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, MapPin, Clock } from "lucide-react";
-import { announcedCities, cities, regionsWithUnannouncedTowns } from "@/data/cities";
+import { announcedCities, plannedTownCount, regionsWithUnannouncedTowns } from "@/data/cities";
 import { CoverageMap } from "@/components/ui/CoverageMap";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
@@ -11,8 +11,6 @@ import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { STAGGER } from "@/lib/motion";
-
-const unannouncedCount = (region: string) => cities.filter((c) => c.region === region && !c.announced).length;
 
 const copy = {
   en: {
@@ -80,7 +78,7 @@ export function Launch() {
                   </span>
                   <span className="flex-1 min-w-0">
                     <span className="block font-display text-xl font-bold text-ink">{region}</span>
-                    <span className="block text-sm text-ink-muted">{t.planned(unannouncedCount(region))}</span>
+                    <span className="block text-sm text-ink-muted">{t.planned(plannedTownCount(region))}</span>
                   </span>
                 </div>
               </StaggerItem>

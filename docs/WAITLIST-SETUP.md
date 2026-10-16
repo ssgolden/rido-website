@@ -51,14 +51,28 @@ collecting — leave `NEXT_PUBLIC_WAITLIST_URL` unset and both forms post there.
 3. Redeploy.
 
 With the key set, each new sign-up is stored with `confirmed: false` and gets
-an EN or ES email with a confirm link (`/api/waitlist/confirm`). The link marks
-the entry confirmed and lands on `/waitlist-confirmed` (or
-`/es/waitlist-confirmed`). The form tells the visitor to check their inbox. A
-re-submit re-sends the email at most every 10 minutes. The CSV export gains
-`confirmed` (`yes` / `no` / blank for sign-ups from before double opt-in) and
-`confirmed_at` columns: send launch news only to `yes` (and blank, legacy)
-rows. If sending fails, the sign-up is still saved and the form shows the
-normal success message.
+an EN or ES email. Its link opens `/waitlist-confirmed` (or
+`/es/waitlist-confirmed`) with the address and a token; the visitor presses
+**Confirm**, which marks the entry confirmed. Opening the link alone confirms
+nothing, so email security scanners that open links (e.g. Outlook Safe Links)
+cannot confirm on the visitor's behalf. The form tells the visitor to check
+their inbox. A re-submit re-sends the email at most every 10 minutes. The CSV
+export gains `confirmed` (`yes` / `no` / blank for sign-ups from before double
+opt-in) and `confirmed_at` columns: send launch news only to `yes` (and blank,
+legacy) rows. If sending fails, the sign-up is kept and the visitor sees an
+error; a later re-submit retries the email.
+
+**Abuse limits (no setup needed):**
+
+- A hidden honeypot field drops most bots silently.
+- At most 200 sign-ups a day trigger emails (`WAITLIST_DAILY_EMAIL_LIMIT` to
+  change it). Over the limit the sign-up is kept and the visitor is asked to
+  try again later.
+- The API never says whether an address is already on the list.
+- `/api/events` stores at most 5,000 events a day (`EVENTS_DAILY_LIMIT`).
+- For stronger protection, add a rate-limit rule for `/api/*` in the Netlify
+  dashboard (Site configuration → Firewall / rate limiting, where your plan
+  offers it).
 
 The same key also emails each new sign-up to `NOTIFY_EMAIL` (default
 info@rido.bike).

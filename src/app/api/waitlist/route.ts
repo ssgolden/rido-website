@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { EMAIL_RE } from "@/lib/email";
 
 /**
  * Waitlist sign-up endpoint (server host only — the GitHub Pages static
@@ -9,19 +10,23 @@ import { NextResponse, type NextRequest } from "next/server";
  * sign-up is additionally emailed to NOTIFY_EMAIL (default info@rido.bike).
  */
 
-const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,}$/;
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL ?? "info@rido.bike";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   let email = "";
   let locale = "en";
+  let honeypot = "";
   try {
     const body = await req.json();
     email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : "";
     locale = body?.locale === "es" ? "es" : "en";
+    honeypot = typeof body?.company === "string" ? body.company.trim() : "";
   } catch {
     return NextResponse.json({ ok: false, error: "invalid" }, { status: 400 });
   }
+
+  // Honeypot field real visitors never see: answer like a success, store nothing.
+  if (honeypot) return NextResponse.json({ ok: true });
 
   if (!EMAIL_RE.test(email) || email.length > 254) {
     return NextResponse.json({ ok: false, error: "invalid_email" }, { status: 422 });
