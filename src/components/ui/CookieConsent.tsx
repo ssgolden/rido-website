@@ -3,7 +3,7 @@
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -14,20 +14,20 @@ const STORAGE_KEY = "rido-cookie-consent";
 // derives the locale from the URL ("/es..." → Spanish) instead of context.
 const en = {
   title: "We value your privacy",
-  body: "We store your preference on this device and, only if you accept, load cookieless analytics to understand site traffic. No advertising or cross-site tracking cookies.",
+  body: "Cookieless analytics load only if you accept. No advertising or cross-site tracking. Your choice is saved on this device.",
   learnMore: "Read our cookie policy",
-  accept: "Accept all cookies",
-  decline: "Decline non-essential",
+  accept: "Accept analytics",
+  decline: "Decline",
   close: "Close",
 };
 const copy: Record<"en" | "es", typeof en> = {
   en,
   es: {
     title: "Tu privacidad nos importa",
-    body: "Guardamos tu preferencia en este dispositivo y, solo si aceptas, cargamos analíticas sin cookies para entender el tráfico del sitio. Sin cookies publicitarias ni de rastreo entre sitios.",
+    body: "Las analíticas sin cookies solo se cargan si aceptas. Sin publicidad ni rastreo entre sitios. Tu elección se guarda en este dispositivo.",
     learnMore: "Lee nuestra política de cookies",
-    accept: "Aceptar todas",
-    decline: "Rechazar no esenciales",
+    accept: "Aceptar analíticas",
+    decline: "Rechazar",
     close: "Cerrar",
   },
 };
@@ -82,19 +82,20 @@ export function CookieConsent() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.div
+        <m.div
           initial={reduce ? false : { y: REVEAL.y, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={reduce ? { opacity: 0 } : { y: REVEAL.y, opacity: 0 }}
           transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="fixed bottom-0 left-0 right-0 z-[100] p-4 sm:p-6"
+          className="fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
           role="dialog"
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
         >
           <div className="max-w-4xl mx-auto glass-strong rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
             <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0">
+              {/* Icon is decorative; dropped on phones so the card stays compact and the hero CTAs stay visible. */}
+              <div className="hidden sm:flex w-10 h-10 rounded-xl bg-rido-magenta/10 items-center justify-center shrink-0" aria-hidden="true">
                 <Cookie className="w-5 h-5 text-rido-magenta" />
               </div>
               <div className="flex-1 min-w-0">
@@ -105,9 +106,9 @@ export function CookieConsent() {
                     {t.learnMore}
                   </Link>
                 </p>
-                <div className="mt-4 flex flex-col sm:flex-row gap-2">
-                  <Button size="sm" onClick={handleAccept}>{t.accept}</Button>
-                  <Button size="sm" variant="secondary" onClick={handleDecline}>{t.decline}</Button>
+                <div className="mt-3 sm:mt-4 flex flex-row gap-2">
+                  <Button size="sm" onClick={handleAccept} className="flex-1 sm:flex-none">{t.accept}</Button>
+                  <Button size="sm" variant="secondary" onClick={handleDecline} className="flex-1 sm:flex-none">{t.decline}</Button>
                 </div>
               </div>
               <button
@@ -119,7 +120,7 @@ export function CookieConsent() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

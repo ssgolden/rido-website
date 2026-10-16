@@ -157,12 +157,6 @@ export const localBusinessSchema = {
       }))
     : [{ "@type": "AdministrativeArea", name: "Costa del Sol" }],
   serviceType: ["E-Scooter Rental", "E-Bike Rental"],
-  openingHoursSpecification: {
-    "@type": "OpeningHoursSpecification",
-    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-    opens: "00:00",
-    closes: "23:59",
-  },
   potentialAction: {
     "@type": "ReserveAction",
     target: `${baseUrl}/#download`,
@@ -213,7 +207,7 @@ export const howToSchema = {
       "@type": "HowToStep",
       position: 3,
       name: "Ride & Enjoy",
-      text: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
+      text: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmets are mandatory for e-scooter riders in Spain, and one is included with every scooter.",
     },
     {
       "@type": "HowToStep",
@@ -249,32 +243,7 @@ export const productSchemas = vehicles.map((vehicle) => ({
   isRelatedTo: { "@id": `${baseUrl}/#localbusiness` },
 }));
 
-// --- SoftwareApplication / App --------------------------------------------
-export const softwareApplicationSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "@id": `${baseUrl}/#app`,
-  name: "Rido",
-  applicationCategory: "TravelApplication",
-  operatingSystem: "iOS, Android",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "EUR",
-  },
-  description:
-    "Find, unlock, and ride shared e-scooters and e-bikes on the Costa del Sol. Scan QR codes, track rides, and pay per minute.",
-  publisher: { "@id": orgId },
-  featureList: [
-    "Find vehicles near you on the map",
-    "Scan QR code to unlock",
-    "Real-time battery levels",
-    "Pricing shown before every ride",
-    "Helmet rewards program",
-    "Beginner mode (15 km/h)",
-    "Tandem detection",
-  ],
-};
+// No SoftwareApplication markup until the app is actually published.
 
 // --- Breadcrumbs -----------------------------------------------------------
 export const breadcrumbSchema = {
@@ -295,7 +264,7 @@ export const speakableSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": `${baseUrl}/#speakable`,
-  name: "Rido — Shared E-Scooters & E-Bikes in Spain",
+  name: "Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain",
   url: baseUrl,
   speakable: {
     "@type": "SpeakableSpecification",
@@ -386,21 +355,16 @@ export const sustainabilitySchema = {
     "Micromobility emissions reduction",
     "Vehicle recycling",
   ],
-  hasCredential: [
-    {
-      "@type": "EducationalOccupationalCredential",
-      credentialCategory: "EnvironmentalClaim",
-      name: "Carbon-neutral operations via verified carbon credits",
-    },
-  ],
+  // Pre-launch: commitments, not audited results. No credential markup until
+  // a real certification exists.
   description:
-    "Rido offsets 100% of operational emissions through verified carbon credits, uses swappable and recycled batteries, and recycles every vehicle at end of life.",
+    "Rido commits to offsetting 100% of operational emissions through verified carbon credits, to swappable and recycled batteries, and to recycling every vehicle at end of life. Audited impact figures will be published after the first year of operation.",
 };
 
 /**
  * Returns all JSON-LD scripts as an array of objects for rendering in <head>.
- * FAQ copy follows the page locale. No JobPosting (no open roles) and no
- * SearchAction (the site has no /?q= search).
+ * FAQ copy follows the page locale. No JobPosting (no open roles), no
+ * SearchAction (the site has no /?q= search), no SoftwareApplication (no app yet).
  */
 export function getAllSchemas(locale: Locale = "en") {
   return [
@@ -412,7 +376,6 @@ export function getAllSchemas(locale: Locale = "en") {
     howToSchema,
     breadcrumbSchema,
     speakableSchema,
-    softwareApplicationSchema,
     getFaqSchema(locale),
     sustainabilitySchema,
     ...productSchemas,

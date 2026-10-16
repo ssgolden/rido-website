@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DURATION, EASE, REVEAL, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
 
@@ -26,9 +26,9 @@ const wordVariants = {
 
 function AnimatedWord({ text, className }: { text: string; className?: string }) {
   return (
-    <motion.span className={cn("inline-block", className)} variants={wordVariants}>
+    <m.span className={cn("inline-block", className)} variants={wordVariants}>
       {text}
-    </motion.span>
+    </m.span>
   );
 }
 
@@ -102,7 +102,7 @@ export function SectionHeading({
   return (
     <>
       {eyebrow && (
-        <motion.p
+        <m.p
           className="text-rido-magenta-light text-sm font-semibold uppercase tracking-wider mb-3"
           initial={{ opacity: 0, y: REVEAL.y }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -110,10 +110,10 @@ export function SectionHeading({
           transition={{ duration: DURATION.entrance, ease: EASE }}
         >
           {eyebrow}
-        </motion.p>
+        </m.p>
       )}
       <Tag className={cn("inline-block", className)}>
-        <motion.span
+        <m.span
           className="inline-flex flex-wrap justify-center"
           variants={container}
           initial="hidden"
@@ -127,7 +127,7 @@ export function SectionHeading({
             after={after}
             highlightClass={highlightClass}
           />
-        </motion.span>
+        </m.span>
       </Tag>
     </>
   );

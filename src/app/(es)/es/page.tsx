@@ -93,7 +93,7 @@ export default function HomeEs() {
       <main id="main-content">
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Patinetes y bicicletas eléctricas compartidas en España</h1>
+            <h1>Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol</h1>
             <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido en la Costa del Sol. Cero emisiones, cero complicaciones.</p>
             <p>
               {citiesAnnounced

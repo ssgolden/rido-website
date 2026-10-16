@@ -11,7 +11,6 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { cities, type City } from "@/data/cities";
-import { pricingTiers } from "@/data/pricing";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
@@ -46,11 +45,8 @@ function vehicleNoun(city: City, locale: Locale): string {
   return both ? "e-scooters and e-bikes" : "e-scooters";
 }
 
-// Pricing facts sourced from src/data/pricing.ts so copy never drifts from the
-// pricing section. Price strings (€1.00 / €0.35/min / …) are locale-identical.
-const payg = pricingTiers.find((t) => t.id === "pay-as-you-go") ?? pricingTiers[0];
-const pass = pricingTiers.find((t) => t.id === "rido-pass") ?? pricingTiers[1];
-const day = pricingTiers.find((t) => t.id === "day-pass") ?? pricingTiers[2];
+// Pre-launch: no fares anywhere on the site until they are announced
+// (see the Pricing section and src/data/pricing.ts).
 
 // --- FAQ (honest: every town is comingSoon — never claim live availability) --
 export interface CityFaqItem {
@@ -74,7 +70,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
       },
       {
         question: `¿Cuánto costará montar en ${city.name}?`,
-        answer: `Paga por trayecto: ${payg.unlockFee} por desbloquear más ${payg.perMinute}. Con el Rido Pass el desbloqueo es gratis y pagas ${pass.perMinute}, y el Day Pass cuesta €${day.flatRate?.toFixed(2)} con viajes ilimitados durante 24 horas. Sin recarga mínima y sin costes ocultos: verás el precio exacto antes de cada viaje.`,
+        answer: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: verás el precio exacto antes de cada viaje, sin recarga mínima y sin costes ocultos.",
       },
       {
         question: `¿Qué vehículos habrá en ${city.name}?`,
@@ -96,7 +92,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
     },
     {
       question: `How much will a ride in ${city.name} cost?`,
-      answer: `Pay as you go: ${payg.unlockFee} to unlock plus ${payg.perMinute}. The Rido Pass gives you free unlocks at ${pass.perMinute}, and a €${day.flatRate?.toFixed(2)} Day Pass covers unlimited rides for 24 hours. No minimum top-up, no hidden fees — exact pricing is shown before every ride.`,
+      answer: "Fares will be announced at launch. What won't change: you'll see the exact price before every ride, with no minimum top-up and no hidden fees.",
     },
     {
       question: `Which vehicles will be available in ${city.name}?`,
@@ -123,8 +119,8 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       : `E-Scooter Rental in ${city.name} — Rido`;
   const description =
     locale === "es"
-      ? `Rido trae ${noun} compartidos a ${city.name}, en la ${city.region}. Lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar. Desde ${payg.unlockFee} por desbloquear + ${payg.perMinute}.`
-      : `Rido is bringing shared ${noun} to ${city.name} on the ${city.region}. Launching soon — join the waitlist and be first to ride. From ${payg.unlockFee} unlock + ${payg.perMinute}.`;
+      ? `Rido trae ${noun} compartidos a ${city.name}, en la ${city.region}. Lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar.`
+      : `Rido is bringing shared ${noun} to ${city.name} on the ${city.region}. Launching soon — join the waitlist and be first to ride.`;
 
   return {
     title,
@@ -203,10 +199,8 @@ export function getCitySchemas(city: City, locale: Locale) {
         : `Shared ${vehicleNoun(city, "en")} rental in ${city.name}, ${city.region}. Launching soon.`,
     offers: {
       "@type": "AggregateOffer",
-      priceCurrency: "EUR",
-      lowPrice: pass.perMinuteValue.toFixed(2),
-      highPrice: (day.flatRate ?? 14.99).toFixed(2),
       availability: "https://schema.org/PreOrder",
+      // Pre-launch: no lowPrice/highPrice until fares are public.
     },
   };
 

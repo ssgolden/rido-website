@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
+import { m, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 
 /**
@@ -60,7 +60,7 @@ export function Magnetic({ children, className = "inline-block" }: MagneticProps
   };
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       className={className}
       style={{ x: springX, y: springY }}
@@ -69,6 +69,6 @@ export function Magnetic({ children, className = "inline-block" }: MagneticProps
       onPointerCancel={settle}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }

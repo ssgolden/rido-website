@@ -4,7 +4,6 @@ import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
 import { getAllSchemas } from "@/lib/schema";
-import { Toaster } from "@/components/animation/Toast";
 import type { Locale } from "@/lib/i18n/config";
 
 export const rootViewport: Viewport = {
@@ -57,12 +56,14 @@ export function RootDocument({
         >
           {lang === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
-        <SmoothScrollProvider>
-          <LazyMotionRoot>{children}</LazyMotionRoot>
-        </SmoothScrollProvider>
-        <ConsentAwareAnalytics />
-        <ClientCookieConsent />
-        <Toaster />
+        {/* LazyMotionRoot must wrap EVERY `m.` component, including the cookie
+            banner outside the scroll shell — an `m.` element with no provider
+            above it never animates and stays at its `initial` state. */}
+        <LazyMotionRoot>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+          <ConsentAwareAnalytics />
+          <ClientCookieConsent />
+        </LazyMotionRoot>
       </body>
     </html>
   );

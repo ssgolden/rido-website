@@ -100,6 +100,15 @@ for (const vp of VIEWPORTS) {
       // Let lazy sections mount and fonts settle.
       await page.waitForTimeout(800);
       if (target.fullPage) {
+        // Marketing pages scroll inside the SiteShell lane, not the window, so
+        // a fullPage capture would only ever show the first viewport. Unclip
+        // the shell and let the window scroll for the duration of the shot.
+        await page.addStyleTag({
+          content:
+            "html,body{overflow:auto!important;height:auto!important}" +
+            "[data-site-shell]{max-height:none!important;height:auto!important;overflow:visible!important}" +
+            "[data-scroll-root]{overflow:visible!important;flex:none!important}",
+        });
         // Scroll through the page so IntersectionObserver-driven reveals
         // (ScrollReveal/StaggerReveal) fire before a full-page capture.
         await page.evaluate(async () => {

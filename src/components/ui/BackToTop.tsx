@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { m, AnimatePresence, useReducedMotion } from "framer-motion";
 import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
 
@@ -32,7 +32,7 @@ export function BackToTop() {
   return (
     <AnimatePresence>
       {visible && (
-        <motion.button
+        <m.button
           initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
           animate={{ opacity: 1, y: 0 }}
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: REVEAL.y }}
@@ -44,7 +44,7 @@ export function BackToTop() {
           aria-label="Scroll to top"
         >
           <ArrowUp className="w-5 h-5" />
-        </motion.button>
+        </m.button>
       )}
     </AnimatePresence>
   );

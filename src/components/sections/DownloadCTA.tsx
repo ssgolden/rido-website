@@ -4,7 +4,7 @@ import { useState } from "react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
 import { Shield, Smartphone, CreditCard, MapPin, Mail, Loader2 } from "lucide-react";
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { DURATION, EASE, STAGGER } from "@/lib/motion";
@@ -62,7 +62,7 @@ const copy = {
     whatHappens: [
       "We confirm your spot by email",
       "When the iOS & Android app ships, waitlist members get first access",
-      "Your first ride is on us",
+      "Launch fares and the first towns are announced to the waitlist first",
     ],
   },
   es: {
@@ -88,7 +88,7 @@ const copy = {
     whatHappens: [
       "Confirmamos tu plaza por correo",
       "Cuando salgan las apps de iOS y Android, quienes estén en la lista tendrán acceso primero",
-      "Tu primer viaje corre por nuestra cuenta",
+      "Las tarifas y las primeras ciudades se anuncian primero a la lista",
     ],
   },
 } as const satisfies Record<Locale, DownloadCopy>;
@@ -156,7 +156,7 @@ function WaitlistForm() {
 
   if (status === "success") {
     return (
-      <motion.div
+      <m.div
         initial={reduce ? false : { opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
@@ -165,14 +165,14 @@ function WaitlistForm() {
         aria-live="polite"
       >
         {/* Choreographed success: ring draws itself then check draws inside */}
-        <motion.svg
+        <m.svg
           viewBox="0 0 64 64"
           className="w-14 h-14 mx-auto mb-3"
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : DURATION.micro }}
         >
-          <motion.circle
+          <m.circle
             cx="32"
             cy="32"
             r="28"
@@ -185,7 +185,7 @@ function WaitlistForm() {
             style={{ transformOrigin: "center" }}
             transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           />
-          <motion.path
+          <m.path
             d="M20 33 L28 41 L45 24"
             fill="none"
             stroke="#22C55E"
@@ -196,24 +196,24 @@ function WaitlistForm() {
             animate={{ pathLength: 1 }}
             transition={{ delay: reduce ? 0 : 0.32, duration: reduce ? 0 : DURATION.micro, ease: EASE }}
           />
-        </motion.svg>
-        <motion.h3
+        </m.svg>
+        <m.h3
           initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.36, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-lg font-bold mb-1"
         >
           {t.successTitle}
-        </motion.h3>
-        <motion.p
+        </m.h3>
+        <m.p
           initial={reduce ? false : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.42, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="text-sm text-muted"
         >
           {t.successBody}
-        </motion.p>
-      </motion.div>
+        </m.p>
+      </m.div>
     );
   }
 
@@ -221,7 +221,7 @@ function WaitlistForm() {
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto lg:mx-0">
       <div className="flex flex-col sm:flex-row gap-2">
         <div className="relative flex-1">
-          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" />
+          <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak" aria-hidden="true" />
           <input
             type="email"
             inputMode="email"
@@ -318,7 +318,7 @@ export function DownloadCTA() {
                   const Icon = trustSignalIcons[i];
                   return (
                     <div key={text} className="flex items-center gap-2">
-                      <Icon className="w-4 h-4 text-rido-magenta/60" />
+                      <Icon className="w-4 h-4 text-rido-magenta/60" aria-hidden="true" />
                       <span>{text}</span>
                     </div>
                   );
@@ -327,7 +327,7 @@ export function DownloadCTA() {
             </StaggerItem>
             <StaggerItem>
               <div className="mt-6 flex items-center justify-center lg:justify-start gap-2 text-muted-weak text-xs">
-                <Shield className="w-3.5 h-3.5" />
+                <Shield className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{t.complianceLine}</span>
               </div>
             </StaggerItem>
@@ -335,7 +335,7 @@ export function DownloadCTA() {
 
           <ScrollReveal delay={STAGGER.grid} direction="right">
             <div className="flex justify-center lg:justify-end py-2">
-              <motion.div
+              <m.div
                 initial={false}
                 animate={shouldReduce ? { y: 0 } : { y: [0, -8, 0] }}
                 transition={shouldReduce ? { duration: 0 } : { duration: 6, repeat: Infinity, ease: "easeInOut" }}
@@ -360,7 +360,7 @@ export function DownloadCTA() {
                   </div>
                 </div>
                 <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
-              </motion.div>
+              </m.div>
             </div>
           </ScrollReveal>
         </div>

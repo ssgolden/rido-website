@@ -3,12 +3,13 @@ import { Badge } from "@/components/ui/Badge";
 import { ArrowRight, MapPin, Bike, Leaf, Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { motion, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, useReducedMotion, type MotionValue } from "framer-motion";
 import { useRef, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { useCountUp } from "@/hooks/useCountUp";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { vehicles } from "@/data/vehicles";
+import { cities } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import type { LucideIcon } from "lucide-react";
@@ -47,7 +48,7 @@ const en = {
   scrollAria: "Scroll to next section",
   scrollLabel: "Scroll",
   stats: [
-    { icon: MapPin, value: 5, suffix: "", label: "Planned Cities" },
+    { icon: MapPin, value: cities.length, suffix: "", label: "Planned Cities" },
     { icon: Bike, value: vehicles.length, suffix: "", label: "Vehicle Types" },
     { icon: Leaf, value: 0, suffix: "", label: "Direct Emissions", text: "Zero", green: true },
   ] as HeroStatData[],
@@ -69,7 +70,7 @@ const copy: Record<Locale, typeof en> = {
     scrollAria: "Desliza a la siguiente sección",
     scrollLabel: "Desliza",
     stats: [
-      { icon: MapPin, value: 5, suffix: "", label: "Ciudades planificadas" },
+      { icon: MapPin, value: cities.length, suffix: "", label: "Ciudades planificadas" },
       { icon: Bike, value: vehicles.length, suffix: "", label: "Tipos de vehículo" },
       { icon: Leaf, value: 0, suffix: "", label: "Emisiones directas", text: "Cero", green: true },
     ] as HeroStatData[],
@@ -119,7 +120,7 @@ function HeroBackdrop({
   opacity: number | MotionValue<number>;
 }) {
   return (
-    <motion.div
+    <m.div
       aria-hidden="true"
       className={fixed ? "absolute inset-0" : "contents"}
       style={fixed ? { opacity } : undefined}
@@ -158,7 +159,7 @@ function HeroBackdrop({
         className="absolute inset-0 pointer-events-none opacity-[0.08] mix-blend-overlay"
         style={{ backgroundImage: `url("${NOISE_SVG}")` }}
       />
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -203,8 +204,8 @@ export function Hero() {
           )
         : <HeroBackdrop fixed={false} opacity={1} />}
 
-      <motion.div
-        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-20 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
+      <m.div
+        className="relative z-10 max-w-7xl mx-auto px-2 sm:px-6 text-center py-8 sm:py-12 pb-14 sm:pb-28 [@media(max-height:860px)]:sm:py-4 [@media(max-height:860px)]:sm:pb-8"
         style={{ opacity: contentOpacity }}
       >
         {/* Social-proof kicker */}
@@ -231,7 +232,7 @@ export function Hero() {
         </ScrollReveal>
 
         {/* Headline — animate="visible" so first paint reveals the H1. Spaces rendered as sibling text nodes for SR correctness. */}
-        <motion.h1
+        <m.h1
           id="hero-heading"
           className="text-display-2xl font-extrabold text-balance"
           initial={reduce ? "visible" : "hidden"}
@@ -243,28 +244,28 @@ export function Hero() {
         >
           {headlineWords.map((w, i) => (
             <span key={`${w}-${i}`}>
-              <motion.span
+              <m.span
                 className={`inline-block ${wordGroup.has(i) ? "text-gradient-brand" : ""}`}
                 variants={variants}
               >
                 {w}
-              </motion.span>
+              </m.span>
               {i < headlineWords.length - 1 ? " " : ""}
               {i === 2 ? <br className="hidden sm:inline" aria-hidden="true" /> : null}
             </span>
           ))}
-        </motion.h1>
+        </m.h1>
 
-        <motion.p
+        <m.p
           initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.28, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
           className="mt-6 sm:mt-7 [@media(max-height:860px)]:sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed sm:leading-normal px-2 sm:px-0 [text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
         >
           {t.subheadline}
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           initial={reduce ? false : { opacity: 0, y: REVEAL.y }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: reduce ? 0 : 0.4, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
@@ -285,10 +286,10 @@ export function Hero() {
           >
             <span>{t.ctaSecondary}</span>
           </a>
-        </motion.div>
+        </m.div>
 
         {/* Microcopy under CTAs */}
-        <motion.p
+        <m.p
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: reduce ? 0 : 0.48, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
@@ -296,7 +297,7 @@ export function Hero() {
         >
           <Shield className="w-3.5 h-3.5" aria-hidden="true" />
           {t.microcopy}
-        </motion.p>
+        </m.p>
 
         <StaggerReveal
           className="mt-10 sm:mt-16 [@media(max-height:860px)]:sm:mt-8 grid grid-cols-3 gap-4 sm:gap-10 text-white/85 divide-x divide-white/10"
@@ -307,20 +308,21 @@ export function Hero() {
             <HeroStat key={s.label} stat={s} />
           ))}
         </StaggerReveal>
-      </motion.div>
+      </m.div>
 
-      {/* Scroll cue — pill + inner dot + magenta glow; hidden on small screens and short heights */}
-      <motion.a
+      {/* Scroll cue — pill + inner dot + magenta glow. Phones and short viewports hide it:
+          on those the stats row sits where the cue would land (it overlapped the labels). */}
+      <m.a
         href="#how-it-works"
         aria-label={t.scrollAria}
         style={{ opacity: cueOpacity }}
-        className="group absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2 hidden [@media(min-height:700px)]:flex flex-col items-center gap-2 text-muted-strong hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
+        className="group absolute bottom-10 left-1/2 -translate-x-1/2 hidden sm:[@media(min-height:861px)]:flex flex-col items-center gap-2 text-muted-strong hover:text-rido-magenta-light transition-colors min-h-[44px] min-w-[44px] justify-center"
       >
         <span className="text-[11px] uppercase tracking-[0.15em]">{t.scrollLabel}</span>
         <span className="relative flex h-9 w-6 rounded-full border border-white/15 backdrop-blur bg-white/[0.04] shadow-[0_0_12px_rgba(222,4,152,0.25)] justify-center pt-1.5">
           <span className="block h-1.5 w-1.5 rounded-full bg-rido-magenta shadow-[0_0_6px_rgba(222,4,152,0.6)] motion-safe:animate-[scroll-dot_2s_ease-in-out_infinite]" />
         </span>
-      </motion.a>
+      </m.a>
     </section>
   );
 }

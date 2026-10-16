@@ -21,7 +21,7 @@ const en = {
     {
       title: "Carbon Neutral Operations",
       description:
-        "We offset 100% of our operational emissions through verified carbon credits and green energy.",
+        "From the first ride, we will offset 100% of our operational emissions through verified carbon credits and green energy.",
     },
     {
       title: "Swappable Batteries",
@@ -31,7 +31,7 @@ const en = {
     {
       title: "Responsible Recycling",
       description:
-        "At end of life, every vehicle is dismantled and recycled. We publish our recycling rates.",
+        "At end of life, every vehicle will be dismantled and recycled. We will publish our recycling rates.",
     },
   ],
 };
@@ -49,7 +49,7 @@ const copy: Record<Locale, typeof en> = {
       {
         title: "Operaciones neutras en carbono",
         description:
-          "Compensamos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde.",
+          "Desde el primer viaje, compensaremos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde.",
       },
       {
         title: "Baterías intercambiables",
@@ -59,7 +59,7 @@ const copy: Record<Locale, typeof en> = {
       {
         title: "Reciclaje responsable",
         description:
-          "Al final de su vida útil, cada vehículo se desmonta y se recicla. Publicamos nuestras tasas de reciclaje.",
+          "Al final de su vida útil, cada vehículo se desmontará y se reciclará. Publicaremos nuestras tasas de reciclaje.",
       },
     ],
   },

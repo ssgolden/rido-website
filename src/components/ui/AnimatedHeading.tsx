@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DURATION, EASE, REVEAL, SCROLL_MARGIN } from "@/lib/motion";
 
@@ -56,7 +56,7 @@ export function AnimatedHeading({
 
   return (
     <Tag className={cn("inline-block", className)}>
-      <motion.span
+      <m.span
         className="inline-flex flex-wrap"
         variants={customStagger}
         initial="hidden"
@@ -68,7 +68,7 @@ export function AnimatedHeading({
           const isSpace = part === " ";
           if (variant === "words" && i < parts.length - 1) {
             return (
-              <motion.span
+              <m.span
                 key={`${part}-${i}`}
                 className="inline-block"
                 variants={{
@@ -79,7 +79,7 @@ export function AnimatedHeading({
               >
                 {part}
                 <span className="inline-block">&nbsp;</span>
-              </motion.span>
+              </m.span>
             );
           }
 
@@ -92,7 +92,7 @@ export function AnimatedHeading({
           }
 
           return (
-            <motion.span
+            <m.span
               key={`${part}-${i}`}
               className="inline-block"
               variants={{
@@ -102,10 +102,10 @@ export function AnimatedHeading({
               transition={{ duration, ease: EASE }}
             >
               {part}
-            </motion.span>
+            </m.span>
           );
         })}
-      </motion.span>
+      </m.span>
     </Tag>
   );
 }

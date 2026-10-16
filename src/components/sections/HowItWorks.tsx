@@ -33,7 +33,7 @@ const en = {
     {
       icon: Bike,
       title: "Ride & Enjoy",
-      description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.",
+      description: "Follow traffic rules, use bike lanes, and enjoy the ride. Helmet on — it's the law, and we include one.",
     },
     {
       icon: ParkingCircle,
@@ -64,7 +64,7 @@ const copy: Record<Locale, typeof en> = {
       {
         icon: Bike,
         title: "Monta y disfruta",
-        description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Te recomendamos llevar casco.",
+        description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Casco puesto: es obligatorio y lo incluimos.",
       },
       {
         icon: ParkingCircle,

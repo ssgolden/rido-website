@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X, Download } from "lucide-react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, m, useReducedMotion } from "framer-motion";
 import { DURATION, EASE } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
@@ -86,10 +86,12 @@ export function Navbar() {
   const hamburgerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  // Lock the element that actually scrolls (the SiteShell lane, #page-scroll),
+  // not <body>, which never scrolls on marketing pages.
   useEffect(() => {
-    if (mobileOpen) { document.body.style.overflow = "hidden"; }
-    else { document.body.style.overflow = ""; }
-    return () => { document.body.style.overflow = ""; };
+    const el = document.getElementById("page-scroll") ?? document.body;
+    el.style.overflow = mobileOpen ? "hidden" : "";
+    return () => { el.style.overflow = ""; };
   }, [mobileOpen]);
 
   // Escape closes menu and returns focus to the hamburger
@@ -157,7 +159,7 @@ export function Navbar() {
       </div>
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             ref={panelRef}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -172,7 +174,7 @@ export function Navbar() {
               ))}
               <div className="mt-3"><Button as="a" href="#download" onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </nav>

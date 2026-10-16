@@ -13,27 +13,21 @@ export interface PricingTier {
   id: PricingTierId;
   name: string;
   description: string;
-  unlockFee: string;
-  perMinute: string;
-  /** Numeric unlock fee in EUR (0 = free) */
-  unlockFeeValue: number;
-  /** Numeric per-minute rate in EUR (0 = included) */
-  perMinuteValue: number;
-  /** Flat rate for the tier in EUR (null = per-minute billing) */
-  flatRate?: number;
   popular?: boolean;
 }
 
-interface PricingTierSource extends Omit<PricingTier, "name" | "description" | "unlockFee" | "perMinute"> {
+interface PricingTierSource extends Omit<PricingTier, "name" | "description"> {
   name: LocalizedString;
   description: LocalizedString;
-  unlockFee: LocalizedString;
-  perMinute: LocalizedString;
 }
 
 /**
  * Single source of truth for the pricing tiers. Both locales live side by
- * side so copy can never drift; prices and currency are identical everywhere.
+ * side so copy can never drift.
+ *
+ * Pre-launch: NO fare amounts live in this repo. Every surface (Pricing
+ * section, FAQ, city pages, JSON-LD, llms.txt) says "announced at launch".
+ * Add price fields back here only once the amounts are public.
  */
 const tierSources: readonly PricingTierSource[] = [
   {
@@ -43,10 +37,6 @@ const tierSources: readonly PricingTierSource[] = [
       en: "No commitment. Ride when you need it.",
       es: "Sin compromiso. Rueda cuando lo necesites.",
     },
-    unlockFee: { en: "€1.00", es: "€1.00" },
-    perMinute: { en: "€0.35/min", es: "€0.35/min" },
-    unlockFeeValue: 1.0,
-    perMinuteValue: 0.35,
   },
   {
     id: "rido-pass",
@@ -55,10 +45,6 @@ const tierSources: readonly PricingTierSource[] = [
       en: "Unlimited unlocks + reduced per-minute rate.",
       es: "Desbloqueos ilimitados + tarifa por minuto reducida.",
     },
-    unlockFee: { en: "Free", es: "Gratis" },
-    perMinute: { en: "€0.25/min", es: "€0.25/min" },
-    unlockFeeValue: 0,
-    perMinuteValue: 0.25,
     popular: true,
   },
   {
@@ -68,11 +54,6 @@ const tierSources: readonly PricingTierSource[] = [
       en: "Unlimited rides for 24 hours.",
       es: "Trayectos ilimitados durante 24 horas.",
     },
-    unlockFee: { en: "Free", es: "Gratis" },
-    perMinute: { en: "Included", es: "Incluido" },
-    unlockFeeValue: 0,
-    perMinuteValue: 0,
-    flatRate: 14.99,
   },
 ];
 
@@ -81,8 +62,6 @@ function resolveTiers(locale: Locale): PricingTier[] {
     ...tier,
     name: tier.name[locale],
     description: tier.description[locale],
-    unlockFee: tier.unlockFee[locale],
-    perMinute: tier.perMinute[locale],
   }));
 }
 

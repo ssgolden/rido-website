@@ -53,7 +53,7 @@ export default function Home() {
       <main id="main-content">
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Shared E-Scooters & E-Bikes in Spain</h1>
+            <h1>Rido — Shared E-Scooters & E-Bikes on the Costa del Sol</h1>
             <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.</p>
             <p>
               {citiesAnnounced

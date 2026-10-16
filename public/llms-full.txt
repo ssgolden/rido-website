@@ -4,7 +4,7 @@
 
 ---
 
-# Rido — Shared E-Scooters & E-Bikes in Spain
+# Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain
 
 Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. The service provides zero-emission shared vehicles available via a mobile app. Users can find, unlock, ride, and park vehicles using the Rido app.
 
@@ -96,7 +96,7 @@ Every Rido ride replaces a car trip. Here's the impact we're projected to make.
 *Projected impact based on planned fleet size and ridership targets.*
 
 ### Commitments
-- **Carbon Neutral Operations**: We offset 100% of our operational emissions through verified carbon credits and green energy.
+- **Carbon Neutral Operations**: From the first ride, we will offset 100% of our operational emissions through verified carbon credits and green energy.
 - **Swappable Batteries**: Our vehicle batteries are swappable and recycled at end-of-life. No single-use waste.
 - **Responsible Recycling**: At end of life, every vehicle is dismantled and recycled. We publish our recycling rates.
 
@@ -143,7 +143,7 @@ Yes! In Spain, e-scooters and e-bikes are permitted in bike lanes and on roads w
 Park in designated areas shown in the app. These are typically bike rack zones or marked parking areas. Keep sidewalks clear for pedestrians and accessibility.
 
 ### Do I need to wear a helmet?
-We strongly recommend wearing a helmet for every ride. In many Spanish cities, helmets are legally required for e-scooter riders. We include a helmet with every scooter and offer helmet rewards in the app.
+Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.
 
 ### How much does it cost?
 Fares will be announced at launch. What will not change: you always see the price before every ride, with no minimum top-up and no hidden fees.
@@ -166,12 +166,11 @@ Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bik
 
 Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.
 
-So we built a fleet of shared e-scooters and e-bikes designed for Spain's streets, Spain's weather, and Spain's people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.
+So we're building a fleet of shared e-scooters and e-bikes designed for the Costa del Sol's streets, weather, and people. Every vehicle will be serviced in-house, every ride will be insured, and every kilometre replaces a car trip.
 
 ### Milestones
 - 2025: Rido founded in Spain
 - 2026: Costa del Sol launch — 5 cities planned
-- 2027: Expanding across Andalusia
 
 ### Values
 - **Freedom**: Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go.

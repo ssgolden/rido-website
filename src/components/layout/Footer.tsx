@@ -12,7 +12,7 @@ type FooterColumn = { heading: string; links: FooterLink[] };
 // hrefs are code-level and identical across locales — legal pages are
 // EN-only this phase, so their links stay pointing at the English routes.
 const en = {
-  tagline1: "Shared micro-mobility for Spain.",
+  tagline1: "Shared micro-mobility for the Costa del Sol.",
   tagline2: "Move freely. Ride responsibly.",
   joinWaitlist: "Join the waitlist →",
   emailAria: "Email",
@@ -51,7 +51,7 @@ const en = {
 const copy: Record<Locale, typeof en> = {
   en,
   es: {
-    tagline1: "Micromovilidad compartida para España.",
+    tagline1: "Micromovilidad compartida para la Costa del Sol.",
     tagline2: "Muévete con libertad. Viaja con responsabilidad.",
     joinWaitlist: "Únete a la lista de espera →",
     emailAria: "Correo electrónico",
