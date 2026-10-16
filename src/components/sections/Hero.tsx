@@ -158,8 +158,12 @@ export function Hero() {
             ))}
           </m.h1>
 
+          {/* Largest text block on phones (often the LCP element): visible from the
+              first paint, with only a short rise after hydration. */}
           <m.p
-            {...enter(0.24)}
+            initial={reduce ? false : { y: REVEAL.y }}
+            animate={{ y: 0 }}
+            transition={{ delay: reduce ? 0 : 0.24, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
             className="mt-6 text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed"
           >
             {t.subheadline}
@@ -187,8 +191,15 @@ export function Hero() {
           </m.div>
         </div>
 
-        {/* Image slot: product render on sand until the Torrevieja photo shoot lands. */}
-        <m.div {...enter(0.2)} className="relative mx-auto w-full max-w-md lg:max-w-none">
+        {/* Image slot: product render on sand until the Torrevieja photo shoot lands.
+            It is the mobile LCP element, so it never starts transparent: only a short
+            rise after hydration (an opacity-0 start delays LCP until JS has run). */}
+        <m.div
+          initial={reduce ? false : { y: REVEAL.y }}
+          animate={{ y: 0 }}
+          transition={{ delay: reduce ? 0 : 0.2, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
+          className="relative mx-auto w-full max-w-md lg:max-w-none"
+        >
           <ImageFrame
             src={withBase(vehicles[0].cutouts[0])}
             alt={t.imageAlt}

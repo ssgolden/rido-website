@@ -38,11 +38,11 @@ const copy = {
     label: "FAQ",
     title: "Questions, answered",
     intro: "Pricing, safety, rules and everything else about riding with Rido.",
-    searchPlaceholder: "Search questions...",
+    searchPlaceholder: "Search questions…",
     searchAria: "Search frequently asked questions",
     categories: {
       all: "All",
-      "getting-started": "Getting Started",
+      "getting-started": "Getting started",
       pricing: "Pricing",
       safety: "Safety",
       legal: "Legal",
@@ -57,7 +57,7 @@ const copy = {
     label: "Preguntas frecuentes",
     title: "Resolvemos tus dudas",
     intro: "Precios, seguridad, normas y todo lo demás para rodar con Rido.",
-    searchPlaceholder: "Busca una pregunta...",
+    searchPlaceholder: "Busca una pregunta…",
     searchAria: "Buscar en las preguntas frecuentes",
     categories: {
       all: "Todas",

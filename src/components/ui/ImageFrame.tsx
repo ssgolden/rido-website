@@ -27,6 +27,7 @@ export function ImageFrame({
   src: string;
   alt: string;
   sizes: string;
+  /** Above-the-fold LCP image: load eagerly at high fetch priority. */
   priority?: boolean;
   fit?: "contain" | "cover";
   aspect?: string;
@@ -45,7 +46,9 @@ export function ImageFrame({
           alt={alt}
           fill
           sizes={sizes}
-          priority={priority}
+          // Next 16 deprecates `priority`; the LCP image is in the HTML, so eager + high priority is enough.
+          loading={priority ? "eager" : undefined}
+          fetchPriority={priority ? "high" : undefined}
           className={cn(fit === "contain" ? "object-contain p-6 sm:p-10" : "object-cover", imageClassName)}
         />
       </m.div>

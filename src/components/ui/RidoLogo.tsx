@@ -85,7 +85,7 @@ export function RidoLogo({
             alt="Rido"
             width={imgW}
             height={imgH}
-            priority={priority}
+            loading={priority ? "eager" : undefined}
             sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
             className="shrink-0"
             style={{ imageRendering: "auto" }}
@@ -114,7 +114,7 @@ export function RidoLogo({
             alt="Rido"
             width={280}
             height={138}
-            priority
+            loading="eager"
             sizes="(max-width: 640px) 200px, 280px"
             className="relative z-10 shrink-0"
             style={{ imageRendering: "auto" }}

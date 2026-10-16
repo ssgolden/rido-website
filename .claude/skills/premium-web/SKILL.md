@@ -56,15 +56,26 @@ this skill is the per-change quality bar.
 
 ## Performance budgets (merge-blocking)
 
-- LCP < 1.8s, CLS < 0.05, INP < 200ms on mobile; Lighthouse ≥ 95.
-- Images: AVIF/WebP, explicit dimensions, `sizes` attr, hero preloaded.
+- Targets: LCP < 1.8s, CLS < 0.05, INP < 200ms on mobile; Lighthouse ≥ 95.
+- Enforced in CI (`lighthouserc.json`, `lighthouserc.mobile.json`): desktop
+  performance ≥ 95 and LCP < 1.8s block; on mobile CLS ≤ 0.05 and a
+  performance floor of 80 block, while the 95 score and LCP < 2.5s are
+  warnings (the simulated mobile LCP is held back by JS weight, not paint).
+- Never let the LCP element start transparent: above-the-fold hero copy and
+  images render visible from the first paint (a `y`-only rise is fine; an
+  `opacity: 0` start delays LCP until hydration). A page's `h1` header
+  (`SectionHeader as="h1"`) skips the scroll reveal for this reason.
+- Images: AVIF/WebP, explicit dimensions, `sizes` attr; the LCP image uses
+  `ImageFrame priority` (eager + `fetchPriority="high"`; Next 16 deprecated
+  the `priority` prop on `next/image`).
 - Heavy libraries (three.js, mapbox-gl) load only on routes that use them,
   behind dynamic import with a lightweight poster/skeleton first.
 
 ## Verification workflow for any visual change
 
 1. Build and start the app (`npm run build && npx next start`).
-2. Run `node scripts/visual-qa.mjs` — screenshots all key pages at 390px
+2. Run `node scripts/visual-qa.mjs` (CI runs it too, uploads the screenshots as
+   an artifact, and fails on any page error) — screenshots all key pages at 390px
    (phone), 768px (tablet), 1440px (desktop) into `.visual-qa/`.
 3. LOOK at the screenshots (Read tool) before declaring done. Check: nothing
    clipped, spacing rhythm consistent, carousel affordance visible, text

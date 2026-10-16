@@ -160,7 +160,7 @@ export const localBusinessSchema = {
   potentialAction: {
     "@type": "ReserveAction",
     target: `${baseUrl}/#download`,
-    name: "Join Waitlist",
+    name: "Join the waitlist",
   },
   hasOfferCatalog: {
     "@type": "OfferCatalog",

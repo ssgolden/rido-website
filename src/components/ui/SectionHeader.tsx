@@ -26,8 +26,11 @@ export function SectionHeader({
   className?: string;
 }) {
   const light = tone === "sand";
+  // A page's h1 block is above the fold and often the LCP element: render it
+  // visible from the first paint instead of revealing it after hydration.
+  const Wrapper = Heading === "h1" ? "div" : ScrollReveal;
   return (
-    <ScrollReveal
+    <Wrapper
       className={cn(
         "mb-10 sm:mb-14",
         align === "center" ? "text-center mx-auto max-w-2xl" : "max-w-xl",
@@ -45,6 +48,6 @@ export function SectionHeader({
           {intro}
         </p>
       ) : null}
-    </ScrollReveal>
+    </Wrapper>
   );
 }

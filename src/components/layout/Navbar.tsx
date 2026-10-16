@@ -15,7 +15,7 @@ import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProv
 
 const en = {
   homeAria: "Rido home",
-  joinWaitlist: "Join Waitlist",
+  joinWaitlist: "Join the waitlist",
   joinShort: "Join",
   openMenu: "Open menu",
   closeMenu: "Close menu",
