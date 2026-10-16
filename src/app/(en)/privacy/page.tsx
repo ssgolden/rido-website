@@ -77,7 +77,7 @@ export default function PrivacyPolicyPage() {
 
       <h3 id="3-2-waitlist">3.2 Website Waitlist</h3>
       <p>
-        Before the App launches, you can join the Rido waitlist on this website. We store the email address you enter, the language of the page, and the time you signed up. We use it only to tell you when Rido launches near you and to share launch details. <em>Legal basis:</em> your consent (Art. 6.1.a GDPR), which you can withdraw at any time by emailing <a href="mailto:info@rido.bike">info@rido.bike</a>. We keep this data until you withdraw consent or ask us to delete it.
+        Before the App launches, you can join the Rido waitlist on this website. We store the email address you enter, the language of the page, and the time you signed up. We then send you one email asking you to confirm the address, and record whether and when you confirmed it; if you do not confirm, we will not send you launch news. We use it only to tell you when Rido launches near you and to share launch details. <em>Legal basis:</em> your consent (Art. 6.1.a GDPR), which you can withdraw at any time by emailing <a href="mailto:info@rido.bike">info@rido.bike</a>. We keep this data until you withdraw consent or ask us to delete it.
       </p>
 
       <h3>3.3 Special Categories of Data</h3>
@@ -91,7 +91,7 @@ export default function PrivacyPolicyPage() {
         <li>
           <strong>Municipal Councils, Local Police, and Traffic Authorities</strong>: Go2 Place S.L. transmits the User&apos;s identification data (full name, DNI/NIE/Passport, address, telephone, email), trip timestamps, telemetry location logs, and end-of-ride photographs to the competent <em>Policía Local</em>, <em>Ayuntamiento</em>, or DGT in response to notifications of traffic infractions, improper parking tickets, helmet non-use, or municipal vehicle removals. <em>Legal basis:</em> compliance with a statutory legal obligation to identify the driver pursuant to Article 11 of the Spanish Traffic Law (Real Decreto Legislativo 6/2015 — TRLTSV) (Art. 6.1.c GDPR), and legitimate interest in defending against municipal liability (Art. 6.1.f GDPR).
         </li>
-        <li><strong>Cloud and IT providers</strong>: For data storage, App and website hosting and maintenance, and service delivery.</li>
+        <li><strong>Cloud and IT providers</strong>: For data storage, App and website hosting and maintenance, email delivery, and service delivery.</li>
         <li><strong>Payment providers</strong>: For processing fees securely.</li>
         <li><strong>Insurance companies</strong>: For the management of claims related to Vehicle use.</li>
       </ul>
@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
 
       <h2 id="cookies" className="legal-section">Cookie Policy</h2>
       <p>
-        The Rido website does not set traditional tracking cookies. When you answer the consent banner, that choice is stored in this browser&apos;s local storage so we do not ask again. Cookieless analytics (Vercel Analytics) load only if you choose Accept. If you decline, or do not answer, the analytics script never loads. We do not use advertising cookies or cross-site tracking.
+        The Rido website does not set traditional tracking cookies. When you answer the consent banner, that choice is stored in this browser&apos;s local storage so we do not ask again. Cookieless analytics (Vercel Analytics) and our own anonymous counts of waitlist-form views, submissions and share clicks run only if you choose Accept. If you decline, or do not answer, neither runs. We do not use advertising cookies or cross-site tracking.
       </p>
       <p>
         What runs on your device, the legal basis, and how to withdraw consent are set out in the{" "}

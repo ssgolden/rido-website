@@ -28,7 +28,7 @@ const copy = {
  * Closing waitlist block. One headline, one field, one line of reassurance —
  * the same form as the hero (src/components/ui/WaitlistForm.tsx).
  */
-export function DownloadCTA() {
+export function DownloadCTA({ sharePath }: { sharePath?: string } = {}) {
   const locale = useLocale();
   const t = copy[locale];
 
@@ -40,7 +40,7 @@ export function DownloadCTA() {
           <div className="relative">
             <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-balance">{t.title}</h2>
             <p className="mt-4 text-base sm:text-lg text-muted max-w-xl mx-auto leading-relaxed">{t.intro}</p>
-            <WaitlistForm align="center" className="mt-8 max-w-lg" />
+            <WaitlistForm align="center" placement="closing" sharePath={sharePath} className="mt-8 max-w-lg" />
             <p className="mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-muted">
               <Shield className="hidden sm:block w-3.5 h-3.5 shrink-0" aria-hidden="true" />
               {t.reassurance}

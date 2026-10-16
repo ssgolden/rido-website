@@ -40,8 +40,39 @@ collecting — leave `NEXT_PUBLIC_WAITLIST_URL` unset and both forms post there.
 
   Without the token the export endpoint returns 401.
 
-**Optional email alert per sign-up:** set `RESEND_API_KEY` (and optionally
-`NOTIFY_EMAIL`, default info@rido.bike, and `EMAIL_FROM`).
+**Double opt-in confirmation email (recommended):**
+
+1. In Resend, add and verify the `rido.bike` domain (DNS records in Resend →
+   Domains).
+2. In Netlify → Environment variables set `RESEND_API_KEY` and
+   `EMAIL_FROM` to an address on that domain, e.g. `Rido <hola@rido.bike>`.
+   Resend's default `onboarding@resend.dev` can only email the Resend account
+   owner, so confirmations to riders would fail.
+3. Redeploy.
+
+With the key set, each new sign-up is stored with `confirmed: false` and gets
+an EN or ES email with a confirm link (`/api/waitlist/confirm`). The link marks
+the entry confirmed and lands on `/waitlist-confirmed` (or
+`/es/waitlist-confirmed`). The form tells the visitor to check their inbox. A
+re-submit re-sends the email at most every 10 minutes. The CSV export gains
+`confirmed` (`yes` / `no` / blank for sign-ups from before double opt-in) and
+`confirmed_at` columns: send launch news only to `yes` (and blank, legacy)
+rows. If sending fails, the sign-up is still saved and the form shows the
+normal success message.
+
+The same key also emails each new sign-up to `NOTIFY_EMAIL` (default
+info@rido.bike).
+
+**Conversion counts:** `netlify/functions/events.mjs` (`/api/events`) stores
+anonymous, consent-gated events (waitlist form viewed / submitted / succeeded /
+failed, share clicks) per placement (`hero`, `closing`, `city-hero`,
+`confirmed`) in the Blobs store `events`. Read daily counts with the same admin
+token:
+
+```bash
+curl -H "Authorization: Bearer $WAITLIST_ADMIN_TOKEN" \
+  "https://www.rido.bike/api/events?days=30"
+```
 
 The GitHub Pages mirror has no functions; there the forms show the
 "email info@rido.bike" fallback instead of a false success.
