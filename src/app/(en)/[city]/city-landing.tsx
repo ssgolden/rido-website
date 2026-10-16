@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowRight, Bike, ChevronDown, MapPin, Zap } from "lucide-react";
+import { ArrowRight, Bike, ChevronDown, HardHat, Mail, MapPin, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
-import { Badge } from "@/components/ui/Badge";
 import { CoverageMap } from "@/components/ui/CoverageMap";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { Section } from "@/components/ui/Section";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { ImageFrame } from "@/components/ui/ImageFrame";
+import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { withBase } from "@/lib/basePath";
+import { vehicles } from "@/data/vehicles";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { announcedCities, type City } from "@/data/cities";
@@ -238,19 +243,30 @@ const uiCopy = {
   en: {
     badge: "Launching in the coming weeks",
     heroTitle: (city: City) =>
-      city.vehicles.length === 2 ? `E-Scooter & E-Bike Sharing in ${city.name}` : `E-Scooter Sharing in ${city.name}`,
+      city.vehicles.length === 2 ? `E-scooter and e-bike sharing in ${city.name}` : `E-scooter sharing in ${city.name}`,
     heroBody: (city: City) =>
-      `Rido is bringing shared, zero-emission ${vehicleNoun(city, "en")} to ${city.name} on the ${city.region}. Join the waitlist today and be first to ride the moment we launch.`,
-    ctaPrimary: "Join the Waitlist",
-    ctaSecondary: "Explore Rido",
+      `Rido is bringing shared, zero-emission ${vehicleNoun(city, "en")} to ${city.name} on the ${city.region}. Join the waitlist and be first to ride the moment we launch.`,
+    explore: "Explore Rido",
     vehiclesLabel: "Planned vehicles",
-    scooterChip: "E-Scooter",
-    bikeChip: "E-Bike",
-    coverageHeading: "Where we're launching",
-    coverageBody: (city: City) => `${launchTownSentence(city, "en")} Explore the coverage area below.`,
-    faqHeading: (city: City) => `Rido in ${city.name} — FAQ`,
+    scooterChip: "E-scooter",
+    bikeChip: "E-bike",
+    helmetChip: "Helmet included",
+    imageAlt: "The Rido e-scooter in brand magenta, with its helmet docked on the stem",
+    coverageLabel: "Where we're launching",
+    coverageTitle: (city: City) => `${city.name}, ${city.region}`,
+    coverageBody: (city: City) =>
+      `${launchTownSentence(city, "en")} Exact riding and parking zones will be shown in the app when the service goes live.`,
+    teamLabel: "Who runs it",
+    teamTitle: (city: City) => `A local team, just down the coast from ${city.name}`,
+    teamBody:
+      "Rido is run by Go2 Place S.L. from Orihuela Costa, a short drive down the coast. Write to us and someone from the team will answer.",
+    addressLabel: "Registered office",
+    contactLabel: "Talk to us",
+    faqLabel: "Questions",
+    faqHeading: (city: City) => `Rido in ${city.name}`,
     heroAria: (city: City) => `Rido launching soon in ${city.name}`,
     coverageAria: (city: City) => `Rido launch coverage on the ${city.region}`,
+    teamAria: "The local Rido team",
     faqAria: (city: City) => `Frequently asked questions about Rido in ${city.name}`,
   },
   es: {
@@ -260,27 +276,44 @@ const uiCopy = {
         ? `Patinetes y bicis eléctricas compartidas en ${city.name}`
         : `Patinetes eléctricos compartidos en ${city.name}`,
     heroBody: (city: City) =>
-      `Rido trae ${vehicleNoun(city, "es")} compartidos y de cero emisiones a ${city.name}, en la ${city.region}. Únete hoy a la lista de espera y sé de los primeros en montar cuando lancemos.`,
-    ctaPrimary: "Únete a la lista de espera",
-    ctaSecondary: "Descubre Rido",
+      `Rido trae ${vehicleNoun(city, "es")} compartidos y de cero emisiones a ${city.name}, en la ${city.region}. Únete a la lista de espera y sé de los primeros en montar cuando lancemos.`,
+    explore: "Descubre Rido",
     vehiclesLabel: "Vehículos previstos",
     scooterChip: "Patinete eléctrico",
     bikeChip: "Bici eléctrica",
-    coverageHeading: "Dónde vamos a lanzar",
-    coverageBody: (city: City) => `${launchTownSentence(city, "es")} Explora la zona de cobertura abajo.`,
-    faqHeading: (city: City) => `Rido en ${city.name} — Preguntas frecuentes`,
+    helmetChip: "Casco incluido",
+    imageAlt: "El patinete eléctrico Rido en magenta, con el casco acoplado en la barra",
+    coverageLabel: "Dónde vamos a lanzar",
+    coverageTitle: (city: City) => `${city.name}, ${city.region}`,
+    coverageBody: (city: City) =>
+      `${launchTownSentence(city, "es")} Las zonas exactas para circular y aparcar se mostrarán en la app cuando lancemos el servicio.`,
+    teamLabel: "Quién está detrás",
+    teamTitle: (city: City) => `Un equipo local, a pocos kilómetros de ${city.name}`,
+    teamBody:
+      "Rido lo gestiona Go2 Place S.L. desde Orihuela Costa, a pocos kilómetros por la costa. Escríbenos y te responderá alguien del equipo.",
+    addressLabel: "Domicilio social",
+    contactLabel: "Escríbenos",
+    faqLabel: "Preguntas",
+    faqHeading: (city: City) => `Rido en ${city.name}`,
     heroAria: (city: City) => `Rido llega muy pronto a ${city.name}`,
     coverageAria: (city: City) => `Cobertura de lanzamiento de Rido en la ${city.region}`,
+    teamAria: "El equipo local de Rido",
     faqAria: (city: City) => `Preguntas frecuentes sobre Rido en ${city.name}`,
   },
 } as const;
 
 // --- Page ----------------------------------------------------------------------
+/**
+ * Launch-town landing page (the page local search lands on). Same design
+ * language as the homepage: split hero with the inline waitlist form, sand
+ * coverage band, local-team strip, FAQ, closing waitlist block.
+ */
 export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
   const t = uiCopy[locale];
   const schemas = getCitySchemas(city, locale);
   const faq = getCityFaq(city, locale);
   const homeHref = locale === "es" ? "/es" : "/";
+  const cityPath = locale === "es" ? `/es/${city.slug}` : `/${city.slug}`;
 
   return (
     <LocaleProvider locale={locale}>
@@ -294,134 +327,150 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           />
         ))}
 
-        {/* Compact city hero */}
+        {/* Hero: copy + inline waitlist form, product image on sand. */}
         <section
           id="city-hero"
           aria-label={t.heroAria(city)}
-          className="relative overflow-hidden pt-12 sm:pt-20 pb-12 sm:pb-20 px-4 sm:px-6"
+          className="relative overflow-hidden pt-8 sm:pt-16 pb-16 sm:pb-24 px-4 sm:px-6"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15 hero-gradient" aria-hidden="true" />
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" aria-hidden="true" />
-          <div className="absolute top-1/4 -right-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-magenta/8 blur-[100px]" aria-hidden="true" />
+          <div className="absolute top-1/4 -right-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-magenta/10 blur-[100px]" aria-hidden="true" />
 
-          <div className="relative max-w-7xl mx-auto text-center">
-            <ScrollReveal>
-              <Badge variant="magenta" className="mb-5 sm:mb-6">
-                <span className="coming-soon-blink">{t.badge}</span>
-              </Badge>
-            </ScrollReveal>
-            <ScrollReveal delay={0.08}>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-balance">
-                {t.heroTitle(city)}
-              </h1>
-            </ScrollReveal>
-            <ScrollReveal delay={0.16}>
-              <p className="mt-5 sm:mt-6 text-base sm:text-lg text-muted max-w-2xl mx-auto leading-relaxed">
-                {t.heroBody(city)}
-              </p>
-            </ScrollReveal>
-
-            {/* Vehicle availability chips */}
-            <ScrollReveal delay={0.22}>
-              <div className="mt-6 flex items-center justify-center gap-2 flex-wrap" aria-label={t.vehiclesLabel}>
-                <span className="inline-flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-muted">
-                  <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
-                  {city.name}, {city.region}
+          <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
+            <div className="text-center lg:text-left">
+              <ScrollReveal>
+                <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
+                  <span className="h-1.5 w-1.5 rounded-full bg-rido-green" aria-hidden="true" />
+                  {t.badge}
                 </span>
-                {city.vehicles.map((v) => (
-                  <Badge key={v} variant={v === "e-scooter" ? "magenta" : "green"} className="cursor-default">
-                    {v === "e-scooter" ? (
-                      <>
-                        <Zap className="w-3 h-3" aria-hidden="true" /> {t.scooterChip}
-                      </>
-                    ) : (
-                      <>
-                        <Bike className="w-3 h-3" aria-hidden="true" /> {t.bikeChip}
-                      </>
-                    )}
-                  </Badge>
-                ))}
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+              <ScrollReveal delay={0.08}>
+                <h1 className="mt-6 font-display text-4xl sm:text-5xl md:text-6xl font-black text-balance">{t.heroTitle(city)}</h1>
+              </ScrollReveal>
+              <ScrollReveal delay={0.16}>
+                <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">{t.heroBody(city)}</p>
+              </ScrollReveal>
+              <ScrollReveal delay={0.24} className="mt-8 flex justify-center lg:justify-start">
+                <WaitlistForm placement="city-hero" sharePath={cityPath} className="max-w-lg" />
+              </ScrollReveal>
+              <ScrollReveal delay={0.3}>
+                <ul className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted" aria-label={t.vehiclesLabel}>
+                  {city.vehicles.map((v) => (
+                    <li key={v} className="inline-flex items-center gap-1.5">
+                      {v === "e-scooter" ? <Zap className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" /> : <Bike className="w-4 h-4 text-rido-green" aria-hidden="true" />}
+                      {v === "e-scooter" ? t.scooterChip : t.bikeChip}
+                    </li>
+                  ))}
+                  <li className="inline-flex items-center gap-1.5">
+                    <HardHat className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" />
+                    {t.helmetChip}
+                  </li>
+                </ul>
+              </ScrollReveal>
+            </div>
 
-            <ScrollReveal delay={0.3}>
-              <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-                <a
-                  href="#download"
-                  className="group btn-lift inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-rido-magenta text-white font-semibold text-base shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:shadow-[0_12px_36px_rgba(222,4,152,0.5)] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer w-full max-w-[320px] sm:w-auto"
-                >
-                  <span>{t.ctaPrimary}</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
-                </a>
-                <Link
-                  href={homeHref}
-                  className="btn-lift inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white/[0.06] backdrop-blur-xl text-white font-semibold text-base border border-white/15 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.18)] hover:bg-white/[0.1] hover:border-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer w-full max-w-[320px] sm:w-auto"
-                >
-                  {t.ctaSecondary}
-                </Link>
-              </div>
+            <ScrollReveal delay={0.12} className="mx-auto w-full max-w-md lg:max-w-none">
+              <ImageFrame
+                src={withBase(vehicles[0].cutouts[0])}
+                alt={t.imageAlt}
+                sizes="(max-width: 1024px) 90vw, 45vw"
+                priority
+                imageClassName="drop-shadow-[0_30px_40px_rgba(15,23,42,0.25)]"
+                aspect="aspect-[5/4] lg:aspect-[4/5]"
+                className="shadow-2xl shadow-black/40"
+              >
+                <span className="absolute bottom-3 left-3 sm:bottom-5 sm:left-5 inline-flex items-center gap-1.5 rounded-full bg-white/85 backdrop-blur px-3 py-1.5 text-xs font-semibold text-ink ring-1 ring-black/5">
+                  <MapPin className="w-3.5 h-3.5 text-rido-magenta-dark" aria-hidden="true" />
+                  {city.name}
+                </span>
+              </ImageFrame>
             </ScrollReveal>
           </div>
         </section>
 
-        <div className="section-divider max-w-7xl mx-auto" />
-
-        {/* Coverage map (shows all launch towns) */}
-        <section
-          id="coverage"
-          aria-label={t.coverageAria(city)}
-          className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden"
-        >
-          <div className="relative max-w-7xl mx-auto">
-            <div className="text-center mb-10 sm:mb-16">
-              <ScrollReveal>
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-black">{t.coverageHeading}</h2>
-              </ScrollReveal>
+        {/* Coverage: sand band, copy beside the live map. */}
+        <Section id="coverage" label={t.coverageAria(city)} tone="sand">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div>
+              <SectionHeader
+                label={t.coverageLabel}
+                title={t.coverageTitle(city)}
+                intro={t.coverageBody(city)}
+                align="left"
+                tone="sand"
+                className="!mb-6"
+              />
               <ScrollReveal delay={0.1}>
-                <p className="mt-4 text-muted max-w-xl mx-auto">{t.coverageBody(city)}</p>
+                <Link
+                  href={homeHref}
+                  className="inline-flex items-center gap-2 min-h-11 font-semibold text-rido-magenta-dark hover:text-ink transition-colors cursor-pointer"
+                >
+                  {t.explore} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                </Link>
               </ScrollReveal>
             </div>
-            <ScrollReveal delay={0.15}>
-              <div className="relative flex justify-center">
+            <ScrollReveal delay={0.1}>
+              {/* Navy card keeps the dark map style and its SVG fallback legible on sand. */}
+              <div className="rounded-3xl bg-rido-navy p-2 shadow-2xl shadow-ink/20 [&_.coverage-map]:max-w-none [&_.coverage-map]:h-[280px] sm:[&_.coverage-map]:h-[420px]">
                 <CoverageMap towns={announcedCities.filter((c) => c.region === city.region)} />
               </div>
             </ScrollReveal>
           </div>
-        </section>
+        </Section>
 
-        <div className="section-divider max-w-7xl mx-auto" />
-
-        {/* City FAQ */}
-        <section
-          id="faq"
-          aria-label={t.faqAria(city)}
-          className="py-12 sm:py-24 px-4 sm:px-6"
-        >
-          <div className="max-w-3xl mx-auto">
-            <ScrollReveal>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-10 sm:mb-16">
-                {t.faqHeading(city)}
-              </h2>
+        {/* Local team strip: real company, real address, a real inbox. */}
+        <Section id="local-team" label={t.teamAria} tone="deep">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-16 items-end">
+            <SectionHeader label={t.teamLabel} title={t.teamTitle(city)} intro={t.teamBody} align="left" className="!mb-0" />
+            <ScrollReveal delay={0.1}>
+              <ul className="divide-y divide-white/10 border-y border-white/10">
+                <li className="flex gap-4 py-5">
+                  <MapPin className="w-5 h-5 shrink-0 mt-0.5 text-rido-magenta-light" aria-hidden="true" />
+                  <div>
+                    <p className="text-sm font-semibold text-white">{t.addressLabel}</p>
+                    <p className="mt-1 text-sm text-muted leading-relaxed">
+                      Go2 Place S.L. · Calle Eneldo 3, C4, local 22
+                      <br />
+                      03189 Orihuela Costa (Alicante)
+                    </p>
+                  </div>
+                </li>
+                <li className="flex gap-4 py-5">
+                  <Mail className="w-5 h-5 shrink-0 mt-0.5 text-rido-magenta-light" aria-hidden="true" />
+                  <div>
+                    <p className="text-sm font-semibold text-white">{t.contactLabel}</p>
+                    <p className="mt-1 text-sm">
+                      <a href="mailto:info@rido.bike" className="inline-flex min-h-8 items-center text-rido-magenta-light hover:text-white transition-colors cursor-pointer">
+                        info@rido.bike
+                      </a>
+                    </p>
+                  </div>
+                </li>
+              </ul>
             </ScrollReveal>
-            <div className="space-y-3 sm:space-y-4">
-              {faq.map((item, i) => (
-                <ScrollReveal key={item.question} delay={0.06 * i}>
-                  <details className="group glass rounded-2xl border border-white/10 px-5 sm:px-6 py-4 transition-colors duration-300 open:border-rido-magenta/30 hover:border-white/20">
-                    <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-4 font-semibold text-white min-h-[44px]">
-                      <span>{item.question}</span>
-                      <ChevronDown className="w-4 h-4 shrink-0 text-rido-magenta transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
-                    </summary>
-                    <p className="mt-3 text-sm text-muted leading-relaxed">{item.answer}</p>
-                  </details>
-                </ScrollReveal>
+          </div>
+        </Section>
+
+        {/* Town FAQ (also emitted as FAQPage JSON-LD above). */}
+        <Section id="faq" label={t.faqAria(city)} containerClassName="max-w-3xl">
+          <SectionHeader label={t.faqLabel} title={t.faqHeading(city)} />
+          <ScrollReveal delay={0.1}>
+            <div className="divide-y divide-white/10 border-y border-white/10">
+              {faq.map((item) => (
+                <details key={item.question} className="group py-2">
+                  <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-4 py-3 font-display text-lg font-bold text-white min-h-[44px] rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta">
+                    <span>{item.question}</span>
+                    <ChevronDown className="w-5 h-5 shrink-0 text-rido-magenta-light transition-transform duration-200 group-open:rotate-180 motion-reduce:transition-none" aria-hidden="true" />
+                  </summary>
+                  <p className="pb-4 text-base text-muted leading-relaxed">{item.answer}</p>
+                </details>
               ))}
             </div>
-          </div>
-        </section>
+          </ScrollReveal>
+        </Section>
 
-        <div className="section-divider max-w-7xl mx-auto" />
-
-        <DownloadCTA />
+        <DownloadCTA sharePath={cityPath} />
       </main>
       <Footer locale={locale} />
       <BackToTop />

@@ -166,7 +166,7 @@ export function Hero() {
           </m.p>
 
           <m.div {...enter(0.36)} className="mt-8 flex justify-center lg:justify-start">
-            <WaitlistForm className="max-w-lg" />
+            <WaitlistForm placement="hero" className="max-w-lg" />
           </m.div>
 
           <m.div

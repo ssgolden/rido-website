@@ -1,12 +1,14 @@
 "use client";
 
-import { useId, useState } from "react";
-import { Mail, Loader2, ArrowRight } from "lucide-react";
+import { useEffect, useId, useRef, useState } from "react";
+import { Mail, Loader2, ArrowRight, MailCheck } from "lucide-react";
 import { m, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { DURATION, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { track, type Placement } from "@/lib/analytics";
+import { ShareInvite } from "@/components/ui/ShareInvite";
 
 const copy = {
   en: {
@@ -18,6 +20,8 @@ const copy = {
     errorGenericAfter: " and we'll add you by hand.",
     successTitle: "You're on the list!",
     successBody: "We'll email you the moment Rido launches near you.",
+    pendingTitle: "Check your inbox",
+    pendingBody: "We've sent you a link to confirm your email. Your place is saved once you click it.",
   },
   es: {
     emailPlaceholder: "tu@email.com",
@@ -28,6 +32,8 @@ const copy = {
     errorGenericAfter: " y te apuntamos a mano.",
     successTitle: "¡Ya estás en la lista!",
     successBody: "Te escribiremos en cuanto Rido llegue a tu zona.",
+    pendingTitle: "Revisa tu correo",
+    pendingBody: "Te hemos enviado un enlace para confirmar tu correo. Tu plaza queda guardada al pulsarlo.",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
@@ -40,24 +46,57 @@ const WAITLIST_ENDPOINT = WAITLIST_URL || "/api/waitlist";
 const CONTACT_EMAIL = "info@rido.bike";
 
 /**
- * The one waitlist form, used in the hero and the closing section.
+ * The one waitlist form (hero, closing section, town pages).
  * `align` only changes alignment; behaviour and copy are identical.
+ * `placement` labels the consent-gated conversion events (src/lib/analytics.ts)
+ * so placements can be compared; `sharePath` is the page the share row links to.
  */
-export function WaitlistForm({ align = "left", className }: { align?: "left" | "center"; className?: string }) {
+export function WaitlistForm({
+  align = "left",
+  placement,
+  sharePath,
+  className,
+}: {
+  align?: "left" | "center";
+  placement: Placement;
+  sharePath?: string;
+  className?: string;
+}) {
   const locale = useLocale();
   const t = copy[locale];
   const reduce = useReducedMotion();
   const inputId = useId();
   const errorId = `${inputId}-error`;
+  const formRef = useRef<HTMLFormElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [pending, setPending] = useState(false);
   const [errorKey, setErrorKey] = useState<"invalid" | "generic" | null>(null);
+
+  // One "view" per form per page load, once at least half of it is on screen.
+  useEffect(() => {
+    const el = formRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          track("waitlist_view", { placement, locale });
+          io.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [placement, locale]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    track("waitlist_submit", { placement, locale });
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setStatus("error");
       setErrorKey("invalid");
+      track("waitlist_error", { placement, locale, detail: "invalid" });
       return;
     }
     setStatus("loading");
@@ -81,10 +120,13 @@ export function WaitlistForm({ align = "left", className }: { align?: "left" | "
       } catch {
         // Storage blocked — the backend already has the sign-up.
       }
+      setPending(json.pending === true);
       setStatus("success");
+      track("waitlist_success", { placement, locale, detail: json.pending === true ? "pending" : "saved" });
     } catch {
       setStatus("error");
       setErrorKey("generic");
+      track("waitlist_error", { placement, locale, detail: "generic" });
     }
   };
 
@@ -95,17 +137,22 @@ export function WaitlistForm({ align = "left", className }: { align?: "left" | "
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
         className={cn("glass rounded-2xl p-5 max-w-md", align === "center" ? "mx-auto text-center" : "", className)}
-        role="status"
-        aria-live="polite"
       >
-        <p className="font-bold text-white">{t.successTitle}</p>
-        <p className="mt-1 text-sm text-muted">{t.successBody}</p>
+        <div role="status" aria-live="polite">
+          <p className="font-bold text-white">
+            {pending ? <MailCheck className="mr-2 inline-block w-5 h-5 align-[-0.25em] text-rido-magenta-light" aria-hidden="true" /> : null}
+            {pending ? t.pendingTitle : t.successTitle}
+          </p>
+          <p className="mt-1 text-sm text-muted">{pending ? t.pendingBody : t.successBody}</p>
+        </div>
+        <ShareInvite placement={placement} path={sharePath} align={align} className="mt-4 border-t border-white/10 pt-4" />
       </m.div>
     );
   }
 
   return (
     <form
+      ref={formRef}
       onSubmit={handleSubmit}
       noValidate
       className={cn("w-full max-w-md", align === "center" ? "mx-auto" : "", className)}
