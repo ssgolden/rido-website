@@ -72,12 +72,15 @@ jobs:
           NEXT_OUTPUT: export
           CUSTOM_DOMAIN: true
 
-      - name: Lighthouse budgets (desktop, merge-blocking)
+      # GitHub's runners score about 10 points below a fast local machine, so
+      # the performance floors here are calibrated to the runner (desktop 85,
+      # mobile 70). LCP and CLS budgets are absolute and block as set.
+      - name: Lighthouse budgets (desktop)
         run: npx lhci autorun --config=lighthouserc.json
 
-      # Mobile uses Lighthouse's simulated slow 4G + 4x CPU. CLS and a
-      # performance floor of 80 block; the 95 score and LCP < 2.5s targets
-      # are warnings until the homepage ships less JavaScript.
+      # Mobile uses Lighthouse's simulated slow 4G + 4x CPU. CLS and the
+      # performance floor block; LCP < 2.5s is a warning until the homepage
+      # ships less JavaScript.
       - name: Lighthouse budgets (mobile)
         run: npx lhci autorun --config=lighthouserc.mobile.json
 

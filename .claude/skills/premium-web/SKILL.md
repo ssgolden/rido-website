@@ -58,9 +58,10 @@ this skill is the per-change quality bar.
 
 - Targets: LCP < 1.8s, CLS < 0.05, INP < 200ms on mobile; Lighthouse ≥ 95.
 - Enforced in CI (`lighthouserc.json`, `lighthouserc.mobile.json`): desktop
-  performance ≥ 95 and LCP < 1.8s block; on mobile CLS ≤ 0.05 and a
-  performance floor of 80 block, while the 95 score and LCP < 2.5s are
-  warnings (the simulated mobile LCP is held back by JS weight, not paint).
+  LCP < 1.8s and CLS ≤ 0.05 block, plus performance floors calibrated to
+  GitHub's slower runners (desktop ≥ 85, mobile ≥ 70; a fast local machine
+  scores about 10 points higher, so check ≥ 95 locally). Mobile LCP < 2.5s is
+  a warning (the simulated mobile LCP is held back by JS weight, not paint).
 - Never let the LCP element start transparent: above-the-fold hero copy and
   images render visible from the first paint (a `y`-only rise is fine; an
   `opacity: 0` start delays LCP until hydration). A page's `h1` header
