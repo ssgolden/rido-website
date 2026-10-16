@@ -106,6 +106,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     let LenisCtor: typeof Lenis | null = null;
     let contentObserver: ResizeObserver | null = null;
     let disposed = false;
+    let lenisRafId = 0;
 
     const shouldEnable = () =>
       !reducedMotionMq.matches && !coarsePointerMq.matches;
@@ -124,7 +125,8 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       if (disposed || lenis || !shouldEnable()) return;
       const root = scrollRef.current;
       lenis = new LenisCtor({
-        autoRaf: true,
+        // Frames are driven on demand below, not by a loop that runs forever.
+        autoRaf: false,
         lerp: 0.1,
         wheelMultiplier: 1,
         anchors: true,
@@ -135,18 +137,39 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
           : {}),
       });
       lenisRef.current = lenis;
+
+      // On-demand frame loop: runs while a smooth scroll is animating, then
+      // stops, so an idle page does no per-frame work. Started by wheel/touch
+      // input (virtual-scroll) and by any scrollTo (ours, or Lenis's own
+      // anchor handling, which calls this.scrollTo).
+      const instance = lenis;
+      const loop = (time: number) => {
+        instance.raf(time);
+        lenisRafId = instance.isScrolling === "smooth" ? requestAnimationFrame(loop) : 0;
+      };
+      const kick = () => {
+        if (!lenisRafId) lenisRafId = requestAnimationFrame(loop);
+      };
+      instance.on("virtual-scroll", kick);
+      const scrollTo = instance.scrollTo.bind(instance);
+      instance.scrollTo = ((...args: Parameters<Lenis["scrollTo"]>) => {
+        scrollTo(...args);
+        kick();
+      }) as Lenis["scrollTo"];
+
       // Lenis watches the wrapper, which here is also the fixed-height scroll
       // lane, so it never notices the page growing (FAQ answers opening, "Show
       // all", the map arriving) and stops short of the bottom. Watch the lane's
       // children and re-measure.
       if (root && typeof ResizeObserver !== "undefined") {
-        const instance = lenis;
         contentObserver = new ResizeObserver(() => instance.resize());
         for (const child of Array.from(root.children)) contentObserver.observe(child);
       }
     };
 
     const stop = () => {
+      cancelAnimationFrame(lenisRafId);
+      lenisRafId = 0;
       contentObserver?.disconnect();
       contentObserver = null;
       lenis?.destroy();

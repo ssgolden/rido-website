@@ -3,7 +3,7 @@ import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
 import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
-import { getAllSchemas } from "@/lib/schema";
+import { getSiteSchemas } from "@/lib/schema";
 import type { Locale } from "@/lib/i18n/config";
 
 export const rootViewport: Viewport = {
@@ -24,7 +24,8 @@ export function RootDocument({
   lang: Locale;
   children: React.ReactNode;
 }) {
-  const schemas = getAllSchemas(lang);
+  // Site-wide JSON-LD only; page-specific blocks render on their own pages.
+  const schemas = getSiteSchemas();
 
   return (
     <html lang={lang} className="dark">

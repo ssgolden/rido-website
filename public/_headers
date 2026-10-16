@@ -17,15 +17,17 @@
 # - worker-src 'self' blob: — MapLibre spawns its tile worker from a blob
 #   URL; without this the default-src 'self' fallback blocks it.
 # - style-src is NOT needed: the map "style" is JSON over fetch, not CSS.
+# - No 'unsafe-eval': neither production Next.js nor MapLibre 5 evaluates
+#   strings. If the map ever falls back to the static SVG on the live site,
+#   check the browser console for a CSP report first.
 
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(self)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https: https://tiles.openfreemap.org; connect-src 'self' https://tiles.openfreemap.org; worker-src 'self' blob:; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https: https://tiles.openfreemap.org; connect-src 'self' https://tiles.openfreemap.org; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
 
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable

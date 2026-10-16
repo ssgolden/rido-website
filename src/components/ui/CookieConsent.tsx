@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
+import { readConsent, saveConsent, subscribeConsent } from "@/lib/consent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { m, AnimatePresence, useReducedMotion } from "framer-motion";
@@ -8,7 +9,6 @@ import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-const STORAGE_KEY = "rido-cookie-consent";
 
 // The banner mounts in the root layout, OUTSIDE any LocaleProvider, so it
 // derives the locale from the URL ("/es..." → Spanish) instead of context.
@@ -32,31 +32,12 @@ const copy: Record<"en" | "es", typeof en> = {
   },
 };
 
-function safeGetStorage(key: string): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(key);
-  } catch {
-    // localStorage unavailable (private browsing, storage blocked, etc.)
-    return null;
-  }
-}
-
-function safeSetStorage(key: string, value: string): void {
-  try {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(key, value);
-  } catch {
-    // Silently fail if storage is blocked
-  }
-}
-
-// Subscribe to localStorage consent state without setState-in-effect.
-// Returns true when the banner should be visible (no consent recorded yet).
+// Visible while no choice is stored. Re-evaluates when the choice changes in
+// this tab (accept, decline, or "Cookie settings" in the footer) or another.
 function useShouldShowConsent() {
   return useSyncExternalStore(
-    () => () => {},
-    () => !safeGetStorage(STORAGE_KEY), // client
+    subscribeConsent,
+    () => readConsent() === "unset", // client
     () => false // SSR — don't show banner during hydration
   );
 }
@@ -64,20 +45,11 @@ function useShouldShowConsent() {
 export function CookieConsent() {
   const pathname = usePathname() ?? "/";
   const t = pathname === "/es" || pathname.startsWith("/es/") ? copy.es : copy.en;
-  const shouldShow = useShouldShowConsent();
-  const [dismissed, setDismissed] = useState(false);
-  const visible = shouldShow && !dismissed;
+  const visible = useShouldShowConsent();
   const reduce = useReducedMotion();
 
-  const handleAccept = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
-    setDismissed(true);
-  };
-
-  const handleDecline = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: false, timestamp: Date.now() }));
-    setDismissed(true);
-  };
+  const handleAccept = () => saveConsent(true);
+  const handleDecline = () => saveConsent(false);
 
   return (
     <AnimatePresence>

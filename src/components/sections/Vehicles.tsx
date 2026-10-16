@@ -99,11 +99,9 @@ export function Vehicles() {
                 )}
               >
                 {i === active && (
-                  <m.span
-                    layoutId="vehicle-tab-bg"
-                    className="absolute inset-0 rounded-full bg-ink"
-                    transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
-                  />
+                  // Static pill: framer's layoutId needs the full (domMax) feature set,
+                  // which this site deliberately does not load.
+                  <span className="absolute inset-0 rounded-full bg-ink" aria-hidden="true" />
                 )}
                 <span className="relative z-10">{vehicle.name}</span>
               </button>

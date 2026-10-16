@@ -85,7 +85,6 @@ export function RidoLogo({
             width={imgW}
             height={imgH}
             loading={priority ? "eager" : undefined}
-            sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
             className="shrink-0"
             style={{ imageRendering: "auto" }}
             onError={() => setImgError(true)}

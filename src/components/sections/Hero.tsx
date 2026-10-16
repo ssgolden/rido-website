@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import { withBase } from "@/lib/basePath";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { DURATION, EASE, REVEAL, STAGGER } from "@/lib/motion";
+import { STAGGER } from "@/lib/motion";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { ImageFrame } from "@/components/ui/ImageFrame";
@@ -61,14 +61,15 @@ const copy: Record<Locale, typeof en> = {
 
 const chipIcons = [HardHat, BadgeCheck, MapPin] as const;
 
-const wordVariants = {
-  hidden: { opacity: 0, y: REVEAL.y },
-  visible: { opacity: 1, y: 0, transition: { duration: DURATION.entrance, ease: EASE } },
-};
-const wordVariantsReduced = {
-  hidden: { opacity: 1, y: 0 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0 } },
-};
+/**
+ * Hero entrances are CSS keyframes (globals.css .hero-in / .hero-rise), not
+ * framer: they start with the first paint instead of after hydration, and the
+ * markup is identical on server and client. `.hero-rise` only moves (never
+ * transparent), for the form, paragraph and image: the call to action and the
+ * LCP element are visible from the first paint. Both are off under reduced
+ * motion.
+ */
+const delay = (seconds: number) => ({ animationDelay: `${seconds}s` });
 
 function HeroBackdrop({ fixed, opacity }: { fixed: boolean; opacity: number | MotionValue<number> }) {
   return (
@@ -122,13 +123,7 @@ export function Hero() {
   // client styles match.
   const rideX = useTransform(scrollYProgress, [0.05, 0.75], reduce ? ["0%", "0%"] : ["0%", "75%"]);
   const parkBackdrop = Boolean(backdropEl) && !reduce;
-  const variants = reduce ? wordVariantsReduced : wordVariants;
   const highlightFrom = t.headlineWords.length - t.highlightCount;
-  const enter = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: REVEAL.y },
-    animate: { opacity: 1, y: 0 },
-    transition: { delay: reduce ? 0 : delay, duration: reduce ? 0 : DURATION.entrance, ease: EASE },
-  });
 
   return (
     <section
@@ -143,7 +138,7 @@ export function Hero() {
 
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="text-center lg:text-left">
-          <m.div {...enter(0)} className="flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-6">
+          <div className="hero-in flex flex-col sm:flex-row items-center gap-3 justify-center lg:justify-start mb-6">
             <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
               <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
                 <span className="absolute inline-flex h-full w-full motion-safe:animate-ping rounded-full bg-rido-green/60" />
@@ -154,43 +149,37 @@ export function Hero() {
             <span className="text-xs sm:text-sm text-muted">
               <WaitlistProof singular={t.waitlistSingular} plural={t.waitlistPlural} fallbackKicker={t.waitlistKicker} />
             </span>
-          </m.div>
+          </div>
 
-          <m.h1
-            id="hero-heading"
-            className="text-display-2xl font-black text-balance"
-            initial={reduce ? "visible" : "hidden"}
-            animate="visible"
-            variants={{ hidden: {}, visible: { transition: { staggerChildren: reduce ? 0 : STAGGER.text, delayChildren: reduce ? 0 : 0.08 } } }}
-          >
+          <h1 id="hero-heading" className="text-display-2xl font-black text-balance">
             {t.headlineWords.map((w, i) => (
               <span key={`${w}-${i}`}>
-                <m.span className={`inline-block ${i >= highlightFrom ? "text-gradient-brand" : ""}`} variants={variants}>
+                <span
+                  className={`hero-in inline-block ${i >= highlightFrom ? "text-gradient-brand" : ""}`}
+                  style={delay(0.08 + i * STAGGER.text)}
+                >
                   {w}
-                </m.span>
+                </span>
                 {i < t.headlineWords.length - 1 ? " " : ""}
               </span>
             ))}
-          </m.h1>
+          </h1>
 
-          {/* Largest text block on phones (often the LCP element): visible from the
-              first paint, with only a short rise after hydration. */}
-          <m.p
-            initial={reduce ? false : { y: REVEAL.y }}
-            animate={{ y: 0 }}
-            transition={{ delay: reduce ? 0 : 0.24, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-            className="mt-6 text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+          {/* Largest text block on phones (often the LCP element): rise only. */}
+          <p
+            className="hero-rise mt-6 text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+            style={delay(0.24)}
           >
             {t.subheadline}
-          </m.p>
+          </p>
 
-          <m.div {...enter(0.36)} className="mt-8 flex justify-center lg:justify-start">
+          <div className="hero-rise mt-8 flex justify-center lg:justify-start" style={delay(0.36)}>
             <WaitlistForm placement="hero" className="max-w-lg" />
-          </m.div>
+          </div>
 
-          <m.div
-            {...enter(0.44)}
-            className="mt-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 justify-center lg:justify-start text-sm"
+          <div
+            className="hero-in mt-4 flex flex-col sm:flex-row items-center gap-3 sm:gap-6 justify-center lg:justify-start text-sm"
+            style={delay(0.44)}
           >
             <span className="inline-flex items-center gap-2 text-muted">
               <Shield className="w-3.5 h-3.5" aria-hidden="true" />
@@ -203,18 +192,12 @@ export function Hero() {
               {t.secondary}
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
             </a>
-          </m.div>
+          </div>
         </div>
 
         {/* Image slot: product render on sand until the Torrevieja photo shoot lands.
-            It is the mobile LCP element, so it never starts transparent: only a short
-            rise after hydration (an opacity-0 start delays LCP until JS has run). */}
-        <m.div
-          initial={reduce ? false : { y: REVEAL.y }}
-          animate={{ y: 0 }}
-          transition={{ delay: reduce ? 0 : 0.2, duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="relative mx-auto w-full max-w-md lg:max-w-none"
-        >
+            It is the mobile LCP element, so it never starts transparent: rise only. */}
+        <div className="hero-rise relative mx-auto w-full max-w-md lg:max-w-none" style={delay(0.2)}>
           <ImageFrame
             src={withBase(vehicles[0].cutouts[0])}
             alt={t.imageAlt}
@@ -241,7 +224,7 @@ export function Hero() {
               })}
             </ul>
           </ImageFrame>
-        </m.div>
+        </div>
       </div>
     </section>
   );

@@ -5,6 +5,8 @@ import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { JsonLd } from "@/components/layout/JsonLd";
+import { getHomeSchemas } from "@/lib/schema";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
@@ -82,6 +84,7 @@ export default function HomeEs() {
       <SiteShell header={<Navbar />}>
       <ScrollProgress />
       <main id="main-content">
+        <JsonLd schemas={getHomeSchemas("es")} />
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
             <h1>Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol</h1>

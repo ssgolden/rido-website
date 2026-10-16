@@ -1,9 +1,22 @@
+import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { JsonLd } from "@/components/layout/JsonLd";
+import { getHomeSchemas } from "@/lib/schema";
+import { SITE_ORIGIN } from "@/lib/site";
+
+// Homepage canonical and language pair. Kept here, not in the root layout, so
+// other English pages never inherit the homepage canonical by accident.
+export const metadata: Metadata = {
+  alternates: {
+    canonical: SITE_ORIGIN,
+    languages: { en: SITE_ORIGIN, es: `${SITE_ORIGIN}/es`, "x-default": SITE_ORIGIN },
+  },
+};
 
 /**
  * Placeholder shown while a dynamic chunk is being fetched. Mirrors the real
@@ -43,6 +56,7 @@ export default function Home() {
     <SiteShell header={<Navbar />}>
       <ScrollProgress />
       <main id="main-content">
+        <JsonLd schemas={getHomeSchemas("en")} />
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
             <h1>Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol</h1>

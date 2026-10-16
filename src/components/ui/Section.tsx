@@ -37,7 +37,8 @@ export function Section({
       data-tone={tone}
       className={cn("relative py-16 sm:py-24 px-4 sm:px-6", toneClasses[tone], className)}
     >
-      <div className={cn("relative max-w-7xl mx-auto", containerClassName)}>{children}</div>
+      {/* Default width only when the caller sets none (cn() does not merge conflicting classes). */}
+      <div className={cn("relative mx-auto", !/\bmax-w-/.test(containerClassName ?? "") && "max-w-7xl", containerClassName)}>{children}</div>
     </section>
   );
 }

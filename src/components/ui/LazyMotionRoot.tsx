@@ -1,6 +1,6 @@
 "use client";
 
-import { LazyMotion, domAnimation } from "framer-motion";
+import { LazyMotion } from "framer-motion";
 
 /**
  * Loads framer-motion's domAnimation feature pack (~35KB gz) instead of the
@@ -15,7 +15,14 @@ import { LazyMotion, domAnimation } from "framer-motion";
  * rendered outside this provider gets no features and never leaves its
  * `initial` state (it looks invisible), so anything new in a root layout
  * must sit inside it.
+ *
+ * The features load asynchronously (framer's documented pattern), so they are
+ * not in the first-load bundle. Until they arrive, `m.` elements sit at their
+ * server-rendered `initial` state, exactly as they do before hydration, so
+ * nothing flashes; entrances simply start a moment later.
  */
+const loadFeatures = () => import("@/lib/motion-features").then((m) => m.default);
+
 export function LazyMotionRoot({ children }: { children: React.ReactNode }) {
-  return <LazyMotion features={domAnimation}>{children}</LazyMotion>;
+  return <LazyMotion features={loadFeatures}>{children}</LazyMotion>;
 }

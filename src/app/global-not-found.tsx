@@ -8,8 +8,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-// Unmatched URLs sit outside both locale root layouts, so this file owns <html>.
-export default function NotFound() {
+// Unmatched URLs match no route (and the site has two root layouts), so this
+// global 404 owns the whole document (experimental.globalNotFound).
+export default function GlobalNotFound() {
   return (
     <html lang="en" className="dark">
       <body className="font-sans overflow-x-hidden bg-rido-navy">

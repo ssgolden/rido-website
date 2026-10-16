@@ -59,14 +59,6 @@ export const metadata: Metadata = {
     description: "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride. Zero emissions, zero hassle.",
     images: ["/images/og/rido-og.jpg"],
   },
-  alternates: {
-    canonical: SITE_ORIGIN,
-    languages: {
-      en: SITE_ORIGIN,
-      es: `${SITE_ORIGIN}/es`,
-      "x-default": SITE_ORIGIN,
-    },
-  },
   other: primaryCity
     ? {
         "geo.position": `${primaryCity.lat};${primaryCity.lng}`,

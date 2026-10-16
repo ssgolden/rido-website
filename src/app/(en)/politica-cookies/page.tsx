@@ -89,7 +89,7 @@ export default function CookiePolicyPage() {
       <p>You are in control of the technologies described in this policy at all times:</p>
       <ul>
         <li>
-          <strong>Consent banner</strong>: On your first visit, you can accept or decline non-essential technologies via our banner. If you decline, analytics is never loaded. To change a previous choice, clear your browser&apos;s site data for rido.bike (which removes the <code>rido-cookie-consent</code> entry) and the banner will appear again on your next visit.
+          <strong>Consent banner</strong>: On your first visit, you can accept or decline non-essential technologies via our banner. If you decline, analytics is never loaded. To change or withdraw your choice at any time, use the <strong>Cookie settings</strong> link at the bottom of every page: it clears your stored choice, stops analytics immediately and shows the banner again. Clearing your browser&apos;s site data for rido.bike (which removes the <code>rido-cookie-consent</code> entry) has the same effect.
         </li>
         <li>
           <strong>Browser settings</strong>: All major browsers (Chrome, Firefox, Safari, Edge) allow you to view, block, and delete cookies and site data, either globally or for specific websites. Consult your browser&apos;s help section for instructions. Please note that blocking all storage may affect the functioning of some websites.

@@ -101,6 +101,20 @@ export function Navbar() {
     return () => { el.style.overflow = ""; };
   }, [mobileOpen]);
 
+  // The menu panel is md:hidden. If the viewport grows past md while it is
+  // open (rotation, resize), close it, or the scroll lock above would leave the
+  // page unscrollable with no visible way to undo it.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = () => {
+      if (mq.matches) setMobileOpen(false);
+    };
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [mobileOpen]);
+
   // Escape closes menu and returns focus to the hamburger
   useEffect(() => {
     if (!mobileOpen) return;

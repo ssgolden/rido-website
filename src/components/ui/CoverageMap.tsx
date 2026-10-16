@@ -6,7 +6,7 @@ import { announcedCities, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode } from "@/components/ui/SmoothScrollProvider";
-import type { Map as MapLibreMap, LngLatBoundsLike } from "maplibre-gl";
+import type { Map as MapLibreMap, LngLatBoundsLike, StyleSpecification } from "maplibre-gl";
 
 type MapLibreModule = typeof import("maplibre-gl");
 
@@ -315,9 +315,27 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
     }
     setStatus("loading");
 
+    // Open the connection to the tile host now, and fetch the style JSON in
+    // parallel with the library instead of after it.
+    const origin = new URL(STYLE_URL).origin;
+    if (!document.querySelector(`link[rel="preconnect"][href="${origin}"]`)) {
+      const link = document.createElement("link");
+      link.rel = "preconnect";
+      link.href = origin;
+      link.crossOrigin = "anonymous";
+      document.head.appendChild(link);
+    }
+
     let lib: MapLibreModule;
+    let style: StyleSpecification;
     try {
-      lib = await loadMapLibre();
+      [lib, style] = await Promise.all([
+        loadMapLibre(),
+        fetch(STYLE_URL).then((r) => {
+          if (!r.ok) throw new Error(`style ${r.status}`);
+          return r.json() as Promise<StyleSpecification>;
+        }),
+      ]);
     } catch {
       setStatus("fallback");
       return;
@@ -334,7 +352,9 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
     try {
       map = new lib.Map({
         container,
-        style: STYLE_URL,
+        // Pre-fetched style object. OpenFreeMap's style uses absolute URLs for
+        // its sources, sprite and glyphs, so it does not need its own base URL.
+        style,
         // Initial camera from bounds — set at construction time, so there is
         // no animated fitBounds at all (reduced-motion safe by design).
         // Pre-announcement, frame the region generally instead of the towns.

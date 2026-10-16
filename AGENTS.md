@@ -16,12 +16,13 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Key Patterns
 - Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`
+- `cn()` is plain clsx (no tailwind-merge): conflicting utilities are not merged. Override defaults with `!` or have the component skip its default when the caller passes one (see `Section`, `WaitlistForm`).
 - Legal pages: Use `LegalPage` layout from `@/components/layout/LegalPage`
 - All sections need `id` and `aria-label` attributes
 - All interactive elements need `cursor-pointer` class
 - Use `useReducedMotion()` from framer-motion for animations that loop
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
-- Fonts are self-hosted via `@fontsource-variable` packages imported in layout.tsx — zero external font requests (still not next/font — Turbopack bug on Windows)
+- Fonts are self-hosted from `public/fonts` (variable Inter and Sora woff2, originally from `@fontsource-variable`), declared in `globals.css` and preloaded in `RootDocument.tsx` — zero external font requests (still not next/font — Turbopack bug on Windows)
 - Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
