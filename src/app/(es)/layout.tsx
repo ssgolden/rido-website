@@ -21,7 +21,7 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.png",
         width: 1200,
         height: 630,
-        alt: "Rido — Patinetes y bicicletas eléctricas compartidas en la Costa del Sol",
+        alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
         type: "image/png",
       },
     ],

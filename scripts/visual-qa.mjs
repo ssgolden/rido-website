@@ -28,6 +28,7 @@ const PAGES = [
   { path: "/privacy", name: "privacy", fullPage: false },
   { path: "/terms", name: "terms", fullPage: false },
   { path: "/careers", name: "careers", fullPage: false },
+  { path: "/torrevieja", name: "city-torrevieja", fullPage: true },
 ];
 
 const VIEWPORTS = [

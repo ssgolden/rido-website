@@ -4,21 +4,21 @@
 
 ---
 
-# Rido — Shared E-Scooters & E-Bikes on the Costa del Sol, Spain
+# Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain
 
-Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. The service provides zero-emission shared vehicles available via a mobile app. Users can find, unlock, ride, and park vehicles using the Rido app.
+Rido is a shared e-scooter and e-bike micro-mobility service launching in Torrevieja on the Costa Blanca, Spain, in the coming weeks, with the Costa del Sol to follow. The service provides zero-emission shared vehicles available via a mobile app. Users can find, unlock, ride, and park vehicles using the Rido app.
 
 Operated by Go2 Place S.L. (NIF B01745405), based in Orihuela Costa, Alicante, Spain.
 
 ## Hero Section
 
-**Headline**: Move Freely Across Spain
+**Headline**: Move Freely Along the Coast
 
-**Subheadline**: Shared e-scooters and e-bikes coming to the Costa del Sol. Join the waitlist, be first to ride. Zero emissions, zero hassle.
+**Subheadline**: Cheaper than a taxi, cleaner than a rental car, and run by people who live here. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.
 
-**Stats**: 5+ Cities | 2 Vehicle Types | Zero Emissions
+**Stats**: 6 Planned Cities | 2 Vehicle Types | Zero Direct Emissions
 
-**Badge**: Coming to the Costa del Sol
+**Badge**: Launching soon in Torrevieja
 
 ---
 
@@ -60,15 +60,14 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 
 ---
 
-## Cities (all coming soon to the Costa del Sol)
+## Cities (all coming soon)
 
-Five launch cities on the Costa del Sol, all coming soon — the cities will be announced soon. E-scooters and e-bikes.
+- **Torrevieja** (Costa Blanca, Alicante) — launching in the coming weeks. E-scooters and e-bikes. https://www.rido.bike/torrevieja
+- **Costa del Sol** — five more launch towns planned; the towns will be announced soon. E-scooters and e-bikes.
 
 ---
 
 ## Safety
-
-**Safety Rating**: 5 stars
 
 ### Helmet First
 Always wear a helmet. We include one with every scooter and offer helmet rewards in the app.
@@ -166,11 +165,12 @@ Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bik
 
 Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.
 
-So we're building a fleet of shared e-scooters and e-bikes designed for the Costa del Sol's streets, weather, and people. Every vehicle will be serviced in-house, every ride will be insured, and every kilometre replaces a car trip.
+So we're building a fleet of shared e-scooters and e-bikes designed for coastal towns — their streets, their weather, and their people. Every vehicle will be serviced in-house, every ride will be insured, and every kilometre replaces a car trip.
 
 ### Milestones
 - 2025: Rido founded in Spain
-- 2026: Costa del Sol launch — 5 cities planned
+- 2026: Torrevieja launch on the Costa Blanca
+- Next: Costa del Sol — 5 towns planned
 
 ### Values
 - **Freedom**: Move on your terms. No schedules, no waiting, no parking headaches. Just scan and go.
@@ -181,7 +181,7 @@ So we're building a fleet of shared e-scooters and e-bikes designed for the Cost
 
 ## Waitlist
 
-Join the waitlist and be first to ride when Rido launches on the Costa del Sol. No payment required to join.
+Join the waitlist and be first to ride when Rido launches in Torrevieja — and on the Costa del Sol after that. No payment required to join.
 
 - iOS app: Coming soon
 - Android app: Coming soon

@@ -44,6 +44,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
 - Pre-launch gate: `src/proxy.ts` redirects everything to /coming-soon when the `GATE_PASSWORD` env var is set (Vercel only — the password lives in Vercel project settings, NEVER in this public repo). Unset the var to launch. GitHub Pages export ignores the proxy; API routes are excluded from export by `scripts/build.mjs`.
 
+## Launch Geography
+- Torrevieja (Costa Blanca) is the first, announced launch town. Five Costa del Sol towns are planned but unannounced.
+- `src/data/cities.ts` has a per-town `announced` flag. Public surfaces read `announcedCities` / `regionsWithUnannouncedTowns`, never `cities`, so unannounced town names never leak. Flip a town's flag on its announcement day, then hand-edit `public/llms*.txt`.
+
 ## File Conventions
 - Sections in `src/components/sections/`
 - UI primitives in `src/components/ui/`

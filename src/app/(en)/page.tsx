@@ -1,5 +1,4 @@
 import dynamic from "next/dynamic";
-import { citiesAnnounced } from "@/data/cities";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
@@ -53,13 +52,9 @@ export default function Home() {
       <main id="main-content">
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Shared E-Scooters & E-Bikes on the Costa del Sol</h1>
-            <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes on the Costa del Sol. Zero emissions, zero hassle.</p>
-            <p>
-              {citiesAnnounced
-                ? "Coming soon to Marbella, San Pedro de Alcántara, Cancelada, Estepona, and El Paraíso."
-                : "Coming soon to the Costa del Sol — launch cities announced soon."}
-            </p>
+            <h1>Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol</h1>
+            <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes. Zero emissions, zero hassle.</p>
+            <p>Launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow.</p>
           </div>
         </noscript>
         <Hero />

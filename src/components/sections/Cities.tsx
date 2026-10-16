@@ -1,6 +1,7 @@
 "use client";
 
-import { cities, citiesAnnounced, activeCityCount } from "@/data/cities";
+import Link from "next/link";
+import { announcedCities, regionsWithUnannouncedTowns, cities } from "@/data/cities";
 import { Badge } from "@/components/ui/Badge";
 import { MapPin, Zap, Bike, ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -13,37 +14,29 @@ import type { Locale } from "@/lib/i18n/config";
 
 const copy = {
   en: {
-    sectionAria: "Cities where we operate",
-    citiesWord: "Cities",
-    comingSoonEyebrow: "Coming Soon",
+    sectionAria: "Cities where Rido is launching",
+    eyebrow: "Launch Cities",
     headingBefore: "Where to",
     headingHighlight: "Find Us",
-    intro: "Rido is launching on the Costa del Sol. Here are the cities we're bringing our fleet to.",
-    comingSoonBadge: "Coming Soon",
+    intro: "Rido launches first in Torrevieja on the Costa Blanca. Our Costa del Sol towns will be announced soon.",
+    comingSoonBadge: "Launching soon",
     eScooter: "E-Scooter",
     eBike: "E-Bike",
-    // Pre-announcement teaser (citiesAnnounced === false)
-    teaserEyebrow: "Launch Cities",
-    teaserIntro: "Our first Costa del Sol locations will be announced soon.",
-    teaserTitle: "Launch cities — announced soon",
-    teaserRegion: "Costa del Sol",
+    cityLink: "Rido in",
+    teaserTitle: "More towns — announced soon",
     teaserCta: "Join the waitlist to hear first",
   },
   es: {
-    sectionAria: "Ciudades donde operamos",
-    citiesWord: "Ciudades",
-    comingSoonEyebrow: "Próximamente",
+    sectionAria: "Ciudades donde llega Rido",
+    eyebrow: "Ciudades de lanzamiento",
     headingBefore: "Dónde",
     headingHighlight: "Encontrarnos",
-    intro: "Rido llega a la Costa del Sol. Estas son las ciudades a las que traemos nuestra flota.",
-    comingSoonBadge: "Próximamente",
+    intro: "Rido arranca en Torrevieja, en la Costa Blanca. Nuestras localidades de la Costa del Sol se anunciarán muy pronto.",
+    comingSoonBadge: "Muy pronto",
     eScooter: "Patinete eléctrico",
     eBike: "Bici eléctrica",
-    // Teaser previo al anuncio (citiesAnnounced === false)
-    teaserEyebrow: "Ciudades de lanzamiento",
-    teaserIntro: "Nuestras primeras ubicaciones en la Costa del Sol se anunciarán muy pronto.",
-    teaserTitle: "Ciudades de lanzamiento — se anunciarán muy pronto",
-    teaserRegion: "Costa del Sol",
+    cityLink: "Rido en",
+    teaserTitle: "Más localidades — muy pronto",
     teaserCta: "Únete a la lista de espera y entérate primero",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
@@ -51,6 +44,7 @@ const copy = {
 export function Cities() {
   const locale = useLocale();
   const t = copy[locale];
+  const cityHref = (slug: string) => (locale === "es" ? `/es/${slug}` : `/${slug}`);
 
   return (
     <section id="cities" aria-label={t.sectionAria} className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden">
@@ -60,89 +54,86 @@ export function Cities() {
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-10 sm:mb-16">
           <SectionHeading
-            eyebrow={
-              citiesAnnounced
-                ? activeCityCount > 0
-                  ? `${activeCityCount} ${t.citiesWord}`
-                  : t.comingSoonEyebrow
-                : t.teaserEyebrow
-            }
+            eyebrow={t.eyebrow}
             before={t.headingBefore}
             highlight={t.headingHighlight}
             className="text-3xl sm:text-4xl md:text-5xl font-black"
           />
           <ScrollReveal>
-            <p className="mt-4 text-muted max-w-xl mx-auto">{citiesAnnounced ? t.intro : t.teaserIntro}</p>
+            <p className="mt-4 text-muted max-w-xl mx-auto">{t.intro}</p>
           </ScrollReveal>
         </div>
 
-        {/* Real coverage map (MapLibre + OpenFreeMap, lazy-loaded; falls back to the SVG visualization).
-            Pre-announcement: don't render the map — an empty Costa del Sol outline reads as broken
-            filler. Show only the teaser card; restore the map the moment citiesAnnounced flips. */}
-        {citiesAnnounced && (
+        {/* Real coverage map of announced towns only (MapLibre + OpenFreeMap,
+            lazy-loaded; falls back to the SVG visualization). */}
+        {announcedCities.length > 0 && (
           <ScrollReveal delay={0.1}>
             <div className="relative mb-10 flex justify-center">
-              <CoverageMap showCities={citiesAnnounced} />
+              <CoverageMap towns={announcedCities} />
             </div>
           </ScrollReveal>
         )}
 
-        {citiesAnnounced ? (
-          /* City cards — restored site-wide when the launch towns are announced */
-          <StaggerReveal className="mobile-carousel md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" staggerDelay={STAGGER.grid}>
-            {cities.map((city) => (
-              <StaggerItem key={city.slug}>
-                <div className="group card-lift glass rounded-2xl p-5 sm:p-6 border border-white/10 hover:bg-white/10 hover:border-rido-magenta/30 hover:shadow-lg hover:shadow-rido-magenta/5">
-                  <div className="flex items-start gap-4">
-                    <div className="relative w-11 h-11 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0 group-hover:bg-rido-magenta/20 transition-colors">
-                      <MapPin className="w-5 h-5 text-rido-magenta relative z-10" />
-                      <div className="absolute inset-0 rounded-xl bg-rido-magenta/20 city-pulse-ring" style={{ animationDelay: `${cities.indexOf(city) * 0.2}s` }} />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <h3 className="font-black text-lg sm:text-xl">{city.name}</h3>
-                        {city.comingSoon && (
-                          <Badge variant="magenta-light" className="cursor-default">
-                            <span className="coming-soon-blink">{t.comingSoonBadge}</span>
-                          </Badge>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted mt-0.5">{city.region}</p>
-                      <div className="mt-3 flex gap-2">
-                        {city.vehicles.map((v) => (
-                          <Badge key={v} variant={v === "e-scooter" ? "magenta" : "green"} className="cursor-default">
-                            {v === "e-scooter" ? <><Zap className="w-3 h-3" /> {t.eScooter}</> : <><Bike className="w-3 h-3" /> {t.eBike}</>}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
+        <StaggerReveal
+          className="mobile-carousel md:grid md:grid-cols-2 gap-4 sm:gap-5 max-w-3xl mx-auto"
+          staggerDelay={STAGGER.grid}
+        >
+          {/* Announced towns — each links to its landing page */}
+          {announcedCities.map((city) => (
+            <StaggerItem key={city.slug}>
+              <Link
+                href={cityHref(city.slug)}
+                aria-label={`${t.cityLink} ${city.name}`}
+                className="group card-lift glass rounded-2xl p-5 sm:p-6 border border-white/10 hover:bg-white/10 hover:border-rido-magenta/30 hover:shadow-lg hover:shadow-rido-magenta/5 flex items-start gap-4 h-full cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+              >
+                <div className="relative w-11 h-11 rounded-xl bg-rido-magenta/10 flex items-center justify-center shrink-0 group-hover:bg-rido-magenta/20 transition-colors">
+                  <MapPin className="w-5 h-5 text-rido-magenta relative z-10" aria-hidden="true" />
+                  <div className="absolute inset-0 rounded-xl bg-rido-magenta/20 city-pulse-ring" style={{ animationDelay: `${cities.indexOf(city) * 0.2}s` }} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="font-black text-lg sm:text-xl">{city.name}</h3>
+                    {city.comingSoon && (
+                      <Badge variant="magenta-light" className="cursor-pointer">
+                        <span className="coming-soon-blink">{t.comingSoonBadge}</span>
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="text-sm text-muted mt-0.5">{city.region}</p>
+                  <div className="mt-3 flex gap-2 flex-wrap">
+                    {city.vehicles.map((v) => (
+                      <Badge key={v} variant={v === "e-scooter" ? "magenta" : "green"} className="cursor-pointer">
+                        {v === "e-scooter" ? <><Zap className="w-3 h-3" aria-hidden="true" /> {t.eScooter}</> : <><Bike className="w-3 h-3" aria-hidden="true" /> {t.eBike}</>}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
-              </StaggerItem>
-            ))}
-          </StaggerReveal>
-        ) : (
-          /* Pre-announcement teaser — one on-brand card, zero town names */
-          <ScrollReveal delay={STAGGER.grid}>
-            <div className="max-w-xl mx-auto">
-              <div className="card-lift glass rounded-2xl p-6 sm:p-8 border border-white/10 text-center hover:bg-white/10 hover:border-rido-magenta/30">
-                <div className="relative w-12 h-12 mx-auto rounded-xl bg-rido-magenta/10 flex items-center justify-center">
-                  <MapPin className="w-6 h-6 text-rido-magenta relative z-10" />
-                  <div className="absolute inset-0 rounded-xl bg-rido-magenta/20 city-pulse-ring" />
-                </div>
-                <h3 className="mt-4 font-black text-lg sm:text-xl">{t.teaserTitle}</h3>
-                <p className="mt-1 text-sm text-muted">{t.teaserRegion}</p>
-                <a
-                  href="#download"
-                  className="mt-5 inline-flex items-center justify-center gap-2 min-h-11 px-4 text-sm font-bold text-rido-magenta-light hover:text-white transition-colors cursor-pointer"
-                >
-                  {t.teaserCta} <ArrowRight className="w-4 h-4" aria-hidden="true" />
-                </a>
-              </div>
-            </div>
-          </ScrollReveal>
-        )}
+                <ArrowRight className="w-4 h-4 mt-1 shrink-0 text-muted group-hover:text-rido-magenta-light group-hover:translate-x-0.5 transition-all duration-200" aria-hidden="true" />
+              </Link>
+            </StaggerItem>
+          ))}
 
+          {/* Planned regions whose towns are not announced yet — region name only */}
+          {regionsWithUnannouncedTowns.map((region) => (
+            <StaggerItem key={region}>
+              <div className="card-lift glass rounded-2xl p-5 sm:p-6 border border-white/10 hover:bg-white/10 hover:border-rido-magenta/30 h-full flex items-start gap-4">
+                <div className="w-11 h-11 rounded-xl bg-white/5 flex items-center justify-center shrink-0">
+                  <MapPin className="w-5 h-5 text-muted" aria-hidden="true" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-black text-lg sm:text-xl">{t.teaserTitle}</h3>
+                  <p className="text-sm text-muted mt-0.5">{region}</p>
+                  <a
+                    href="#download"
+                    className="mt-2 inline-flex items-center gap-2 min-h-11 text-sm font-bold text-rido-magenta-light hover:text-white transition-colors cursor-pointer"
+                  >
+                    {t.teaserCta} <ArrowRight className="w-4 h-4" aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerReveal>
       </div>
     </section>
   );

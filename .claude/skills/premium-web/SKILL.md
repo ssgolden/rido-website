@@ -46,8 +46,10 @@ this skill is the per-change quality bar.
 
 - NEVER fabricate testimonials, rider counts, press mentions, ratings, or
   partner logos. If real ones don't exist, the section doesn't exist.
-- Geography claims match reality: Costa del Sol (Marbella, San Pedro,
-  Cancelada, Estepona, El Paraíso) — not "across Spain".
+- Geography claims match reality: Torrevieja on the Costa Blanca (first
+  launch, announced) and the Costa del Sol (five towns planned, names not
+  yet public) — not "across Spain". Name a town publicly only when its
+  `announced` flag in `src/data/cities.ts` is true.
 - Social links only for accounts we verifiably own. Currently: none (email
   only).
 - Legal identity everywhere: Go2 Place S.L., NIF B01745405, info@rido.bike.

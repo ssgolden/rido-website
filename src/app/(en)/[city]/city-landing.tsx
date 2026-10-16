@@ -10,7 +10,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { cities, type City } from "@/data/cities";
+import { announcedCities, type City } from "@/data/cities";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
 const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
@@ -18,16 +18,31 @@ const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({
 
 const baseUrl = SITE_ORIGIN;
 
+/** Resolves announced towns only — an unannounced slug must 404. */
 export function getCity(slug: string): City | undefined {
-  return cities.find((c) => c.slug === slug);
+  return announcedCities.find((c) => c.slug === slug);
 }
 
 function cityUrl(city: City, locale: Locale): string {
   return locale === "es" ? `${baseUrl}/es/${city.slug}` : `${baseUrl}/${city.slug}`;
 }
 
-function otherTownNames(city: City): string[] {
-  return cities.filter((c) => c.slug !== city.slug).map((c) => c.name);
+/** Other announced towns in the same region. */
+function regionNeighbours(city: City): string[] {
+  return announcedCities.filter((c) => c.region === city.region && c.slug !== city.slug).map((c) => c.name);
+}
+
+/** "Torrevieja is Rido's launch town on the Costa Blanca" / "... one of 3 launch towns ..., alongside A and B". */
+function launchTownSentence(city: City, locale: Locale): string {
+  const others = regionNeighbours(city);
+  if (locale === "es") {
+    return others.length === 0
+      ? `${city.name} es la localidad de lanzamiento de Rido en la ${city.region}.`
+      : `${city.name} es una de las ${others.length + 1} localidades de lanzamiento de Rido en la ${city.region}, junto a ${listNames(others, locale)}.`;
+  }
+  return others.length === 0
+    ? `${city.name} is Rido's launch town on the ${city.region}.`
+    : `${city.name} is one of Rido's ${others.length + 1} launch towns on the ${city.region}, alongside ${listNames(others, locale)}.`;
 }
 
 /** "A, B, C and D" / "A, B, C y D" */
@@ -55,18 +70,17 @@ export interface CityFaqItem {
 }
 
 export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
-  const others = listNames(otherTownNames(city), locale);
   const both = city.vehicles.length === 2;
 
   if (locale === "es") {
     return [
       {
         question: `¿Rido ya funciona en ${city.name}?`,
-        answer: `Todavía no — Rido llegará muy pronto a ${city.name} y al resto de la Costa del Sol. Únete a la lista de espera y te avisaremos por email en cuanto los primeros vehículos estén en la calle.`,
+        answer: `Todavía no — Rido llegará a ${city.name} en las próximas semanas. Únete a la lista de espera y te avisaremos por email en cuanto los primeros vehículos estén en la calle.`,
       },
       {
         question: `¿Dónde operará Rido en ${city.name}?`,
-        answer: `${city.name} es una de las cinco localidades de lanzamiento de Rido en la Costa del Sol, junto a ${others}. Las zonas exactas para circular y aparcar se mostrarán en la app cuando lancemos el servicio.`,
+        answer: `${launchTownSentence(city, "es")} Las zonas exactas para circular y aparcar se mostrarán en la app cuando lancemos el servicio.`,
       },
       {
         question: `¿Cuánto costará montar en ${city.name}?`,
@@ -84,11 +98,11 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
   return [
     {
       question: `Is Rido live in ${city.name} yet?`,
-      answer: `Not yet — Rido is launching soon in ${city.name} and across the Costa del Sol. Join the waitlist and we'll email you the moment the first vehicles hit the street.`,
+      answer: `Not yet — Rido launches in ${city.name} in the coming weeks. Join the waitlist and we'll email you the moment the first vehicles hit the street.`,
     },
     {
       question: `Where will Rido operate in ${city.name}?`,
-      answer: `${city.name} is one of Rido's five launch towns on the Costa del Sol, alongside ${others}. Exact riding and parking zones will be shown in the app when the service goes live.`,
+      answer: `${launchTownSentence(city, "en")} Exact riding and parking zones will be shown in the app when the service goes live.`,
     },
     {
       question: `How much will a ride in ${city.name} cost?`,
@@ -139,7 +153,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       alternateLocale: locale === "es" ? [OG_LOCALE_EN] : [OG_LOCALE_ES],
       images: [
         {
-          url: "/images/logo/rido-logo-wide.png",
+          url: "/images/og/rido-og.png",
           width: 1200,
           height: 630,
           alt: title,
@@ -155,7 +169,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
     },
     other: {
       "geo.position": `${city.lat};${city.lng}`,
-      "geo.region": "ES-AN",
+      "geo.region": city.isoRegion,
       "geo.placename": `${city.name}, ${city.region}, Spain`,
       ICBM: `${city.lat}, ${city.lng}`,
     },
@@ -222,7 +236,7 @@ export function getCitySchemas(city: City, locale: Locale) {
 // --- UI copy -------------------------------------------------------------------
 const uiCopy = {
   en: {
-    badge: "Launching soon",
+    badge: "Launching in the coming weeks",
     heroTitle: (city: City) =>
       city.vehicles.length === 2 ? `E-Scooter & E-Bike Sharing in ${city.name}` : `E-Scooter Sharing in ${city.name}`,
     heroBody: (city: City) =>
@@ -233,15 +247,14 @@ const uiCopy = {
     scooterChip: "E-Scooter",
     bikeChip: "E-Bike",
     coverageHeading: "Where we're launching",
-    coverageBody: (city: City) =>
-      `${city.name} is one of five launch towns on the Costa del Sol. Explore the full coverage area below.`,
+    coverageBody: (city: City) => `${launchTownSentence(city, "en")} Explore the coverage area below.`,
     faqHeading: (city: City) => `Rido in ${city.name} — FAQ`,
     heroAria: (city: City) => `Rido launching soon in ${city.name}`,
-    coverageAria: "Rido launch coverage on the Costa del Sol",
+    coverageAria: (city: City) => `Rido launch coverage on the ${city.region}`,
     faqAria: (city: City) => `Frequently asked questions about Rido in ${city.name}`,
   },
   es: {
-    badge: "Muy pronto",
+    badge: "En las próximas semanas",
     heroTitle: (city: City) =>
       city.vehicles.length === 2
         ? `Patinetes y bicis eléctricas compartidas en ${city.name}`
@@ -254,11 +267,10 @@ const uiCopy = {
     scooterChip: "Patinete eléctrico",
     bikeChip: "Bici eléctrica",
     coverageHeading: "Dónde vamos a lanzar",
-    coverageBody: (city: City) =>
-      `${city.name} es una de las cinco localidades de lanzamiento en la Costa del Sol. Explora la zona de cobertura completa abajo.`,
+    coverageBody: (city: City) => `${launchTownSentence(city, "es")} Explora la zona de cobertura abajo.`,
     faqHeading: (city: City) => `Rido en ${city.name} — Preguntas frecuentes`,
     heroAria: (city: City) => `Rido llega muy pronto a ${city.name}`,
-    coverageAria: "Cobertura de lanzamiento de Rido en la Costa del Sol",
+    coverageAria: (city: City) => `Cobertura de lanzamiento de Rido en la ${city.region}`,
     faqAria: (city: City) => `Preguntas frecuentes sobre Rido en ${city.name}`,
   },
 } as const;
@@ -357,7 +369,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
         {/* Coverage map (shows all launch towns) */}
         <section
           id="coverage"
-          aria-label={t.coverageAria}
+          aria-label={t.coverageAria(city)}
           className="py-12 sm:py-24 px-4 sm:px-6 relative overflow-hidden"
         >
           <div className="relative max-w-7xl mx-auto">
@@ -371,7 +383,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
             </div>
             <ScrollReveal delay={0.15}>
               <div className="relative flex justify-center">
-                <CoverageMap />
+                <CoverageMap towns={announcedCities.filter((c) => c.region === city.region)} />
               </div>
             </ScrollReveal>
           </div>

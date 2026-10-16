@@ -1,9 +1,9 @@
 # Rido
 
-> Rido is a shared e-scooter and e-bike micro-mobility service launching on the Costa del Sol, Spain. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
+> Rido is a shared e-scooter and e-bike micro-mobility service launching in Torrevieja (Costa Blanca, Spain) in the coming weeks, with the Costa del Sol to follow. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
 
 ## About
-Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The service is launching in 5 cities on the Costa del Sol; the launch cities will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
+Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The first launch is Torrevieja on the Costa Blanca, in the coming weeks. Five more towns are planned on the Costa del Sol; those towns will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
 
 ## How It Works
 1. Join the waitlist at https://www.rido.bike#download
@@ -27,7 +27,8 @@ Plan names only — amounts are not public yet:
 - **Rido Bike** (e-bike): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
 
 ## Cities (all coming soon)
-- 5 launch cities on the Costa del Sol — announced soon (e-scooters + e-bikes)
+- Torrevieja, Costa Blanca (Alicante) — launching in the coming weeks (e-scooters + e-bikes) — https://www.rido.bike/torrevieja
+- 5 launch towns on the Costa del Sol — announced soon (e-scooters + e-bikes)
 
 ## Safety
 - Helmet included with every scooter
@@ -55,6 +56,7 @@ Plan names only — amounts are not public yet:
 - [Vehicles](https://www.rido.bike#vehicles)
 - [Pricing](https://www.rido.bike#pricing)
 - [Cities](https://www.rido.bike#cities)
+- [Rido in Torrevieja](https://www.rido.bike/torrevieja)
 - [Safety](https://www.rido.bike#safety)
 - [Sustainability](https://www.rido.bike#sustainability)
 - [FAQ](https://www.rido.bike#faq)
@@ -67,9 +69,9 @@ Plan names only — amounts are not public yet:
 
 ## For AI Crawlers
 - Language: English
-- Region: Spain (Costa del Sol, Andalusia)
+- Region: Spain (Torrevieja on the Costa Blanca, Valencian Community; Costa del Sol, Andalusia)
 - Currency: EUR
 - Launch status: Pre-launch / waitlist
 - Service type: Shared e-scooter and e-bike rental
-- Target cities: 5 launch cities on the Costa del Sol, announced soon
+- Target cities: Torrevieja (launching in the coming weeks); 5 Costa del Sol towns, announced soon
 - Primary entity: Go2 Place S.L. operating the "Rido" brand

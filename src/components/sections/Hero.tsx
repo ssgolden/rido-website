@@ -33,15 +33,15 @@ type HeroStatData = {
   green?: boolean;
 };
 
-// User-visible strings per locale. Non-breaking spaces keep "Costa del Sol" as one unit.
+// User-visible strings per locale.
 const en = {
   waitlistKicker: "Waitlist now open — be first to ride",
   waitlistSingular: "{count} person on the waitlist",
   waitlistPlural: "{count} people on the waitlist",
-  badge: "Coming soon to the Costa del Sol",
-  headlineWords: ["Move", "Freely", "Across", "the", "Costa del Sol"],
+  badge: "Launching soon in Torrevieja",
+  headlineWords: ["Move", "Freely", "Along", "the", "Coast"],
   subheadline:
-    "Cheaper than a taxi, cleaner than a rental car, and run by people who live in your city. Built and operated by a local Costa del Sol team — every euro stays here.",
+    "Cheaper than a taxi, cleaner than a rental car, and run by people who live here. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
   ctaPrimary: "Join the Waitlist",
   ctaSecondary: "See How It Works",
   microcopy: "No spam, unsubscribe anytime · GDPR compliant",
@@ -60,10 +60,10 @@ const copy: Record<Locale, typeof en> = {
     waitlistKicker: "Lista de espera abierta — sé de los primeros en moverte",
     waitlistSingular: "{count} persona en la lista de espera",
     waitlistPlural: "{count} personas en la lista de espera",
-    badge: "Muy pronto en la Costa del Sol",
-    headlineWords: ["Muévete", "libremente", "por", "la", "Costa del Sol"],
+    badge: "Muy pronto en Torrevieja",
+    headlineWords: ["Muévete", "libremente", "por", "la", "costa"],
     subheadline:
-      "Más barato que un taxi, más limpio que un coche de alquiler, y gestionado por gente que vive en tu ciudad. Construido y operado por un equipo local — cada euro se queda en la Costa del Sol.",
+      "Más barato que un taxi, más limpio que un coche de alquiler, y gestionado por gente que vive aquí. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
     ctaPrimary: "Unirme a la lista",
     ctaSecondary: "Cómo funciona",
     microcopy: "Sin spam, date de baja cuando quieras · Cumplimos el RGPD",
@@ -129,7 +129,7 @@ function HeroBackdrop({
       <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/20 hero-gradient" />
       {/* No photo layer yet: the only lifestyle files are the wordmark and
           white-background product renders, which read as a ghost logo / light
-          band when faded over navy. Add a real Costa del Sol photo here once
+          band when faded over navy. Add a real lifestyle photo here once
           docs/ASSET-BRIEF.md deliverable B exists. */}
       <div
         className="absolute inset-0 mix-blend-soft-light"
