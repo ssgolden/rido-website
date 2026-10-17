@@ -22,7 +22,7 @@
  */
 
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, renameSync, rmSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
@@ -90,12 +90,34 @@ function prepareCopy() {
   for (const route of excludedRoutes) log(`Static export build: excluding ${path.relative(root, route)}`);
 }
 
+/**
+ * @netlify/plugin-nextjs looks for .next/BUILD_ID and required-server-files.json
+ * in the project root, follows its appDir to the build's export-detail.json and
+ * copies that file's outDirectory. Point outDirectory at the moved out/, and on
+ * Netlify give the plugin a root .next that leads to the copy's build. Not done
+ * elsewhere: a local root .next may hold a server build that `next start` uses.
+ */
+function pointNetlifyPluginAtExport() {
+  const dotNext = path.join(buildDir, ".next");
+  const detailFile = path.join(dotNext, "export-detail.json");
+  if (existsSync(detailFile)) {
+    const detail = JSON.parse(readFileSync(detailFile, "utf8"));
+    writeFileSync(detailFile, JSON.stringify({ ...detail, outDirectory: path.join(root, "out") }));
+  }
+  if (process.env.NETLIFY !== "true") return;
+  mkdirSync(path.join(root, ".next"), { recursive: true });
+  for (const name of ["BUILD_ID", "required-server-files.json"]) {
+    copyFileSync(path.join(dotNext, name), path.join(root, ".next", name));
+  }
+}
+
 prepareCopy();
 let exitCode = runNextBuild(buildDir);
 if (exitCode === 0) {
   rmSync(path.join(root, "out"), { recursive: true, force: true });
   renameSync(path.join(buildDir, "out"), path.join(root, "out"));
   log("Export written to out/");
+  pointNetlifyPluginAtExport();
   const leak = spawnSync(process.execPath, [path.join(root, "scripts", "check-town-leak.mjs"), "out"], {
     cwd: root,
     stdio: "inherit",
