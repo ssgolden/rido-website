@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { DownloadCTA } from "@/components/sections/DownloadCTA";
 import { ArrowRight, Bike, ChevronDown, HardHat, Mail, MapPin, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
@@ -18,7 +19,6 @@ import type { Locale } from "@/lib/i18n/config";
 import { announcedCities, type City } from "@/data/cities";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
-const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
 
 const baseUrl = SITE_ORIGIN;
@@ -468,7 +468,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           </ScrollReveal>
         </Section>
 
-        <DownloadCTA sharePath={cityPath} />
+        <DownloadCTA locale={locale} sharePath={cityPath} />
       </main>
       <Footer locale={locale} />
       <BackToTop />

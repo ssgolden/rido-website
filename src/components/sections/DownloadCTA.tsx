@@ -1,9 +1,6 @@
-"use client";
-
 import { Shield } from "lucide-react";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
-import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { primaryCity } from "@/data/cities";
 
@@ -28,8 +25,7 @@ const copy = {
  * Closing waitlist block. One headline, one field, one line of reassurance —
  * the same form as the hero (src/components/ui/WaitlistForm.tsx).
  */
-export function DownloadCTA({ sharePath }: { sharePath?: string } = {}) {
-  const locale = useLocale();
+export function DownloadCTA({ locale, sharePath }: { locale: Locale; sharePath?: string }) {
   const t = copy[locale];
 
   return (

@@ -3,6 +3,9 @@ import dynamic from "next/dynamic";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
+import { Launch } from "@/components/sections/Launch";
+import { Safety } from "@/components/sections/Safety";
+import { DownloadCTA } from "@/components/sections/DownloadCTA";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { JsonLd } from "@/components/layout/JsonLd";
@@ -31,10 +34,7 @@ const loading = () => <SectionSkeleton />;
 
 const HowItWorks = dynamic(() => import("@/components/sections/HowItWorks").then((m) => ({ default: m.HowItWorks })), { loading });
 const Vehicles = dynamic(() => import("@/components/sections/Vehicles").then((m) => ({ default: m.Vehicles })), { loading });
-const Launch = dynamic(() => import("@/components/sections/Launch").then((m) => ({ default: m.Launch })), { loading });
-const Safety = dynamic(() => import("@/components/sections/Safety").then((m) => ({ default: m.Safety })), { loading });
 const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ default: m.FAQ })), { loading });
-const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })), { loading });
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
 export const metadata: Metadata = {
@@ -93,12 +93,12 @@ export default function HomeEs() {
           </div>
         </noscript>
         <Hero />
-        <Launch />
+        <Launch locale="es" />
         <HowItWorks />
         <Vehicles />
-        <Safety />
+        <Safety locale="es" />
         <FAQ />
-        <DownloadCTA />
+        <DownloadCTA locale="es" />
       </main>
       <Footer locale="es" />
       <BackToTop />

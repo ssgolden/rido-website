@@ -1,11 +1,8 @@
-"use client";
-
 import { BadgeCheck, AppWindow, HandCoins, ArrowRight } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { useLocale } from "@/lib/i18n/locale-context";
 import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -81,8 +78,7 @@ const copy: Record<Locale, PartnerCopy> = {
 };
 
 /** Partner pitch. Lives on /partners (and /es/partners), not the rider homepage. */
-export function Partners({ asPage = false }: { asPage?: boolean }) {
-  const locale = useLocale();
+export function Partners({ locale, asPage = false }: { locale: Locale; asPage?: boolean }) {
   const t = copy[locale];
   return (
     <Section id="partners" label={t.sectionAria}>

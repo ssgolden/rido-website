@@ -29,7 +29,7 @@ export default function PartnersPageEs() {
     <LocaleProvider locale="es">
       <SiteShell header={<Navbar />}>
         <main id="main-content">
-          <Partners asPage />
+          <Partners locale="es" asPage />
         </main>
         <Footer locale="es" />
       </SiteShell>

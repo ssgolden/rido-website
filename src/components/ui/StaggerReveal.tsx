@@ -1,29 +1,5 @@
-"use client";
-
-import { m, useInView, useReducedMotion } from "framer-motion";
-import { forwardRef, useRef } from "react";
-import { DURATION, EASE, REVEAL, SCROLL_MARGIN, STAGGER } from "@/lib/motion";
-
-const containerVariants = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: STAGGER.text },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: REVEAL.y },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: DURATION.entrance, ease: EASE },
-  },
-};
-
-const itemVariantsReduced = {
-  hidden: { opacity: 0, y: REVEAL.y },
-  show: { opacity: 1, y: 0, transition: { duration: 0 } },
-};
+import { Children, cloneElement, isValidElement, type CSSProperties, type ReactElement } from "react";
+import { STAGGER } from "@/lib/motion";
 
 interface StaggerRevealProps {
   children: React.ReactNode;
@@ -33,42 +9,32 @@ interface StaggerRevealProps {
   delay?: number;
 }
 
-export function StaggerReveal({
-  children,
-  className,
-  staggerDelay = STAGGER.text,
-  delay = 0,
-}: StaggerRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: SCROLL_MARGIN });
-  const reduce = useReducedMotion();
+type ItemProps = { children: React.ReactNode; className?: string; index?: number };
 
-  // Same element and start state on server and client so hydration matches;
-  // reduced motion reveals every child at once with zero-length transitions.
+/**
+ * Reveals its StaggerItem children one after another when the group scrolls
+ * into view. CSS only (globals.css [data-reveal-group]); the shared
+ * RevealObserver marks the group as shown. Works in server components.
+ */
+export function StaggerReveal({ children, className, staggerDelay = STAGGER.text, delay = 0 }: StaggerRevealProps) {
+  let index = 0;
+  const items = Children.map(children, (child) =>
+    isValidElement(child) && child.type === StaggerItem
+      ? cloneElement(child as ReactElement<ItemProps>, { index: index++ })
+      : child
+  );
+  const style = { "--stagger": `${staggerDelay}s`, "--reveal-delay": `${delay}s` } as CSSProperties;
   return (
-    <m.div
-      ref={ref}
-      className={className}
-      variants={{
-        ...containerVariants,
-        show: { transition: reduce ? { staggerChildren: 0, delayChildren: 0 } : { staggerChildren: staggerDelay, delayChildren: delay } },
-      }}
-      initial="hidden"
-      animate={isInView || reduce ? "show" : "hidden"}
-    >
-      {children}
-    </m.div>
+    <div data-reveal-group="" className={className} style={style}>
+      {items}
+    </div>
   );
 }
 
-export const StaggerItem = forwardRef<HTMLDivElement, {
-  children: React.ReactNode;
-  className?: string;
-}>(function StaggerItem({ children, className }, externalRef) {
-  const reduce = useReducedMotion();
+export function StaggerItem({ children, className, index = 0 }: ItemProps) {
   return (
-    <m.div ref={externalRef} variants={reduce ? itemVariantsReduced : itemVariants} className={className}>
+    <div data-reveal-item="" className={className} style={{ "--i": index } as CSSProperties}>
       {children}
-    </m.div>
+    </div>
   );
-});
+}

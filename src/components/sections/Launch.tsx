@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, MapPin, Clock } from "lucide-react";
 import { announcedCities, plannedTownCount, regionsWithUnannouncedTowns } from "@/data/cities";
@@ -8,7 +6,6 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { STAGGER } from "@/lib/motion";
 
@@ -38,8 +35,7 @@ const copy = {
 } satisfies Record<Locale, Record<string, unknown>>;
 
 /** Section id stays "cities" — the navbar, footer and JSON-LD link to #cities. */
-export function Launch() {
-  const locale = useLocale();
+export function Launch({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const cityHref = (slug: string) => (locale === "es" ? `/es/${slug}` : `/${slug}`);
 

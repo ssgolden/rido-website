@@ -27,7 +27,7 @@ export default function PartnersPage() {
   return (
     <SiteShell header={<Navbar />}>
       <main id="main-content">
-        <Partners asPage />
+        <Partners locale="en" asPage />
       </main>
       <Footer />
     </SiteShell>
