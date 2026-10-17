@@ -589,9 +589,9 @@
       linear-gradient(160deg, var(--color-sand) 0%, var(--color-sand-deep) 100%);
   }
   .legal-toc { @apply bg-white/[0.03] border border-white/10 rounded-xl p-4 sm:p-5 my-8; }
-  .legal-toc ol { @apply !mb-0 text-sm sm:columns-2 gap-8; }
+  .legal-toc ol { @apply !mb-0 !space-y-0 text-sm sm:columns-2 gap-8; }
   .legal-toc li { @apply break-inside-avoid; }
-  .legal-toc a { @apply no-underline text-muted hover:text-rido-magenta-light; }
+  .legal-toc a { @apply inline-block py-1.5 no-underline text-muted hover:text-rido-magenta-light; }
   /* Tables scroll inside their own box on phones instead of widening the page. */
   .legal-table-wrap { @apply overflow-x-auto rounded-xl border border-white/10 my-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta; }
   .legal-table { @apply w-full min-w-[34rem] text-sm text-left border-collapse; }

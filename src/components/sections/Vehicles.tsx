@@ -126,9 +126,9 @@ export function Vehicles({ t, fleet }: { t: VehiclesCopy; fleet: FleetItem[] }) 
           <h4 className="sr-only">{t.specsLabel}</h4>
           <dl className="mt-8 grid grid-cols-2 border-t border-ink/10">
             {v.specs.map((spec, i) => (
-              <div key={spec.label} className={cn("py-5 border-b border-ink/10", i % 2 === 0 ? "pr-4" : "pl-4 border-l")}>
+              <div key={spec.label} className={cn("min-w-0 py-5 border-b border-ink/10", i % 2 === 0 ? "pr-4" : "pl-4 border-l")}>
                 <dt className="text-sm text-ink-muted">{spec.label}</dt>
-                <dd className="mt-1 font-display text-2xl sm:text-3xl font-black text-ink">{spec.value}</dd>
+                <dd className="mt-1 font-display text-[clamp(1rem,calc(6vw_-_4px),1.5rem)] sm:text-3xl font-black text-ink">{spec.value}</dd>
               </div>
             ))}
           </dl>
