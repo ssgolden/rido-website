@@ -126,7 +126,8 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
             className="hero-rise mt-6 text-base sm:text-lg md:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed"
             style={delay(0.24)}
           >
-            {t.subheadline}
+            <span className="sm:hidden">{t.subheadlineShort}</span>
+            <span className="hidden sm:inline">{t.subheadline}</span>
           </p>
 
           <div className="hero-rise mt-8 flex justify-center lg:justify-start" style={delay(0.36)}>

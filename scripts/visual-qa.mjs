@@ -4,13 +4,16 @@
  *
  * Usage:
  *   node scripts/visual-qa.mjs [baseUrl] [outDir]
+ *   QA_STATIC=1 node scripts/visual-qa.mjs ...   (against the static export,
+ *   e.g. scripts/serve-export.mjs: skips server-only pages)
  *
  * Defaults: baseUrl http://localhost:3000, outDir .visual-qa/
  * Requires the app to be running (npm run build && npx next start).
  *
- * Also a gate: any uncaught page error (e.g. a React hydration mismatch) fails
- * the run, checked with reduced motion (the screenshot pass) and again with
- * motion on, since the two take different code paths.
+ * Also a gate: any uncaught page error (e.g. a React hydration mismatch) or
+ * Content-Security-Policy violation fails the run, checked with reduced motion
+ * (the screenshot pass) and again with motion on, since the two take
+ * different code paths.
  *
  * Uses playwright-core with the system Chromium. In the Claude Code cloud
  * environment the browser lives at /opt/pw-browsers/chromium; elsewhere set
@@ -26,7 +29,8 @@ const outDir = process.argv[3] ?? ".visual-qa";
 const PAGES = [
   { path: "/", name: "home", fullPage: true },
   { path: "/es", name: "home-es", fullPage: true },
-  { path: "/coming-soon", name: "coming-soon-full", fullPage: true },
+  // Server-only: the export leaves it out (Vercel password gate page).
+  { path: "/coming-soon", name: "coming-soon-full", fullPage: true, serverOnly: true },
   { path: "/partners", name: "partners", fullPage: true },
   { path: "/politica-cookies", name: "cookie-policy", fullPage: false },
   { path: "/privacy", name: "privacy", fullPage: false },
@@ -37,6 +41,8 @@ const PAGES = [
   { path: "/es/partners", name: "partners-es", fullPage: false },
   { path: "/waitlist-confirmed", name: "waitlist-confirmed", fullPage: false },
 ];
+
+const pages = process.env.QA_STATIC ? PAGES.filter((p) => !p.serverOnly) : PAGES;
 
 const VIEWPORTS = [
   { name: "phone", width: 390, height: 844, isMobile: true },
@@ -84,6 +90,8 @@ const browser = await chromium.launch(
 
 let failures = 0;
 const pageErrors = [];
+// Chromium reports blocked requests and scripts as console errors.
+const isCspViolation = (msg) => msg.type() === "error" && /Content Security Policy/i.test(msg.text());
 // Answer the consent banner (declined) so it never covers a screenshot.
 const declineConsent = () =>
   localStorage.setItem("rido-cookie-consent", JSON.stringify({ accepted: false, timestamp: Date.now() }));
@@ -101,8 +109,11 @@ for (const vp of VIEWPORTS) {
   const page = await context.newPage();
   let current = "";
   page.on("pageerror", (err) => pageErrors.push(`${current} [${vp.name}, reduced motion]: ${err.message}`));
+  page.on("console", (msg) => {
+    if (isCspViolation(msg)) pageErrors.push(`${current} [${vp.name}, reduced motion]: ${msg.text()}`);
+  });
 
-  for (const target of PAGES) {
+  for (const target of pages) {
     current = target.path;
     const url = `${baseUrl}${target.path}`;
     const file = `${outDir}/${target.name}--${vp.name}.png`;
@@ -155,7 +166,10 @@ for (const vp of VIEWPORTS) {
   const page = await context.newPage();
   let current = "";
   page.on("pageerror", (err) => pageErrors.push(`${current} [phone, motion on]: ${err.message}`));
-  for (const target of PAGES) {
+  page.on("console", (msg) => {
+    if (isCspViolation(msg)) pageErrors.push(`${current} [phone, motion on]: ${msg.text()}`);
+  });
+  for (const target of pages) {
     current = target.path;
     try {
       await page.goto(`${baseUrl}${target.path}`, { waitUntil: "networkidle", timeout: 30000 });

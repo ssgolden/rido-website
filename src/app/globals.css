@@ -212,32 +212,28 @@
     box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.18), 0 1px 0 0 rgba(255, 255, 255, 0.06);
   }
   /* Scroll reveals (ScrollReveal / StaggerReveal, driven by RevealObserver).
-     Hidden only under .reveal-ready, which an inline script in RootDocument
-     sets before first paint: without JavaScript (or if the observer never
-     loads, see the timeout there) content stays visible. No hiding at all
-     under reduced motion. Timing mirrors src/lib/motion.ts. */
+     Slide only, never fade: content is always painted, so long screenshots,
+     link previews and anything else that renders the page without scrolling
+     still show every section. Offset only under .reveal-ready, which an
+     inline script in RootDocument sets before first paint (dropped if the
+     observer never loads). Nothing moves under reduced motion. Timing
+     mirrors src/lib/motion.ts. */
   @media (prefers-reduced-motion: no-preference) {
     .reveal-ready [data-reveal]:not([data-shown]) {
-      opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(24px);
     }
-    .reveal-ready [data-reveal="down"]:not([data-shown]) { transform: translateY(-16px); }
-    .reveal-ready [data-reveal="left"]:not([data-shown]) { transform: translateX(16px); }
-    .reveal-ready [data-reveal="right"]:not([data-shown]) { transform: translateX(-16px); }
+    .reveal-ready [data-reveal="down"]:not([data-shown]) { transform: translateY(-24px); }
+    .reveal-ready [data-reveal="left"]:not([data-shown]) { transform: translateX(24px); }
+    .reveal-ready [data-reveal="right"]:not([data-shown]) { transform: translateX(-24px); }
     .reveal-ready [data-reveal="none"]:not([data-shown]) { transform: none; }
     .reveal-ready [data-reveal-group]:not([data-shown]) [data-reveal-item] {
-      opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(24px);
     }
     [data-reveal] {
-      transition:
-        opacity var(--reveal-duration, 0.5s) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s),
-        transform var(--reveal-duration, 0.5s) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s);
+      transition: transform var(--reveal-duration, 0.5s) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s);
     }
     [data-reveal-item] {
-      transition:
-        opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--reveal-delay, 0s) + var(--i, 0) * var(--stagger, 0.09s)),
-        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--reveal-delay, 0s) + var(--i, 0) * var(--stagger, 0.09s));
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--reveal-delay, 0s) + var(--i, 0) * var(--stagger, 0.09s));
     }
   }
 
@@ -436,6 +432,17 @@
       scroll-snap-align: start;
     }
   }
+  /* One swipeable row of filter chips on phones (FAQ categories); wraps from sm. */
+  @media (max-width: 39.9375rem) {
+    .chip-row {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+    .chip-row::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .section-tint-magenta {
     background: linear-gradient(180deg, rgba(222, 4, 152, 0.03), transparent);
   }
@@ -549,6 +556,7 @@
   .city-pulse-ring {
     animation: city-pulse-ring 2.5s ease-in-out infinite;
     transform-origin: center;
+    transform-box: fill-box;
   }
   .city-dot-pulse {
     animation: city-dot-pulse 2s ease-in-out infinite;
@@ -581,9 +589,9 @@
       linear-gradient(160deg, var(--color-sand) 0%, var(--color-sand-deep) 100%);
   }
   .legal-toc { @apply bg-white/[0.03] border border-white/10 rounded-xl p-4 sm:p-5 my-8; }
-  .legal-toc ol { @apply !mb-0 text-sm sm:columns-2 gap-8; }
+  .legal-toc ol { @apply !mb-0 !space-y-0 text-sm sm:columns-2 gap-8; }
   .legal-toc li { @apply break-inside-avoid; }
-  .legal-toc a { @apply no-underline text-muted hover:text-rido-magenta-light; }
+  .legal-toc a { @apply inline-block py-1.5 no-underline text-muted hover:text-rido-magenta-light; }
   /* Tables scroll inside their own box on phones instead of widening the page. */
   .legal-table-wrap { @apply overflow-x-auto rounded-xl border border-white/10 my-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta; }
   .legal-table { @apply w-full min-w-[34rem] text-sm text-left border-collapse; }

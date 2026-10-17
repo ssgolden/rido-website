@@ -61,10 +61,10 @@ export function FAQ({ t, items }: { t: FaqCopy; items: FaqItem[] }) {
               className="field w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta focus:ring-offset-2 focus:ring-offset-rido-navy cursor-text"
               aria-label={t.searchAria} />
           </div>
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="chip-row flex gap-2 mb-6 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
             {categoryIds.map((catId) => (
               <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }}
-                className={`min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
+                className={`shrink-0 min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {t.categories[catId]}
               </button>
             ))}

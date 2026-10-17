@@ -15,7 +15,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Dark mode only (background: `#0F172A`)
 
 ## Key Patterns
-- Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`. They are CSS-only and work in server components: one `RevealObserver` (mounted in `RootDocument`) sets `data-shown`; globals.css hides unrevealed blocks only under `html.reveal-ready` (set by an inline head script, dropped after 4s if the observer never starts) and never under reduced motion. Don't put `transition-*` utilities on a reveal wrapper (they replace the reveal transition).
+- Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`. They are CSS-only and work in server components: one `RevealObserver` (mounted in `RootDocument`) sets `data-shown`; globals.css offsets unrevealed blocks (slide only, never opacity: unscrolled renders such as long screenshots and link previews must show every section) only under `html.reveal-ready` (set by an inline head script, dropped after 4s if the observer never starts) and never under reduced motion. Don't put `transition-*` utilities on a reveal wrapper (they replace the reveal transition).
 - Sections without state (Safety, Launch, DownloadCTA, Partners) are server components taking a `locale` prop — keep them free of hooks; put interactivity in client islands (WaitlistForm, CoverageMap).
 - One language per page: homepage client sections (Hero, HowItWorks, Vehicles, FAQ) take their copy as props from a sibling `*.copy.ts` module (e.g. `Hero.copy.ts`), which only server pages import. Client components import its types only. Copy must be serialisable: no functions or icon components — use `{placeholder}` strings and index-keyed icon lists.
 - `cn()` is plain clsx (no tailwind-merge): conflicting utilities are not merged. Override defaults with `!` or have the component skip its default when the caller passes one (see `Section`, `WaitlistForm`).
@@ -43,7 +43,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Use `next/link` for internal navigation (auto-prefixes basePath, don't use withBase())
 
 ## Build & Deploy Invariants
-- Hosting: `https://www.rido.bike` is served by Netlify from the static export (`docs/NETLIFY-SETUP.md`; the apex 301s to www — see `src/lib/site.ts`). `.github/workflows/deploy.yml` publishes the same export to GitHub Pages on master pushes. Vercel (`vercel.json`, `src/proxy.ts`, `src/app/api`) is the optional server host and the only place API routes and the password gate run. `npm run build` runs `scripts/build.mjs`: a plain `next build` for server hosts, and an API-route-excluding build when `NEXT_OUTPUT=export` (route handlers cannot be statically exported).
+- Hosting: `https://www.rido.bike` is served by Netlify from the static export (`docs/NETLIFY-SETUP.md`; the apex 301s to www — see `src/lib/site.ts`). `.github/workflows/deploy.yml` publishes the same export to GitHub Pages on master pushes. Vercel (`vercel.json`, `src/proxy.ts`, `src/app/api`) is the optional server host and the only place API routes and the password gate run. `npm run build` runs `scripts/build.mjs`: a plain `next build` for server hosts, and, when `NEXT_OUTPUT=export`, a build in a throwaway copy (`.export-build/`) without `src/app/api` and the sandbox routes (route handlers cannot be statically exported); `src/` itself is never modified. The export build then runs `scripts/check-town-leak.mjs`, so Netlify fails the deploy on a leak.
 - GitHub Pages CANNOT serve custom response headers — `public/_headers` (and any `headers()` in next.config.ts) only take effect on a server host (Vercel/Netlify).
 - Do NOT enable next-intl locale routing until an `app/[locale]/` structure exists — otherwise every page 404s (rewrites target nonexistent locale paths).
 - Keep `package-lock.json` in sync with package.json (`npm ci --dry-run` must pass) — the deploy runs `npm ci` and fails otherwise.
@@ -52,7 +52,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Launch Geography
 - Torrevieja (Costa Blanca) is the first, announced launch town. Five Costa del Sol towns are planned but unannounced.
-- `src/data/cities.ts` ships to every browser, so it holds announced towns only (`announcedCities`) plus a per-region count (`plannedTowns`). Unannounced towns live in `src/data/cities.planned.ts`, which nothing may import; `scripts/check-town-leak.mjs` (CI) fails if their names reach the export. On announcement day move the town from the planned file into `announcedCities`, lower its `plannedTowns` count, then hand-edit `public/llms*.txt`.
+- `src/data/cities.ts` ships to every browser, so it holds announced towns only (`announcedCities`) plus a per-region count (`plannedTowns`). Unannounced towns live in `src/data/cities.planned.ts`, which nothing may import; `scripts/check-town-leak.mjs` (run by every export build, so CI and Netlify both) fails if their names reach the export. On announcement day move the town from the planned file into `announcedCities`, lower its `plannedTowns` count, then hand-edit `public/llms*.txt`.
 
 ## File Conventions
 - Sections in `src/components/sections/`

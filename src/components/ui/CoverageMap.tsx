@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { announcedCities, type City } from "@/data/cities";
+import { announcedCities, regionsWithUnannouncedTowns, type City, type LaunchRegion } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode } from "@/components/ui/SmoothScrollProvider";
@@ -22,6 +22,8 @@ const copy = {
     mapAria: "Map of Rido launch towns — launching soon",
     regionMapAria: "Map of the Costa del Sol region — Rido launch towns announced soon",
     launchingSoon: "Launching soon",
+    /** Poster label under a region whose towns are not announced yet. */
+    comingNext: "Coming next",
     /** Lowercase suffix appended to marker aria-labels: "<City> — launching soon". */
     launchingSoonSuffix: "launching soon",
     eScooter: "E-Scooter",
@@ -31,6 +33,7 @@ const copy = {
     mapAria: "Mapa de las ciudades de lanzamiento de Rido — muy pronto",
     regionMapAria: "Mapa de la región de la Costa del Sol — las ciudades de lanzamiento de Rido se anunciarán muy pronto",
     launchingSoon: "Próximamente",
+    comingNext: "Próximamente",
     launchingSoonSuffix: "próximamente",
     eScooter: "Patinete eléctrico",
     eBike: "Bici eléctrica",
@@ -214,62 +217,105 @@ function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, towns: City[], re
   }
 }
 
-/**
- * The previous decorative SVG visualization, kept as (a) the instant poster
- * shown before the map library loads and (b) the permanent fallback when
- * WebGL is unavailable or the style/tiles fail to load.
+/*
+ * Illustrated poster: the Mediterranean coast from Alicante to the Strait of
+ * Gibraltar in the map's own navy palette. Shown instantly before the map
+ * library loads and kept as the permanent fallback (no WebGL, tiles blocked).
+ * Announced towns get a labelled marker at their real position; regions with
+ * unannounced towns get a soft highlight and a "coming soon" label only, never
+ * a dot, so nothing hints at which towns they are.
  */
-function CoverageSvgFallback({ towns }: { towns: City[] }) {
-  // With no announced towns, draw unlabeled placeholder dots only.
-  const dots: { slug: string; name?: string }[] = towns.length > 0 ? towns : [{ slug: "a" }, { slug: "b" }, { slug: "c" }];
+const POSTER_W = 800;
+const POSTER_H = 340;
+/** Visible frame: the stretch from the Costa del Sol to Torrevieja, zoomed so labels read on phones. */
+const VIEW = { x: 110, w: 640 };
+const LON_MIN = -5.75;
+const LAT_MAX = 38.55;
+const POSTER_SCALE = 128; // px per degree of latitude
+const LON_FACTOR = 0.8; // cos(37°): keeps the coast's real proportions
+const POSTER_X0 = 80;
+
+function project(lon: number, lat: number): [number, number] {
+  return [POSTER_X0 + (lon - LON_MIN) * LON_FACTOR * POSTER_SCALE, (LAT_MAX - lat) * POSTER_SCALE];
+}
+
+/** Simplified coastline, north-east to south-west (lon, lat). */
+const COAST: [number, number][] = [
+  [0.6, 39.6], [0.2, 39.0], [-0.05, 38.75], [-0.48, 38.34], [-0.56, 38.19], [-0.68, 37.98], [-0.76, 37.8], [-0.72, 37.63],
+  [-0.98, 37.58], [-1.3, 37.55], [-1.58, 37.4], [-1.85, 37.22], [-2.0, 36.95], [-2.19, 36.72],
+  [-2.46, 36.83], [-3.02, 36.74], [-3.52, 36.72], [-3.88, 36.75], [-4.42, 36.71], [-4.62, 36.54],
+  [-4.88, 36.5], [-5.15, 36.42], [-5.35, 36.15], [-5.6, 36.01], [-5.9, 36.05], [-6.2, 36.4],
+  [-6.35, 36.75], [-6.6, 37.2],
+];
+
+const coastPoints = COAST.map(([lon, lat]) => project(lon, lat));
+const coastLine = coastPoints.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+// Land is everything north (above) of the coast.
+// The drawing is fitted to the panel's width; land and sea run far past the
+// viewBox so a taller panel shows more of both instead of empty bands.
+const BLEED = 600;
+const landArea = `${coastLine} L${-BLEED},${coastPoints.at(-1)![1].toFixed(1)} L${-BLEED},${-BLEED} L${POSTER_W + BLEED},${-BLEED} L${POSTER_W + BLEED},${coastPoints[0][1].toFixed(1)} L${coastPoints[0][0].toFixed(1)},${coastPoints[0][1].toFixed(1)} Z`;
+
+/** Where each region's highlight and label sit (lon, lat). */
+const REGION_ANCHORS: Record<LaunchRegion, [number, number]> = {
+  "Costa Blanca": [-0.7, 38.0],
+  "Costa del Sol": [-4.65, 36.62],
+};
+
+function CoverageSvgFallback({ towns, comingSoon }: { towns: City[]; comingSoon: string }) {
+  const regions = regionsWithUnannouncedTowns.map((region) => ({ region, at: project(...REGION_ANCHORS[region]) }));
+  const markers = towns.map((town) => ({ town, at: project(town.lng, town.lat) }));
+  const from = markers[0]?.at;
+  const to = regions[0]?.at;
   return (
-    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
-      {/* Coastline path */}
-      <path d="M40,180 Q120,140 200,155 Q300,170 380,120 Q460,80 560,100 Q640,110 720,85 Q760,75 780,80" fill="none" stroke="#DE0498" strokeWidth="1" strokeDasharray="6 8" opacity="0.15" className="dash-flow" />
-      {/* Sea area */}
-      <path d="M40,180 Q120,140 200,155 Q300,170 380,120 Q460,80 560,100 Q640,110 720,85 Q760,75 780,80 L780,260 L40,260 Z" fill="rgba(222,4,152,0.02)" />
+    <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox={`${VIEW.x} 0 ${VIEW.w} ${POSTER_H}`} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <radialGradient id="poster-region-glow">
+          <stop offset="0%" stopColor="#DE0498" stopOpacity="0.28" />
+          <stop offset="100%" stopColor="#DE0498" stopOpacity="0" />
+        </radialGradient>
+        <pattern id="poster-sea-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <circle cx="1" cy="1" r="1" fill="#1C2E50" />
+        </pattern>
+      </defs>
+      {/* Sea, with a faint dot grid */}
+      <rect x={-BLEED} y={-BLEED} width={POSTER_W + BLEED * 2} height={POSTER_H + BLEED * 2} fill="#0A1426" />
+      <rect x={-BLEED} y={-BLEED} width={POSTER_W + BLEED * 2} height={POSTER_H + BLEED * 2} fill="url(#poster-sea-grid)" />
+      {/* Land and coastline */}
+      <path d={landArea} fill="#17243F" />
+      <path d={coastLine} fill="none" stroke="#3A4C70" strokeWidth="1.5" strokeLinejoin="round" />
 
-      {/* Connection lines between cities */}
-      {dots.map((city, i) => {
-        if (i === 0) return null;
-        const total = dots.length;
-        const margin = 80;
-        const available = 800 - margin * 2;
-        const step = total > 1 ? available / (total - 1) : 0;
-        const prevX = margin + step * (i - 1);
-        const prevY = 120 + ((i - 1) % 2 === 0 ? 20 : -25);
-        const currX = margin + step * i;
-        const currY = 120 + (i % 2 === 0 ? 20 : -25);
-        return (
-          <line key={`line-${city.slug}`} x1={prevX} y1={prevY} x2={currX} y2={currY} stroke="#DE0498" strokeWidth="0.8" strokeDasharray="3 5" opacity="0.15" className="dash-flow-short" />
-        );
-      })}
+      {/* Regions still to be announced: highlight + label, no town dots */}
+      {regions.map(({ region, at: [x, y] }) => (
+        <g key={region}>
+          <ellipse cx={x} cy={y} rx="130" ry="52" fill="url(#poster-region-glow)" />
+          <text x={x} y={y - 40} textAnchor="middle" fill="rgba(255,255,255,0.9)" fontSize="22" fontWeight="700" fontFamily="Sora Variable, Inter Variable, sans-serif">{region}</text>
+          <text x={x} y={y - 16} textAnchor="middle" fill="#F23DB5" fontSize="15" fontWeight="700" fontFamily="Inter Variable, sans-serif" letterSpacing="0.08em">{comingSoon.toUpperCase()}</text>
+        </g>
+      ))}
 
-      {/* City markers */}
-      {dots.map((city, i) => {
-        const total = dots.length;
-        const margin = 80;
-        const available = 800 - margin * 2;
-        const step = total > 1 ? available / (total - 1) : 0;
-        const x = total > 1 ? margin + step * i : 400;
-        const y = 120 + (i % 2 === 0 ? 20 : -25);
-        return (
-          <g key={city.slug}>
-            {/* Outer pulse ring */}
-            <circle cx={x} cy={y} r="6" fill="none" stroke="#DE0498" strokeWidth="0.8" opacity="0.4" className="city-pulse-ring" style={{ animationDelay: `${i * 0.4}s` }} />
-            {/* Middle ring */}
-            <circle cx={x} cy={y} r="8" fill="none" stroke="#DE0498" strokeWidth="0.5" opacity="0.2" />
-            {/* Inner dot */}
-            <circle cx={x} cy={y} r="4" fill="#DE0498" opacity="0.9" className="city-dot-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
-            {/* Glow */}
-            <circle cx={x} cy={y} r="12" fill="#DE0498" opacity="0.08" />
-            {/* City name — only for announced towns */}
-            {city.name && (
-              <text x={x} y={y - 14} textAnchor="middle" fill="rgba(255,255,255,0.75)" fontSize="11" fontFamily="Inter Variable, Inter, sans-serif" fontWeight="700">{city.name}</text>
-            )}
-          </g>
-        );
-      })}
+      {/* The route from the first launch town towards what's next */}
+      {from && to && (
+        <path
+          d={`M${from[0]},${from[1]} Q${(from[0] + to[0]) / 2},${Math.max(from[1], to[1]) + 70} ${to[0]},${to[1]}`}
+          fill="none"
+          stroke="#DE0498"
+          strokeWidth="1.5"
+          strokeDasharray="6 8"
+          opacity="0.5"
+          className="dash-flow"
+        />
+      )}
+
+      {/* Announced towns */}
+      {markers.map(({ town, at: [x, y] }, i) => (
+        <g key={town.slug}>
+          <circle cx={x} cy={y} r="24" fill="#DE0498" opacity="0.14" />
+          <circle cx={x} cy={y} r="11" fill="none" stroke="#DE0498" strokeWidth="1.5" className="city-pulse-ring" style={{ animationDelay: `${i * 0.4}s` }} />
+          <circle cx={x} cy={y} r="7" fill="#DE0498" stroke="#fff" strokeWidth="2" />
+          <text x={x - 18} y={y + 7} textAnchor="end" fill="#fff" fontSize="22" fontWeight="700" fontFamily="Sora Variable, Inter Variable, sans-serif">{town.name}</text>
+        </g>
+      ))}
     </svg>
   );
 }
@@ -467,7 +513,7 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
       className="coverage-map relative w-full max-w-3xl h-[220px] sm:h-[340px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden"
     >
       {/* Poster + permanent fallback (the original SVG visualization) */}
-      {posterVisible && <CoverageSvgFallback towns={towns} />}
+      {posterVisible && <CoverageSvgFallback towns={towns} comingSoon={t.comingNext} />}
 
       {/* Real map canvas — fades in over the poster once tiles are ready */}
       {status !== "fallback" && (

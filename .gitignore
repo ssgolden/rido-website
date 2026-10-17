@@ -16,6 +16,8 @@
 # next.js
 /.next/
 /out/
+# static export build copy (scripts/build.mjs)
+/.export-build/
 
 # production
 /build

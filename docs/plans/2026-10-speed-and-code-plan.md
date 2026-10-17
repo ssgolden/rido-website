@@ -121,6 +121,8 @@ static version of the scroll effects.
 
 ## CI and process
 
+**Status (17 Oct 2026): all done.** Readiness wait, function tests and the town-leak check landed with Sprint 0. QA now runs against the static export (`scripts/serve-export.mjs`, with `public/_headers`). `deploy.yml` lints and tests before publishing. The export build runs in a throwaway copy and runs the leak check itself. Protecting `master` is a GitHub setting (see `docs/NETLIFY-SETUP.md` §8a).
+
 - **Server readiness:** replace `next start & sleep 8` with a readiness wait.
 - **Test what production serves:** run the accessibility and visual QA
   against the static export, since that is what Netlify serves.
