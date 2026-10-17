@@ -3,14 +3,11 @@ import { ArrowRight, HardHat, BadgeCheck, MapPin, Shield } from "lucide-react";
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { withBase } from "@/lib/basePath";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
 import { STAGGER } from "@/lib/motion";
+import type { HeroCopy } from "@/components/sections/Hero.copy";
 import { WaitlistProof } from "@/components/ui/WaitlistProof";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { ImageFrame } from "@/components/ui/ImageFrame";
-import { vehicles } from "@/data/vehicles";
-import { primaryCity } from "@/data/cities";
 import { useHeroBackdropEl } from "@/components/ui/SmoothScrollProvider";
 import { useScrollFrame } from "@/hooks/useScrollFrame";
 import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
@@ -21,44 +18,6 @@ const NOISE_SVG =
   encodeURIComponent(
     '<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>'
   );
-
-const town = primaryCity?.name ?? "Torrevieja";
-
-const en = {
-  waitlistKicker: "Waitlist now open",
-  waitlistSingular: "{count} person on the waitlist",
-  waitlistPlural: "{count} people on the waitlist",
-  badge: `Launching soon in ${town}`,
-  /** Last `highlightCount` words get the brand gradient — the only gradient text on the page. */
-  headlineWords: ["Move", "freely", "along", "the", "coast."],
-  highlightCount: 2,
-  subheadline:
-    "Shared e-scooters and e-bikes, run by people who live here. Cheaper than a taxi, cleaner than a rental car. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
-  microcopy: "No spam. One email when we launch near you.",
-  secondary: "See how it works",
-  imageAlt: "The Rido e-scooter in brand magenta, with its helmet docked on the stem",
-  chipsLabel: "Highlights",
-  chips: ["Helmet included", "DGT certified", `${town} launch`],
-};
-
-const copy: Record<Locale, typeof en> = {
-  en,
-  es: {
-    waitlistKicker: "Lista de espera abierta",
-    waitlistSingular: "{count} persona en la lista de espera",
-    waitlistPlural: "{count} personas en la lista de espera",
-    badge: `Muy pronto en ${town}`,
-    headlineWords: ["Muévete", "libre", "por", "la", "costa."],
-    highlightCount: 2,
-    subheadline:
-      "Patinetes y bicis eléctricas compartidas, gestionadas por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
-    microcopy: "Sin spam. Un correo cuando lleguemos a tu zona.",
-    secondary: "Cómo funciona",
-    imageAlt: "El patinete eléctrico Rido en magenta, con el casco acoplado en la barra",
-    chipsLabel: "Lo esencial",
-    chips: ["Casco incluido", "Certificado DGT", `Lanzamiento en ${town}`],
-  },
-};
 
 const chipIcons = [HardHat, BadgeCheck, MapPin] as const;
 
@@ -98,9 +57,7 @@ function HeroBackdrop({ fixed, layerRef }: { fixed: boolean; layerRef?: React.Re
   );
 }
 
-export function Hero() {
-  const locale = useLocale();
-  const t = copy[locale];
+export function Hero({ t, image }: { t: HeroCopy; image: string }) {
   const sectionRef = useRef<HTMLElement>(null);
   const layerRef = useRef<HTMLDivElement>(null);
   const reduce = usePrefersReducedMotion();
@@ -198,7 +155,7 @@ export function Hero() {
             It is the mobile LCP element, so it never starts transparent: rise only. */}
         <div className="hero-rise relative mx-auto w-full max-w-md lg:max-w-none" style={delay(0.2)}>
           <ImageFrame
-            src={withBase(vehicles[0].cutouts[0])}
+            src={withBase(image)}
             alt={t.imageAlt}
             sizes="(max-width: 1024px) 90vw, 45vw"
             priority

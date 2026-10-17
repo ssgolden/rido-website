@@ -1,76 +1,18 @@
 "use client";
 
-import { faqItemsByLocale, type Category } from "@/data/faq";
+import type { FaqItem } from "@/data/faq";
+import type { CategoryFilter, FaqCopy } from "@/components/sections/FAQ.copy";
 import { ChevronDown, Search, Mail } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
 import { STAGGER } from "@/lib/motion";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
-
-type CategoryFilter = "all" | Category;
 
 const VISIBLE_LIMIT = 6;
 
 /** Stable filter order; ids never change — only the labels are localized. */
 const categoryIds: readonly CategoryFilter[] = ["all", "getting-started", "pricing", "safety", "legal"];
-
-interface FaqCopy {
-  sectionAria: string;
-  label: string;
-  title: string;
-  intro: string;
-  searchPlaceholder: string;
-  searchAria: string;
-  categories: Record<CategoryFilter, string>;
-  noResults: string;
-  showAllBefore: string;
-  showAllAfter: string;
-  stillQuestions: string;
-}
-
-const copy = {
-  en: {
-    sectionAria: "Frequently asked questions",
-    label: "FAQ",
-    title: "Questions, answered",
-    intro: "Pricing, safety, rules and everything else about riding with Rido.",
-    searchPlaceholder: "Search questions…",
-    searchAria: "Search frequently asked questions",
-    categories: {
-      all: "All",
-      "getting-started": "Getting started",
-      pricing: "Pricing",
-      safety: "Safety",
-      legal: "Legal",
-    },
-    noResults: "No questions match your search. Try different keywords.",
-    showAllBefore: "Show all",
-    showAllAfter: "questions",
-    stillQuestions: "Still have questions? Email info@rido.bike",
-  },
-  es: {
-    sectionAria: "Preguntas frecuentes",
-    label: "Preguntas frecuentes",
-    title: "Resolvemos tus dudas",
-    intro: "Precios, seguridad, normas y todo lo demás para moverte con Rido.",
-    searchPlaceholder: "Busca una pregunta…",
-    searchAria: "Buscar en las preguntas frecuentes",
-    categories: {
-      all: "Todas",
-      "getting-started": "Primeros pasos",
-      pricing: "Precios",
-      safety: "Seguridad",
-      legal: "Legal",
-    },
-    noResults: "Ninguna pregunta coincide con tu búsqueda. Prueba con otras palabras.",
-    showAllBefore: "Ver las",
-    showAllAfter: "preguntas",
-    stillQuestions: "¿Sigues con dudas? Escríbenos a info@rido.bike",
-  },
-} as const satisfies Record<Locale, FaqCopy>;
 
 /**
  * Native exclusive accordion: every item shares name="faq", so opening one
@@ -90,21 +32,19 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   );
 }
 
-export function FAQ() {
-  const locale = useLocale();
-  const t = copy[locale];
+export function FAQ({ t, items }: { t: FaqCopy; items: FaqItem[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [showAll, setShowAll] = useState(false);
 
   // Search runs against the ACTIVE locale's question/answer text.
   const filteredItems = useMemo(() => {
-    return faqItemsByLocale[locale].filter((item) => {
+    return items.filter((item) => {
       const matchesSearch = search === "" || item.question.toLowerCase().includes(search.toLowerCase()) || item.answer.toLowerCase().includes(search.toLowerCase());
       const matchesCategory = category === "all" || item.category === category;
       return matchesSearch && matchesCategory;
     });
-  }, [locale, search, category]);
+  }, [items, search, category]);
 
   const visibleItems = showAll ? filteredItems : filteredItems.slice(0, VISIBLE_LIMIT);
   const hiddenCount = filteredItems.length - visibleItems.length;

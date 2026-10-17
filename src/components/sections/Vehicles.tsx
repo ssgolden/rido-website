@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { vehicles, getVehicleCopy } from "@/data/vehicles";
+import type { FleetItem, VehiclesCopy } from "@/components/sections/Vehicles.copy";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import { STAGGER } from "@/lib/motion";
@@ -9,50 +9,15 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { withBase } from "@/lib/basePath";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
-
-// Vehicle-specific copy (taglines, descriptions, specs, features) lives in src/data/vehicles.ts.
-const en = {
-  ariaLabel: "Our vehicles",
-  label: "The fleet",
-  title: "Choose your ride",
-  tabsLabel: "Choose a vehicle",
-  badgeScooter: "E-scooter",
-  badgeBike: "E-bike",
-  imageUnavailable: "Image unavailable",
-  thumbAlt: (name: string, index: number) => `${name} view ${index}`,
-  specsLabel: "Specifications",
-  featuresLabel: "Included",
-};
-
-const copy: Record<Locale, typeof en> = {
-  en,
-  es: {
-    ariaLabel: "Nuestros vehículos",
-    label: "La flota",
-    title: "Elige tu vehículo",
-    tabsLabel: "Elige un vehículo",
-    badgeScooter: "Patinete eléctrico",
-    badgeBike: "Bici eléctrica",
-    imageUnavailable: "Imagen no disponible",
-    thumbAlt: (name: string, index: number) => `${name}, vista ${index}`,
-    specsLabel: "Especificaciones",
-    featuresLabel: "Incluye",
-  },
-};
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-sand";
 
-export function Vehicles() {
-  const locale = useLocale();
-  const t = copy[locale];
+export function Vehicles({ t, fleet }: { t: VehiclesCopy; fleet: FleetItem[] }) {
   const [active, setActive] = useState(0);
   const [activeImage, setActiveImage] = useState(0);
-  const v = vehicles[active];
-  const vCopy = getVehicleCopy(v, locale);
+  const v = fleet[active];
   const [mainImageError, setMainImageError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
   // withBase() at render time — basePath differs between SSR and client.
@@ -71,7 +36,7 @@ export function Vehicles() {
         <SectionHeader label={t.label} title={t.title} align="left" tone="sand" className="!mb-0" />
         <ScrollReveal>
           <div role="group" aria-label={t.tabsLabel} className="inline-flex rounded-full bg-ink/5 p-1 ring-1 ring-ink/10">
-            {vehicles.map((vehicle, i) => (
+            {fleet.map((vehicle, i) => (
               <button
                 key={vehicle.id}
                 aria-pressed={i === active}
@@ -106,7 +71,7 @@ export function Vehicles() {
                 <div key={`${v.id}-${activeImage}`} className="enter-fade absolute inset-0">
                   <Image
                     src={vehicleImages[activeImage]}
-                    alt={vCopy.imageAlt}
+                    alt={v.imageAlt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 55vw"
                     className="object-contain p-6 sm:p-10 drop-shadow-[0_24px_30px_rgba(15,23,42,0.18)]"
@@ -125,7 +90,7 @@ export function Vehicles() {
                     setActiveImage(i);
                     setMainImageError(false);
                   }}
-                  aria-label={t.thumbAlt(v.name, i + 1)}
+                  aria-label={t.thumbAlt.replace("{name}", v.name).replace("{n}", String(i + 1))}
                   aria-pressed={i === activeImage}
                   className={cn(
                     "image-frame-sun relative w-16 h-16 sm:w-20 sm:h-20 rounded-xl overflow-hidden cursor-pointer transition-[box-shadow,opacity] duration-200",
@@ -155,12 +120,12 @@ export function Vehicles() {
         <ScrollReveal delay={STAGGER.grid}>
           <p className="text-sm font-semibold text-rido-magenta-dark">{v.type === "e-scooter" ? t.badgeScooter : t.badgeBike}</p>
           <h3 className="mt-1 font-display text-3xl sm:text-4xl font-black text-ink">{v.name}</h3>
-          <p className="mt-1 text-lg font-semibold text-ink-muted">{vCopy.tagline}</p>
-          <p className="mt-5 text-ink-muted leading-relaxed">{vCopy.description}</p>
+          <p className="mt-1 text-lg font-semibold text-ink-muted">{v.tagline}</p>
+          <p className="mt-5 text-ink-muted leading-relaxed">{v.description}</p>
 
           <h4 className="sr-only">{t.specsLabel}</h4>
           <dl className="mt-8 grid grid-cols-2 border-t border-ink/10">
-            {vCopy.specs.map((spec, i) => (
+            {v.specs.map((spec, i) => (
               <div key={spec.label} className={cn("py-5 border-b border-ink/10", i % 2 === 0 ? "pr-4" : "pl-4 border-l")}>
                 <dt className="text-sm text-ink-muted">{spec.label}</dt>
                 <dd className="mt-1 font-display text-2xl sm:text-3xl font-black text-ink">{spec.value}</dd>
@@ -170,7 +135,7 @@ export function Vehicles() {
 
           <h4 className="mt-8 text-sm font-semibold text-ink">{t.featuresLabel}</h4>
           <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-            {vCopy.features.map((feature) => (
+            {v.features.map((feature) => (
               <li key={feature} className="flex items-start gap-2 text-sm text-ink-muted">
                 <Check className="mt-0.5 w-4 h-4 shrink-0 text-rido-magenta-dark" aria-hidden="true" />
                 <span>{feature}</span>

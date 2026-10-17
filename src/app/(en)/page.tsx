@@ -3,6 +3,12 @@ import dynamic from "next/dynamic";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
 import { Hero } from "@/components/sections/Hero";
+import { heroCopy, heroImage } from "@/components/sections/Hero.copy";
+import { howItWorksCopy } from "@/components/sections/HowItWorks.copy";
+import { phoneCopy } from "@/components/ui/PhoneScreens.copy";
+import { vehiclesCopy, getFleet } from "@/components/sections/Vehicles.copy";
+import { faqCopy } from "@/components/sections/FAQ.copy";
+import { faqItemsByLocale } from "@/data/faq";
 import { Launch } from "@/components/sections/Launch";
 import { Safety } from "@/components/sections/Safety";
 import { DownloadCTA } from "@/components/sections/DownloadCTA";
@@ -64,12 +70,12 @@ export default function Home() {
             <p>Launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow.</p>
           </div>
         </noscript>
-        <Hero />
+        <Hero t={heroCopy.en} image={heroImage} />
         <Launch locale="en" />
-        <HowItWorks />
-        <Vehicles />
+        <HowItWorks t={howItWorksCopy.en} phone={phoneCopy.en} />
+        <Vehicles t={vehiclesCopy.en} fleet={getFleet("en")} />
         <Safety locale="en" />
-        <FAQ />
+        <FAQ t={faqCopy.en} items={faqItemsByLocale.en} />
         <DownloadCTA locale="en" />
       </main>
       <Footer />

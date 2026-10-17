@@ -17,6 +17,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Key Patterns
 - Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`. They are CSS-only and work in server components: one `RevealObserver` (mounted in `RootDocument`) sets `data-shown`; globals.css hides unrevealed blocks only under `html.reveal-ready` (set by an inline head script, dropped after 4s if the observer never starts) and never under reduced motion. Don't put `transition-*` utilities on a reveal wrapper (they replace the reveal transition).
 - Sections without state (Safety, Launch, DownloadCTA, Partners) are server components taking a `locale` prop — keep them free of hooks; put interactivity in client islands (WaitlistForm, CoverageMap).
+- One language per page: homepage client sections (Hero, HowItWorks, Vehicles, FAQ) take their copy as props from a sibling `*.copy.ts` module (e.g. `Hero.copy.ts`), which only server pages import. Client components import its types only. Copy must be serialisable: no functions or icon components — use `{placeholder}` strings and index-keyed icon lists.
 - `cn()` is plain clsx (no tailwind-merge): conflicting utilities are not merged. Override defaults with `!` or have the component skip its default when the caller passes one (see `Section`, `WaitlistForm`).
 - Legal pages: Use `LegalPage` layout from `@/components/layout/LegalPage`
 - All sections need `id` and `aria-label` attributes

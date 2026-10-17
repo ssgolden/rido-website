@@ -13,56 +13,16 @@ import {
   Timer,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
+import { createContext, useContext } from "react";
+import type { PhoneCopy } from "@/components/ui/PhoneScreens.copy";
 
-const en = {
-  findNearby: "Find a Rido near you",
-  createAccount: "Create your account",
-  firstInLine: "Be first in line at launch",
-  signUp: "Sign up",
-  scanToUnlock: "Scan to unlock",
-  pointAtQr: "Point at the QR code",
-  onHandlebar: "On the handlebar of any Rido",
-  riding: "Riding",
-  cruising: "Cruising",
-  endRide: "End ride",
-  parkAndEnd: "Park & end",
-  parkingZone: "Designated parking zone",
-  rideComplete: "Ride complete",
-  payForUse: "Pay only for what you used",
-  rideTime: "Ride time",
-  distance: "Distance",
-  done: "Done",
-  illustrative: "Illustrative app preview",
-};
+// The active locale's copy, provided by PhoneMockup to its screens.
+const PhoneCopyContext = createContext<PhoneCopy | null>(null);
 
-const phoneCopy: Record<Locale, typeof en> = {
-  en,
-  es: {
-    findNearby: "Encuentra un Rido cerca",
-    createAccount: "Crea tu cuenta",
-    firstInLine: "Sé de los primeros en el lanzamiento",
-    signUp: "Regístrate",
-    scanToUnlock: "Escanea para desbloquear",
-    pointAtQr: "Apunta al código QR",
-    onHandlebar: "En el manillar de cualquier Rido",
-    riding: "En marcha",
-    cruising: "Ritmo de crucero",
-    endRide: "Terminar viaje",
-    parkAndEnd: "Aparca y termina",
-    parkingZone: "Zona de aparcamiento",
-    rideComplete: "Viaje terminado",
-    payForUse: "Paga solo por lo que uses",
-    rideTime: "Tiempo",
-    distance: "Distancia",
-    done: "Listo",
-    illustrative: "Vista ilustrativa de la app",
-  },
-};
-
-function usePhoneCopy() {
-  return phoneCopy[useLocale()];
+function usePhoneCopy(): PhoneCopy {
+  const t = useContext(PhoneCopyContext);
+  if (!t) throw new Error("Phone screens must render inside PhoneMockup");
+  return t;
 }
 
 /* Stylized product visualizations — deliberately illustrative, not fake
@@ -279,6 +239,8 @@ export const PHONE_SCREEN_COUNT = SCREENS.length;
 interface PhoneMockupProps {
   /** Index of the active step/screen (0–3). Clamped internally. */
   activeStep: number;
+  /** The active locale's copy (PhoneScreens.copy.ts). */
+  t: PhoneCopy;
   className?: string;
 }
 
@@ -288,11 +250,11 @@ interface PhoneMockupProps {
  * (280×560, rounded-[40px], notch) but built independently.
  * Purely decorative — always render with the surrounding step copy visible.
  */
-export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
-  const t = usePhoneCopy();
+export function PhoneMockup({ activeStep, t, className }: PhoneMockupProps) {
   const active = Math.min(SCREENS.length - 1, Math.max(0, activeStep));
 
   return (
+    <PhoneCopyContext.Provider value={t}>
     <div aria-hidden="true" className={cn("relative", className)}>
       <div className="relative w-[260px] h-[520px] lg:w-[280px] lg:h-[560px] rounded-[40px] border-4 border-white/20 bg-rido-navy shadow-2xl shadow-rido-magenta/20 overflow-hidden">
         {/* notch */}
@@ -312,5 +274,6 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
       <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
       <p className="mt-4 text-center text-[11px] text-muted-weak">{t.illustrative}</p>
     </div>
+    </PhoneCopyContext.Provider>
   );
 }
