@@ -436,6 +436,17 @@
       scroll-snap-align: start;
     }
   }
+  /* One swipeable row of filter chips on phones (FAQ categories); wraps from sm. */
+  @media (max-width: 39.9375rem) {
+    .chip-row {
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+    .chip-row::-webkit-scrollbar {
+      display: none;
+    }
+  }
   .section-tint-magenta {
     background: linear-gradient(180deg, rgba(222, 4, 152, 0.03), transparent);
   }
@@ -549,6 +560,7 @@
   .city-pulse-ring {
     animation: city-pulse-ring 2.5s ease-in-out infinite;
     transform-origin: center;
+    transform-box: fill-box;
   }
   .city-dot-pulse {
     animation: city-dot-pulse 2s ease-in-out infinite;

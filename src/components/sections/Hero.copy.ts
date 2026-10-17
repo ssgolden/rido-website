@@ -16,6 +16,8 @@ const en = {
   highlightCount: 2,
   subheadline:
     "Shared e-scooters and e-bikes, run by people who live here. Cheaper than a taxi, cleaner than a rental car. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
+  /** Phones: the badge above already says where we launch, so the intro stops before it. */
+  subheadlineShort: "Shared e-scooters and e-bikes, run by people who live here. Cheaper than a taxi, cleaner than a rental car.",
   microcopy: "No spam. One email when we launch near you.",
   secondary: "See how it works",
   imageAlt: "The Rido e-scooter in brand magenta, with its helmet docked on the stem",
@@ -36,6 +38,8 @@ export const heroCopy: Record<Locale, HeroCopy> = {
     highlightCount: 2,
     subheadline:
       "Patinetes y bicis eléctricas compartidas, gestionadas por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
+    subheadlineShort:
+      "Patinetes y bicis eléctricas compartidas, gestionadas por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler.",
     microcopy: "Sin spam. Un correo cuando lleguemos a tu zona.",
     secondary: "Cómo funciona",
     imageAlt: "El patinete eléctrico Rido en magenta, con el casco acoplado en la barra",

@@ -3,7 +3,7 @@
  * Accessibility gate — runs axe-core against key pages and fails on
  * serious/critical violations.
  *
- * Usage: node scripts/a11y-audit.mjs [baseUrl]
+ * Usage: node scripts/a11y-audit.mjs [baseUrl]   (QA_STATIC=1 against the static export)
  * Default baseUrl: http://localhost:3000 (app must be running).
  * Browser resolution mirrors scripts/visual-qa.mjs (CHROMIUM_PATH env
  * or /opt/pw-browsers/chromium or system Chrome).
@@ -16,7 +16,11 @@ import { execSync } from "node:child_process";
 const baseUrl = process.argv[2] ?? "http://localhost:3000";
 
 // Representative set: EN + ES home, a city page, legal, careers, 404.
-const PAGES = ["/", "/es", "/torrevieja", "/es/torrevieja", "/coming-soon", "/politica-cookies", "/privacy", "/terms", "/careers", "/partners", "/es/partners", "/waitlist-confirmed", "/es/waitlist-confirmed"];
+// /coming-soon is server-only (Vercel gate page); QA_STATIC=1 skips it when
+// auditing the static export (scripts/serve-export.mjs).
+const SERVER_ONLY = new Set(["/coming-soon"]);
+const ALL_PAGES = ["/", "/es", "/torrevieja", "/es/torrevieja", "/coming-soon", "/politica-cookies", "/privacy", "/terms", "/careers", "/partners", "/es/partners", "/waitlist-confirmed", "/es/waitlist-confirmed"];
+const PAGES = process.env.QA_STATIC ? ALL_PAGES.filter((p) => !SERVER_ONLY.has(p)) : ALL_PAGES;
 
 // Fail the gate on these impact levels only; report the rest.
 const BLOCKING = new Set(["serious", "critical"]);

@@ -81,7 +81,7 @@ export function HowItWorks({ t, phone }: { t: HowItWorksCopy; phone: PhoneCopy }
         ))}
 
         <div className="sticky top-0 flex h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center motion-reduce:static motion-reduce:h-auto">
-          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16 items-center">
+          <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 motion-reduce:md:grid-cols-1 gap-6 md:gap-16 items-center">
             {/* Phone: first on phones, right column on md+. Hidden under reduced motion and on short phones (no room beside the step copy). */}
             <div className="order-first md:order-last flex justify-center lg:justify-end motion-reduce:hidden max-md:[@media(max-height:700px)]:hidden">
               <div className="h-[330px] [@media(min-height:760px)]:h-[390px] md:!h-auto">
@@ -126,7 +126,7 @@ export function HowItWorks({ t, phone }: { t: HowItWorksCopy; phone: PhoneCopy }
               </nav>
 
               {/* Step copy: stacked and crossfaded while pinned; a plain list under reduced motion. */}
-              <ol className="relative flex-1 min-h-[13rem] sm:min-h-[15rem] motion-reduce:min-h-0 motion-reduce:space-y-10 motion-reduce:pt-10">
+              <ol className="relative flex-1 min-h-[13rem] sm:min-h-[15rem] motion-reduce:min-h-0 motion-reduce:space-y-10 motion-reduce:pt-10 motion-reduce:md:grid motion-reduce:md:grid-cols-2 motion-reduce:md:gap-x-16 motion-reduce:md:gap-y-12 motion-reduce:md:space-y-0">
                 {steps.map((step, i) => {
                   const active = i === activeStep;
                   return (

@@ -18,7 +18,7 @@ export interface City {
  * announced towns belong here.
  *
  * Planned, unannounced towns live in ./cities.planned.ts, which no page or
- * component imports. CI (scripts/check-town-leak.mjs) fails the build if any
+ * component imports. Every export build (scripts/check-town-leak.mjs) fails if any
  * of their names or slugs appear in the static export.
  *
  * To announce a town: move its entry from cities.planned.ts into this list,

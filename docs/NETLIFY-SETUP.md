@@ -246,6 +246,22 @@ Optional build-time variables (leave unset for this launch; they are inlined, so
 
 ---
 
+## 8a. What stops a bad deploy
+
+Netlify builds every push to `master` itself, so GitHub Actions cannot hold it back. What protects production:
+
+- **Inside every export build** (`scripts/build.mjs`, so on Netlify too): the build fails, and Netlify keeps the previous deploy live, if an unannounced town name would ship (`scripts/check-town-leak.mjs`).
+- **On pull requests** (`.github/workflows/ci.yml`): lint, function tests, both builds, Lighthouse budgets, axe and visual QA. The axe and visual QA run against the static export served with the real `public/_headers`, so a CSP that would block the site fails CI first.
+- **On `master` pushes to GitHub Pages** (`.github/workflows/deploy.yml`): lint and function tests run before the export is published.
+
+To make CI a hard gate for Netlify as well, protect `master` so changes can only land through a green pull request:
+
+1. GitHub → the repository → **Settings** → **Branches** (or **Rules → Rulesets**) → **Add rule** for `master`.
+2. Turn on **Require a pull request before merging** and **Require status checks to pass**, and select **Lint & Build**, **Static Export Build** and **Quality Gates (Lighthouse + axe)**.
+3. Optionally turn on **Do not allow bypassing the above settings**.
+
+Netlify deploy previews of pull requests are unaffected.
+
 ## 9. Quick Reference
 
 | Item              | Value / Instruction                           |
