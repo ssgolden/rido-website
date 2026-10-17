@@ -1,45 +1,22 @@
 "use client";
 
 import { useRef, useState, type CSSProperties } from "react";
-import { m, useScroll, useMotionValueEvent } from "framer-motion";
 import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
-import { useScrollContainerRef, useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import type { HowItWorksCopy } from "@/components/sections/HowItWorks.copy";
+import type { PhoneCopy } from "@/components/ui/PhoneScreens.copy";
+import { useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
 
-const en = {
-  ariaLabel: "How it works",
-  label: "How it works",
-  title: "Join, scan, ride, park. That's it.",
-  stepsLabel: "Steps",
-  goTo: (n: number, title: string) => `Go to step ${n}: ${title}`,
-  steps: [
-    { icon: Smartphone, title: "Sign up early", description: "Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready." },
-    { icon: QrCode, title: "Scan & unlock", description: "Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll." },
-    { icon: Bike, title: "Ride & enjoy", description: "Follow traffic rules, use cycle lanes and enjoy the ride. Helmet on — it's the law, and we include one." },
-    { icon: ParkingCircle, title: "Park & end ride", description: "Park responsibly in designated areas shown in the app. End your ride and pay only for what you used." },
-  ],
-};
+/** Step icons, in step order (components can't be passed from the server). */
+const STEP_ICONS = [Smartphone, QrCode, Bike, ParkingCircle] as const;
 
-const copy: Record<Locale, typeof en> = {
-  en,
-  es: {
-    ariaLabel: "Cómo funciona",
-    label: "Cómo funciona",
-    title: "Apúntate, escanea, monta, aparca. Así de fácil.",
-    stepsLabel: "Pasos",
-    goTo: (n: number, title: string) => `Ir al paso ${n}: ${title}`,
-    steps: [
-      { icon: Smartphone, title: "Regístrate pronto", description: "Únete ya a la lista de espera y sé de los primeros cuando llegue la app de Rido. Crea tu cuenta en segundos cuando esté lista." },
-      { icon: QrCode, title: "Escanea y desbloquea", description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo para circular." },
-      { icon: Bike, title: "Monta y disfruta", description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Casco puesto: es obligatorio y lo incluimos." },
-      { icon: ParkingCircle, title: "Aparca y termina", description: "Aparca de forma responsable en las zonas indicadas en la app. Termina el viaje y paga solo por lo que uses." },
-    ],
-  },
-};
+function StepIcon({ index }: { index: number }) {
+  const Icon = STEP_ICONS[index] ?? Smartphone;
+  return <Icon className="w-6 h-6 text-rido-magenta-light" aria-hidden="true" />;
+}
 
 /** Scroll distance per step, in small-viewport heights. */
 const VH_PER_STEP = 75;
@@ -56,25 +33,29 @@ const VH_PER_STEP = 75;
  * mismatch): the track collapses, the stage un-pins, every step is listed
  * statically and the phone is hidden.
  */
-export function HowItWorks() {
-  const locale = useLocale();
-  const t = copy[locale];
+export function HowItWorks({ t, phone }: { t: HowItWorksCopy; phone: PhoneCopy }) {
   const steps = t.steps;
   const trackRef = useRef<HTMLDivElement>(null);
   const anchorRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollContainerRef = useScrollContainerRef();
   const scrollTo = useScrollTo();
   const [activeStep, setActiveStep] = useState(0);
+  const railXRef = useRef<HTMLDivElement>(null);
+  const railYRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    container: scrollContainerRef,
-    target: trackRef,
-    // 0 when the track's top reaches the top of the scroll lane,
-    // 1 when its bottom reaches the bottom — i.e. exactly while pinned.
-    offset: ["start start", "end end"],
-  });
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    setActiveStep(Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length))));
+  // Progress through the pinned track: 0 when its top reaches the top of the
+  // scroll lane, 1 when its bottom reaches the bottom. The rail fill is written
+  // directly each frame; React state changes only when the step changes.
+  useScrollFrame((root) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const lane = root.getBoundingClientRect();
+    const range = rect.height - lane.height;
+    const p = range > 0 ? Math.min(1, Math.max(0, (lane.top - rect.top) / range)) : 0;
+    if (railXRef.current) railXRef.current.style.transform = `scaleX(${p})`;
+    if (railYRef.current) railYRef.current.style.transform = `scaleY(${p})`;
+    const step = Math.min(steps.length - 1, Math.floor(p * steps.length));
+    setActiveStep((prev) => (prev === step ? prev : step));
   });
 
   const trackStyle = { "--track-h": `${steps.length * VH_PER_STEP + 25}svh` } as CSSProperties;
@@ -105,7 +86,7 @@ export function HowItWorks() {
             <div className="order-first md:order-last flex justify-center lg:justify-end motion-reduce:hidden max-md:[@media(max-height:700px)]:hidden">
               <div className="h-[330px] [@media(min-height:760px)]:h-[390px] md:!h-auto">
                 <div className="origin-top scale-[0.6] [@media(min-height:760px)]:scale-[0.7] md:!scale-100">
-                  <PhoneMockup activeStep={activeStep} />
+                  <PhoneMockup activeStep={activeStep} t={phone} />
                 </div>
               </div>
             </div>
@@ -117,8 +98,8 @@ export function HowItWorks() {
                   className="absolute left-4 right-4 top-1/2 h-px -translate-y-1/2 bg-white/10 md:left-1/2 md:right-auto md:top-4 md:bottom-4 md:h-auto md:w-px md:-translate-x-1/2 md:translate-y-0"
                   aria-hidden="true"
                 >
-                  <m.div className="h-full w-full origin-left bg-rido-magenta md:hidden" style={{ scaleX: scrollYProgress }} />
-                  <m.div className="hidden h-full w-full origin-top bg-rido-magenta md:block" style={{ scaleY: scrollYProgress }} />
+                  <div ref={railXRef} className="h-full w-full origin-left bg-rido-magenta md:hidden" style={{ transform: "scaleX(0)" }} />
+                  <div ref={railYRef} className="hidden h-full w-full origin-top bg-rido-magenta md:block" style={{ transform: "scaleY(0)" }} />
                 </div>
                 <ol className="relative flex justify-between md:flex-col md:justify-start md:gap-10">
                   {steps.map((step, i) => (
@@ -129,7 +110,7 @@ export function HowItWorks() {
                           const el = anchorRefs.current[i];
                           if (el) scrollTo(el);
                         }}
-                        aria-label={t.goTo(i + 1, step.title)}
+                        aria-label={t.goTo.replace("{n}", String(i + 1)).replace("{title}", step.title)}
                         aria-current={i === activeStep ? "step" : undefined}
                         className={cn(
                           "flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold cursor-pointer transition-colors duration-200",
@@ -162,7 +143,7 @@ export function HowItWorks() {
                           {String(i + 1).padStart(2, "0")}
                         </span>
                         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rido-magenta/15">
-                          <step.icon className="w-6 h-6 text-rido-magenta-light" aria-hidden="true" />
+                          <StepIcon index={i} />
                         </span>
                       </div>
                       <h3 className="mt-4 font-display text-2xl sm:text-3xl font-black">{step.title}</h3>

@@ -1,6 +1,5 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
 import {
   BatteryMedium,
   Bike,
@@ -14,61 +13,16 @@ import {
   Timer,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
-import { DURATION, EASE, REVEAL } from "@/lib/motion";
+import { createContext, useContext } from "react";
+import type { PhoneCopy } from "@/components/ui/PhoneScreens.copy";
 
-const en = {
-  findNearby: "Find a Rido near you",
-  createAccount: "Create your account",
-  firstInLine: "Be first in line at launch",
-  signUp: "Sign up",
-  scanToUnlock: "Scan to unlock",
-  pointAtQr: "Point at the QR code",
-  onHandlebar: "On the handlebar of any Rido",
-  riding: "Riding",
-  cruising: "Cruising",
-  endRide: "End ride",
-  parkAndEnd: "Park & end",
-  parkingZone: "Designated parking zone",
-  rideComplete: "Ride complete",
-  payForUse: "Pay only for what you used",
-  rideTime: "Ride time",
-  distance: "Distance",
-  done: "Done",
-  illustrative: "Illustrative app preview",
-};
+// The active locale's copy, provided by PhoneMockup to its screens.
+const PhoneCopyContext = createContext<PhoneCopy | null>(null);
 
-const phoneCopy: Record<Locale, typeof en> = {
-  en,
-  es: {
-    findNearby: "Encuentra un Rido cerca",
-    createAccount: "Crea tu cuenta",
-    firstInLine: "Sé de los primeros en el lanzamiento",
-    signUp: "Regístrate",
-    scanToUnlock: "Escanea para desbloquear",
-    pointAtQr: "Apunta al código QR",
-    onHandlebar: "En el manillar de cualquier Rido",
-    riding: "En marcha",
-    cruising: "Ritmo de crucero",
-    endRide: "Terminar viaje",
-    parkAndEnd: "Aparca y termina",
-    parkingZone: "Zona de aparcamiento",
-    rideComplete: "Viaje terminado",
-    payForUse: "Paga solo por lo que uses",
-    rideTime: "Tiempo",
-    distance: "Distancia",
-    done: "Listo",
-    illustrative: "Vista ilustrativa de la app",
-  },
-};
-
-function usePhoneCopy() {
-  return phoneCopy[useLocale()];
-}
-
-interface ScreenProps {
-  reduced: boolean;
+function usePhoneCopy(): PhoneCopy {
+  const t = useContext(PhoneCopyContext);
+  if (!t) throw new Error("Phone screens must render inside PhoneMockup");
+  return t;
 }
 
 /* Stylized product visualizations — deliberately illustrative, not fake
@@ -117,7 +71,7 @@ function MapScreen() {
         <span className="text-[11px] text-muted">{t.findNearby}</span>
       </div>
       {/* sign-up card */}
-      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4">
+      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-flat-strong p-4">
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-xl bg-rido-magenta/20 flex items-center justify-center shrink-0">
             <Bike className="w-4.5 h-4.5 text-rido-magenta" />
@@ -136,7 +90,7 @@ function MapScreen() {
 }
 
 /* Step 2 — Scan & Unlock: QR scan frame with sweeping scan line */
-function ScanScreen({ reduced }: ScreenProps) {
+function ScanScreen() {
   const t = usePhoneCopy();
   const scanLine = (
     <div className="absolute left-2 right-2 top-1/2 h-0.5 rounded-full bg-gradient-to-r from-transparent via-rido-magenta to-transparent" />
@@ -153,18 +107,14 @@ function ScanScreen({ reduced }: ScreenProps) {
         <div className="absolute inset-0 flex items-center justify-center">
           <QrCode className="w-14 h-14 text-white/25" />
         </div>
-        {/* Same wrapper either way so server and client HTML match; reduced motion keeps the line still. */}
-        <m.div
-          aria-hidden="true"
-          animate={reduced ? { y: 0 } : { y: [-52, 52, -52] }}
-          transition={reduced ? { duration: 0 } : { duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute inset-x-0 top-1/2"
-        >
+        {/* CSS keyframe (globals.css .phone-scan-line): runs on the compositor and
+            stops under reduced motion, instead of a 60 fps JS loop from page load. */}
+        <div aria-hidden="true" className="phone-scan-line absolute inset-x-0 top-1/2">
           {scanLine}
-        </m.div>
+        </div>
       </div>
       {/* helper card */}
-      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-strong p-4 flex items-center gap-3">
+      <div className="absolute bottom-5 left-4 right-4 rounded-2xl glass-flat-strong p-4 flex items-center gap-3">
         <div className="w-9 h-9 rounded-xl bg-rido-magenta/20 flex items-center justify-center shrink-0">
           <QrCode className="w-4.5 h-4.5 text-rido-magenta" />
         </div>
@@ -250,7 +200,7 @@ function ParkScreen() {
         <Bike className="w-4 h-4 text-muted" />
       </div>
       {/* ride complete */}
-      <div className="absolute bottom-[5.5rem] left-4 right-4 rounded-2xl glass-strong p-4">
+      <div className="absolute bottom-[5.5rem] left-4 right-4 rounded-2xl glass-flat-strong p-4">
         <div className="flex items-center gap-3">
           <CheckCircle2 className="w-6 h-6 text-rido-green shrink-0" />
           <div>
@@ -277,7 +227,7 @@ function ParkScreen() {
   );
 }
 
-const SCREENS: { key: string; Component: React.ComponentType<ScreenProps> }[] = [
+const SCREENS: { key: string; Component: React.ComponentType }[] = [
   { key: "map", Component: MapScreen },
   { key: "scan", Component: ScanScreen },
   { key: "ride", Component: RideScreen },
@@ -289,6 +239,8 @@ export const PHONE_SCREEN_COUNT = SCREENS.length;
 interface PhoneMockupProps {
   /** Index of the active step/screen (0–3). Clamped internally. */
   activeStep: number;
+  /** The active locale's copy (PhoneScreens.copy.ts). */
+  t: PhoneCopy;
   className?: string;
 }
 
@@ -298,35 +250,30 @@ interface PhoneMockupProps {
  * (280×560, rounded-[40px], notch) but built independently.
  * Purely decorative — always render with the surrounding step copy visible.
  */
-export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
-  const reduced = useReducedMotion() ?? false;
-  const t = usePhoneCopy();
+export function PhoneMockup({ activeStep, t, className }: PhoneMockupProps) {
   const active = Math.min(SCREENS.length - 1, Math.max(0, activeStep));
 
   return (
+    <PhoneCopyContext.Provider value={t}>
     <div aria-hidden="true" className={cn("relative", className)}>
       <div className="relative w-[260px] h-[520px] lg:w-[280px] lg:h-[560px] rounded-[40px] border-4 border-white/20 bg-rido-navy shadow-2xl shadow-rido-magenta/20 overflow-hidden">
         {/* notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-rido-navy rounded-b-[20px] z-20" />
         {SCREENS.map(({ key, Component }, i) => (
-          <m.div
+          <div
             key={key}
-            className="absolute inset-0 pointer-events-none"
-            initial={false}
-            animate={{
-              opacity: i === active ? 1 : 0,
-              // Inactive screens are invisible; keeping their offset independent of
-              // `reduced` keeps SSR and client styles identical.
-              y: i === active ? 0 : REVEAL.y / 2,
-            }}
-            transition={{ duration: reduced ? 0 : DURATION.entrance, ease: EASE }}
+            className={cn(
+              "absolute inset-0 pointer-events-none transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              i === active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            )}
           >
-            <Component reduced={reduced} />
-          </m.div>
+            <Component />
+          </div>
         ))}
       </div>
       <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
       <p className="mt-4 text-center text-[11px] text-muted-weak">{t.illustrative}</p>
     </div>
+    </PhoneCopyContext.Provider>
   );
 }

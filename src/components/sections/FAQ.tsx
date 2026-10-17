@@ -1,119 +1,50 @@
 "use client";
 
-import { faqItemsByLocale, type Category } from "@/data/faq";
+import type { FaqItem } from "@/data/faq";
+import type { CategoryFilter, FaqCopy } from "@/components/sections/FAQ.copy";
 import { ChevronDown, Search, Mail } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
 import { useState, useMemo } from "react";
-import { m, AnimatePresence, useReducedMotion } from "framer-motion";
-import { DURATION, EASE, STAGGER } from "@/lib/motion";
-import { useLocale } from "@/lib/i18n/locale-context";
-import type { Locale } from "@/lib/i18n/config";
-
-type CategoryFilter = "all" | Category;
+import { STAGGER } from "@/lib/motion";
 
 const VISIBLE_LIMIT = 6;
 
 /** Stable filter order; ids never change — only the labels are localized. */
 const categoryIds: readonly CategoryFilter[] = ["all", "getting-started", "pricing", "safety", "legal"];
 
-interface FaqCopy {
-  sectionAria: string;
-  label: string;
-  title: string;
-  intro: string;
-  searchPlaceholder: string;
-  searchAria: string;
-  categories: Record<CategoryFilter, string>;
-  noResults: string;
-  showAllBefore: string;
-  showAllAfter: string;
-  stillQuestions: string;
-}
-
-const copy = {
-  en: {
-    sectionAria: "Frequently asked questions",
-    label: "FAQ",
-    title: "Questions, answered",
-    intro: "Pricing, safety, rules and everything else about riding with Rido.",
-    searchPlaceholder: "Search questions…",
-    searchAria: "Search frequently asked questions",
-    categories: {
-      all: "All",
-      "getting-started": "Getting started",
-      pricing: "Pricing",
-      safety: "Safety",
-      legal: "Legal",
-    },
-    noResults: "No questions match your search. Try different keywords.",
-    showAllBefore: "Show all",
-    showAllAfter: "questions",
-    stillQuestions: "Still have questions? Email info@rido.bike",
-  },
-  es: {
-    sectionAria: "Preguntas frecuentes",
-    label: "Preguntas frecuentes",
-    title: "Resolvemos tus dudas",
-    intro: "Precios, seguridad, normas y todo lo demás para moverte con Rido.",
-    searchPlaceholder: "Busca una pregunta…",
-    searchAria: "Buscar en las preguntas frecuentes",
-    categories: {
-      all: "Todas",
-      "getting-started": "Primeros pasos",
-      pricing: "Precios",
-      safety: "Seguridad",
-      legal: "Legal",
-    },
-    noResults: "Ninguna pregunta coincide con tu búsqueda. Prueba con otras palabras.",
-    showAllBefore: "Ver las",
-    showAllAfter: "preguntas",
-    stillQuestions: "¿Sigues con dudas? Escríbenos a info@rido.bike",
-  },
-} as const satisfies Record<Locale, FaqCopy>;
-
-function FAQItem({ question, answer, isOpen, onToggle, id }: { question: string; answer: string; isOpen: boolean; onToggle: () => void; id: string }) {
-  const answerId = `faq-answer-${id}`;
-  const reduce = useReducedMotion();
-  const panelTransition = { duration: reduce ? 0 : DURATION.micro, ease: EASE };
+/**
+ * Native exclusive accordion: every item shares name="faq", so opening one
+ * closes the others with no JavaScript, and closed answers stay in the page
+ * for find-in-page. The open/close height animation is CSS (.faq-item in
+ * globals.css) where the browser supports it; elsewhere it opens instantly.
+ */
+function FAQItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <div className="border-b border-white/10 last:border-b-0">
-      <button onClick={onToggle} className="w-full flex items-center justify-between py-5 text-left cursor-pointer group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy" aria-expanded={isOpen} aria-controls={answerId}>
+    <details name="faq" className="faq-item group border-b border-white/10 last:border-b-0">
+      <summary className="list-none [&::-webkit-details-marker]:hidden w-full flex items-center justify-between py-5 text-left cursor-pointer rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy">
         <span className="font-semibold text-white/90 group-hover:text-rido-magenta-light transition-colors duration-200 pr-4 text-sm sm:text-base">{question}</span>
-        <m.div animate={{ rotate: isOpen ? 180 : 0 }} transition={panelTransition} className="shrink-0">
-          <ChevronDown className="w-5 h-5 text-muted" />
-        </m.div>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <m.div id={answerId} initial={reduce ? false : { height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={reduce ? { opacity: 0 } : { height: 0, opacity: 0 }} transition={panelTransition} className="overflow-hidden" role="region">
-            <p className="pb-5 text-sm text-muted leading-relaxed pr-8">{answer}</p>
-          </m.div>
-        )}
-      </AnimatePresence>
-    </div>
+        <ChevronDown className="w-5 h-5 shrink-0 text-muted transition-transform duration-200 group-open:rotate-180" aria-hidden="true" />
+      </summary>
+      <p className="pb-5 text-sm text-muted leading-relaxed pr-8">{answer}</p>
+    </details>
   );
 }
 
-export function FAQ() {
-  const locale = useLocale();
-  const t = copy[locale];
-  const [openIndex, setOpenIndex] = useState<string | null>(null);
+export function FAQ({ t, items }: { t: FaqCopy; items: FaqItem[] }) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [showAll, setShowAll] = useState(false);
 
   // Search runs against the ACTIVE locale's question/answer text.
   const filteredItems = useMemo(() => {
-    return faqItemsByLocale[locale]
-      .filter((item) => {
-        const matchesSearch = search === "" || item.question.toLowerCase().includes(search.toLowerCase()) || item.answer.toLowerCase().includes(search.toLowerCase());
-        const matchesCategory = category === "all" || item.category === category;
-        return matchesSearch && matchesCategory;
-      })
-      .map((item, idx) => ({ ...item, stableId: `faq-${idx}` }));
-  }, [locale, search, category]);
+    return items.filter((item) => {
+      const matchesSearch = search === "" || item.question.toLowerCase().includes(search.toLowerCase()) || item.answer.toLowerCase().includes(search.toLowerCase());
+      const matchesCategory = category === "all" || item.category === category;
+      return matchesSearch && matchesCategory;
+    });
+  }, [items, search, category]);
 
   const visibleItems = showAll ? filteredItems : filteredItems.slice(0, VISIBLE_LIMIT);
   const hiddenCount = filteredItems.length - visibleItems.length;
@@ -143,8 +74,7 @@ export function FAQ() {
               <p className="text-center text-muted-weak py-8 text-sm">{t.noResults}</p>
             ) : (
               visibleItems.map((item) => (
-                <FAQItem key={item.stableId} question={item.question} answer={item.answer} id={item.stableId}
-                  isOpen={openIndex === item.stableId} onToggle={() => setOpenIndex(openIndex === item.stableId ? null : item.stableId)} />
+                <FAQItem key={item.question} question={item.question} answer={item.answer} />
               ))
             )}
           </div>

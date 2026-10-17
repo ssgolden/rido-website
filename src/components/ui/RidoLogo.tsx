@@ -2,12 +2,11 @@
 
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { m } from "framer-motion";
 import { withBase } from "@/lib/basePath";
 import { useState } from "react";
 
 interface RidoLogoProps {
-  variant?: "full" | "mark" | "wordmark" | "hero";
+  variant?: "full" | "mark" | "wordmark";
   size?: "sm" | "md" | "lg" | "xl";
   className?: string;
   priority?: boolean;
@@ -86,42 +85,12 @@ export function RidoLogo({
             width={imgW}
             height={imgH}
             loading={priority ? "eager" : undefined}
-            sizes={`(max-width: 640px) ${imgW}px, ${Math.round(imgW * 1.25)}px`}
             className="shrink-0"
             style={{ imageRendering: "auto" }}
             onError={() => setImgError(true)}
           />
         )}
       </span>
-    );
-  }
-
-  if (variant === "hero") {
-    return (
-      <m.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className={cn("relative inline-flex items-center", className)}
-      >
-        <div className="absolute inset-0 blur-2xl bg-rido-magenta/40 scale-150 rounded-full" />
-        {imgError ? (
-          <FallbackMark size={138} className="relative z-10 shrink-0" />
-        ) : (
-          <Image
-            key={`hero-${variant}`}
-            src={withBase("/images/logo/rido-logo.png")}
-            alt="Rido"
-            width={280}
-            height={138}
-            loading="eager"
-            sizes="(max-width: 640px) 200px, 280px"
-            className="relative z-10 shrink-0"
-            style={{ imageRendering: "auto" }}
-            onError={() => setImgError(true)}
-          />
-        )}
-      </m.div>
     );
   }
 

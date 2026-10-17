@@ -2,8 +2,8 @@ import type { Viewport } from "next";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
-import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
-import { getAllSchemas } from "@/lib/schema";
+import { RevealObserver } from "@/components/ui/RevealObserver";
+import { getSiteSchemas } from "@/lib/schema";
 import type { Locale } from "@/lib/i18n/config";
 
 export const rootViewport: Viewport = {
@@ -17,6 +17,12 @@ export const rootViewport: Viewport = {
  * Shared document shell for the English and Spanish root layouts.
  * hreflang comes from the Metadata API only — do not also emit <link rel="alternate">.
  */
+// Arms the scroll reveals before first paint (globals.css hides unrevealed
+// blocks only under .reveal-ready). If RevealObserver has not started within
+// 4s (script error, blocked chunk) the class is dropped so nothing stays hidden.
+const REVEAL_BOOT =
+  "document.documentElement.classList.add('reveal-ready');setTimeout(function(){if(!window.__ridoRevealReady)document.documentElement.classList.remove('reveal-ready')},4000)";
+
 export function RootDocument({
   lang,
   children,
@@ -24,13 +30,15 @@ export function RootDocument({
   lang: Locale;
   children: React.ReactNode;
 }) {
-  const schemas = getAllSchemas(lang);
+  // Site-wide JSON-LD only; page-specific blocks render on their own pages.
+  const schemas = getSiteSchemas();
 
   return (
-    <html lang={lang} className="dark">
+    <html lang={lang} className="dark" suppressHydrationWarning>
       {/* Font preloads and JSON-LD are not covered by the Metadata API. */}
       {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
         <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/sora-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 
@@ -56,14 +64,12 @@ export function RootDocument({
         >
           {lang === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
-        {/* LazyMotionRoot must wrap EVERY `m.` component, including the cookie
-            banner outside the scroll shell — an `m.` element with no provider
-            above it never animates and stays at its `initial` state. */}
-        <LazyMotionRoot>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-          <ConsentAwareAnalytics />
-          <ClientCookieConsent />
-        </LazyMotionRoot>
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <RevealObserver />
+        {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
+            which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
+        {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
+        <ClientCookieConsent />
       </body>
     </html>
   );

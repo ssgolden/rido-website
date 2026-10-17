@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { RidoLogo } from "@/components/ui/RidoLogo";
 import type { Locale } from "@/lib/i18n/config";
+import { withBase } from "@/lib/basePath";
 
 const copy = {
   en: {
@@ -26,6 +25,11 @@ const copy = {
   },
 } as const;
 
+/**
+ * 404 view. A server component with no client children (plain <img> and <a>
+ * instead of RidoLogo/next/image and next/link): Next loads the not-found
+ * boundary's JS on every page, so anything client-side here costs every visitor.
+ */
 export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
   const t = copy[locale];
   const homeHref = locale === "es" ? "/es" : "/";
@@ -46,11 +50,13 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
       />
       <div
         aria-hidden="true"
-        className="absolute top-1/4 -right-24 w-[320px] sm:w-[560px] h-[320px] sm:h-[560px] rounded-full bg-rido-magenta/8 blur-[100px] hero-orb hero-orb-1"
+        className="absolute top-[10%] -right-40 w-[480px] sm:w-[760px] h-[480px] sm:h-[760px] hero-orb hero-orb-1"
+        style={{ background: "radial-gradient(closest-side, rgba(222,4,152,0.08), transparent)" }}
       />
       <div
         aria-hidden="true"
-        className="absolute bottom-0 -left-24 w-[260px] sm:w-[420px] h-[260px] sm:h-[420px] rounded-full bg-rido-green/10 blur-[90px] hero-orb hero-orb-2"
+        className="absolute -bottom-24 -left-36 w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] hero-orb hero-orb-2"
+        style={{ background: "radial-gradient(closest-side, rgba(34,197,94,0.10), transparent)" }}
       />
       <div
         aria-hidden="true"
@@ -60,7 +66,8 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
 
       <div className="relative z-10 text-center max-w-xl mx-auto">
         <div className="mb-10 flex justify-center">
-          <RidoLogo variant="full" size="lg" />
+          {/* eslint-disable-next-line @next/next/no-img-element -- keeps next/image's client JS out of the 404 boundary */}
+          <img src={withBase("/images/logo/rido-logo.png")} alt="Rido" width={81} height={40} className="shrink-0" />
         </div>
 
         <p className="mb-4 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50">
@@ -74,23 +81,25 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
         <p className="mt-6 text-base sm:text-lg text-white/60 leading-relaxed">{t.body}</p>
 
         <div className="mt-10 flex justify-center">
-          <Link
+          <a
             href={homeHref}
             className="btn-ripple btn-lift inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>{t.home}</span>
-          </Link>
+          </a>
         </div>
 
         <div className="mt-14 flex items-center justify-center gap-6 text-white/30 text-sm">
-          <Link href="/privacy" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- plain link keeps next/link out of the 404 boundary */}
+          <a href="/privacy" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.privacy}
-          </Link>
+          </a>
           <span aria-hidden="true">·</span>
-          <Link href="/terms" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- plain link keeps next/link out of the 404 boundary */}
+          <a href="/terms" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.terms}
-          </Link>
+          </a>
           <span aria-hidden="true">·</span>
           <a href="mailto:info@rido.bike" className="nav-link hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer">
             {t.contact}

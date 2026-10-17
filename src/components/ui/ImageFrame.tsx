@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { m, type MotionStyle } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 /**
@@ -21,7 +20,7 @@ export function ImageFrame({
   aspect = "aspect-[4/3]",
   className,
   imageClassName,
-  imageWrapperStyle,
+  imageWrapperClassName,
   children,
 }: {
   src: string;
@@ -33,14 +32,14 @@ export function ImageFrame({
   aspect?: string;
   className?: string;
   imageClassName?: string;
-  /** Motion style for the layer holding the image (e.g. a scroll-linked `x`). */
-  imageWrapperStyle?: MotionStyle;
+  /** Classes for the layer holding the image (e.g. a CSS scroll-driven ride). */
+  imageWrapperClassName?: string;
   /** Overlays (chips, captions) positioned inside the frame. */
   children?: React.ReactNode;
 }) {
   return (
     <div className={cn("image-frame-sun relative overflow-hidden rounded-3xl ring-1 ring-black/5", aspect, className)}>
-      <m.div className="absolute inset-0" style={imageWrapperStyle}>
+      <div className={cn("absolute inset-0", imageWrapperClassName)}>
         <Image
           src={src}
           alt={alt}
@@ -51,7 +50,7 @@ export function ImageFrame({
           fetchPriority={priority ? "high" : undefined}
           className={cn(fit === "contain" ? "object-contain p-6 sm:p-10" : "object-cover", imageClassName)}
         />
-      </m.div>
+      </div>
       {children}
     </div>
   );

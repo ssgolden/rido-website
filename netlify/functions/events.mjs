@@ -6,6 +6,9 @@
  * Blobs store "events" under `YYYY-MM-DD/<random id>`: event name, placement,
  * locale and page path. No IP, user agent, cookie or other identifier is kept.
  *
+ * At most EVENTS_DAILY_LIMIT events (default 5000) are stored per day; the rest
+ * are acknowledged and dropped, so a flood cannot grow storage without bound.
+ *
  * Read the daily counts with the same admin token as the waitlist export:
  *   curl -H "Authorization: Bearer $WAITLIST_ADMIN_TOKEN" \
  *     "https://www.rido.bike/api/events?days=30"
@@ -17,6 +20,7 @@ const PLACEMENTS = new Set(["hero", "closing", "city-hero", "confirmed"]);
 const PATH_RE = /^\/[a-z0-9\-/]{0,80}$/i;
 const DETAIL_RE = /^[a-z0-9_-]{1,24}$/;
 const MAX_BODY_BYTES = 1024;
+const DEFAULT_DAILY_LIMIT = 5000;
 
 const json = (status, body) =>
   new Response(JSON.stringify(body), {
@@ -26,11 +30,37 @@ const json = (status, body) =>
 
 const day = (d) => d.toISOString().slice(0, 10);
 
+function sameSecret(a, b) {
+  if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) return false;
+  let diff = 0;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
+/** Approximate per-day counter (fine for an abuse cap). False once the limit is reached. */
+async function takeDailySlot(store, env, today) {
+  const limit = Number(env.EVENTS_DAILY_LIMIT) || DEFAULT_DAILY_LIMIT;
+  const key = `meta/${today}`;
+  const used = Number((await store.get(key, { type: "json" }))?.count) || 0;
+  if (used >= limit) return false;
+  await store.setJSON(key, { count: used + 1 });
+  return true;
+}
+
 /** Pure handler; `store` needs setJSON/get/list. Exported for tests. */
-export async function handleEvents(req, { store, env = {}, now = () => new Date(), id = () => crypto.randomUUID() }) {
+export async function handleEvents(req, deps) {
+  try {
+    return await route(req, deps);
+  } catch (err) {
+    console.error(`events_error ${err instanceof Error ? err.message : "unknown"}`);
+    return json(500, { ok: false, error: "server" });
+  }
+}
+
+async function route(req, { store, env = {}, now = () => new Date(), id = () => crypto.randomUUID() }) {
   if (req.method === "POST") {
     const raw = await req.text();
-    if (raw.length > MAX_BODY_BYTES) return json(413, { ok: false, error: "too_large" });
+    if (new TextEncoder().encode(raw).length > MAX_BODY_BYTES) return json(413, { ok: false, error: "too_large" });
     let body;
     try {
       body = JSON.parse(raw);
@@ -48,13 +78,14 @@ export async function handleEvents(req, { store, env = {}, now = () => new Date(
       locale: body.locale === "es" ? "es" : "en",
       ...(typeof body.detail === "string" && DETAIL_RE.test(body.detail) ? { detail: body.detail } : {}),
     };
-    await store.setJSON(`${day(now())}/${id()}`, entry);
+    const today = day(now());
+    if (await takeDailySlot(store, env, today)) await store.setJSON(`${today}/${id()}`, entry);
     return json(200, { ok: true });
   }
 
   if (req.method === "GET") {
     const token = env.WAITLIST_ADMIN_TOKEN;
-    if (!token || (req.headers.get("authorization") || "") !== `Bearer ${token}`) {
+    if (!token || !sameSecret(req.headers.get("authorization") || "", `Bearer ${token}`)) {
       return json(401, { ok: false, error: "unauthorized" });
     }
     const requested = Number(new URL(req.url).searchParams.get("days") || 30);

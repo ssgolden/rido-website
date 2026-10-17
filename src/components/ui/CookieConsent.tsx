@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
+import { readConsent, saveConsent, subscribeConsent } from "@/lib/consent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { m, AnimatePresence, useReducedMotion } from "framer-motion";
-import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
-const STORAGE_KEY = "rido-cookie-consent";
 
 // The banner mounts in the root layout, OUTSIDE any LocaleProvider, so it
 // derives the locale from the URL ("/es..." → Spanish) instead of context.
@@ -32,31 +30,12 @@ const copy: Record<"en" | "es", typeof en> = {
   },
 };
 
-function safeGetStorage(key: string): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem(key);
-  } catch {
-    // localStorage unavailable (private browsing, storage blocked, etc.)
-    return null;
-  }
-}
-
-function safeSetStorage(key: string, value: string): void {
-  try {
-    if (typeof window === "undefined") return;
-    localStorage.setItem(key, value);
-  } catch {
-    // Silently fail if storage is blocked
-  }
-}
-
-// Subscribe to localStorage consent state without setState-in-effect.
-// Returns true when the banner should be visible (no consent recorded yet).
+// Visible while no choice is stored. Re-evaluates when the choice changes in
+// this tab (accept, decline, or "Cookie settings" in the footer) or another.
 function useShouldShowConsent() {
   return useSyncExternalStore(
-    () => () => {},
-    () => !safeGetStorage(STORAGE_KEY), // client
+    subscribeConsent,
+    () => readConsent() === "unset", // client
     () => false // SSR — don't show banner during hydration
   );
 }
@@ -64,35 +43,21 @@ function useShouldShowConsent() {
 export function CookieConsent() {
   const pathname = usePathname() ?? "/";
   const t = pathname === "/es" || pathname.startsWith("/es/") ? copy.es : copy.en;
-  const shouldShow = useShouldShowConsent();
-  const [dismissed, setDismissed] = useState(false);
-  const visible = shouldShow && !dismissed;
-  const reduce = useReducedMotion();
+  const visible = useShouldShowConsent();
 
-  const handleAccept = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: true, timestamp: Date.now() }));
-    setDismissed(true);
-  };
-
-  const handleDecline = () => {
-    safeSetStorage(STORAGE_KEY, JSON.stringify({ accepted: false, timestamp: Date.now() }));
-    setDismissed(true);
-  };
+  const handleAccept = () => saveConsent(true);
+  const handleDecline = () => saveConsent(false);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <m.div
-          initial={reduce ? false : { y: REVEAL.y, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={reduce ? { opacity: 0 } : { y: REVEAL.y, opacity: 0 }}
-          transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
+    visible && (
+        <div
+          className="enter-up fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
           role="dialog"
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
         >
-          <div className="max-w-4xl mx-auto glass-strong rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
+          {/* Solid on phones: a full-width blur over the scrolling page is re-rendered every frame. */}
+          <div className="max-w-4xl mx-auto glass-strong max-sm:bg-rido-navy/95 max-sm:backdrop-blur-none rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
             <div className="flex items-start gap-4">
               {/* Icon is decorative; dropped on phones so the card stays compact and the hero CTAs stay visible. */}
               <div className="hidden sm:flex w-10 h-10 rounded-xl bg-rido-magenta/10 items-center justify-center shrink-0" aria-hidden="true">
@@ -102,7 +67,7 @@ export function CookieConsent() {
                 <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
                 <p className="text-sm text-muted-strong leading-relaxed">
                   {t.body}{" "}
-                  <Link href="/politica-cookies" className="text-white underline hover:text-rido-magenta-light transition-colors">
+                  <Link href="/politica-cookies" prefetch={false} className="text-white underline cursor-pointer hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
                   </Link>
                 </p>
@@ -120,8 +85,7 @@ export function CookieConsent() {
               </button>
             </div>
           </div>
-        </m.div>
-      )}
-    </AnimatePresence>
+        </div>
+    )
   );
 }

@@ -1,37 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useScrollRootNode } from "@/components/ui/SmoothScrollProvider";
+import { useRef } from "react";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
 
+/**
+ * Thin reading-progress bar at the top of the page. scaleX is written straight
+ * to the element once per frame while scrolling: no React re-render.
+ * Decorative, so hidden from assistive tech.
+ */
 export function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
-  const root = useScrollRootNode();
-
-  useEffect(() => {
-    const target: HTMLElement | Window = root ?? window;
-    const handleScroll = () => {
-      const scrollTop = root ? root.scrollTop : window.scrollY;
-      const scrollHeight = root ? root.scrollHeight : document.documentElement.scrollHeight;
-      const clientHeight = root ? root.clientHeight : window.innerHeight;
-      const docHeight = scrollHeight - clientHeight;
-      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      setProgress(scrollPercent);
-    };
-
-    handleScroll();
-    target.addEventListener("scroll", handleScroll, { passive: true });
-    return () => target.removeEventListener("scroll", handleScroll);
-  }, [root]);
-
-  return (
-    <div
-      className="scroll-progress"
-      style={{ width: progress + '%' }}
-      role="progressbar"
-      aria-valuenow={Math.round(progress)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label="Page scroll progress"
-    />
-  );
+  const ref = useRef<HTMLDivElement>(null);
+  useScrollFrame((root) => {
+    const max = root.scrollHeight - root.clientHeight;
+    if (ref.current) ref.current.style.transform = `scaleX(${max > 0 ? Math.min(1, root.scrollTop / max) : 0})`;
+  });
+  return <div ref={ref} className="scroll-progress" style={{ transform: "scaleX(0)" }} aria-hidden="true" />;
 }

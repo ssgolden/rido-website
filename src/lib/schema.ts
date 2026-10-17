@@ -352,17 +352,24 @@ export const sustainabilitySchema = {
 };
 
 /**
- * Returns all JSON-LD scripts as an array of objects for rendering in <head>.
- * FAQ copy follows the page locale. No JobPosting (no open roles), no
- * SearchAction (the site has no /?q= search), no SoftwareApplication (no app yet).
+ * JSON-LD that describes the whole site: rendered on every page by the root
+ * layout (RootDocument). Kept small, because each block is also serialised
+ * into the page's RSC payload.
  */
-export function getAllSchemas(locale: Locale = "en") {
+export function getSiteSchemas() {
+  return [organizationSchema, brandSchema, websiteSchema, localBusinessSchema];
+}
+
+/**
+ * JSON-LD for the homepage only (EN at /, ES at /es): its FAQ, how-to,
+ * products and services describe content visible on that page, as Google's
+ * structured-data guidelines require. Town pages emit their own Service and
+ * FAQPage. No JobPosting (no open roles), no SearchAction (no site search),
+ * no SoftwareApplication (no app yet).
+ */
+export function getHomeSchemas(locale: Locale = "en") {
   return [
-    organizationSchema,
-    brandSchema,
-    websiteSchema,
     webPageSchema,
-    localBusinessSchema,
     howToSchema,
     breadcrumbSchema,
     speakableSchema,

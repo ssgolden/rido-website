@@ -45,11 +45,11 @@ export const metadata: Metadata = {
     alternateLocale: [OG_LOCALE_ES],
     images: [
       {
-        url: "/images/og/rido-og.png",
+        url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
         alt: "Rido — Shared e-scooters and e-bikes, launching soon in Torrevieja",
-        type: "image/png",
+        type: "image/jpeg",
       },
     ],
   },
@@ -57,15 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
     description: "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride. Zero emissions, zero hassle.",
-    images: ["/images/og/rido-og.png"],
-  },
-  alternates: {
-    canonical: SITE_ORIGIN,
-    languages: {
-      en: SITE_ORIGIN,
-      es: `${SITE_ORIGIN}/es`,
-      "x-default": SITE_ORIGIN,
-    },
+    images: ["/images/og/rido-og.jpg"],
   },
   other: primaryCity
     ? {

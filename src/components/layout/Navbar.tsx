@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
 import { Menu, X, Download } from "lucide-react";
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
-import { DURATION, EASE } from "@/lib/motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
@@ -71,7 +69,6 @@ function useScrolledPast(threshold: number, root: HTMLElement | null) {
 export function Navbar() {
   const locale = useLocale();
   const t = copy[locale];
-  const reduce = useReducedMotion();
   const navLinks = t.navLinks;
   const scrollRoot = useScrollRootNode();
   const scrollTo = useScrollTo();
@@ -99,6 +96,20 @@ export function Navbar() {
     const el = document.getElementById("page-scroll") ?? document.body;
     el.style.overflow = mobileOpen ? "hidden" : "";
     return () => { el.style.overflow = ""; };
+  }, [mobileOpen]);
+
+  // The menu panel is md:hidden. If the viewport grows past md while it is
+  // open (rotation, resize), close it, or the scroll lock above would leave the
+  // page unscrollable with no visible way to undo it.
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    const onChange = () => {
+      if (mq.matches) setMobileOpen(false);
+    };
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
   }, [mobileOpen]);
 
   // Escape closes menu and returns focus to the hamburger
@@ -164,15 +175,10 @@ export function Navbar() {
           </button>
         </div>
       </div>
-      <AnimatePresence>
-        {mobileOpen && (
-          <m.div
+      {mobileOpen && (
+          <div
             ref={panelRef}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={reduce ? { duration: 0 } : { duration: DURATION.micro, ease: EASE }}
-            className="md:hidden overflow-hidden max-h-[calc(100dvh-5rem)] overflow-y-auto"
+            className="enter-down md:hidden overflow-hidden max-h-[calc(100dvh-5rem)] overflow-y-auto"
             data-lenis-prevent=""
           >
             <div className="mt-3 pb-3 border-t border-white/10">
@@ -181,9 +187,8 @@ export function Navbar() {
               ))}
               <div className="mt-3"><Button as="a" href={hrefFor("#download")} onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
             </div>
-          </m.div>
+          </div>
         )}
-      </AnimatePresence>
     </nav>
   );
 }

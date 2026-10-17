@@ -4,9 +4,11 @@ import { Mail, MapPin } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { primaryCity } from "@/data/cities";
+import { CookieSettingsButton } from "@/components/ui/CookieSettingsButton";
 
 type FooterLink = { label: string; href: string };
-type FooterColumn = { heading: string; links: FooterLink[] };
+/** `cookieSettings` adds the "Cookie settings" control after the links. */
+type FooterColumn = { heading: string; links: FooterLink[]; cookieSettings?: boolean };
 
 // The Footer is a server component, so it receives the locale as a prop
 // (default "en") instead of reading context. Section links are written
@@ -38,6 +40,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
       },
       {
         heading: "Legal",
+        cookieSettings: true,
         links: [
           { label: "Política de privacidad", href: "/privacy" },
           { label: "Términos del servicio", href: "/terms" },
@@ -67,6 +70,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
     },
     {
       heading: "Legal",
+      cookieSettings: true,
       links: [
         { label: "Privacy Policy", href: "/privacy" },
         { label: "Terms of Service", href: "/terms" },
@@ -83,6 +87,7 @@ const copy = {
     emailAria: "Email Rido",
     rights: "All rights reserved.",
     addressLabel: "Registered office",
+    cookieSettings: "Cookie settings",
   },
   es: {
     tagline: "Patinetes y bicis eléctricas compartidas para la Costa Blanca y la Costa del Sol. Creado y gestionado por un equipo local.",
@@ -90,6 +95,7 @@ const copy = {
     emailAria: "Escribir a Rido",
     rights: "Todos los derechos reservados.",
     addressLabel: "Domicilio social",
+    cookieSettings: "Configurar cookies",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
@@ -145,6 +151,11 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
                     )}
                   </li>
                 ))}
+                {column.cookieSettings ? (
+                  <li>
+                    <CookieSettingsButton label={t.cookieSettings} className={linkClass} />
+                  </li>
+                ) : null}
               </ul>
             </nav>
           ))}

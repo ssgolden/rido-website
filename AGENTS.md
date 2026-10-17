@@ -9,26 +9,31 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Tech Stack
 - Next.js 16 (App Router) with TypeScript
 - Tailwind CSS 4 (uses `@theme` CSS blocks, NOT tailwind.config.ts)
-- Framer Motion for animations
+- Animations are CSS only (no animation library): keyframes and transitions in `globals.css`, scroll-driven effects via `animation-timeline`, and `useScrollFrame()` from `@/hooks/useScrollFrame` where an effect must read scroll position
 - Lucide React for icons (NO emoji icons)
 - Brand color: `#DE0498` (magenta), NOT coral/orange
 - Dark mode only (background: `#0F172A`)
 
 ## Key Patterns
-- Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`
+- Scroll animations: Use `ScrollReveal` and `StaggerReveal`/`StaggerItem` from `@/components/ui/`. They are CSS-only and work in server components: one `RevealObserver` (mounted in `RootDocument`) sets `data-shown`; globals.css hides unrevealed blocks only under `html.reveal-ready` (set by an inline head script, dropped after 4s if the observer never starts) and never under reduced motion. Don't put `transition-*` utilities on a reveal wrapper (they replace the reveal transition).
+- Sections without state (Safety, Launch, DownloadCTA, Partners) are server components taking a `locale` prop — keep them free of hooks; put interactivity in client islands (WaitlistForm, CoverageMap).
+- One language per page: homepage client sections (Hero, HowItWorks, Vehicles, FAQ) take their copy as props from a sibling `*.copy.ts` module (e.g. `Hero.copy.ts`), which only server pages import. Client components import its types only. Copy must be serialisable: no functions or icon components — use `{placeholder}` strings and index-keyed icon lists.
+- `cn()` is plain clsx (no tailwind-merge): conflicting utilities are not merged. Override defaults with `!` or have the component skip its default when the caller passes one (see `Section`, `WaitlistForm`).
 - Legal pages: Use `LegalPage` layout from `@/components/layout/LegalPage`
 - All sections need `id` and `aria-label` attributes
 - All interactive elements need `cursor-pointer` class
-- Use `useReducedMotion()` from framer-motion for animations that loop
+- Every animation sits under `@media (prefers-reduced-motion: no-preference)` (or `motion-safe:`). Use `usePrefersReducedMotion()` from `@/hooks/usePrefersReducedMotion` only where behaviour, not styling, changes; it is `null` until hydration, so markup never branches on it
+- Show/hide UI with the `.pop` class + `data-open`; mount entrances with `.enter-up` / `.enter-down` / `.enter-fade`
+- FAQ items are native `<details name="faq">` (exclusive accordion, find-in-page works)
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
-- Fonts are self-hosted via `@fontsource-variable` packages imported in layout.tsx — zero external font requests (still not next/font — Turbopack bug on Windows)
+- Fonts are self-hosted from `public/fonts` (variable Inter and Sora woff2, originally from `@fontsource-variable`), declared in `globals.css` and preloaded in `RootDocument.tsx` — zero external font requests (still not next/font — Turbopack bug on Windows)
 - Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`
 - `suppressHydrationWarning` on `<body>` tag (Grammarly extension)
 - Viewport: Use `min-h-dvh` instead of `min-h-screen` for hero/fullscreen sections (mobile browser chrome issue)
 - Mobile padding: `py-16 sm:py-24 px-4 sm:px-6` for sections, not `py-24 px-6`
 - Mobile headings: `text-3xl sm:text-4xl md:text-5xl` not `text-4xl md:text-5xl`
 - Body has `viewport-fit: cover` (layout.tsx Viewport export) for notched phones
-- Hero has NO photo layer: gradient + orbs + noise only. `public/images/lifestyle/rido-rider-street*.jpg` are the wordmark on white, not photos — never fade them over navy. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
+- Hero has NO photo layer: gradient + orbs + noise only, as static layers (no filters, blend modes or animated backgrounds; orbs are radial gradients drifting by transform). The old `images/lifestyle/` files were the wordmark on white, not photos, and have been deleted. Add a real lifestyle photo only once `docs/ASSET-BRIEF.md` deliverable B exists.
 - App screenshot images removed from HowItWorks and DownloadCTA sections
 - Static export: `NEXT_OUTPUT=export CUSTOM_DOMAIN=true` (no basePath — deploy.yml and Netlify both build this way). Only a bare `NEXT_OUTPUT=export` without `CUSTOM_DOMAIN` uses `basePath: "/rido-website"` (GitHub Pages project URL)
 - Use `withBase()` from `@/lib/basePath` for non-Link asset paths (images, favicons, manifest)
@@ -47,7 +52,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Launch Geography
 - Torrevieja (Costa Blanca) is the first, announced launch town. Five Costa del Sol towns are planned but unannounced.
-- `src/data/cities.ts` has a per-town `announced` flag. Public surfaces read `announcedCities` / `regionsWithUnannouncedTowns`, never `cities`, so unannounced town names never leak. Flip a town's flag on its announcement day, then hand-edit `public/llms*.txt`.
+- `src/data/cities.ts` ships to every browser, so it holds announced towns only (`announcedCities`) plus a per-region count (`plannedTowns`). Unannounced towns live in `src/data/cities.planned.ts`, which nothing may import; `scripts/check-town-leak.mjs` (CI) fails if their names reach the export. On announcement day move the town from the planned file into `announcedCities`, lower its `plannedTowns` count, then hand-edit `public/llms*.txt`.
 
 ## File Conventions
 - Sections in `src/components/sections/`

@@ -1,8 +1,13 @@
-# Netlify headers — mirrors next.config.ts headers() so they apply
-# in `output: "export"` mode (where Next.js headers are silently dropped).
+# Netlify response headers for the static export (www.rido.bike).
+# GitHub Pages ignores this file; the optional Vercel host does not read it.
 #
 # Syntax: https://docs.netlify.com/routing/headers/
-# Source of truth for the rules: src/next.config.ts (keep in sync).
+#
+# Caching: everything under /_next/static has a content hash in its name, so
+# it is cached for a year and never revalidated. Fonts and images keep stable
+# names, so they get shorter lifetimes (rename a font file if you change it).
+# HTML and RSC payloads keep Netlify's default (always revalidated), which is
+# what makes each deploy visible immediately.
 #
 # CSP notes for the coverage map (MapLibre GL + OpenFreeMap, keyless):
 # - connect-src https://tiles.openfreemap.org — style JSON, glyph PBFs,
@@ -12,12 +17,23 @@
 # - worker-src 'self' blob: — MapLibre spawns its tile worker from a blob
 #   URL; without this the default-src 'self' fallback blocks it.
 # - style-src is NOT needed: the map "style" is JSON over fetch, not CSS.
+# - No 'unsafe-eval': neither production Next.js nor MapLibre 5 evaluates
+#   strings. If the map ever falls back to the static SVG on the live site,
+#   check the browser console for a CSP report first.
 
 /*
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
-  X-XSS-Protection: 1; mode=block
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(self)
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https: https://tiles.openfreemap.org; connect-src 'self' https://vitals.vercel-insights.com https://tiles.openfreemap.org; worker-src 'self' blob:; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https: https://tiles.openfreemap.org; connect-src 'self' https://tiles.openfreemap.org; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=2592000
+
+/images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

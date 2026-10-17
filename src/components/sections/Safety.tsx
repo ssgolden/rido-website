@@ -1,11 +1,8 @@
-"use client";
-
 import { Shield, HardHat, WineOff, User, Check, Leaf } from "lucide-react";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { StaggerReveal, StaggerItem } from "@/components/ui/StaggerReveal";
-import { useLocale } from "@/lib/i18n/locale-context";
 import { STAGGER } from "@/lib/motion";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -80,8 +77,7 @@ const copy = {
   },
 } as const satisfies Record<Locale, SafetyCopy>;
 
-export function Safety() {
-  const locale = useLocale();
+export function Safety({ locale }: { locale: Locale }) {
   const t = copy[locale];
 
   return (

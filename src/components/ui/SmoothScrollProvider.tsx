@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import Lenis from "lenis";
+import type Lenis from "lenis";
 
 /** How long to keep waiting for a lazily-mounted hash target (next/dynamic sections). */
 const HASH_RESOLVE_TIMEOUT_MS = 5000;
@@ -9,7 +9,7 @@ const HASH_RESOLVE_TIMEOUT_MS = 5000;
 type ScrollRootContextValue = {
   /** Element that actually scrolls on marketing pages. Null when the window scrolls. */
   rootNode: HTMLElement | null;
-  /** Stable ref mirroring `rootNode`, safe to pass to Framer `useScroll({ container })`. */
+  /** Stable ref mirroring `rootNode`, for callbacks that must not re-subscribe. */
   scrollRef: React.RefObject<HTMLElement | null>;
   attachRef: (node: HTMLElement | null) => void;
   /** Full-viewport layer behind the header. Hero paints its backdrop here. */
@@ -28,12 +28,6 @@ export function useScrollRootRegistration() {
   const ctx = useContext(ScrollRootContext);
   if (!ctx) throw new Error("useScrollRootRegistration must be used within SmoothScrollProvider");
   return { attachRef: ctx.attachRef, setBackdropEl: ctx.setBackdropEl };
-}
-
-export function useScrollContainerRef() {
-  const ctx = useContext(ScrollRootContext);
-  if (!ctx) throw new Error("useScrollContainerRef must be used within SmoothScrollProvider");
-  return ctx.scrollRef;
 }
 
 export function useHeroBackdropEl() {
@@ -103,15 +97,30 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     const coarsePointerMq = window.matchMedia("(pointer: coarse)");
 
     let lenis: Lenis | null = null;
+    let LenisCtor: typeof Lenis | null = null;
+    let contentObserver: ResizeObserver | null = null;
+    let disposed = false;
+    let lenisRafId = 0;
 
     const shouldEnable = () =>
       !reducedMotionMq.matches && !coarsePointerMq.matches;
 
-    const start = () => {
+    // Lenis is loaded on demand: it never runs on touch devices or with
+    // reduced motion, so those visitors never download it.
+    const start = async () => {
       if (lenis) return;
+      if (!LenisCtor) {
+        try {
+          LenisCtor = (await import("lenis")).default;
+        } catch {
+          return; // native scrolling keeps working
+        }
+      }
+      if (disposed || lenis || !shouldEnable()) return;
       const root = scrollRef.current;
-      lenis = new Lenis({
-        autoRaf: true,
+      lenis = new LenisCtor({
+        // Frames are driven on demand below, not by a loop that runs forever.
+        autoRaf: false,
         lerp: 0.1,
         wheelMultiplier: 1,
         anchors: true,
@@ -122,16 +131,48 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
           : {}),
       });
       lenisRef.current = lenis;
+
+      // On-demand frame loop: runs while a smooth scroll is animating, then
+      // stops, so an idle page does no per-frame work. Started by wheel/touch
+      // input (virtual-scroll) and by any scrollTo (ours, or Lenis's own
+      // anchor handling, which calls this.scrollTo).
+      const instance = lenis;
+      const loop = (time: number) => {
+        instance.raf(time);
+        lenisRafId = instance.isScrolling === "smooth" ? requestAnimationFrame(loop) : 0;
+      };
+      const kick = () => {
+        if (!lenisRafId) lenisRafId = requestAnimationFrame(loop);
+      };
+      instance.on("virtual-scroll", kick);
+      const scrollTo = instance.scrollTo.bind(instance);
+      instance.scrollTo = ((...args: Parameters<Lenis["scrollTo"]>) => {
+        scrollTo(...args);
+        kick();
+      }) as Lenis["scrollTo"];
+
+      // Lenis watches the wrapper, which here is also the fixed-height scroll
+      // lane, so it never notices the page growing (FAQ answers opening, "Show
+      // all", the map arriving) and stops short of the bottom. Watch the lane's
+      // children and re-measure.
+      if (root && typeof ResizeObserver !== "undefined") {
+        contentObserver = new ResizeObserver(() => instance.resize());
+        for (const child of Array.from(root.children)) contentObserver.observe(child);
+      }
     };
 
     const stop = () => {
+      cancelAnimationFrame(lenisRafId);
+      lenisRafId = 0;
+      contentObserver?.disconnect();
+      contentObserver = null;
       lenis?.destroy();
       lenis = null;
       lenisRef.current = null;
     };
 
     const sync = () => {
-      if (shouldEnable()) start();
+      if (shouldEnable()) void start();
       else stop();
     };
 
@@ -169,6 +210,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
     }
 
     return () => {
+      disposed = true;
       cancelAnimationFrame(rafId);
       reducedMotionMq.removeEventListener("change", sync);
       coarsePointerMq.removeEventListener("change", sync);

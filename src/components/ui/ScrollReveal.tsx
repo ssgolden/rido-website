@@ -1,8 +1,5 @@
-"use client";
-
-import { m, useInView, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
-import { DURATION, EASE, REVEAL, SCROLL_MARGIN } from "@/lib/motion";
+import type { CSSProperties } from "react";
+import { DURATION } from "@/lib/motion";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -10,42 +7,23 @@ interface ScrollRevealProps {
   delay?: number;
   direction?: "up" | "down" | "left" | "right" | "none";
   duration?: number;
-  once?: boolean;
 }
 
-export function ScrollReveal({
-  children,
-  className,
-  delay = 0,
-  direction = "up",
-  duration = DURATION.entrance,
-  once = true,
-}: ScrollRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once, margin: SCROLL_MARGIN });
-  const reduce = useReducedMotion();
-
-  const directionOffset = {
-    up: { y: REVEAL.y },
-    down: { y: -REVEAL.y },
-    left: { x: REVEAL.x },
-    right: { x: -REVEAL.x },
-    none: {},
-  };
-
-  // Same element and start state on server and client (useReducedMotion() is
-  // null during SSR), so hydration always matches. Reduced motion shows the
-  // content immediately with a zero-length transition — nothing moves.
-  const shown = isInView || Boolean(reduce);
+/**
+ * Fades and slides its content in when it scrolls into view.
+ *
+ * Pure markup plus CSS (globals.css [data-reveal]): no client JavaScript of
+ * its own, so it works inside server components. One shared observer
+ * (RevealObserver, mounted in RootDocument) sets `data-shown` when the block
+ * enters the viewport. Content is only hidden once that observer is ready
+ * (the `reveal-ready` class), so it stays visible without JavaScript, and
+ * reduced motion shows everything immediately.
+ */
+export function ScrollReveal({ children, className, delay = 0, direction = "up", duration = DURATION.entrance }: ScrollRevealProps) {
+  const style = { "--reveal-delay": `${delay}s`, "--reveal-duration": `${duration}s` } as CSSProperties;
   return (
-    <m.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, ...directionOffset[direction] }}
-      animate={shown ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...directionOffset[direction] }}
-      transition={reduce ? { duration: 0 } : { duration, delay, ease: EASE }}
-    >
+    <div data-reveal={direction} className={className} style={style}>
       {children}
-    </m.div>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import Link from "next/link";
+import { DownloadCTA } from "@/components/sections/DownloadCTA";
 import { ArrowRight, Bike, ChevronDown, HardHat, Mail, MapPin, Zap } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { SiteShell } from "@/components/layout/SiteShell";
@@ -18,7 +19,6 @@ import type { Locale } from "@/lib/i18n/config";
 import { announcedCities, type City } from "@/data/cities";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
 
-const DownloadCTA = dynamic(() => import("@/components/sections/DownloadCTA").then((m) => ({ default: m.DownloadCTA })));
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })));
 
 const baseUrl = SITE_ORIGIN;
@@ -158,11 +158,11 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       alternateLocale: locale === "es" ? [OG_LOCALE_EN] : [OG_LOCALE_ES],
       images: [
         {
-          url: "/images/og/rido-og.png",
+          url: "/images/og/rido-og.jpg",
           width: 1200,
           height: 630,
           alt: title,
-          type: "image/png",
+          type: "image/jpeg",
         },
       ],
     },
@@ -170,7 +170,7 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
       card: "summary_large_image",
       title,
       description,
-      images: ["/images/og/rido-og.png"],
+      images: ["/images/og/rido-og.jpg"],
     },
     other: {
       "geo.position": `${city.lat};${city.lng}`,
@@ -334,9 +334,13 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           aria-label={t.heroAria(city)}
           className="relative overflow-hidden pt-8 sm:pt-16 pb-16 sm:pb-24 px-4 sm:px-6"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15 hero-gradient" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15" aria-hidden="true" />
           <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" aria-hidden="true" />
-          <div className="absolute top-1/4 -right-24 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] rounded-full bg-rido-magenta/10 blur-[100px]" aria-hidden="true" />
+          <div
+            className="absolute top-[10%] -right-40 w-[500px] h-[500px] sm:w-[700px] sm:h-[700px]"
+            style={{ background: "radial-gradient(closest-side, rgba(222,4,152,0.10), transparent)" }}
+            aria-hidden="true"
+          />
 
           <div className="relative max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
             <div className="text-center lg:text-left">
@@ -464,7 +468,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           </ScrollReveal>
         </Section>
 
-        <DownloadCTA sharePath={cityPath} />
+        <DownloadCTA locale={locale} sharePath={cityPath} />
       </main>
       <Footer locale={locale} />
       <BackToTop />

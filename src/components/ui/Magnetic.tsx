@@ -1,24 +1,20 @@
 "use client";
 
-import { m, useMotionValue, useReducedMotion, useSpring } from "framer-motion";
-import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
 
 /**
  * Magnetic — wraps a primary CTA so it subtly attracts toward the cursor.
  *
  * - Active ONLY on `(pointer: fine)` devices (mouse/trackpad) — never touch.
- * - Disabled under prefers-reduced-motion: the wrapper still renders (so server
- *   and client HTML match — useReducedMotion() is null during SSR) but no
- *   pointer handlers are attached, so nothing ever moves.
- * - Transform-only (translate), so there is zero layout shift.
- * - Gentle spring pulls toward the pointer (max ±8px) and settles back on leave.
+ * - Off under prefers-reduced-motion (checked at pointer time, so server and
+ *   client HTML always match).
+ * - Transform-only (translate) written straight to the element, eased by a CSS
+ *   transition: zero layout shift and no React re-render per pointer move.
  * - Purely presentational wrapper: the child keeps all of its own semantics,
  *   focus behavior, and event handlers.
  */
 
 const MAX_PULL_PX = 8;
-// Critically-damped spring — settles without overshoot wobble.
-const SPRING = { stiffness: 260, damping: 24, mass: 0.1 };
 
 interface MagneticProps {
   children: ReactNode;
@@ -27,47 +23,42 @@ interface MagneticProps {
 }
 
 export function Magnetic({ children, className = "inline-block" }: MagneticProps) {
-  const reduceMotion = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
-  const [finePointer, setFinePointer] = useState(false);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const springX = useSpring(x, SPRING);
-  const springY = useSpring(y, SPRING);
+  const enabled = useRef(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(pointer: fine)");
-    const update = () => setFinePointer(mq.matches);
+    const mq = window.matchMedia("(pointer: fine) and (prefers-reduced-motion: no-preference)");
+    const update = () => {
+      enabled.current = mq.matches;
+    };
     update();
     mq.addEventListener("change", update);
     return () => mq.removeEventListener("change", update);
   }, []);
 
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (reduceMotion || !finePointer || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
+    const el = ref.current;
+    if (!enabled.current || !el) return;
+    const rect = el.getBoundingClientRect();
     const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
     const relY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
-    x.set(Math.max(-1, Math.min(1, relX)) * MAX_PULL_PX);
-    y.set(Math.max(-1, Math.min(1, relY)) * MAX_PULL_PX);
+    const clamp = (v: number) => Math.max(-1, Math.min(1, v)) * MAX_PULL_PX;
+    el.style.translate = `${clamp(relX)}px ${clamp(relY)}px`;
   };
 
   const settle = () => {
-    x.set(0);
-    y.set(0);
+    if (ref.current) ref.current.style.translate = "";
   };
 
   return (
-    <m.div
+    <div
       ref={ref}
-      className={className}
-      style={{ x: springX, y: springY }}
+      className={`${className} transition-[translate] duration-200 ease-out`}
       onPointerMove={handlePointerMove}
       onPointerLeave={settle}
       onPointerCancel={settle}
     >
       {children}
-    </m.div>
+    </div>
   );
 }

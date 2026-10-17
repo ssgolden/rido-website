@@ -1,3 +1,5 @@
+import { readConsent } from "@/lib/consent";
+
 /**
  * Consent-gated conversion events.
  *
@@ -22,16 +24,10 @@ export type AnalyticsEvent =
 /** Where on the page the form or button sits, so placements can be compared. */
 export type Placement = "hero" | "closing" | "city-hero" | "confirmed";
 
-const CONSENT_KEY = "rido-cookie-consent";
 const EVENTS_URL = "/api/events";
 
 export function hasAnalyticsConsent(): boolean {
-  try {
-    const raw = localStorage.getItem(CONSENT_KEY);
-    return raw ? JSON.parse(raw).accepted === true : false;
-  } catch {
-    return false;
-  }
+  return readConsent() === "accepted";
 }
 
 export function track(event: AnalyticsEvent, props: { placement: Placement; locale: string; detail?: string }): void {

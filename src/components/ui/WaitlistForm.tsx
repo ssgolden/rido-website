@@ -2,22 +2,24 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Mail, Loader2, ArrowRight, MailCheck } from "lucide-react";
-import { m, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { DURATION, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { track, type Placement } from "@/lib/analytics";
+import { hasAnalyticsConsent, track, type Placement } from "@/lib/analytics";
+import { subscribeConsent } from "@/lib/consent";
 import { ShareInvite } from "@/components/ui/ShareInvite";
+import { isValidEmail } from "@/lib/email";
 
 const copy = {
   en: {
     emailPlaceholder: "your@email.com",
     emailLabel: "Email address for the Rido waitlist",
     submit: "Join the waitlist",
+    sending: "Sending…",
     errorInvalid: "Please enter a valid email address.",
     errorGenericBefore: "We couldn't save your email just now. Write to ",
     errorGenericAfter: " and we'll add you by hand.",
+    errorBusy: "We're getting a lot of sign-ups right now. Please try again in a few minutes.",
     successTitle: "You're on the list!",
     successBody: "We'll email you the moment Rido launches near you.",
     pendingTitle: "Check your inbox",
@@ -27,9 +29,11 @@ const copy = {
     emailPlaceholder: "tu@email.com",
     emailLabel: "Correo electrónico para la lista de espera de Rido",
     submit: "Unirme a la lista",
+    sending: "Enviando…",
     errorInvalid: "Introduce una dirección de correo electrónico válida.",
     errorGenericBefore: "No hemos podido guardar tu correo ahora mismo. Escríbenos a ",
     errorGenericAfter: " y te apuntamos a mano.",
+    errorBusy: "Estamos recibiendo muchas inscripciones ahora mismo. Inténtalo de nuevo en unos minutos.",
     successTitle: "¡Ya estás en la lista!",
     successBody: "Te escribiremos en cuanto Rido llegue a tu zona.",
     pendingTitle: "Revisa tu correo",
@@ -37,7 +41,6 @@ const copy = {
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
-const WAITLIST_KEY = "rido-waitlist-email";
 // Apps Script URL when configured; otherwise /api/waitlist (Netlify Function on
 // the static site, Next route on Vercel). Success is shown only after a backend
 // accepts the sign-up — never on a local-only save.
@@ -64,36 +67,52 @@ export function WaitlistForm({
 }) {
   const locale = useLocale();
   const t = copy[locale];
-  const reduce = useReducedMotion();
   const inputId = useId();
   const errorId = `${inputId}-error`;
   const formRef = useRef<HTMLFormElement>(null);
+  const honeypotRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLParagraphElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [pending, setPending] = useState(false);
-  const [errorKey, setErrorKey] = useState<"invalid" | "generic" | null>(null);
+  const [errorKey, setErrorKey] = useState<"invalid" | "busy" | "generic" | null>(null);
 
-  // One "view" per form per page load, once at least half of it is on screen.
+  // One "view" per form per page load, once at least half of it has been on
+  // screen AND the visitor has accepted analytics. The hero form is seen before
+  // anyone can answer the banner, so a view seen first is sent on acceptance.
   useEffect(() => {
     const el = formRef.current;
     if (!el || typeof IntersectionObserver === "undefined") return;
+    let seen = false;
+    let sent = false;
+    const send = () => {
+      if (sent || !seen || !hasAnalyticsConsent()) return;
+      sent = true;
+      track("waitlist_view", { placement, locale });
+      io.disconnect();
+      unsubscribe();
+    };
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          track("waitlist_view", { placement, locale });
-          io.disconnect();
+          seen = true;
+          send();
         }
       },
       { threshold: 0.5 }
     );
     io.observe(el);
-    return () => io.disconnect();
+    const unsubscribe = subscribeConsent(send);
+    return () => {
+      io.disconnect();
+      unsubscribe();
+    };
   }, [placement, locale]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     track("waitlist_submit", { placement, locale });
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!isValidEmail(email)) {
       setStatus("error");
       setErrorKey("invalid");
       track("waitlist_error", { placement, locale, detail: "invalid" });
@@ -106,19 +125,15 @@ export function WaitlistForm({
         method: "POST",
         // Apps Script needs text/plain to avoid a CORS preflight; the API parses JSON.
         headers: { "Content-Type": WAITLIST_URL ? "text/plain;charset=utf-8" : "application/json" },
-        body: JSON.stringify({ email, locale, userAgent: navigator.userAgent }),
+        body: JSON.stringify({ email, locale, company: honeypotRef.current?.value ?? "" }),
       });
-      if (!res.ok) throw new Error(`waitlist HTTP ${res.status}`);
       const json = await res.json().catch(() => ({}));
-      if (json.ok === false) throw new Error(json.error || "waitlist rejected");
-      try {
-        const existing: string[] = JSON.parse(localStorage.getItem(WAITLIST_KEY) || "[]");
-        if (!existing.includes(email)) {
-          existing.push(email);
-          localStorage.setItem(WAITLIST_KEY, JSON.stringify(existing));
-        }
-      } catch {
-        // Storage blocked — the backend already has the sign-up.
+      if (!res.ok || json.ok === false) {
+        const reason = json.error === "invalid_email" ? "invalid" : json.error === "busy" ? "busy" : "generic";
+        setStatus("error");
+        setErrorKey(reason);
+        track("waitlist_error", { placement, locale, detail: reason });
+        return;
       }
       setPending(json.pending === true);
       setStatus("success");
@@ -130,34 +145,58 @@ export function WaitlistForm({
     }
   };
 
+  // After a successful submit the form is replaced by the result: move focus
+  // there so keyboard and screen-reader users are not dropped to <body>.
+  useEffect(() => {
+    if (status === "success") resultRef.current?.focus();
+  }, [status]);
+
+  // Always rendered, first, in both branches so the node persists and screen
+  // readers announce the result (a live region mounted already filled is
+  // often not announced).
+  const liveRegion = (
+    <p className="sr-only" role="status" aria-live="polite">
+      {status === "success" ? `${pending ? t.pendingTitle : t.successTitle}. ${pending ? t.pendingBody : t.successBody}` : ""}
+    </p>
+  );
+
   if (status === "success") {
     return (
-      <m.div
-        initial={reduce ? false : { opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-        className={cn("glass rounded-2xl p-5 max-w-md", align === "center" ? "mx-auto text-center" : "", className)}
+      <>
+      {liveRegion}
+      <div
+        className={cn("enter-up glass rounded-2xl p-5", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto text-center" : "", className)}
       >
-        <div role="status" aria-live="polite">
-          <p className="font-bold text-white">
+        <div>
+          <p ref={resultRef} tabIndex={-1} className="font-bold text-white focus:outline-none">
             {pending ? <MailCheck className="mr-2 inline-block w-5 h-5 align-[-0.25em] text-rido-magenta-light" aria-hidden="true" /> : null}
             {pending ? t.pendingTitle : t.successTitle}
           </p>
           <p className="mt-1 text-sm text-muted">{pending ? t.pendingBody : t.successBody}</p>
         </div>
         <ShareInvite placement={placement} path={sharePath} align={align} className="mt-4 border-t border-white/10 pt-4" />
-      </m.div>
+      </div>
+      </>
     );
   }
 
   return (
+    <>
+    {liveRegion}
     <form
       ref={formRef}
       onSubmit={handleSubmit}
       noValidate
-      className={cn("w-full max-w-md", align === "center" ? "mx-auto" : "", className)}
+      className={cn("w-full", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto" : "", className)}
     >
-      <div className="flex flex-col sm:flex-row gap-2 rounded-2xl sm:bg-white/[0.06] sm:p-1.5 sm:ring-1 sm:ring-white/15 sm:backdrop-blur-xl">
+      {/* Honeypot for bots: off-screen, skipped by keyboard and screen readers. */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-px w-px overflow-hidden">
+        <label>
+          Company
+          <input ref={honeypotRef} type="text" name="company" tabIndex={-1} autoComplete="off" defaultValue="" />
+        </label>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-2 rounded-2xl sm:bg-white/[0.06] sm:p-1.5 sm:ring-1 sm:ring-white/15">
         <label htmlFor={inputId} className="sr-only">{t.emailLabel}</label>
         <div className="relative flex-1">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" aria-hidden="true" />
@@ -185,7 +224,10 @@ export function WaitlistForm({
           className="group btn-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-rido-magenta px-6 font-semibold text-white shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:brightness-110 cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy disabled:opacity-60 disabled:cursor-wait"
         >
           {status === "loading" ? (
-            <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
+              <span className="sr-only">{t.sending}</span>
+            </>
           ) : (
             <>
               {t.submit}
@@ -198,6 +240,8 @@ export function WaitlistForm({
         <p id={errorId} className={cn("text-sm text-red-300 mt-2", align === "center" ? "text-center" : "")} role="alert">
           {errorKey === "invalid" ? (
             t.errorInvalid
+          ) : errorKey === "busy" ? (
+            t.errorBusy
           ) : (
             <>
               {t.errorGenericBefore}
@@ -210,5 +254,6 @@ export function WaitlistForm({
         </p>
       )}
     </form>
+    </>
   );
 }
