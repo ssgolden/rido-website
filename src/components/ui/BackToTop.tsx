@@ -29,7 +29,7 @@ export function BackToTop() {
       type="button"
       onClick={() => scrollTo(0)}
       data-open={visible ? "" : undefined}
-      className="pop fixed bottom-6 right-6 z-50 w-12 h-12 rounded-full bg-rido-magenta text-white flex items-center justify-center shadow-lg shadow-rido-magenta/30 hover:bg-rido-magenta-dark hover:shadow-xl hover:shadow-rido-magenta/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+      className="pop fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 sm:bottom-6 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-rido-magenta text-white flex items-center justify-center shadow-lg shadow-rido-magenta/30 hover:bg-rido-magenta-dark hover:shadow-xl hover:shadow-rido-magenta/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
       aria-label="Scroll to top"
     >
       <ArrowUp className="w-5 h-5" aria-hidden="true" />
