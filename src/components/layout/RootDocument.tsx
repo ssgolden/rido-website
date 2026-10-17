@@ -2,7 +2,6 @@ import type { Viewport } from "next";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
-import { LazyMotionRoot } from "@/components/ui/LazyMotionRoot";
 import { RevealObserver } from "@/components/ui/RevealObserver";
 import { getSiteSchemas } from "@/lib/schema";
 import type { Locale } from "@/lib/i18n/config";
@@ -65,17 +64,12 @@ export function RootDocument({
         >
           {lang === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
-        {/* LazyMotionRoot must wrap EVERY `m.` component, including the cookie
-            banner outside the scroll shell — an `m.` element with no provider
-            above it never animates and stays at its `initial` state. */}
-        <LazyMotionRoot>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-          <RevealObserver />
-          {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
-              which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
-          {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
-          <ClientCookieConsent />
-        </LazyMotionRoot>
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <RevealObserver />
+        {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
+            which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
+        {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
+        <ClientCookieConsent />
       </body>
     </html>
   );

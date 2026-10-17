@@ -270,6 +270,91 @@
     0%, 100% { transform: translateY(-52px); }
     50% { transform: translateY(52px); }
   }
+  /* Show/hide with a fade and short rise (BackToTop, cookie banner, menus).
+     Toggle with data-open. While hidden: no pointer events, and visibility
+     hidden (switched after the fade) removes it from the tab order and the
+     accessibility tree. */
+  .pop {
+    transition-property: opacity, transform, translate, scale, visibility, background-color, box-shadow;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .pop:not([data-open]) {
+    opacity: 0;
+    transform: translateY(16px);
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .pop-down:not([data-open]) {
+    transform: translateY(-8px);
+  }
+  /* Mount entrances for elements that appear after hydration (cookie banner,
+     mobile menu, waitlist result). No exit animation: they simply go. */
+  @media (prefers-reduced-motion: no-preference) {
+    .enter-up { animation: enter-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .enter-down { animation: enter-down 0.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  }
+  @keyframes enter-up {
+    from { opacity: 0; transform: translateY(16px); }
+  }
+  @keyframes enter-down {
+    from { opacity: 0; transform: translateY(-8px); }
+  }
+  /* FAQ accordion (FAQ.tsx): animate the native <details> height where
+     supported (interpolate-size + ::details-content); instant elsewhere. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      .faq-item {
+        interpolate-size: allow-keywords;
+      }
+      .faq-item::details-content {
+        block-size: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: block-size 0.2s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1), content-visibility 0.2s allow-discrete;
+      }
+      .faq-item[open]::details-content {
+        block-size: auto;
+        opacity: 1;
+      }
+    }
+  }
+  /* Scroll-driven signature moments, run by the browser off the main thread.
+     Hero: the scooter rides out of its frame as the hero scrolls away.
+     Fleet: the vehicle rides into its frame as it scrolls into view.
+     Static where unsupported (older Firefox/Safari) or under reduced motion. */
+  .hero-timeline {
+    view-timeline: --hero block;
+  }
+  .fleet-timeline {
+    view-timeline: --fleet block;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .hero-ride {
+        animation: ride-out linear both;
+        animation-timeline: --hero;
+        animation-range: exit-crossing 5% exit-crossing 75%;
+      }
+      .fleet-ride {
+        animation: ride-in linear both;
+        animation-timeline: --fleet;
+        animation-range: entry 0% cover 45%;
+      }
+    }
+  }
+  @keyframes ride-out {
+    to { transform: translateX(75%); }
+  }
+  @keyframes ride-in {
+    from { transform: translateX(-70%); }
+  }
+  @keyframes enter-fade {
+    from { opacity: 0; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .enter-fade { animation: enter-fade 0.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  }
   /* Micro-interactions — 200ms, same curve as EASE in src/lib/motion.ts.
      Transform lives only in these classes so it doesn't fight Tailwind scales. */
   .btn-lift {

@@ -29,8 +29,9 @@ this skill is the per-change quality bar.
   ease) for entrances; `easeOut` ≤ 300ms for micro-interactions.
 - Three durations only: 200ms (micro), 500ms (entrance), 2–6s (ambient).
 - EVERY looping or scroll-driven animation needs a `prefers-reduced-motion`
-  path (use `useReducedMotion()` from framer-motion; Lenis already disables
-  itself). No exceptions — this is merge-blocking.
+  path: put it under `@media (prefers-reduced-motion: no-preference)` in
+  CSS (there is no animation library; Lenis already disables itself). No
+  exceptions — this is merge-blocking.
 - Entrances use `ScrollReveal`/`StaggerReveal` from `@/components/ui/` —
   don't hand-roll new intersection observers.
 

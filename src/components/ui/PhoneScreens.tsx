@@ -1,6 +1,5 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
 import {
   BatteryMedium,
   Bike,
@@ -16,7 +15,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { DURATION, EASE, REVEAL } from "@/lib/motion";
 
 const en = {
   findNearby: "Find a Rido near you",
@@ -65,10 +63,6 @@ const phoneCopy: Record<Locale, typeof en> = {
 
 function usePhoneCopy() {
   return phoneCopy[useLocale()];
-}
-
-interface ScreenProps {
-  reduced: boolean;
 }
 
 /* Stylized product visualizations — deliberately illustrative, not fake
@@ -273,7 +267,7 @@ function ParkScreen() {
   );
 }
 
-const SCREENS: { key: string; Component: React.ComponentType<ScreenProps> }[] = [
+const SCREENS: { key: string; Component: React.ComponentType }[] = [
   { key: "map", Component: MapScreen },
   { key: "scan", Component: ScanScreen },
   { key: "ride", Component: RideScreen },
@@ -295,7 +289,6 @@ interface PhoneMockupProps {
  * Purely decorative — always render with the surrounding step copy visible.
  */
 export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
-  const reduced = useReducedMotion() ?? false;
   const t = usePhoneCopy();
   const active = Math.min(SCREENS.length - 1, Math.max(0, activeStep));
 
@@ -305,20 +298,15 @@ export function PhoneMockup({ activeStep, className }: PhoneMockupProps) {
         {/* notch */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[30px] bg-rido-navy rounded-b-[20px] z-20" />
         {SCREENS.map(({ key, Component }, i) => (
-          <m.div
+          <div
             key={key}
-            className="absolute inset-0 pointer-events-none"
-            initial={false}
-            animate={{
-              opacity: i === active ? 1 : 0,
-              // Inactive screens are invisible; keeping their offset independent of
-              // `reduced` keeps SSR and client styles identical.
-              y: i === active ? 0 : REVEAL.y / 2,
-            }}
-            transition={{ duration: reduced ? 0 : DURATION.entrance, ease: EASE }}
+            className={cn(
+              "absolute inset-0 pointer-events-none transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+              i === active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+            )}
           >
-            <Component reduced={reduced} />
-          </m.div>
+            <Component />
+          </div>
         ))}
       </div>
       <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />

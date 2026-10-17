@@ -4,8 +4,6 @@ import { useSyncExternalStore } from "react";
 import { readConsent, saveConsent, subscribeConsent } from "@/lib/consent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { m, AnimatePresence, useReducedMotion } from "framer-motion";
-import { DURATION, EASE, REVEAL } from "@/lib/motion";
 import { Cookie, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
@@ -46,20 +44,14 @@ export function CookieConsent() {
   const pathname = usePathname() ?? "/";
   const t = pathname === "/es" || pathname.startsWith("/es/") ? copy.es : copy.en;
   const visible = useShouldShowConsent();
-  const reduce = useReducedMotion();
 
   const handleAccept = () => saveConsent(true);
   const handleDecline = () => saveConsent(false);
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <m.div
-          initial={reduce ? false : { y: REVEAL.y, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={reduce ? { opacity: 0 } : { y: REVEAL.y, opacity: 0 }}
-          transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-          className="fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
+    visible && (
+        <div
+          className="enter-up fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
           role="dialog"
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
@@ -93,8 +85,7 @@ export function CookieConsent() {
               </button>
             </div>
           </div>
-        </m.div>
-      )}
-    </AnimatePresence>
+        </div>
+    )
   );
 }

@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useState, type CSSProperties } from "react";
-import { m, useScroll, useMotionValueEvent } from "framer-motion";
 import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { useScrollContainerRef, useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import { useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
 
 const en = {
   ariaLabel: "How it works",
@@ -62,19 +62,25 @@ export function HowItWorks() {
   const steps = t.steps;
   const trackRef = useRef<HTMLDivElement>(null);
   const anchorRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const scrollContainerRef = useScrollContainerRef();
   const scrollTo = useScrollTo();
   const [activeStep, setActiveStep] = useState(0);
+  const railXRef = useRef<HTMLDivElement>(null);
+  const railYRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    container: scrollContainerRef,
-    target: trackRef,
-    // 0 when the track's top reaches the top of the scroll lane,
-    // 1 when its bottom reaches the bottom — i.e. exactly while pinned.
-    offset: ["start start", "end end"],
-  });
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    setActiveStep(Math.min(steps.length - 1, Math.max(0, Math.floor(p * steps.length))));
+  // Progress through the pinned track: 0 when its top reaches the top of the
+  // scroll lane, 1 when its bottom reaches the bottom. The rail fill is written
+  // directly each frame; React state changes only when the step changes.
+  useScrollFrame((root) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const rect = track.getBoundingClientRect();
+    const lane = root.getBoundingClientRect();
+    const range = rect.height - lane.height;
+    const p = range > 0 ? Math.min(1, Math.max(0, (lane.top - rect.top) / range)) : 0;
+    if (railXRef.current) railXRef.current.style.transform = `scaleX(${p})`;
+    if (railYRef.current) railYRef.current.style.transform = `scaleY(${p})`;
+    const step = Math.min(steps.length - 1, Math.floor(p * steps.length));
+    setActiveStep((prev) => (prev === step ? prev : step));
   });
 
   const trackStyle = { "--track-h": `${steps.length * VH_PER_STEP + 25}svh` } as CSSProperties;
@@ -117,8 +123,8 @@ export function HowItWorks() {
                   className="absolute left-4 right-4 top-1/2 h-px -translate-y-1/2 bg-white/10 md:left-1/2 md:right-auto md:top-4 md:bottom-4 md:h-auto md:w-px md:-translate-x-1/2 md:translate-y-0"
                   aria-hidden="true"
                 >
-                  <m.div className="h-full w-full origin-left bg-rido-magenta md:hidden" style={{ scaleX: scrollYProgress }} />
-                  <m.div className="hidden h-full w-full origin-top bg-rido-magenta md:block" style={{ scaleY: scrollYProgress }} />
+                  <div ref={railXRef} className="h-full w-full origin-left bg-rido-magenta md:hidden" style={{ transform: "scaleX(0)" }} />
+                  <div ref={railYRef} className="hidden h-full w-full origin-top bg-rido-magenta md:block" style={{ transform: "scaleY(0)" }} />
                 </div>
                 <ol className="relative flex justify-between md:flex-col md:justify-start md:gap-10">
                   {steps.map((step, i) => (

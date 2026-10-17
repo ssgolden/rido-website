@@ -2,10 +2,8 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Mail, Loader2, ArrowRight, MailCheck } from "lucide-react";
-import { m, useReducedMotion } from "framer-motion";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
-import { DURATION, EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { hasAnalyticsConsent, track, type Placement } from "@/lib/analytics";
 import { subscribeConsent } from "@/lib/consent";
@@ -69,7 +67,6 @@ export function WaitlistForm({
 }) {
   const locale = useLocale();
   const t = copy[locale];
-  const reduce = useReducedMotion();
   const inputId = useId();
   const errorId = `${inputId}-error`;
   const formRef = useRef<HTMLFormElement>(null);
@@ -167,11 +164,8 @@ export function WaitlistForm({
     return (
       <>
       {liveRegion}
-      <m.div
-        initial={reduce ? false : { opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduce ? 0 : DURATION.entrance, ease: EASE }}
-        className={cn("glass rounded-2xl p-5", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto text-center" : "", className)}
+      <div
+        className={cn("enter-up glass rounded-2xl p-5", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto text-center" : "", className)}
       >
         <div>
           <p ref={resultRef} tabIndex={-1} className="font-bold text-white focus:outline-none">
@@ -181,7 +175,7 @@ export function WaitlistForm({
           <p className="mt-1 text-sm text-muted">{pending ? t.pendingBody : t.successBody}</p>
         </div>
         <ShareInvite placement={placement} path={sharePath} align={align} className="mt-4 border-t border-white/10 pt-4" />
-      </m.div>
+      </div>
       </>
     );
   }

@@ -9,7 +9,7 @@ const HASH_RESOLVE_TIMEOUT_MS = 5000;
 type ScrollRootContextValue = {
   /** Element that actually scrolls on marketing pages. Null when the window scrolls. */
   rootNode: HTMLElement | null;
-  /** Stable ref mirroring `rootNode`, safe to pass to Framer `useScroll({ container })`. */
+  /** Stable ref mirroring `rootNode`, for callbacks that must not re-subscribe. */
   scrollRef: React.RefObject<HTMLElement | null>;
   attachRef: (node: HTMLElement | null) => void;
   /** Full-viewport layer behind the header. Hero paints its backdrop here. */
@@ -28,12 +28,6 @@ export function useScrollRootRegistration() {
   const ctx = useContext(ScrollRootContext);
   if (!ctx) throw new Error("useScrollRootRegistration must be used within SmoothScrollProvider");
   return { attachRef: ctx.attachRef, setBackdropEl: ctx.setBackdropEl };
-}
-
-export function useScrollContainerRef() {
-  const ctx = useContext(ScrollRootContext);
-  if (!ctx) throw new Error("useScrollContainerRef must be used within SmoothScrollProvider");
-  return ctx.scrollRef;
 }
 
 export function useHeroBackdropEl() {

@@ -1,6 +1,5 @@
 "use client";
 import { ArrowRight, HardHat, BadgeCheck, MapPin, Shield } from "lucide-react";
-import { m, useScroll, useTransform, useReducedMotion, useMotionValueEvent, type MotionValue } from "framer-motion";
 import { useRef } from "react";
 import { createPortal } from "react-dom";
 import { withBase } from "@/lib/basePath";
@@ -12,7 +11,9 @@ import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { ImageFrame } from "@/components/ui/ImageFrame";
 import { vehicles } from "@/data/vehicles";
 import { primaryCity } from "@/data/cities";
-import { useHeroBackdropEl, useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
+import { useHeroBackdropEl } from "@/components/ui/SmoothScrollProvider";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 // Noise overlay (SVG turbulence) — breaks gradient banding on dark surfaces.
 const NOISE_SVG =
@@ -63,7 +64,7 @@ const chipIcons = [HardHat, BadgeCheck, MapPin] as const;
 
 /**
  * Hero entrances are CSS keyframes (globals.css .hero-in / .hero-rise), not
- * framer: they start with the first paint instead of after hydration, and the
+ * JavaScript: they start with the first paint instead of after hydration, and the
  * markup is identical on server and client. `.hero-rise` only moves (never
  * transparent), for the form, paragraph and image: the call to action and the
  * LCP element are visible from the first paint. Both are off under reduced
@@ -71,9 +72,9 @@ const chipIcons = [HardHat, BadgeCheck, MapPin] as const;
  */
 const delay = (seconds: number) => ({ animationDelay: `${seconds}s` });
 
-function HeroBackdrop({ fixed, opacity }: { fixed: boolean; opacity: number | MotionValue<number> }) {
+function HeroBackdrop({ fixed, layerRef }: { fixed: boolean; layerRef?: React.Ref<HTMLDivElement> }) {
   return (
-    <m.div aria-hidden="true" className={fixed ? "absolute inset-0" : "contents"} style={fixed ? { opacity } : undefined}>
+    <div ref={layerRef} aria-hidden="true" className={fixed ? "absolute inset-0" : "contents"}>
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       {/* Static layers only: no filters, no blend modes, no animated backgrounds.
           The orbs are radial gradients (a blurred circle repainted every frame
@@ -93,7 +94,7 @@ function HeroBackdrop({ fixed, opacity }: { fixed: boolean; opacity: number | Mo
         style={{ background: "radial-gradient(closest-side, rgba(34,197,94,0.08), transparent)" }}
       />
       <div className="absolute inset-0 pointer-events-none opacity-[0.035]" style={{ backgroundImage: `url("${NOISE_SVG}")` }} />
-    </m.div>
+    </div>
   );
 }
 
@@ -101,28 +102,26 @@ export function Hero() {
   const locale = useLocale();
   const t = copy[locale];
   const sectionRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const scrollContainerRef = useScrollContainerRef();
+  const layerRef = useRef<HTMLDivElement>(null);
+  const reduce = usePrefersReducedMotion();
   const backdropEl = useHeroBackdropEl();
+  // The backdrop is parked in a fixed layer behind the page (so it stays put
+  // while the hero scrolls away) and fades out over the second half of the
+  // hero. Under reduced motion (and until the client knows) it simply scrolls
+  // with the hero. Styles are written directly: no re-render per frame.
+  const parkBackdrop = Boolean(backdropEl) && reduce === false;
 
-  const { scrollYProgress } = useScroll({
-    container: scrollContainerRef,
-    target: sectionRef,
-    offset: ["start start", "end start"],
+  useScrollFrame((root) => {
+    const section = sectionRef.current;
+    const layer = layerRef.current;
+    if (!parkBackdrop || !section || !layer) return;
+    const rect = section.getBoundingClientRect();
+    const progress = (root.getBoundingClientRect().top - rect.top) / rect.height;
+    const opacity = Math.min(1, Math.max(0, (0.92 - progress) / 0.32));
+    layer.style.opacity = String(opacity);
+    // Once faded out, pause the orb animation (CSS [data-idle] rule).
+    backdropEl?.toggleAttribute("data-idle", opacity <= 0.01);
   });
-  const backdropOpacityRaw = useTransform(scrollYProgress, [0.6, 0.92], [1, 0]);
-  const backdropOpacity = reduce ? 1 : backdropOpacityRaw;
-  // Once the fixed backdrop has faded out, pause its orb animation (CSS
-  // [data-idle] rule). A DOM attribute, not React state: no re-render, and the
-  // portal container only exists on the client.
-  useMotionValueEvent(backdropOpacityRaw, "change", (v) => {
-    backdropEl?.toggleAttribute("data-idle", v <= 0.01);
-  });
-  // Signature moment: the scooter rides out of its frame as the hero scrolls
-  // away. Always a MotionValue (zero range under reduced motion) so SSR and
-  // client styles match.
-  const rideX = useTransform(scrollYProgress, [0.05, 0.75], reduce ? ["0%", "0%"] : ["0%", "75%"]);
-  const parkBackdrop = Boolean(backdropEl) && !reduce;
   const highlightFrom = t.headlineWords.length - t.highlightCount;
 
   return (
@@ -130,11 +129,11 @@ export function Hero() {
       ref={sectionRef}
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center overflow-hidden pt-6 pb-[max(3rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6"
+      className="hero-timeline relative flex min-h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center overflow-hidden pt-6 pb-[max(3rem,env(safe-area-inset-bottom,0px))] pl-[max(1rem,env(safe-area-inset-left,0px))] pr-[max(1rem,env(safe-area-inset-right,0px))] sm:px-6"
     >
       {parkBackdrop && backdropEl
-        ? createPortal(<HeroBackdrop fixed opacity={backdropOpacity} />, backdropEl)
-        : <HeroBackdrop fixed={false} opacity={1} />}
+        ? createPortal(<HeroBackdrop fixed layerRef={layerRef} />, backdropEl)
+        : <HeroBackdrop fixed={false} />}
 
       <div className="relative z-10 w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
         <div className="text-center lg:text-left">
@@ -204,7 +203,10 @@ export function Hero() {
             sizes="(max-width: 1024px) 90vw, 45vw"
             priority
             imageClassName="drop-shadow-[0_30px_40px_rgba(15,23,42,0.25)]"
-            imageWrapperStyle={{ x: rideX }}
+            // Signature moment: the scooter rides out of its frame as the hero
+            // scrolls away (CSS scroll-driven animation, globals.css .hero-ride;
+            // static where unsupported or under reduced motion).
+            imageWrapperClassName="hero-ride"
             aspect="aspect-[5/4] lg:aspect-[4/5]"
             className="shadow-2xl shadow-black/40"
           >

@@ -9,7 +9,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Tech Stack
 - Next.js 16 (App Router) with TypeScript
 - Tailwind CSS 4 (uses `@theme` CSS blocks, NOT tailwind.config.ts)
-- Framer Motion for animations
+- Animations are CSS only (no animation library): keyframes and transitions in `globals.css`, scroll-driven effects via `animation-timeline`, and `useScrollFrame()` from `@/hooks/useScrollFrame` where an effect must read scroll position
 - Lucide React for icons (NO emoji icons)
 - Brand color: `#DE0498` (magenta), NOT coral/orange
 - Dark mode only (background: `#0F172A`)
@@ -21,7 +21,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Legal pages: Use `LegalPage` layout from `@/components/layout/LegalPage`
 - All sections need `id` and `aria-label` attributes
 - All interactive elements need `cursor-pointer` class
-- Use `useReducedMotion()` from framer-motion for animations that loop
+- Every animation sits under `@media (prefers-reduced-motion: no-preference)` (or `motion-safe:`). Use `usePrefersReducedMotion()` from `@/hooks/usePrefersReducedMotion` only where behaviour, not styling, changes; it is `null` until hydration, so markup never branches on it
+- Show/hide UI with the `.pop` class + `data-open`; mount entrances with `.enter-up` / `.enter-down` / `.enter-fade`
+- FAQ items are native `<details name="faq">` (exclusive accordion, find-in-page works)
 - Use `useCountUp()` from `@/hooks/useCountUp` for animated number counters
 - Fonts are self-hosted from `public/fonts` (variable Inter and Sora woff2, originally from `@fontsource-variable`), declared in `globals.css` and preloaded in `RootDocument.tsx` — zero external font requests (still not next/font — Turbopack bug on Windows)
 - Display font is "Sora Variable" via `--font-display`; body font is "Inter Variable" via `--font-sans`

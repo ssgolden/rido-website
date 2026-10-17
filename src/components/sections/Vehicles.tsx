@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { vehicles, getVehicleCopy } from "@/data/vehicles";
 import { Check } from "lucide-react";
 import Image from "next/image";
-import { m, AnimatePresence, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { DURATION, EASE, STAGGER } from "@/lib/motion";
+import { STAGGER } from "@/lib/motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -13,7 +12,6 @@ import { withBase } from "@/lib/basePath";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
-import { useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
 
 // Vehicle-specific copy (taglines, descriptions, specs, features) lives in src/data/vehicles.ts.
 const en = {
@@ -57,20 +55,6 @@ export function Vehicles() {
   const vCopy = getVehicleCopy(v, locale);
   const [mainImageError, setMainImageError] = useState(false);
   const [thumbErrors, setThumbErrors] = useState<Record<number, boolean>>({});
-  const reduce = useReducedMotion();
-
-  // Signature moment, part two: the vehicle rides into its frame as the fleet
-  // section scrolls into view (the hero scooter rides out of its own frame).
-  // Zero range under reduced motion, so SSR and client styles always match.
-  const frameRef = useRef<HTMLDivElement>(null);
-  const scrollContainerRef = useScrollContainerRef();
-  const { scrollYProgress: enterProgress } = useScroll({
-    container: scrollContainerRef,
-    target: frameRef,
-    offset: ["start end", "start 0.35"],
-  });
-  const rideInX = useTransform(enterProgress, [0, 1], reduce ? ["0%", "0%"] : ["-70%", "0%"]);
-
   // withBase() at render time — basePath differs between SSR and client.
   const vehicleImages = v.cutouts.map(withBase);
 
@@ -99,8 +83,6 @@ export function Vehicles() {
                 )}
               >
                 {i === active && (
-                  // Static pill: framer's layoutId needs the full (domMax) feature set,
-                  // which this site deliberately does not load.
                   <span className="absolute inset-0 rounded-full bg-ink" aria-hidden="true" />
                 )}
                 <span className="relative z-10">{vehicle.name}</span>
@@ -112,20 +94,16 @@ export function Vehicles() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr] gap-10 lg:gap-16 items-start">
         <ScrollReveal delay={STAGGER.text}>
-          <div ref={frameRef} className="image-frame-sun relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-black/5">
-            <m.div className="absolute inset-0" style={{ x: rideInX }}>
+          {/* Signature moment, part two: the vehicle rides into its frame as the
+              fleet section scrolls into view (the hero scooter rides out of its
+              own). CSS scroll-driven (globals.css .fleet-ride); static where
+              unsupported or under reduced motion. */}
+          <div className="fleet-timeline image-frame-sun relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-black/5">
+            <div className="fleet-ride absolute inset-0">
             {mainImageError ? (
               <div className="absolute inset-0 flex items-center justify-center text-ink-muted text-sm">{t.imageUnavailable}</div>
             ) : (
-              <AnimatePresence initial={false}>
-                <m.div
-                  key={`${v.id}-${activeImage}`}
-                  className="absolute inset-0"
-                  initial={reduce ? false : { opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: reduce ? 0 : DURATION.micro, ease: EASE }}
-                >
+                <div key={`${v.id}-${activeImage}`} className="enter-fade absolute inset-0">
                   <Image
                     src={vehicleImages[activeImage]}
                     alt={vCopy.imageAlt}
@@ -134,10 +112,9 @@ export function Vehicles() {
                     className="object-contain p-6 sm:p-10 drop-shadow-[0_24px_30px_rgba(15,23,42,0.18)]"
                     onError={() => setMainImageError(true)}
                   />
-                </m.div>
-              </AnimatePresence>
+                </div>
             )}
-            </m.div>
+            </div>
           </div>
           {vehicleImages.length > 1 && (
             <div className="mt-4 flex gap-3">

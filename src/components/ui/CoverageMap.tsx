@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
 import { announcedCities, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
@@ -295,13 +294,10 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
   const startedRef = useRef(false);
   const [status, setStatus] = useState<MapStatus>("idle");
   const [posterVisible, setPosterVisible] = useState(true);
-  const prefersReducedMotion = useReducedMotion();
-  const reducedRef = useRef(prefersReducedMotion);
-  reducedRef.current = prefersReducedMotion;
   const locale = useLocale();
   const t = copy[locale];
   // Markers/popups are built once in the async init callback — read the
-  // latest copy through a ref (same pattern as reducedRef).
+  // latest copy through a ref.
   const copyRef = useRef(t);
   copyRef.current = t;
 
@@ -347,7 +343,7 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
       return;
     }
 
-    const reduced = reducedRef.current ?? false;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let map: MapLibreMap;
     try {
       map = new lib.Map({

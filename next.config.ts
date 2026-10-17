@@ -19,10 +19,7 @@ const nextConfig: NextConfig = {
     deviceSizes: [640, 750, 828, 1080, 1200],
     imageSizes: [64, 128, 256],
   },
-  // Tree-shake framer-motion's barrel imports (lucide-react is optimised by
-  // Next by default).
   experimental: {
-    optimizePackageImports: ["framer-motion"],
     // app/global-not-found.tsx serves unmatched URLs as one valid document
     // (the site has two root layouts, so a plain not-found.tsx nested <html>).
     globalNotFound: true,

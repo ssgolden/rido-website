@@ -1,14 +1,18 @@
 "use client";
 
-import { m, useScroll } from "framer-motion";
-import { useScrollContainerRef } from "@/components/ui/SmoothScrollProvider";
+import { useRef } from "react";
+import { useScrollFrame } from "@/hooks/useScrollFrame";
 
 /**
- * Thin reading-progress bar at the top of the page. Driven by a framer motion
- * value as a GPU transform (scaleX): no React re-render and no layout read per
- * scroll event. Decorative, so hidden from assistive tech.
+ * Thin reading-progress bar at the top of the page. scaleX is written straight
+ * to the element once per frame while scrolling: no React re-render.
+ * Decorative, so hidden from assistive tech.
  */
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll({ container: useScrollContainerRef() });
-  return <m.div className="scroll-progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />;
+  const ref = useRef<HTMLDivElement>(null);
+  useScrollFrame((root) => {
+    const max = root.scrollHeight - root.clientHeight;
+    if (ref.current) ref.current.style.transform = `scaleX(${max > 0 ? Math.min(1, root.scrollTop / max) : 0})`;
+  });
+  return <div ref={ref} className="scroll-progress" style={{ transform: "scaleX(0)" }} aria-hidden="true" />;
 }
