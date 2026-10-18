@@ -15,7 +15,7 @@ const copy = {
   },
   es: {
     kicker: "404 — Página no encontrada",
-    titleBefore: "Giro",
+    titleBefore: "Camino",
     titleHighlight: "equivocado.",
     body: "Esta página no existe, pero el camino de vuelta sí.",
     home: "Volver al inicio",
