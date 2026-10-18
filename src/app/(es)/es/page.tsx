@@ -98,10 +98,11 @@ export default function HomeEs() {
             <p>Llegamos a Torrevieja, en la Costa Blanca, en las próximas semanas, y después a la Costa del Sol.</p>
           </div>
         </noscript>
+        {/* Order: Hero → How it works → Fleet → Launch map → Safety → FAQ → Waitlist. Keep the Navbar links in sync. */}
         <Hero t={heroCopy.es} image={heroImage} />
-        <Launch locale="es" />
         <HowItWorks t={howItWorksCopy.es} phone={phoneCopy.es} />
         <Vehicles t={vehiclesCopy.es} fleet={getFleet("es")} />
+        <Launch locale="es" />
         <Safety locale="es" />
         <FAQ t={faqCopy.es} items={faqItemsByLocale.es} />
         <DownloadCTA locale="es" />

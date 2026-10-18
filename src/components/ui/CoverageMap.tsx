@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { announcedCities, regionsWithUnannouncedTowns, type City, type LaunchRegion } from "@/data/cities";
+import { announcedCities, type City } from "@/data/cities";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
+import { LoaderCircle, Map as MapIcon } from "lucide-react";
 import { useScrollRootNode } from "@/components/ui/SmoothScrollProvider";
 import type { Map as MapLibreMap, LngLatBoundsLike, StyleSpecification } from "maplibre-gl";
 
@@ -22,8 +23,10 @@ const copy = {
     mapAria: "Map of Rido launch towns — launching soon",
     regionMapAria: "Map of the Costa del Sol region — Rido launch towns announced soon",
     launchingSoon: "Launching soon",
-    /** Poster label under a region whose towns are not announced yet. */
-    comingNext: "Coming next",
+    /** Sea label on the poster. */
+    sea: "Mediterranean",
+    exploreMap: "Explore map",
+    loadingMap: "Loading map…",
     /** Lowercase suffix appended to marker aria-labels: "<City> — launching soon". */
     launchingSoonSuffix: "launching soon",
     eScooter: "E-Scooter",
@@ -33,7 +36,9 @@ const copy = {
     mapAria: "Mapa de las ciudades de lanzamiento de Rido — muy pronto",
     regionMapAria: "Mapa de la región de la Costa del Sol — las ciudades de lanzamiento de Rido se anunciarán muy pronto",
     launchingSoon: "Próximamente",
-    comingNext: "Próximamente",
+    sea: "Mediterráneo",
+    exploreMap: "Explorar el mapa",
+    loadingMap: "Cargando el mapa…",
     launchingSoonSuffix: "próximamente",
     eScooter: "Patinete eléctrico",
     eBike: "Bici eléctrica",
@@ -218,102 +223,147 @@ function addCityMarkers(lib: MapLibreModule, map: MapLibreMap, towns: City[], re
 }
 
 /*
- * Illustrated poster: the Mediterranean coast from Alicante to the Strait of
- * Gibraltar in the map's own navy palette. Shown instantly before the map
- * library loads and kept as the permanent fallback (no WebGL, tiles blocked).
- * Announced towns get a labelled marker at their real position; regions with
- * unannounced towns get a soft highlight and a "coming soon" label only, never
- * a dot, so nothing hints at which towns they are.
+ * Illustrated poster: the real Costa Blanca coast, traced from Cabo de Palos
+ * north to Cabo de la Nao, in the map's own navy palette. Shown instantly
+ * before the map library loads and kept as the permanent fallback (no WebGL,
+ * tiles blocked). Equirectangular projection (x = lon · cos 38.2°, y = −lat),
+ * so the shoreline keeps its true proportions and locals recognise the
+ * Torrevieja bay, Cabo Roig, the Santa Pola cape, Tabarca and the two salt
+ * lagoons. Announced towns get a labelled marker at their real position;
+ * nothing else is named.
  */
-const POSTER_W = 800;
-const POSTER_H = 340;
-/** Visible frame: the stretch from the Costa del Sol to Torrevieja, zoomed so labels read on phones. */
-const VIEW = { x: 110, w: 640 };
-const LON_MIN = -5.75;
-const LAT_MAX = 38.55;
-const POSTER_SCALE = 128; // px per degree of latitude
-const LON_FACTOR = 0.8; // cos(37°): keeps the coast's real proportions
-const POSTER_X0 = 80;
+const POSTER_SCALE = 400; // user units per degree of latitude
+const LON_FACTOR = Math.cos((38.2 * Math.PI) / 180); // longitude shrink at this latitude
+/** Visible frame (lon/lat): the Mar Menor to Alicante bay, Torrevieja left of centre. */
+const FRAME = { west: -1.12, east: 0.24, south: 37.58, north: 38.4 };
+const VIEW_W = (FRAME.east - FRAME.west) * LON_FACTOR * POSTER_SCALE;
+const VIEW_H = (FRAME.north - FRAME.south) * POSTER_SCALE;
+/** Land and sea run far past the frame so a wider or taller panel shows more coast, never an empty band. */
+const BLEED = 800;
 
 function project(lon: number, lat: number): [number, number] {
-  return [POSTER_X0 + (lon - LON_MIN) * LON_FACTOR * POSTER_SCALE, (LAT_MAX - lat) * POSTER_SCALE];
+  return [(lon - FRAME.west) * LON_FACTOR * POSTER_SCALE, (FRAME.north - lat) * POSTER_SCALE];
 }
 
-/** Simplified coastline, north-east to south-west (lon, lat). */
+/**
+ * Coastline, south-west to north-east (lon, lat): the Cartagena shore east of
+ * Portmán, Cabo de Palos, the outer beach of La Manga, Torre de la Horadada,
+ * Cabo Roig, Punta Prima, the Torrevieja bay and harbour, Cabo Cervera, La
+ * Mata, the Guardamar dunes and Segura mouth, the Santa Pola salt flats and
+ * cape, Arenales, Alicante bay and Cabo de las Huertas, San Juan, El Campello,
+ * Villajoyosa, Benidorm bay, Sierra Helada, Altea, Mascarat, Calpe and the
+ * Peñón, Moraira, Granadella and Cabo de la Nao.
+ */
 const COAST: [number, number][] = [
-  [0.6, 39.6], [0.2, 39.0], [-0.05, 38.75], [-0.48, 38.34], [-0.56, 38.19], [-0.68, 37.98], [-0.76, 37.8], [-0.72, 37.63],
-  [-0.98, 37.58], [-1.3, 37.55], [-1.58, 37.4], [-1.85, 37.22], [-2.0, 36.95], [-2.19, 36.72],
-  [-2.46, 36.83], [-3.02, 36.74], [-3.52, 36.72], [-3.88, 36.75], [-4.42, 36.71], [-4.62, 36.54],
-  [-4.88, 36.5], [-5.15, 36.42], [-5.35, 36.15], [-5.6, 36.01], [-5.9, 36.05], [-6.2, 36.4],
-  [-6.35, 36.75], [-6.6, 37.2],
+  [-0.95, 37.572], [-0.85, 37.58], [-0.76, 37.6], // Cartagena shore
+  [-0.685, 37.632], // Cabo de Palos
+  [-0.715, 37.66], [-0.735, 37.7], [-0.75, 37.74], [-0.758, 37.78], [-0.765, 37.815], // La Manga
+  [-0.77, 37.84], [-0.765, 37.86], [-0.755, 37.877], // San Pedro, Torre de la Horadada
+  [-0.745, 37.892], [-0.738, 37.902], // Mil Palmeras, Campoamor
+  [-0.715, 37.914], [-0.71, 37.926], [-0.7, 37.94], // Cabo Roig, Cala Capitán, Punta Prima
+  [-0.69, 37.958], [-0.681, 37.971], [-0.672, 37.983], [-0.665, 37.995], // Náufragos, harbour, Cura, Los Locos
+  [-0.658, 38.005], [-0.65, 38.02], [-0.64, 38.045], // Cabo Cervera, La Mata beach
+  [-0.635, 38.07], [-0.64, 38.105], // Guardamar dunes, Segura mouth
+  [-0.62, 38.14], [-0.6, 38.165], [-0.565, 38.19], [-0.515, 38.205], // La Marina, salt flats, Santa Pola, its cape
+  [-0.515, 38.25], [-0.515, 38.29], // Arenales, Urbanova
+  [-0.49, 38.335], [-0.47, 38.35], [-0.44, 38.36], [-0.41, 38.355], // Alicante port, Postiguet, Albufereta, Cabo de las Huertas
+  [-0.405, 38.39], [-0.39, 38.425], [-0.33, 38.46], // San Juan, El Campello, Coveta Fumà
+  [-0.23, 38.505], [-0.18, 38.52], // Villajoyosa, Finestrat
+  [-0.14, 38.53], [-0.1, 38.54], [-0.07, 38.535], [-0.05, 38.56], // Benidorm bay, Sierra Helada
+  [-0.06, 38.575], [-0.05, 38.6], [-0.01, 38.62], // Albir, Altea, Mascarat
+  [0.04, 38.64], [0.075, 38.632], [0.08, 38.65], // Calpe, Peñón de Ifach
+  [0.135, 38.685], [0.15, 38.68], [0.19, 38.715], [0.235, 38.73], // Moraira, Cap d'Or, Granadella, Cabo de la Nao
 ];
 
-const coastPoints = COAST.map(([lon, lat]) => project(lon, lat));
-const coastLine = coastPoints.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
-// Land is everything north (above) of the coast.
-// The drawing is fitted to the panel's width; land and sea run far past the
-// viewBox so a taller panel shows more of both instead of empty bands.
-const BLEED = 600;
-const landArea = `${coastLine} L${-BLEED},${coastPoints.at(-1)![1].toFixed(1)} L${-BLEED},${-BLEED} L${POSTER_W + BLEED},${-BLEED} L${POSTER_W + BLEED},${coastPoints[0][1].toFixed(1)} L${coastPoints[0][0].toFixed(1)},${coastPoints[0][1].toFixed(1)} Z`;
+/** Mar Menor shoreline (lon, lat), clockwise from the Encañizadas. */
+const MAR_MENOR: [number, number][] = [
+  [-0.785, 37.815], [-0.77, 37.78], [-0.765, 37.74], [-0.755, 37.7], [-0.745, 37.665], [-0.76, 37.645],
+  [-0.8, 37.64], [-0.84, 37.655], [-0.86, 37.69], [-0.87, 37.73], [-0.865, 37.77], [-0.84, 37.8], [-0.81, 37.815],
+];
 
-/** Where each region's highlight and label sit (lon, lat). */
-const REGION_ANCHORS: Record<LaunchRegion, [number, number]> = {
-  "Costa Blanca": [-0.7, 38.0],
-  "Costa del Sol": [-4.65, 36.62],
-};
+/** Salt lagoons inland of Torrevieja: centre (lon, lat), radii in degrees (lon, lat), rotation. */
+const LAGOONS = [
+  { id: "torrevieja", at: [-0.73, 37.993] as const, rx: 0.026, ry: 0.029, rotate: 15 },
+  { id: "la-mata", at: [-0.7, 38.031] as const, rx: 0.019, ry: 0.012, rotate: 0 },
+];
 
-function CoverageSvgFallback({ towns, comingSoon }: { towns: City[]; comingSoon: string }) {
-  const regions = regionsWithUnannouncedTowns.map((region) => ({ region, at: project(...REGION_ANCHORS[region]) }));
+/** Tabarca island (lon, lat), radii in degrees. */
+const TABARCA = { at: [-0.479, 38.166] as const, rx: 0.011, ry: 0.0035 };
+
+const toPath = (points: [number, number][]) =>
+  points.map(([lon, lat], i) => {
+    const [x, y] = project(lon, lat);
+    return `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(" ");
+
+const coastLine = toPath(COAST);
+const [coastStartX, coastStartY] = project(...COAST[0]);
+const [coastEndX] = project(...COAST[COAST.length - 1]);
+// Land is everything west and north of the coast: close the shape through the bleed.
+const landArea = `${coastLine} L${coastEndX.toFixed(1)},${-BLEED} L${-BLEED},${-BLEED} L${-BLEED},${(coastStartY + BLEED).toFixed(1)} L${coastStartX.toFixed(1)},${(coastStartY + BLEED).toFixed(1)} Z`;
+const marMenor = `${toPath(MAR_MENOR)} Z`;
+
+const SEA = "#0A1426";
+const SEA_LINE = "#1C2E50";
+const LAND = "#17243F";
+const COAST_STROKE = "#3A4C70";
+const LAGOON = "#0D1A33";
+
+function CoverageSvgFallback({ towns, seaLabel }: { towns: City[]; seaLabel: string }) {
   const markers = towns.map((town) => ({ town, at: project(town.lng, town.lat) }));
-  const from = markers[0]?.at;
-  const to = regions[0]?.at;
+  const seaAt = project(-0.33, 37.86);
   return (
-    <svg className="absolute inset-0 w-full h-full overflow-visible" viewBox={`${VIEW.x} 0 ${VIEW.w} ${POSTER_H}`} preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <svg
+      className="absolute inset-0 w-full h-full"
+      viewBox={`0 0 ${VIEW_W.toFixed(1)} ${VIEW_H.toFixed(1)}`}
+      preserveAspectRatio="xMidYMid meet"
+      aria-hidden="true"
+    >
       <defs>
-        <radialGradient id="poster-region-glow">
-          <stop offset="0%" stopColor="#DE0498" stopOpacity="0.28" />
-          <stop offset="100%" stopColor="#DE0498" stopOpacity="0" />
-        </radialGradient>
         <pattern id="poster-sea-grid" width="24" height="24" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="1" fill="#1C2E50" />
+          <circle cx="1" cy="1" r="1" fill={SEA_LINE} />
         </pattern>
       </defs>
       {/* Sea, with a faint dot grid */}
-      <rect x={-BLEED} y={-BLEED} width={POSTER_W + BLEED * 2} height={POSTER_H + BLEED * 2} fill="#0A1426" />
-      <rect x={-BLEED} y={-BLEED} width={POSTER_W + BLEED * 2} height={POSTER_H + BLEED * 2} fill="url(#poster-sea-grid)" />
+      <rect x={-BLEED} y={-BLEED} width={VIEW_W + BLEED * 2} height={VIEW_H + BLEED * 2} fill={SEA} />
+      <rect x={-BLEED} y={-BLEED} width={VIEW_W + BLEED * 2} height={VIEW_H + BLEED * 2} fill="url(#poster-sea-grid)" />
       {/* Land and coastline */}
-      <path d={landArea} fill="#17243F" />
-      <path d={coastLine} fill="none" stroke="#3A4C70" strokeWidth="1.5" strokeLinejoin="round" />
+      <path d={landArea} fill={LAND} />
+      <path d={coastLine} fill="none" stroke={COAST_STROKE} strokeWidth="1.5" strokeLinejoin="round" />
+      {/* Mar Menor */}
+      <path d={marMenor} fill={LAGOON} stroke={COAST_STROKE} strokeWidth="1" strokeLinejoin="round" />
+      {/* Salt lagoons */}
+      {LAGOONS.map(({ id, at: [lon, lat], rx, ry, rotate }) => {
+        const [x, y] = project(lon, lat);
+        return (
+          <ellipse
+            key={id}
+            cx={x}
+            cy={y}
+            rx={rx * LON_FACTOR * POSTER_SCALE}
+            ry={ry * POSTER_SCALE}
+            transform={`rotate(${rotate} ${x.toFixed(1)} ${y.toFixed(1)})`}
+            fill={LAGOON}
+            stroke={COAST_STROKE}
+            strokeWidth="1"
+          />
+        );
+      })}
+      {/* Tabarca */}
+      {(() => {
+        const [x, y] = project(...TABARCA.at);
+        return <ellipse cx={x} cy={y} rx={TABARCA.rx * LON_FACTOR * POSTER_SCALE} ry={TABARCA.ry * POSTER_SCALE} fill={LAND} stroke={COAST_STROKE} strokeWidth="1" />;
+      })()}
 
-      {/* Regions still to be announced: highlight + label, no town dots */}
-      {regions.map(({ region, at: [x, y] }) => (
-        <g key={region}>
-          <ellipse cx={x} cy={y} rx="130" ry="52" fill="url(#poster-region-glow)" />
-          <text x={x} y={y - 40} textAnchor="middle" fill="rgba(255,255,255,0.9)" fontSize="22" fontWeight="700" fontFamily="Sora Variable, Inter Variable, sans-serif">{region}</text>
-          <text x={x} y={y - 16} textAnchor="middle" fill="#F23DB5" fontSize="15" fontWeight="700" fontFamily="Inter Variable, sans-serif" letterSpacing="0.08em">{comingSoon.toUpperCase()}</text>
-        </g>
-      ))}
-
-      {/* The route from the first launch town towards what's next */}
-      {from && to && (
-        <path
-          d={`M${from[0]},${from[1]} Q${(from[0] + to[0]) / 2},${Math.max(from[1], to[1]) + 70} ${to[0]},${to[1]}`}
-          fill="none"
-          stroke="#DE0498"
-          strokeWidth="1.5"
-          strokeDasharray="6 8"
-          opacity="0.5"
-          className="dash-flow"
-        />
-      )}
+      <text x={seaAt[0]} y={seaAt[1]} textAnchor="middle" fill="rgba(148,163,184,0.55)" fontSize="15" fontWeight="600" fontFamily="Inter Variable, sans-serif" letterSpacing="0.22em">{seaLabel.toUpperCase()}</text>
 
       {/* Announced towns */}
       {markers.map(({ town, at: [x, y] }, i) => (
         <g key={town.slug}>
-          <circle cx={x} cy={y} r="24" fill="#DE0498" opacity="0.14" />
+          <circle cx={x} cy={y} r="16" fill="#DE0498" opacity="0.14" />
           <circle cx={x} cy={y} r="11" fill="none" stroke="#DE0498" strokeWidth="1.5" className="city-pulse-ring" style={{ animationDelay: `${i * 0.4}s` }} />
           <circle cx={x} cy={y} r="7" fill="#DE0498" stroke="#fff" strokeWidth="2" />
-          <text x={x - 18} y={y + 7} textAnchor="end" fill="#fff" fontSize="22" fontWeight="700" fontFamily="Sora Variable, Inter Variable, sans-serif">{town.name}</text>
+          <text x={x + 18} y={y + 7} textAnchor="start" fill="#fff" fontSize="22" fontWeight="700" fontFamily="Sora Variable, Inter Variable, sans-serif">{town.name}</text>
         </g>
       ))}
     </svg>
@@ -324,8 +374,9 @@ type MapStatus = "idle" | "loading" | "ready" | "fallback";
 
 /**
  * Real interactive coverage map (MapLibre GL + OpenFreeMap tiles — keyless).
- * maplibre-gl (~250KB) is dynamically imported only once the panel scrolls
- * near the viewport; until then (and on any failure) the SVG poster renders.
+ * maplibre-gl (~250KB) is dynamically imported only when the visitor taps
+ * "Explore map" or the panel comes within ~1.5 viewports — never on first
+ * paint or first scroll; until then (and on any failure) the SVG poster renders.
  *
  * `towns` is the only source of town names (markers, labels, popups, aria,
  * SVG labels) and of the camera bounds. It defaults to `announcedCities`, so
@@ -345,7 +396,9 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
   // Markers/popups are built once in the async init callback — read the
   // latest copy through a ref.
   const copyRef = useRef(t);
-  copyRef.current = t;
+  useEffect(() => {
+    copyRef.current = t;
+  }, [t]);
 
   const initMap = useCallback(async () => {
     if (startedRef.current) return;
@@ -460,42 +513,46 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
   // must use it as their root or the pre-load margin is clipped away.
   const scrollRoot = useScrollRootNode();
 
-  // Lazy trigger: start the map when the panel comes within 500px of the
-  // viewport. The same observer flags the panel as in view so the SVG poster's
-  // animations pause while it is off-screen (CSS [data-inview] rule).
+  // Lazy trigger: start the map once the panel is within ~1.5 viewports
+  // (rootMargin is relative to the root's height) — but only after the
+  // visitor has scrolled a quarter of a screen, so the ~270 KB library is
+  // never fetched on first paint (the panel sits right under the hero) nor on
+  // a stray first scroll. The same observer flags the panel as in view so the
+  // SVG poster's animations pause while it is off-screen (CSS [data-inview]
+  // rule). Without IntersectionObserver the button is the only way in.
+  const armedRef = useRef(false);
+  const nearRef = useRef(false);
   useEffect(() => {
     const el = wrapRef.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      el.setAttribute("data-inview", "");
-      void initMap();
-      return;
-    }
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const root = scrollRoot ?? document.getElementById("page-scroll");
     const io = new IntersectionObserver(
       (entries) => {
         const visible = entries.some((e) => e.isIntersecting);
+        nearRef.current = visible;
         el.toggleAttribute("data-inview", visible);
-        if (visible && !startedRef.current) void initMap();
+        if (visible && armedRef.current && !startedRef.current) void initMap();
       },
-      { root: scrollRoot, rootMargin: "500px 0px" }
+      { root, rootMargin: "150% 0px" }
     );
     io.observe(el);
-    return () => io.disconnect();
-  }, [initMap, scrollRoot]);
 
-  // Warm the library during idle time after the visitor first scrolls, so the
-  // ~270 KB script is parsed before the map arrives instead of mid-scroll.
-  useEffect(() => {
-    const target: HTMLElement | Window = scrollRoot ?? window;
-    const onFirstScroll = () => {
-      target.removeEventListener("scroll", onFirstScroll);
-      const warm = () => void import("maplibre-gl").catch(() => {});
-      if ("requestIdleCallback" in window) window.requestIdleCallback(warm, { timeout: 3000 });
-      else setTimeout(warm, 1500);
+    const scroller: HTMLElement | Window = root ?? window;
+    const onScroll = () => {
+      const top = scroller instanceof Window ? scroller.scrollY : scroller.scrollTop;
+      const height = scroller instanceof Window ? scroller.innerHeight : scroller.clientHeight;
+      if (top < height * 0.25) return;
+      armedRef.current = true;
+      scroller.removeEventListener("scroll", onScroll);
+      if (nearRef.current && !startedRef.current) void initMap();
     };
-    target.addEventListener("scroll", onFirstScroll, { passive: true });
-    return () => target.removeEventListener("scroll", onFirstScroll);
-  }, [scrollRoot]);
+    if (!armedRef.current) scroller.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      io.disconnect();
+      scroller.removeEventListener("scroll", onScroll);
+    };
+  }, [initMap, scrollRoot]);
 
   // Teardown on unmount.
   useEffect(() => {
@@ -510,10 +567,28 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
       ref={wrapRef}
       role="group"
       aria-label={showCities ? t.mapAria : t.regionMapAria}
-      className="coverage-map relative w-full max-w-3xl h-[220px] sm:h-[340px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden"
+      className="coverage-map relative w-full max-w-3xl h-[260px] sm:h-[340px] rounded-2xl bg-white/[0.02] border border-white/5 overflow-hidden"
     >
-      {/* Poster + permanent fallback (the original SVG visualization) */}
-      {posterVisible && <CoverageSvgFallback towns={towns} comingSoon={t.comingNext} />}
+      {/* Poster + permanent fallback (the traced-coast SVG) */}
+      {posterVisible && <CoverageSvgFallback towns={towns} seaLabel={t.sea} />}
+
+      {/* Tap to load the live map before scrolling brings it near; gone once the map is up or impossible. */}
+      {status !== "ready" && status !== "fallback" && (
+        <button
+          type="button"
+          onClick={() => void initMap()}
+          disabled={status === "loading"}
+          aria-busy={status === "loading"}
+          className="absolute bottom-3 right-3 z-10 inline-flex min-h-11 items-center gap-2 rounded-full border border-white/10 bg-rido-navy/80 px-4 text-sm font-semibold text-white backdrop-blur-sm cursor-pointer hover:border-rido-magenta/50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rido-magenta disabled:cursor-default"
+        >
+          {status === "loading" ? (
+            <LoaderCircle className="h-4 w-4 motion-safe:animate-spin" aria-hidden="true" />
+          ) : (
+            <MapIcon className="h-4 w-4" aria-hidden="true" />
+          )}
+          {status === "loading" ? t.loadingMap : t.exploreMap}
+        </button>
+      )}
 
       {/* Real map canvas — fades in over the poster once tiles are ready */}
       {status !== "fallback" && (

@@ -70,10 +70,11 @@ export default function Home() {
             <p>Launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow.</p>
           </div>
         </noscript>
+        {/* Order: Hero → How it works → Fleet → Launch map → Safety → FAQ → Waitlist. Keep the Navbar links in sync. */}
         <Hero t={heroCopy.en} image={heroImage} />
-        <Launch locale="en" />
         <HowItWorks t={howItWorksCopy.en} phone={phoneCopy.en} />
         <Vehicles t={vehiclesCopy.en} fleet={getFleet("en")} />
+        <Launch locale="en" />
         <Safety locale="en" />
         <FAQ t={faqCopy.en} items={faqItemsByLocale.en} />
         <DownloadCTA locale="en" />

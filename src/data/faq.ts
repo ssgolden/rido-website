@@ -31,8 +31,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Cuánto cuesta?",
     },
     answer: {
-      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, with no minimum top-up and no hidden fees.",
-      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, sin recarga mínima ni costes ocultos.",
+      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, there's no minimum top-up and no hidden fees, and any unused balance is refundable.",
+      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, no hay recarga mínima ni costes ocultos, y el saldo que no uses es reembolsable.",
     },
     category: "pricing",
   },
@@ -123,28 +123,6 @@ const faqSources: readonly FaqSource[] = [
       es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
     },
     category: "legal",
-  },
-  {
-    question: {
-      en: "What is the Rido Pass?",
-      es: "¿Qué es el Rido Pass?",
-    },
-    answer: {
-      en: "The Rido Pass is our rider membership — unlimited unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
-      es: "El Rido Pass es nuestro abono para usuarios frecuentes: desbloqueos ilimitados y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
-    },
-    category: "pricing",
-  },
-  {
-    question: {
-      en: "Can I get a refund for unused balance?",
-      es: "¿Puedo recuperar el saldo que no use?",
-    },
-    answer: {
-      en: "Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details.",
-      es: "¡Sí! Devolvemos el saldo no utilizado de forma gratuita. No hay recarga mínima y puedes solicitar el reembolso en cualquier momento desde la app. Consulta nuestros Términos del servicio para más detalles.",
-    },
-    category: "pricing",
   },
   {
     question: {

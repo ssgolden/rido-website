@@ -505,9 +505,13 @@
     100% { transform: translateY(20px); opacity: 0; }
   }
   .city-pulse-ring {
-    animation: city-pulse-ring 2.5s ease-in-out infinite;
     transform-origin: center;
     transform-box: fill-box;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .city-pulse-ring {
+      animation: city-pulse-ring 2.5s ease-in-out infinite;
+    }
   }
   .city-dot-pulse {
     animation: city-dot-pulse 2s ease-in-out infinite;
