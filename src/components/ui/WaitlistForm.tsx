@@ -7,6 +7,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 import { hasAnalyticsConsent, track, type Placement } from "@/lib/analytics";
 import { subscribeConsent } from "@/lib/consent";
+import Link from "next/link";
 import { ShareInvite } from "@/components/ui/ShareInvite";
 import { isValidEmail } from "@/lib/email";
 
@@ -24,6 +25,9 @@ const copy = {
     successBody: "We'll email you the moment Rido launches near you.",
     pendingTitle: "Check your inbox",
     pendingBody: "We've sent you a link to confirm your email. Your place is saved once you click it.",
+    privacyBefore: "By joining you accept our ",
+    privacyLink: "Privacy Policy",
+    privacyAfter: ".",
   },
   es: {
     emailPlaceholder: "tu@email.com",
@@ -38,6 +42,9 @@ const copy = {
     successBody: "Te escribiremos en cuanto Rido llegue a tu zona.",
     pendingTitle: "Revisa tu correo",
     pendingBody: "Te hemos enviado un enlace para confirmar tu correo. Tu plaza queda guardada al pulsarlo.",
+    privacyBefore: "Al apuntarte aceptas nuestra ",
+    privacyLink: "Política de privacidad",
+    privacyAfter: ".",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
@@ -242,6 +249,13 @@ export function WaitlistForm({
           )}
         </button>
       </div>
+      <p className={cn("mt-2 text-xs text-muted-weak", align === "center" ? "text-center" : "")}>
+        {t.privacyBefore}
+        <Link href="/privacy" prefetch={false} className="underline underline-offset-2 hover:text-white transition-colors cursor-pointer">
+          {t.privacyLink}
+        </Link>
+        {t.privacyAfter}
+      </p>
       {status === "error" && errorKey && (
         <p id={errorId} className={cn("text-sm text-red-300 mt-2", align === "center" ? "text-center" : "")} role="alert">
           {errorKey === "invalid" ? (

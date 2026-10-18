@@ -2,7 +2,7 @@
 
 import type { FaqItem } from "@/data/faq";
 import type { CategoryFilter, FaqCopy } from "@/components/sections/FAQ.copy";
-import { ChevronDown, Search, Mail } from "lucide-react";
+import { ChevronDown, Mail } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { Button } from "@/components/ui/Button";
@@ -33,18 +33,15 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
 }
 
 export function FAQ({ t, items }: { t: FaqCopy; items: FaqItem[] }) {
-  const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [showAll, setShowAll] = useState(false);
 
-  // Search runs against the ACTIVE locale's question/answer text.
-  const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      const matchesSearch = search === "" || item.question.toLowerCase().includes(search.toLowerCase()) || item.answer.toLowerCase().includes(search.toLowerCase());
-      const matchesCategory = category === "all" || item.category === category;
-      return matchesSearch && matchesCategory;
-    });
-  }, [items, search, category]);
+  // Thirteen questions need a category filter, not a search box; the browser's
+  // find-in-page already searches the closed answers (native <details>).
+  const filteredItems = useMemo(
+    () => items.filter((item) => category === "all" || item.category === category),
+    [items, category]
+  );
 
   const visibleItems = showAll ? filteredItems : filteredItems.slice(0, VISIBLE_LIMIT);
   const hiddenCount = filteredItems.length - visibleItems.length;
@@ -55,21 +52,16 @@ export function FAQ({ t, items }: { t: FaqCopy; items: FaqItem[] }) {
       <div className="max-w-3xl mx-auto">
         <SectionHeader label={t.label} title={t.title} intro={t.intro} />
         <ScrollReveal delay={STAGGER.text}>
-          <div className="relative mb-4">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" />
-            <input type="text" placeholder={t.searchPlaceholder} value={search} onChange={(e) => { setSearch(e.target.value); setShowAll(false); }}
-              className="field w-full pl-11 pr-4 py-3 rounded-xl glass text-white text-sm placeholder:text-muted-weak focus:outline-none focus:ring-2 focus:ring-rido-magenta focus:ring-offset-2 focus:ring-offset-rido-navy cursor-text"
-              aria-label={t.searchAria} />
-          </div>
           <div className="chip-row flex gap-2 mb-6 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap">
             {categoryIds.map((catId) => (
               <button key={catId} onClick={() => { setCategory(catId); setShowAll(false); }}
-                className={`shrink-0 min-h-11 px-3 py-2 rounded-lg text-xs font-semibold transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
+                className={`shrink-0 min-h-11 px-4 py-2 rounded-full text-xs font-semibold transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] cursor-pointer active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy ${category === catId ? "bg-rido-magenta text-white" : "glass text-muted hover:text-white hover:bg-white/10"}`}>
                 {t.categories[catId]}
               </button>
             ))}
           </div>
-          <div className="glass rounded-2xl p-4 sm:p-6">
+          {/* Plain list on the section surface (no card-in-card): the city page uses the same treatment. */}
+          <div className="border-t border-white/10">
             {filteredItems.length === 0 ? (
               <p className="text-center text-muted-weak py-8 text-sm">{t.noResults}</p>
             ) : (

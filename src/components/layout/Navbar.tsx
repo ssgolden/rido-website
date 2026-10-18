@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
 import { Magnetic } from "@/components/ui/Magnetic";
 import { RidoLogo } from "@/components/ui/RidoLogo";
-import { Menu, X, Download } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
@@ -180,14 +180,14 @@ export function Navbar() {
         </div>
         <div className="hidden md:flex items-center gap-3">
           <Magnetic>
-            <Button as="a" href={hrefFor("#download")} onClick={(e) => followAnchor(e, "#download")} size="sm" className="gap-2"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button>
+            <Button as="a" href={hrefFor("#download")} onClick={(e) => followAnchor(e, "#download")} size="sm" className="gap-2"><span>{t.joinWaitlist}</span><ArrowRight className="w-4 h-4" /></Button>
           </Magnetic>
         </div>
         {/* Mobile: keep a compact Join CTA visible next to the hamburger — primary conversion action on the dominant traffic class */}
         <div className="flex md:hidden items-center gap-2">
           <Button as="a" href={hrefFor("#download")} onClick={(e) => followAnchor(e, "#download")} size="sm" className="gap-1.5 min-h-[44px] px-4">
-            <Download className="w-4 h-4" />
             <span>{t.joinShort}</span>
+            <ArrowRight className="w-4 h-4" />
           </Button>
           <button
             ref={hamburgerRef}
@@ -221,7 +221,7 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a key={link.href} href={hrefFor(link.href)} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={(e) => { followAnchor(e, link.href); setMobileOpen(false); }}>{link.label}</a>
               ))}
-              <div className="mt-3"><Button as="a" href={hrefFor("#download")} onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><Download className="w-4 h-4" /><span>{t.joinWaitlist}</span></Button></div>
+              <div className="mt-3"><Button as="a" href={hrefFor("#download")} onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><span>{t.joinWaitlist}</span><ArrowRight className="w-4 h-4" /></Button></div>
             </div>
           </div>
         </>

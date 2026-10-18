@@ -27,14 +27,25 @@ interface FaqSource {
 const faqSources: readonly FaqSource[] = [
   {
     question: {
-      en: "What age do I need to be to ride a Rido?",
-      es: "¿Qué edad necesito para montar en un Rido?",
+      en: "How much does it cost?",
+      es: "¿Cuánto cuesta?",
     },
     answer: {
-      en: "Spanish law sets the minimum age for riding an e-scooter at 15 (Royal Decree 518/2026, in force since 1 October 2026) and sets no minimum for pedal-assist e-bikes. Rido's own minimum is 18 for both, because every ride is a rental contract with insurance cover. You'll verify your age when you create your account in the app.",
-      es: "La ley española fija en 15 años la edad mínima para conducir un patinete eléctrico (Real Decreto 518/2026, en vigor desde el 1 de octubre de 2026) y no fija ninguna para las bicis de pedaleo asistido. En Rido el mínimo es 18 años en ambos casos, porque cada trayecto es un contrato de alquiler con seguro. Verificarás tu edad al crear tu cuenta en la app.",
+      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, with no minimum top-up and no hidden fees.",
+      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, sin recarga mínima ni costes ocultos.",
     },
-    category: "getting-started",
+    category: "pricing",
+  },
+  {
+    question: {
+      en: "Do I need to wear a helmet?",
+      es: "¿Tengo que llevar casco?",
+    },
+    answer: {
+      en: "Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.",
+      es: "Sí. Desde el 1 de octubre de 2026, la normativa VMP española hace obligatorio el casco para quienes van en patinete eléctrico en todo el país. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app.",
+    },
+    category: "safety",
   },
   {
     question: {
@@ -44,6 +55,17 @@ const faqSources: readonly FaqSource[] = [
     answer: {
       en: "Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.",
       es: "Abre la app de Rido, localiza un vehículo cerca de ti en el mapa, escanea el código QR del manillar y listo: ya puedes circular. La app muestra la disponibilidad y el nivel de batería en tiempo real.",
+    },
+    category: "getting-started",
+  },
+  {
+    question: {
+      en: "What age do I need to be to ride a Rido?",
+      es: "¿Qué edad necesito para montar en un Rido?",
+    },
+    answer: {
+      en: "Spanish law sets the minimum age for riding an e-scooter at 15 (Royal Decree 518/2026, in force since 1 October 2026) and sets no minimum for pedal-assist e-bikes. Rido's own minimum is 18 for both, because every ride is a rental contract with insurance cover. You'll verify your age when you create your account in the app.",
+      es: "La ley española fija en 15 años la edad mínima para conducir un patinete eléctrico (Real Decreto 518/2026, en vigor desde el 1 de octubre de 2026) y no fija ninguna para las bicis de pedaleo asistido. En Rido el mínimo es 18 años en ambos casos, porque cada trayecto es un contrato de alquiler con seguro. Verificarás tu edad al crear tu cuenta en la app.",
     },
     category: "getting-started",
   },
@@ -60,14 +82,14 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "What happens if I damage a vehicle?",
-      es: "¿Qué pasa si daño un vehículo?",
+      en: "Where do I park when I'm done?",
+      es: "¿Dónde aparco al terminar?",
     },
     answer: {
-      en: "You are responsible for up to €2,000 in damage as outlined in our Terms of Service. We recommend riding carefully and parking responsibly. Our tandem detection system monitors for misuse.",
-      es: "Eres responsable de hasta 2.000 € en daños, tal y como recogen nuestros Términos del servicio. Te recomendamos conducir con cuidado y aparcar de forma responsable. Nuestro sistema de detección de tándem vigila el uso indebido.",
+      en: "Park in designated areas shown in the app. These are typically cycle-rack zones or marked parking areas. Keep pavements clear for pedestrians and accessibility.",
+      es: "Aparca en las zonas habilitadas que muestra la app, normalmente aparcamientos de bicis o zonas señalizadas. Deja las aceras libres para los peatones y la accesibilidad.",
     },
-    category: "legal",
+    category: "safety",
   },
   {
     question: {
@@ -82,36 +104,25 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "Where do I park when I'm done?",
-      es: "¿Dónde aparco al terminar?",
+      en: "What if the battery dies during my ride?",
+      es: "¿Y si la batería se agota durante mi trayecto?",
     },
     answer: {
-      en: "Park in designated areas shown in the app. These are typically cycle-rack zones or marked parking areas. Keep pavements clear for pedestrians and accessibility.",
-      es: "Aparca en las zonas habilitadas que muestra la app, normalmente aparcamientos de bicis o zonas señalizadas. Deja las aceras libres para los peatones y la accesibilidad.",
+      en: "Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.",
+      es: "La app muestra el nivel de batería en tiempo real para que elijas un vehículo con carga completa. Si la batería se queda baja durante el trayecto, puedes terminarlo en cualquier zona de aparcamiento habilitada, sin coste extra.",
     },
     category: "safety",
   },
   {
     question: {
-      en: "Do I need to wear a helmet?",
-      es: "¿Tengo que llevar casco?",
+      en: "Is my ride insured?",
+      es: "¿Está asegurado mi trayecto?",
     },
     answer: {
-      en: "Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.",
-      es: "Sí. Desde el 1 de octubre de 2026, la normativa VMP española hace obligatorio el casco para quienes van en patinete eléctrico en todo el país. Incluimos un casco con cada patinete y ofrecemos recompensas por usarlo en la app.",
+      en: "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.",
+      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
     },
-    category: "safety",
-  },
-  {
-    question: {
-      en: "How much does it cost?",
-      es: "¿Cuánto cuesta?",
-    },
-    answer: {
-      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, with no minimum top-up and no hidden fees.",
-      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, sin recarga mínima ni costes ocultos.",
-    },
-    category: "pricing",
+    category: "legal",
   },
   {
     question: {
@@ -137,17 +148,6 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "What if the battery dies during my ride?",
-      es: "¿Y si la batería se agota durante mi trayecto?",
-    },
-    answer: {
-      en: "Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.",
-      es: "La app muestra el nivel de batería en tiempo real para que elijas un vehículo con carga completa. Si la batería se queda baja durante el trayecto, puedes terminarlo en cualquier zona de aparcamiento habilitada, sin coste extra.",
-    },
-    category: "safety",
-  },
-  {
-    question: {
       en: "How sustainable is Rido?",
       es: "¿Es Rido sostenible?",
     },
@@ -159,12 +159,12 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "Is my ride insured?",
-      es: "¿Está asegurado mi trayecto?",
+      en: "What happens if I damage a vehicle?",
+      es: "¿Qué pasa si daño un vehículo?",
     },
     answer: {
-      en: "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.",
-      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
+      en: "You are responsible for up to €2,000 in damage as outlined in our Terms of Service. We recommend riding carefully and parking responsibly. Our tandem detection system monitors for misuse.",
+      es: "Eres responsable de hasta 2.000 € en daños, tal y como recogen nuestros Términos del servicio. Te recomendamos conducir con cuidado y aparcar de forma responsable. Nuestro sistema de detección de tándem vigila el uso indebido.",
     },
     category: "legal",
   },

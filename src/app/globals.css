@@ -429,6 +429,8 @@
       overflow-x: auto;
       overscroll-behavior-x: contain;
       scrollbar-width: none;
+      /* The clipped last chip fades out, so the row reads as scrollable. */
+      mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
     }
     .chip-row::-webkit-scrollbar {
       display: none;

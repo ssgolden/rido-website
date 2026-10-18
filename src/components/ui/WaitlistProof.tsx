@@ -13,6 +13,8 @@ import { useEffect, useState } from "react";
  */
 
 const WAITLIST_URL = process.env.NEXT_PUBLIC_WAITLIST_URL || "";
+/** A small count is negative proof; below this the kicker shows instead. */
+const MIN_COUNT = 100;
 
 export function WaitlistProof({
   singular,
@@ -43,7 +45,7 @@ export function WaitlistProof({
     };
   }, []);
 
-  if (!WAITLIST_URL || count === null || count === 0) {
+  if (!WAITLIST_URL || count === null || count < MIN_COUNT) {
     return <span>{fallbackKicker}</span>;
   }
 
