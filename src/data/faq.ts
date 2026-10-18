@@ -31,8 +31,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Qué edad necesito para montar en un Rido?",
     },
     answer: {
-      en: "You must be at least 18 years old to ride a Rido e-scooter or e-bike. You'll need to verify your age when creating an account in the app.",
-      es: "Debes tener al menos 18 años para montar en un patinete o bici eléctrica de Rido. Tendrás que verificar tu edad al crear tu cuenta en la app.",
+      en: "Spanish law sets the minimum age for riding an e-scooter at 15 (Royal Decree 518/2026, in force since 1 October 2026) and sets no minimum for pedal-assist e-bikes. Rido's own minimum is 18 for both, because every ride is a rental contract with insurance cover. You'll verify your age when you create your account in the app.",
+      es: "La ley española fija en 15 años la edad mínima para conducir un patinete eléctrico (Real Decreto 518/2026, en vigor desde el 1 de octubre de 2026) y no fija ninguna para las bicis de pedaleo asistido. En Rido el mínimo es 18 años en ambos casos, porque cada trayecto es un contrato de alquiler con seguro. Verificarás tu edad al crear tu cuenta en la app.",
     },
     category: "getting-started",
   },

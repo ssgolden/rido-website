@@ -37,8 +37,10 @@ deadline for a municipal sanction has passed) and state it.
 ## 4. The €200 helmet fine (Terms, section 7)
 
 The Terms state that riding without a helmet "carries a Local Police/DGT
-fine of €200". Confirm the amount and the legal reference under the rules in
-force since 1 October 2026, or word it without a fixed figure.
+fine of €200". Real Decreto 518/2026, de 24 de junio (BOE-A-2026-13889, in
+force since 1 October 2026) makes the helmet compulsory for every VMP rider,
+and the Ministry of the Interior describes the breach as a serious offence
+fined at €200. Confirm that reference and whether the Terms should cite it.
 
 ## 5. Spanish versions of the legal pages
 
@@ -56,3 +58,13 @@ contracts and general terms), and which version prevails if both exist.
   counts of waitlist-form views, submissions and share clicks, only after the
   visitor accepts the consent banner. No cookies, no IP, device identifier or
   email stored with them.
+
+## 7. Minimum age: the law says 15, Rido says 18
+
+Since 1 October 2026 (Real Decreto 518/2026) the national minimum age to
+ride a VMP is 15, and pedal-assist e-bikes have no legal minimum. The site
+and the Terms keep Rido's own minimum at 18 for both, on the basis that a
+ride is a rental contract with insurance cover. The FAQ now states both
+figures. Confirm that 18 is the right line (capacity of minors to contract,
+the insurer's conditions), or whether 16–17 with parental consent should be
+allowed, which would change the Terms, the app's age check and the FAQ.
