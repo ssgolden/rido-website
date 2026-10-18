@@ -96,7 +96,7 @@ export function Launch({ locale }: { locale: Locale }) {
 
         <ScrollReveal delay={0.1}>
           {/* Deep card with a hairline ring frames the map on the navy surface (no glow outside the hero). */}
-          <div className="rounded-3xl bg-navy-deep p-2 ring-1 ring-white/10 [&_.coverage-map]:max-w-none [&_.coverage-map]:h-[280px] sm:[&_.coverage-map]:h-[420px]">
+          <div className="rounded-3xl bg-navy-deep p-2 ring-1 ring-white/10 [&_.coverage-map]:max-w-none [&_.coverage-map]:h-[260px] sm:[&_.coverage-map]:h-[420px]">
             <CoverageMap towns={announcedCities} />
           </div>
         </ScrollReveal>

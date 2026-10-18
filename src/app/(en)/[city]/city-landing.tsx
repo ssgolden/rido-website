@@ -410,7 +410,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
             </div>
             <ScrollReveal delay={0.1}>
               {/* Navy card keeps the dark map style and its SVG fallback legible on sand. */}
-              <div className="rounded-3xl bg-rido-navy p-2 shadow-2xl shadow-ink/20 [&_.coverage-map]:max-w-none [&_.coverage-map]:h-[280px] sm:[&_.coverage-map]:h-[420px]">
+              <div className="rounded-3xl bg-rido-navy p-2 shadow-2xl shadow-ink/20 [&_.coverage-map]:max-w-none [&_.coverage-map]:h-[260px] sm:[&_.coverage-map]:h-[420px]">
                 <CoverageMap towns={announcedCities.filter((c) => c.region === city.region)} />
               </div>
             </ScrollReveal>
