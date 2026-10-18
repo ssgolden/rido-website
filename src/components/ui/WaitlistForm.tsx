@@ -7,6 +7,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 import { hasAnalyticsConsent, track, type Placement } from "@/lib/analytics";
 import { subscribeConsent } from "@/lib/consent";
+import Link from "next/link";
 import { ShareInvite } from "@/components/ui/ShareInvite";
 import { isValidEmail } from "@/lib/email";
 
@@ -24,6 +25,9 @@ const copy = {
     successBody: "We'll email you the moment Rido launches near you.",
     pendingTitle: "Check your inbox",
     pendingBody: "We've sent you a link to confirm your email. Your place is saved once you click it.",
+    privacyBefore: "By joining you accept our ",
+    privacyLink: "Privacy Policy",
+    privacyAfter: ".",
   },
   es: {
     emailPlaceholder: "tu@email.com",
@@ -38,6 +42,9 @@ const copy = {
     successBody: "Te escribiremos en cuanto Rido llegue a tu zona.",
     pendingTitle: "Revisa tu correo",
     pendingBody: "Te hemos enviado un enlace para confirmar tu correo. Tu plaza queda guardada al pulsarlo.",
+    privacyBefore: "Al apuntarte aceptas nuestra ",
+    privacyLink: "Política de privacidad",
+    privacyAfter: ".",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 
@@ -71,6 +78,7 @@ export function WaitlistForm({
   const errorId = `${inputId}-error`;
   const formRef = useRef<HTMLFormElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLParagraphElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -115,6 +123,7 @@ export function WaitlistForm({
     if (!isValidEmail(email)) {
       setStatus("error");
       setErrorKey("invalid");
+      inputRef.current?.focus();
       track("waitlist_error", { placement, locale, detail: "invalid" });
       return;
     }
@@ -187,6 +196,7 @@ export function WaitlistForm({
       ref={formRef}
       onSubmit={handleSubmit}
       noValidate
+      aria-busy={status === "loading"}
       className={cn("w-full", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto" : "", className)}
     >
       {/* Honeypot for bots: off-screen, skipped by keyboard and screen readers. */}
@@ -201,9 +211,11 @@ export function WaitlistForm({
         <div className="relative flex-1">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" aria-hidden="true" />
           <input
+            ref={inputRef}
             id={inputId}
             type="email"
             inputMode="email"
+            enterKeyHint="send"
             autoComplete="email"
             name="email"
             value={email}
@@ -212,7 +224,8 @@ export function WaitlistForm({
               if (status === "error") setStatus("idle");
             }}
             placeholder={t.emailPlaceholder}
-            disabled={status === "loading"}
+            // readOnly, not disabled: disabling blurs the field on iOS and drops the keyboard.
+            readOnly={status === "loading"}
             aria-invalid={status === "error"}
             aria-describedby={status === "error" ? errorId : undefined}
             className="field w-full min-h-12 pl-11 pr-4 rounded-xl bg-white/[0.06] ring-1 ring-white/15 sm:bg-transparent sm:ring-0 text-white text-base placeholder:text-muted-weak focus:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta cursor-text disabled:opacity-60"
@@ -221,12 +234,12 @@ export function WaitlistForm({
         <button
           type="submit"
           disabled={status === "loading"}
-          className="group btn-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-rido-magenta px-6 font-semibold text-white shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:brightness-110 cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy disabled:opacity-60 disabled:cursor-wait"
+          className="group btn-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-rido-magenta px-6 font-semibold text-white hover:brightness-110 cursor-pointer whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy disabled:opacity-60 disabled:cursor-wait"
         >
           {status === "loading" ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-              <span className="sr-only">{t.sending}</span>
+              <Loader2 className="w-4 h-4 animate-spin motion-reduce:hidden" aria-hidden="true" />
+              <span className="sr-only motion-reduce:not-sr-only">{t.sending}</span>
             </>
           ) : (
             <>
@@ -236,6 +249,13 @@ export function WaitlistForm({
           )}
         </button>
       </div>
+      <p className={cn("mt-2 text-xs text-muted-weak", align === "center" ? "text-center" : "")}>
+        {t.privacyBefore}
+        <Link href="/privacy" prefetch={false} className="underline underline-offset-2 hover:text-white transition-colors cursor-pointer">
+          {t.privacyLink}
+        </Link>
+        {t.privacyAfter}
+      </p>
       {status === "error" && errorKey && (
         <p id={errorId} className={cn("text-sm text-red-300 mt-2", align === "center" ? "text-center" : "")} role="alert">
           {errorKey === "invalid" ? (

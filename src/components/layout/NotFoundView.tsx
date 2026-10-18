@@ -75,7 +75,7 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
         </p>
 
         <h1 id="not-found-heading" className="text-display-2xl font-black text-balance">
-          {t.titleBefore} <span className="text-gradient-brand">{t.titleHighlight}</span>
+          {t.titleBefore} <span className="text-rido-magenta-light">{t.titleHighlight}</span>
         </h1>
 
         <p className="mt-6 text-base sm:text-lg text-white/60 leading-relaxed">{t.body}</p>
@@ -83,7 +83,7 @@ export function NotFoundView({ locale = "en" }: { locale?: Locale }) {
         <div className="mt-10 flex justify-center">
           <a
             href={homeHref}
-            className="btn-ripple btn-lift inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+            className="btn-lift inline-flex items-center justify-center gap-2 px-8 py-4 text-lg font-semibold rounded-xl bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
           >
             <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>{t.home}</span>

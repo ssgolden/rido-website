@@ -271,7 +271,6 @@ export function PhoneMockup({ activeStep, t, className }: PhoneMockupProps) {
           </div>
         ))}
       </div>
-      <div className="absolute inset-0 -z-10 rounded-[40px] bg-rido-magenta/20 blur-3xl scale-125" />
       <p className="mt-4 text-center text-[11px] text-muted-weak">{t.illustrative}</p>
     </div>
     </PhoneCopyContext.Provider>

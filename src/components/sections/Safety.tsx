@@ -1,4 +1,5 @@
-import { Shield, HardHat, WineOff, User, Check, Leaf } from "lucide-react";
+import { Shield, HardHat, WineOff, User, Leaf } from "lucide-react";
+import { FeatureList } from "@/components/ui/FeatureList";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -88,16 +89,7 @@ export function Safety({ locale }: { locale: Locale }) {
 
           <ScrollReveal>
             <h3 className="text-sm font-semibold text-white">{t.complianceTitle}</h3>
-            <ul className="mt-4 space-y-3">
-              {t.compliancePoints.map((point) => (
-                <li key={point} className="flex items-start gap-3 text-muted-strong">
-                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rido-green/15">
-                    <Check className="w-3.5 h-3.5 text-rido-green" aria-hidden="true" />
-                  </span>
-                  {point}
-                </li>
-              ))}
-            </ul>
+            <FeatureList items={t.compliancePoints} accent="positive" className="mt-4" />
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>

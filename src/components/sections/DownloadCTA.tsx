@@ -1,4 +1,5 @@
-import { Check, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
+import { FeatureList } from "@/components/ui/FeatureList";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
 import { ImageFrame } from "@/components/ui/ImageFrame";
@@ -52,24 +53,16 @@ export function DownloadCTA({ locale, sharePath }: { locale: Locale; sharePath?:
   return (
     <section id="download" aria-label={t.sectionAria} className="py-16 sm:py-24 px-4 sm:px-6">
       <ScrollReveal>
-        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-[2rem] px-6 py-14 sm:px-12 sm:py-16 lg:py-14 bg-gradient-to-br from-rido-magenta/30 via-rido-navy-light to-rido-navy ring-1 ring-white/10">
-          <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-rido-magenta/25 blur-3xl" aria-hidden="true" />
+        <div className="relative max-w-6xl mx-auto overflow-hidden rounded-3xl px-6 py-14 sm:px-12 sm:py-16 lg:py-14 bg-rido-navy-light ring-1 ring-white/10">
           <div className="relative grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14 items-center">
             <div className="text-center lg:text-left">
               <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-black text-balance">{t.title}</h2>
               <p className="mt-4 text-base sm:text-lg text-muted leading-relaxed">{t.intro}</p>
 
-              <p className="mt-7 text-xs font-semibold uppercase tracking-[0.14em] text-rido-magenta-light">{t.benefitsLabel}</p>
-              <ul className="mt-3 inline-flex flex-col gap-2.5 text-left">
-                {t.benefits.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm sm:text-base text-white/90">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-rido-magenta/20" aria-hidden="true">
-                      <Check className="h-3.5 w-3.5 text-rido-magenta-light" />
-                    </span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-7 text-sm font-semibold text-rido-magenta-light">{t.benefitsLabel}</p>
+              <div className="mt-3 inline-block text-left">
+                <FeatureList items={t.benefits} />
+              </div>
 
               <WaitlistForm placement="closing" sharePath={sharePath} className="mt-8 max-w-lg mx-auto lg:mx-0" />
               <p className="mt-5 inline-flex items-center gap-2 text-xs sm:text-sm text-muted">

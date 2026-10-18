@@ -1,4 +1,5 @@
 import type { Viewport } from "next";
+import { preload } from "react-dom";
 import { SmoothScrollProvider } from "@/components/ui/SmoothScrollProvider";
 import { ClientCookieConsent } from "@/components/ui/ClientCookieConsent";
 import { ConsentAwareAnalytics } from "@/components/ui/ConsentAwareAnalytics";
@@ -32,15 +33,18 @@ export function RootDocument({
 }) {
   // Site-wide JSON-LD only; page-specific blocks render on their own pages.
   const schemas = getSiteSchemas();
+  // One preload hint per font. (A <link rel="preload"> in JSX is hoisted AND
+  // rendered in place by React 19, so each font was requested twice.)
+  for (const font of ["/fonts/inter-latin-wght-normal.woff2", "/fonts/sora-latin-wght-normal.woff2"]) {
+    preload(font, { as: "font", type: "font/woff2", crossOrigin: "anonymous" });
+  }
 
   return (
     <html lang={lang} className="dark" suppressHydrationWarning>
-      {/* Font preloads and JSON-LD are not covered by the Metadata API. */}
+      {/* The reveal boot script and JSON-LD are not covered by the Metadata API. */}
       {/* eslint-disable-next-line @next/next/no-head-element */}
       <head>
         <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
-        <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/sora-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
 
         {process.env.NEXT_PUBLIC_GSC_VERIFICATION ? (
           <meta
@@ -64,12 +68,13 @@ export function RootDocument({
         >
           {lang === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
+        {/* First in the tab order after the skip link: consent is reachable before the page. */}
+        <ClientCookieConsent />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <RevealObserver />
         {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
             which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
         {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
-        <ClientCookieConsent />
       </body>
     </html>
   );

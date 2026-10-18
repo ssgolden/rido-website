@@ -10,8 +10,6 @@ export interface FaqCopy {
   label: string;
   title: string;
   intro: string;
-  searchPlaceholder: string;
-  searchAria: string;
   categories: Record<CategoryFilter, string>;
   noResults: string;
   showAllBefore: string;
@@ -25,8 +23,6 @@ export const faqCopy = {
     label: "FAQ",
     title: "Questions, answered",
     intro: "Pricing, safety, rules and everything else about riding with Rido.",
-    searchPlaceholder: "Search questions…",
-    searchAria: "Search frequently asked questions",
     categories: {
       all: "All",
       "getting-started": "Getting started",
@@ -34,7 +30,7 @@ export const faqCopy = {
       safety: "Safety",
       legal: "Legal",
     },
-    noResults: "No questions match your search. Try different keywords.",
+    noResults: "No questions in this category yet.",
     showAllBefore: "Show all",
     showAllAfter: "questions",
     stillQuestions: "Still have questions? Email info@rido.bike",
@@ -44,8 +40,6 @@ export const faqCopy = {
     label: "Preguntas frecuentes",
     title: "Resolvemos tus dudas",
     intro: "Precios, seguridad, normas y todo lo demás para moverte con Rido.",
-    searchPlaceholder: "Busca una pregunta…",
-    searchAria: "Buscar en las preguntas frecuentes",
     categories: {
       all: "Todas",
       "getting-started": "Primeros pasos",
@@ -53,7 +47,7 @@ export const faqCopy = {
       safety: "Seguridad",
       legal: "Legal",
     },
-    noResults: "Ninguna pregunta coincide con tu búsqueda. Prueba con otras palabras.",
+    noResults: "Todavía no hay preguntas en esta categoría.",
     showAllBefore: "Ver las",
     showAllAfter: "preguntas",
     stillQuestions: "¿Sigues con dudas? Escríbenos a info@rido.bike",

@@ -4,8 +4,9 @@
 # Syntax: https://docs.netlify.com/routing/headers/
 #
 # Caching: everything under /_next/static has a content hash in its name, so
-# it is cached for a year and never revalidated. Fonts and images keep stable
-# names, so they get shorter lifetimes (rename a font file if you change it).
+# it is cached for a year and never revalidated. Fonts are treated the same
+# (rename the file if you ever change a font). Images keep stable names, so
+# they get a shorter lifetime.
 # HTML and RSC payloads keep Netlify's default (always revalidated), which is
 # what makes each deploy visible immediately.
 #
@@ -33,7 +34,7 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
-  Cache-Control: public, max-age=2592000
+  Cache-Control: public, max-age=31536000, immutable
 
 /images/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400

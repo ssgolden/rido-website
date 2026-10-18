@@ -30,8 +30,11 @@ export const metadata: Metadata = {
     "e-scooter Torrevieja",
   ],
   icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-touch-icon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
   manifest: "/manifest.json",
   openGraph: {

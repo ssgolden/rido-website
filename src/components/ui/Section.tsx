@@ -4,7 +4,8 @@ export type SectionTone = "navy" | "deep" | "sand";
 
 const toneClasses: Record<SectionTone, string> = {
   navy: "bg-rido-navy text-white",
-  deep: "bg-navy-deep text-white",
+  // A hairline on both edges: deep is only 2% darker than navy, so the surface change needs a cue.
+  deep: "bg-navy-deep text-white border-y border-white/[0.08]",
   sand: "bg-sand text-ink",
 };
 

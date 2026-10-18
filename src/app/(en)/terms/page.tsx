@@ -44,7 +44,7 @@ export default function TermsPage() {
       />
       <div className="legal-warning">
         <div className="flex items-center gap-3 mb-2">
-          <AlertTriangle className="w-5 h-5 text-rido-yellow" aria-hidden="true" />
+          <AlertTriangle className="w-5 h-5 text-rido-magenta-light" aria-hidden="true" />
           <h2 className="!mt-0 !mb-0 !text-lg text-white font-bold">Please Read Carefully</h2>
         </div>
         <p className="!mb-0">
@@ -127,7 +127,7 @@ export default function TermsPage() {
       <h3>5.1 General Damages</h3>
       <div className="legal-warning">
         <div className="flex items-center gap-3 mb-2">
-          <Scale className="w-5 h-5 text-rido-yellow" aria-hidden="true" />
+          <Scale className="w-5 h-5 text-rido-magenta-light" aria-hidden="true" />
           <p className="!mb-0 text-white font-bold">Liability Notice</p>
         </div>
         <p className="!mb-0">

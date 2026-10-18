@@ -102,7 +102,7 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
               </span>
               {t.badge}
             </span>
-            <span className="text-xs sm:text-sm text-muted">
+            <span className="hidden sm:inline text-xs sm:text-sm text-muted">
               <WaitlistProof singular={t.waitlistSingular} plural={t.waitlistPlural} fallbackKicker={t.waitlistKicker} />
             </span>
           </div>
@@ -111,7 +111,7 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
             {t.headlineWords.map((w, i) => (
               <span key={`${w}-${i}`}>
                 <span
-                  className={`hero-in inline-block ${i >= highlightFrom ? "text-gradient-brand" : ""}`}
+                  className={`hero-in inline-block ${i >= highlightFrom ? "text-rido-magenta-light" : ""}`}
                   style={delay(0.08 + i * STAGGER.text)}
                 >
                   {w}
@@ -144,7 +144,7 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
             </span>
             <a
               href="#how-it-works"
-              className="group inline-flex items-center gap-1.5 min-h-11 font-semibold text-white hover:text-rido-magenta-light transition-colors cursor-pointer"
+              className="group hidden sm:inline-flex items-center gap-1.5 min-h-11 font-semibold text-white hover:text-rido-magenta-light transition-colors cursor-pointer"
             >
               {t.secondary}
               <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />

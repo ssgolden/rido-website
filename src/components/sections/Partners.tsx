@@ -101,7 +101,7 @@ export function Partners({ locale, asPage = false }: { locale: Locale; asPage?: 
         <a
           href="mailto:info@rido.bike?subject=Partner%20inquiry%20—%20Rido"
           aria-label={t.ctaAria}
-          className="group btn-lift mt-10 inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-xl bg-rido-magenta text-white font-semibold shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer"
+          className="group btn-lift mt-10 inline-flex items-center gap-2 px-6 py-3 min-h-[44px] rounded-xl bg-rido-magenta text-white font-semibold hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy cursor-pointer"
         >
           <span>{t.ctaLabel}</span>
           <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />

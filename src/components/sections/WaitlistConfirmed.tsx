@@ -105,7 +105,7 @@ export function WaitlistConfirmed() {
               type="button"
               onClick={onConfirm}
               disabled={phase === "confirming"}
-              className="btn-lift mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-rido-magenta px-7 font-semibold text-white shadow-[0_8px_30px_rgba(222,4,152,0.35)] hover:brightness-110 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy disabled:opacity-60 disabled:cursor-wait"
+              className="btn-lift mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-rido-magenta px-7 font-semibold text-white hover:brightness-110 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy disabled:opacity-60 disabled:cursor-wait"
             >
               {phase === "confirming" ? <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" /> : null}
               {phase === "confirming" ? t.confirming : t.confirm}
