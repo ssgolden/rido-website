@@ -47,7 +47,7 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 - **Top Speed**: 25 km/h
 - **Weight Limit**: 120 kg
 - **Battery**: Swappable
-- **Features**: Helmet provided, Front and rear lights, dual brakes (front + rear), turn signals, beginner mode (15 km/h), GPS tracking & geofencing
+- **Features**: Certified helmet docked on the stem, front and rear lights with brake light and reflectors, dual brakes (front and rear), beginner mode (15 km/h), GPS tracking and geofencing
 
 ### Rido Bike (E-Bike)
 - **Tagline**: Pedal further, effort less
@@ -56,7 +56,7 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 - **Assist Speed**: 25 km/h
 - **Weight Limit**: 130 kg
 - **Battery**: Swappable
-- **Features**: Electric pedal assist, adjustable saddle height, front cargo basket, integrated lights, puncture-resistant tires, step-through frame design
+- **Features**: Electric pedal assist, front and rear integrated lights and reflectors, puncture-resistant tyres, adjustable saddle and step-through frame, front cargo basket
 
 ---
 
@@ -145,13 +145,7 @@ Park in designated areas shown in the app. These are typically bike rack zones o
 Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.
 
 ### How much does it cost?
-Fares will be announced at launch. What will not change: you always see the price before every ride, with no minimum top-up and no hidden fees.
-
-### What is the Rido Pass?
-The Rido Pass is the frequent-rider membership. Exact pricing will be announced at launch.
-
-### Can I get a refund for unused balance?
-Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details.
+Fares will be announced at launch. What will not change: you always see the price before every ride, there is no minimum top-up and no hidden fees, and any unused balance is refundable.
 
 ### What if the battery dies during my ride?
 Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.

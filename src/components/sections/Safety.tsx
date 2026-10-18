@@ -19,7 +19,7 @@ interface SafetyCopy {
   intro: string;
   complianceTitle: string;
   compliancePoints: readonly [string, string, string, string];
-  sustainabilityTitle: string;
+  /** One line, no heading. */
   sustainability: string;
   rulesLabel: string;
   /** Fixed-length tuple: keeps both locales aligned with `safetyIcons`. */
@@ -34,46 +34,44 @@ const copy = {
     sectionAria: "Safety and trust",
     label: "Safety & trust",
     title: "Helmet included. Rules respected.",
-    intro: "Spain's new VMP rules have been in force since 1 October 2026. Rido was built to them from day one.",
-    complianceTitle: "Compliant from day one",
+    intro: "Spain's new VMP rules have been in force since 1 October 2026. Rido is being built to them, so the fleet is compliant on its first day.",
+    complianceTitle: "Compliant at launch",
     compliancePoints: [
       "DGT-certified e-scooter hardware",
       "Registered fleet with identification sticker",
       "Civil liability insurance on every vehicle",
       "Anti-tampering motor, 25 km/h max by design",
     ],
-    sustainabilityTitle: "Our commitments",
     sustainability:
-      "Carbon-neutral operations through verified credits and green energy, swappable and recycled batteries, and every vehicle recycled at end of life. Audited figures published after our first year.",
+      "Our commitment: carbon-neutral operations, swappable and recycled batteries, every vehicle recycled at end of life — audited figures after our first year.",
     rulesLabel: "Rider rules",
     items: [
-      { title: "Helmet on, every ride", description: "A certified helmet is docked on every scooter. Since 1 October 2026 it's mandatory nationwide for e-scooter riders." },
-      { title: "One rider only", description: "One scooter, one rider. Tandem detection makes sure nobody doubles up." },
-      { title: "Stay sober", description: "No riding under the influence. At peak hours, a quick reaction test may be required to unlock." },
-      { title: "Park responsibly", description: "Park in the zones shown in the app and keep pavements clear for pedestrians." },
+      { title: "Helmet on, every ride", description: "A certified helmet will be docked on every scooter. Since 1 October 2026 it's mandatory nationwide for e-scooter riders." },
+      { title: "One rider only", description: "One scooter, one rider. At launch, tandem detection will make sure nobody doubles up." },
+      { title: "Stay sober", description: "No riding under the influence. At peak hours, the app will be able to ask for a quick reaction test before unlocking." },
+      { title: "Park responsibly", description: "Park in the zones the app will show and keep pavements clear for pedestrians." },
     ],
   },
   es: {
     sectionAria: "Seguridad y confianza",
     label: "Seguridad y confianza",
     title: "Casco incluido. Normas respetadas.",
-    intro: "La nueva normativa VMP española está en vigor desde el 1 de octubre de 2026. Rido se diseñó para cumplirla desde el primer día.",
-    complianceTitle: "Cumplimos desde el primer día",
+    intro: "La nueva normativa VMP española está en vigor desde el 1 de octubre de 2026. Rido se está construyendo para cumplirla, así que la flota cumple desde su primer día.",
+    complianceTitle: "Cumplimos desde el lanzamiento",
     compliancePoints: [
       "Hardware de patinete certificado por la DGT",
       "Flota inscrita con etiqueta identificativa",
       "Seguro de responsabilidad civil en cada vehículo",
       "Motor antimanipulación, máx. 25 km/h de fábrica",
     ],
-    sustainabilityTitle: "Nuestros compromisos",
     sustainability:
-      "Operaciones neutras en carbono con créditos verificados y energía verde, baterías intercambiables y recicladas, y cada vehículo reciclado al final de su vida útil. Publicaremos cifras auditadas tras el primer año.",
+      "Nuestro compromiso: operaciones neutras en carbono, baterías intercambiables y recicladas, cada vehículo reciclado al final de su vida útil — cifras auditadas tras el primer año.",
     rulesLabel: "Normas para circular",
     items: [
-      { title: "Casco puesto, siempre", description: "Cada patinete lleva un casco certificado acoplado. Desde el 1 de octubre de 2026 es obligatorio en todo el país." },
-      { title: "Solo una persona", description: "Un patinete, una persona. La detección de tándem evita que nadie monte en pareja." },
-      { title: "Nada de alcohol", description: "No conduzcas bajo los efectos del alcohol. En horas punta puede pedirse un test de reacción para desbloquear." },
-      { title: "Aparca con responsabilidad", description: "Aparca en las zonas que marca la app y deja las aceras libres para los peatones." },
+      { title: "Casco puesto, siempre", description: "Cada patinete llevará un casco certificado acoplado. Desde el 1 de octubre de 2026 es obligatorio en todo el país." },
+      { title: "Solo una persona", description: "Un patinete, una persona. Desde el lanzamiento, la detección de tándem evitará que nadie monte en pareja." },
+      { title: "Nada de alcohol", description: "No conduzcas bajo los efectos del alcohol. En horas punta, la app podrá pedir un test de reacción rápido antes de desbloquear." },
+      { title: "Aparca con responsabilidad", description: "Aparca en las zonas que marcará la app y deja las aceras libres para los peatones." },
     ],
   },
 } as const satisfies Record<Locale, SafetyCopy>;
@@ -93,13 +91,10 @@ export function Safety({ locale }: { locale: Locale }) {
           </ScrollReveal>
 
           <ScrollReveal delay={0.1}>
-            <div className="mt-10 flex gap-4 border-t border-white/10 pt-8">
+            <p className="mt-8 flex gap-3 border-t border-white/10 pt-6 text-sm text-muted leading-relaxed">
               <Leaf className="w-5 h-5 shrink-0 text-rido-green mt-0.5" aria-hidden="true" />
-              <div>
-                <h3 className="text-sm font-semibold text-white">{t.sustainabilityTitle}</h3>
-                <p className="mt-2 text-sm text-muted leading-relaxed">{t.sustainability}</p>
-              </div>
-            </div>
+              <span>{t.sustainability}</span>
+            </p>
           </ScrollReveal>
         </div>
 

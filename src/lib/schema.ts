@@ -254,8 +254,8 @@ export const breadcrumbSchema = {
     { "@type": "ListItem", position: 1, name: "Home", item: baseUrl },
     { "@type": "ListItem", position: 2, name: "How It Works", item: `${baseUrl}/#how-it-works` },
     { "@type": "ListItem", position: 3, name: "Vehicles", item: `${baseUrl}/#vehicles` },
-    { "@type": "ListItem", position: 4, name: "FAQ", item: `${baseUrl}/#faq` },
-    { "@type": "ListItem", position: 5, name: "Cities", item: `${baseUrl}/#cities` },
+    { "@type": "ListItem", position: 4, name: "Cities", item: `${baseUrl}/#cities` },
+    { "@type": "ListItem", position: 5, name: "FAQ", item: `${baseUrl}/#faq` },
   ],
 };
 
