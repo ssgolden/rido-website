@@ -19,7 +19,10 @@ export const metadata: Metadata = {
 
 export default function CareersPage() {
   return (
-    <LegalPage title="Careers">
+    <LegalPage
+      title="Careers"
+      esIntro="Empleo en Rido: ahora mismo no hay vacantes publicadas. Si quieres enviarnos tu CV, escribe a info@rido.bike con el asunto «Careers»."
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

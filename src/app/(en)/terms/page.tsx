@@ -28,7 +28,11 @@ const FEES = [
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms and Conditions" lastUpdated="October 2026">
+    <LegalPage
+      title="Terms and Conditions"
+      lastUpdated="October 2026"
+      esIntro="Términos y condiciones del servicio de alquiler de patinetes y bicis eléctricas de Rido (Go2 Place S.L., NIF B01745405): registro, uso del vehículo, aparcamiento y foto de fin de viaje, casco, tarifas y penalizaciones, multas y ley aplicable."
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

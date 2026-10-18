@@ -17,7 +17,11 @@ export const metadata: Metadata = {
 
 export default function CookiePolicyPage() {
   return (
-    <LegalPage title="Cookie Policy" lastUpdated="October 2026">
+    <LegalPage
+      title="Cookie Policy"
+      lastUpdated="October 2026"
+      esIntro="Política de cookies del sitio web de Rido (Go2 Place S.L., NIF B01745405): qué cookies y tecnologías similares utilizamos, con qué fin y cómo gestionar o retirar tu consentimiento."
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

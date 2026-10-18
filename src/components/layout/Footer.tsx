@@ -13,7 +13,9 @@ type FooterColumn = { heading: string; links: FooterLink[]; cookieSettings?: boo
 // The Footer is a server component, so it receives the locale as a prop
 // (default "en") instead of reading context. Section links are written
 // home-relative ("/#faq", "/es#faq") so they work from city pages and
-// /partners too. Legal pages and careers are EN-only this phase.
+// /partners too. Legal pages and careers are EN-only this phase: the ES
+// column says so with an "(EN)" suffix instead of linking into English
+// silently (drop the suffix when the /es twin ships).
 function columnsFor(locale: Locale): FooterColumn[] {
   const home = locale === "es" ? "/es" : "/";
   const prefix = locale === "es" ? "/es" : "";
@@ -34,7 +36,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
         links: [
           { label: "Seguridad", href: `${home}#safety` },
           { label: "Socios", href: `${prefix}/partners` },
-          { label: "Empleo", href: "/careers" },
+          { label: "Empleo (EN)", href: "/careers" },
           { label: "Contacto", href: "mailto:info@rido.bike" },
         ],
       },
@@ -42,9 +44,9 @@ function columnsFor(locale: Locale): FooterColumn[] {
         heading: "Legal",
         cookieSettings: true,
         links: [
-          { label: "Política de privacidad", href: "/privacy" },
-          { label: "Términos del servicio", href: "/terms" },
-          { label: "Política de cookies", href: "/politica-cookies" },
+          { label: "Política de privacidad (EN)", href: "/privacy" },
+          { label: "Términos del servicio (EN)", href: "/terms" },
+          { label: "Política de cookies (EN)", href: "/politica-cookies" },
         ],
       },
     ];

@@ -19,7 +19,11 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <LegalPage title="Privacy Policy" lastUpdated="October 2026">
+    <LegalPage
+      title="Privacy Policy"
+      lastUpdated="October 2026"
+      esIntro="Política de privacidad de Rido (Go2 Place S.L., NIF B01745405): qué datos personales recogemos, para qué los usamos, con quién los compartimos y cuáles son tus derechos según el RGPD y la LOPDGDD."
+    >
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

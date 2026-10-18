@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useSyncExternalStore, type MouseEvent } from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/Button";
@@ -10,19 +11,29 @@ import { Menu, X, ArrowRight } from "lucide-react";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { primaryCity } from "@/data/cities";
 
+// Section anchors follow the homepage order: Hero → How it works → Fleet →
+// Launch (#cities, see Launch.tsx) → Safety → FAQ → Waitlist (#download).
 const en = {
   homeAria: "Rido home",
   joinWaitlist: "Join the waitlist",
   joinShort: "Join",
   openMenu: "Open menu",
   closeMenu: "Close menu",
+  language: "Language",
   navLinks: [
-    { label: "Torrevieja", href: "#cities" },
     { label: "How it works", href: "#how-it-works" },
     { label: "Fleet", href: "#vehicles" },
+    { label: "Launch", href: "#cities" },
     { label: "Safety", href: "#safety" },
     { label: "FAQ", href: "#faq" },
+  ],
+  // Standalone pages, mobile menu only (the desktop bar stays section-only).
+  pageLinks: [
+    ...(primaryCity ? [{ label: `Rido in ${primaryCity.name}`, href: `/${primaryCity.slug}` }] : []),
+    { label: "Partners", href: "/partners" },
   ],
 };
 
@@ -34,15 +45,23 @@ const copy: Record<Locale, typeof en> = {
     joinShort: "Únete",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
+    language: "Idioma",
     navLinks: [
-      { label: "Torrevieja", href: "#cities" },
       { label: "Cómo funciona", href: "#how-it-works" },
       { label: "Flota", href: "#vehicles" },
+      { label: "Lanzamiento", href: "#cities" },
       { label: "Seguridad", href: "#safety" },
       { label: "Preguntas", href: "#faq" },
     ],
+    pageLinks: [
+      ...(primaryCity ? [{ label: `Rido en ${primaryCity.name}`, href: `/es/${primaryCity.slug}` }] : []),
+      { label: "Socios", href: "/es/partners" },
+    ],
   },
 };
+
+/** Homepage section ids the active-section observer watches (hash links only). */
+const SECTION_IDS = en.navLinks.map((l) => l.href.slice(1));
 
 function useScrolledPast(threshold: number, root: HTMLElement | null) {
   return useSyncExternalStore(
@@ -153,12 +172,11 @@ export function Navbar() {
   }, [mobileOpen]);
 
   useEffect(() => {
-    const sectionIds = copy.en.navLinks.map((l) => l.href.replace("#", ""));
     const observer = new IntersectionObserver(
       (entries) => { entries.forEach((entry) => { if (entry.isIntersecting) setActiveSection(entry.target.id); }); },
       { root: scrollRoot, rootMargin: "-45% 0px -45% 0px" }
     );
-    sectionIds.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
+    SECTION_IDS.forEach((id) => { const el = document.getElementById(id); if (el) observer.observe(el); });
     return () => observer.disconnect();
   }, [scrollRoot]);
 
@@ -221,6 +239,29 @@ export function Navbar() {
               {navLinks.map((link) => (
                 <a key={link.href} href={hrefFor(link.href)} aria-current={activeSection === link.href.replace("#", "") ? "true" : undefined} className={cn("flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer", activeSection === link.href.replace("#", "") ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light")} onClick={(e) => { followAnchor(e, link.href); setMobileOpen(false); }}>{link.label}</a>
               ))}
+              {/* Standalone pages (city page, partners) and the language toggle: both
+                  languages and every top-level page are reachable from the menu. */}
+              <div className="mt-2 border-t border-white/10 pt-2">
+                {t.pageLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    prefetch={false}
+                    aria-current={pathname === link.href ? "page" : undefined}
+                    className={cn(
+                      "flex items-center py-3 min-h-[44px] text-base transition-colors cursor-pointer",
+                      pathname === link.href ? "text-rido-magenta-light font-semibold" : "text-muted-strong hover:text-rido-magenta-light"
+                    )}
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-2 flex min-h-[44px] items-center justify-between gap-4 border-t border-white/10 pt-2">
+                <span className="text-sm text-muted-weak">{t.language}</span>
+                <LanguageSwitcher size="md" />
+              </div>
               <div className="mt-3"><Button as="a" href={hrefFor("#download")} onClick={(e) => { followAnchor(e, "#download"); setMobileOpen(false); }} size="sm" className="w-full gap-2 min-h-[44px]"><span>{t.joinWaitlist}</span><ArrowRight className="w-4 h-4" /></Button></div>
             </div>
           </div>
