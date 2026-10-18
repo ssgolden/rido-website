@@ -124,7 +124,7 @@ Fares will be announced at launch. The public site does not list unlock fees, pe
 ## Frequently Asked Questions
 
 ### What age do I need to be to ride a Rido?
-You must be at least 18 years old to ride a Rido e-scooter or e-bike. You'll need to verify your age when creating an account in the app.
+Spanish law sets the minimum age for riding an e-scooter at 15 (Royal Decree 518/2026, in force since 1 October 2026) and sets no minimum for pedal-assist e-bikes. Rido's own minimum is 18 for both, because every ride is a rental contract with insurance cover. You'll verify your age when you create your account in the app.
 
 ### How do I find and unlock a Rido vehicle?
 Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.
