@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, type CSSProperties } from "react";
-import { Smartphone, QrCode, Bike, ParkingCircle } from "lucide-react";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { PhoneMockup } from "@/components/ui/PhoneScreens";
 import { cn } from "@/lib/utils";
@@ -9,14 +8,6 @@ import type { HowItWorksCopy } from "@/components/sections/HowItWorks.copy";
 import type { PhoneCopy } from "@/components/ui/PhoneScreens.copy";
 import { useScrollTo } from "@/components/ui/SmoothScrollProvider";
 import { useScrollFrame } from "@/hooks/useScrollFrame";
-
-/** Step icons, in step order (components can't be passed from the server). */
-const STEP_ICONS = [Smartphone, QrCode, Bike, ParkingCircle] as const;
-
-function StepIcon({ index }: { index: number }) {
-  const Icon = STEP_ICONS[index] ?? Smartphone;
-  return <Icon className="w-6 h-6 text-rido-magenta-light" aria-hidden="true" />;
-}
 
 /** Scroll distance per step, in small-viewport heights. */
 const VH_PER_STEP = 75;
@@ -82,8 +73,8 @@ export function HowItWorks({ t, phone }: { t: HowItWorksCopy; phone: PhoneCopy }
 
         <div className="sticky top-0 flex h-[calc(100svh-var(--site-header-offset,5.5rem))] items-center motion-reduce:static motion-reduce:h-auto">
           <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 motion-reduce:md:grid-cols-1 gap-6 md:gap-16 items-center">
-            {/* Phone: first on phones, right column on md+. Hidden under reduced motion and on short phones (no room beside the step copy). */}
-            <div className="order-first md:order-last flex justify-center lg:justify-end motion-reduce:hidden max-md:[@media(max-height:700px)]:hidden">
+            {/* Phone: first on phones, right column on md+; static (step 1) under reduced motion. Hidden on short phones (no room beside the step copy). */}
+            <div className="order-first md:order-last flex justify-center lg:justify-end max-md:[@media(max-height:700px)]:hidden">
               <div className="h-[330px] [@media(min-height:760px)]:h-[390px] md:!h-auto">
                 <div className="origin-top scale-[0.6] [@media(min-height:760px)]:scale-[0.7] md:!scale-100">
                   <PhoneMockup activeStep={activeStep} t={phone} />
@@ -138,15 +129,10 @@ export function HowItWorks({ t, phone }: { t: HowItWorksCopy; phone: PhoneCopy }
                         active ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
                       )}
                     >
-                      <div className="flex items-center gap-4">
-                        <span className="font-display text-5xl sm:text-6xl font-black text-rido-magenta-light/90 tabular-nums" aria-hidden="true">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-rido-magenta/15">
-                          <StepIcon index={i} />
-                        </span>
-                      </div>
-                      <h3 className="mt-4 font-display text-2xl sm:text-3xl font-black">{step.title}</h3>
+                      <span className="block font-display text-3xl sm:text-4xl font-black text-muted-weak tabular-nums" aria-hidden="true">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="mt-3 font-display text-xl sm:text-2xl font-black">{step.title}</h3>
                       <p className="mt-3 text-base sm:text-lg text-muted leading-relaxed max-w-md">{step.description}</p>
                     </li>
                   );

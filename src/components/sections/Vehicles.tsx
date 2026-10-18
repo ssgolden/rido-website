@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import type { FleetItem, VehiclesCopy } from "@/components/sections/Vehicles.copy";
-import { Check } from "lucide-react";
 import Image from "next/image";
 import { STAGGER } from "@/lib/motion";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { FeatureList } from "@/components/ui/FeatureList";
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { withBase } from "@/lib/basePath";
 import { cn } from "@/lib/utils";
@@ -124,9 +124,9 @@ export function Vehicles({ t, fleet }: { t: VehiclesCopy; fleet: FleetItem[] }) 
           <p className="mt-5 text-ink-muted leading-relaxed">{v.description}</p>
 
           <h4 className="sr-only">{t.specsLabel}</h4>
-          <dl className="mt-8 grid grid-cols-2 border-t border-ink/10">
-            {v.specs.map((spec, i) => (
-              <div key={spec.label} className={cn("min-w-0 py-5 border-b border-ink/10", i % 2 === 0 ? "pr-4" : "pl-4 border-l")}>
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 border-t border-ink/10">
+            {v.specs.map((spec) => (
+              <div key={spec.label} className="min-w-0 py-5 border-b border-ink/10">
                 <dt className="text-sm text-ink-muted">{spec.label}</dt>
                 <dd className="mt-1 font-display text-[clamp(1rem,calc(6vw_-_4px),1.5rem)] sm:text-3xl font-black text-ink">{spec.value}</dd>
               </div>
@@ -134,14 +134,7 @@ export function Vehicles({ t, fleet }: { t: VehiclesCopy; fleet: FleetItem[] }) 
           </dl>
 
           <h4 className="mt-8 text-sm font-semibold text-ink">{t.featuresLabel}</h4>
-          <ul className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-            {v.features.map((feature) => (
-              <li key={feature} className="flex items-start gap-2 text-sm text-ink-muted">
-                <Check className="mt-0.5 w-4 h-4 shrink-0 text-rido-magenta-dark" aria-hidden="true" />
-                <span>{feature}</span>
-              </li>
-            ))}
-          </ul>
+          <FeatureList items={v.features} tone="sand" className="mt-3 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2" />
         </ScrollReveal>
       </div>
     </Section>

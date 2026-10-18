@@ -13,7 +13,7 @@ const copy = {
   en: {
     aria: "Where Rido is launching",
     label: "Where we're launching",
-    title: "Torrevieja first. The Costa del Sol next.",
+    title: "Torrevieja first. The\u00A0Costa del Sol next.",
     intro:
       "We're a local team, based just down the coast in Orihuela Costa. Rido launches in Torrevieja in the coming weeks with shared e-scooters and e-bikes.",
     soon: "Launching in the coming weeks",

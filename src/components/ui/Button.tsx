@@ -22,7 +22,7 @@ type ButtonProps = ButtonAsButton | ButtonAsLink;
 const variantClasses = (variant: ButtonVariant) => {
   switch (variant) {
     case "primary":
-      return "bg-rido-magenta hover:bg-rido-magenta-dark text-white shadow-lg shadow-rido-magenta/25 hover:shadow-xl hover:shadow-rido-magenta/30";
+      return "bg-rido-magenta hover:bg-rido-magenta-dark text-white";
     case "secondary":
       return "glass text-white hover:bg-white/15";
     case "outline":
@@ -44,7 +44,7 @@ const sizeClasses = (size: ButtonSize) => {
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   ({ className, variant = "primary", size = "md", children, ...props }, ref) => {
     const classes = cn(
-      "btn-ripple btn-lift inline-flex items-center justify-center font-semibold rounded-xl cursor-pointer",
+      "btn-lift inline-flex items-center justify-center font-semibold rounded-xl cursor-pointer",
       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy",
       variantClasses(variant),
       sizeClasses(size),

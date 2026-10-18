@@ -129,7 +129,7 @@ export function ComingSoon() {
         <Badge variant="magenta" className="mt-8 mb-5 cursor-default">{t.badge}</Badge>
 
         <h1 className="text-display-2xl font-black text-balance">
-          {t.heading1} <span className="text-gradient-brand">{t.heading2}</span>
+          {t.heading1} <span className="text-rido-magenta-light">{t.heading2}</span>
         </h1>
 
         <p className="mt-5 text-lg text-muted leading-relaxed max-w-md">{t.sub}</p>

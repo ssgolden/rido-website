@@ -79,12 +79,13 @@
   --text-display-xl: clamp(2rem, 1.5rem + 2.5vw, 3rem);
   --text-display-xl--line-height: 1.1;
   --text-display-xl--letter-spacing: -0.02em;
+  /* Radius scale: cards and panels, controls (buttons, inputs), chips. */
+  --radius-card: 1.25rem;
+  --radius-control: 0.75rem;
+  --radius-chip: 9999px;
   --animate-fade-in: fade-in 0.6s ease-out forwards;
   --animate-slide-up: slide-up 0.6s ease-out forwards;
-  --animate-float: float 3s ease-in-out infinite;
-  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
   --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
-  --animate-shimmer: shimmer 3s ease-in-out infinite;
   --animate-hero-orb-1: hero-orb-1 12s ease-in-out infinite;
   --animate-hero-orb-2: hero-orb-2 18s ease-in-out infinite;
   --animate-hero-orb-3: hero-orb-3 14s ease-in-out infinite;
@@ -96,21 +97,9 @@
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-  }
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(222, 4, 152, 0.3); }
-    50% { box-shadow: 0 0 40px rgba(222, 4, 152, 0.6); }
-  }
   @keyframes pulse-slow {
     0%, 100% { opacity: 0.4; }
     50% { opacity: 0.8; }
-  }
-  @keyframes shimmer {
-    0% { background-position: -200% 50%; }
-    100% { background-position: 200% 50%; }
   }
   @keyframes hero-orb-1 {
     0%, 100% { transform: translate(0, 0) scale(1); }
@@ -180,19 +169,6 @@
   }
   .text-muted-weak {
     color: var(--color-muted-weak);
-  }
-  .text-gradient-brand {
-    @apply bg-gradient-to-r from-rido-magenta to-rido-magenta-light bg-clip-text text-transparent;
-  }
-  /* Animated gradient: brighten magenta end so all gradient phases pass AA on navy (#0F172A).
-     #E832A8 ≈ 4.6:1 vs previous #DE0498 ≈ 3.89:1 */
-  .text-gradient-animated {
-    background: linear-gradient(90deg, #E832A8 0%, #F23DB5 25%, #FFFFFF 50%, #F23DB5 75%, #E832A8 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 4s ease-in-out infinite;
   }
   /* Top-edge highlight — premium "floating panel" cue (Linear/Vercel signature).
      .glass and .glass-flat-strong have no backdrop-filter: over the site's flat
@@ -449,28 +425,6 @@
   .section-tint-green {
     background: linear-gradient(180deg, rgba(34, 197, 94, 0.03), transparent);
   }
-  /* Animated 1px magenta ring around a Card (rounded-2xl). The gradient is
-     masked to the border only — the Card is translucent glass, so an unmasked
-     fill would wash the whole card magenta. */
-  .shimmer-border {
-    position: relative;
-    border-radius: var(--radius-2xl, 1rem);
-  }
-  .shimmer-border::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(90deg, transparent, rgba(222, 4, 152, 0.7), transparent);
-    background-size: 200% 100%;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: exclude;
-    pointer-events: none;
-    animation: shimmer 3s ease-in-out infinite;
-  }
   .scroll-progress {
     position: fixed;
     top: 0;
@@ -480,30 +434,6 @@
     background: linear-gradient(90deg, #DE0498, #F23DB5);
     z-index: 9999;
     transform-origin: 0 50%;
-  }
-  .btn-ripple {
-    position: relative;
-    overflow: hidden;
-  }
-  .btn-ripple::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    background-image: radial-gradient(circle, rgba(255,255,255,0.3) 10%, transparent 10.01%);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    transform: scale(10);
-    opacity: 0;
-    transition: transform 0.5s, opacity 0.5s;
-  }
-  .btn-ripple:active::after {
-    transform: scale(0);
-    opacity: 1;
-    transition: 0s;
   }
   /* Hero orbs pause once the fixed hero backdrop has faded out (Hero.tsx sets
      data-idle on the backdrop container), so nothing animates off-screen. */
@@ -579,7 +509,7 @@
   .legal-content a { @apply text-rido-magenta-light hover:text-white underline transition-colors; }
   .legal-content strong { @apply text-white font-semibold; }
   .legal-highlight { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
-  .legal-warning { @apply bg-rido-yellow/10 border border-rido-yellow/20 rounded-xl p-4 my-6; }
+  .legal-warning { @apply bg-rido-magenta/10 border border-rido-magenta/20 rounded-xl p-4 my-6; }
   .legal-section { @apply scroll-mt-24; }
   /* Sunlit placeholder surface for ImageFrame until real photography lands. */
   .image-frame-sun {
@@ -632,9 +562,6 @@
   .text-gradient-animated {
     animation: none;
     -webkit-text-fill-color: unset;
-  }
-  .shimmer-border::before {
-    animation: none;
   }
 }
 
