@@ -64,12 +64,12 @@ const copy: Record<Locale, PartnerCopy> = {
       {
         title: "Software y operaciones",
         description:
-          "App del usuario, panel de operaciones, geocercado, precios dinámicos y herramientas de soporte — una sola plataforma, creada para nuestro propio lanzamiento y compartida con cada ciudad socia.",
+          "App del usuario, panel de operaciones, geofencing, precios dinámicos y herramientas de soporte — una sola plataforma, creada para nuestro propio lanzamiento y compartida con cada ciudad socia.",
       },
       {
         title: "Economía alineada",
         description:
-          "Reparto de ingresos local con una cuenta de resultados transparente. El valor que crea tu ciudad se queda en tu ciudad — no en una central lejana.",
+          "Reparto de ingresos local con unos números por vehículo transparentes. El valor que crea tu ciudad se queda en tu ciudad — no en una central lejana.",
       },
     ],
     ctaLabel: "Hablemos de colaborar",

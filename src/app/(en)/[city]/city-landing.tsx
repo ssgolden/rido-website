@@ -81,7 +81,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
     return [
       {
         question: `¿Rido ya funciona en ${city.name}?`,
-        answer: `Todavía no — Rido llegará a ${city.name} en las próximas semanas. Únete a la lista de espera y te avisaremos por email en cuanto los primeros vehículos estén en la calle.`,
+        answer: `Todavía no — Rido llegará a ${city.name} en las próximas semanas. Únete a la lista de espera y te avisaremos por correo en cuanto los primeros vehículos estén en la calle.`,
       },
       {
         question: `¿Dónde operará Rido en ${city.name}?`,
@@ -89,7 +89,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
       },
       {
         question: `¿Cuánto costará montar en ${city.name}?`,
-        answer: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: verás el precio exacto antes de cada viaje, sin recarga mínima y sin costes ocultos.",
+        answer: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: verás el precio exacto antes de cada trayecto, sin recarga mínima y sin costes ocultos.",
       },
       {
         question: `¿Qué vehículos habrá en ${city.name}?`,

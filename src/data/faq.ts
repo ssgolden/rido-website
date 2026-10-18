@@ -43,7 +43,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.",
-      es: "Abre la app de Rido, localiza un vehículo cerca de ti en el mapa, escanea el código QR del manillar y listo para rodar. La app muestra la disponibilidad y el nivel de batería en tiempo real.",
+      es: "Abre la app de Rido, localiza un vehículo cerca de ti en el mapa, escanea el código QR del manillar y listo: ya puedes circular. La app muestra la disponibilidad y el nivel de batería en tiempo real.",
     },
     category: "getting-started",
   },
@@ -65,7 +65,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "You are responsible for up to €2,000 in damage as outlined in our Terms of Service. We recommend riding carefully and parking responsibly. Our tandem detection system monitors for misuse.",
-      es: "Eres responsable de hasta 2.000 € en daños, tal y como recogen nuestros Términos de Servicio. Te recomendamos conducir con cuidado y aparcar de forma responsable. Nuestro sistema de detección de tándem vigila el uso indebido.",
+      es: "Eres responsable de hasta 2.000 € en daños, tal y como recogen nuestros Términos del servicio. Te recomendamos conducir con cuidado y aparcar de forma responsable. Nuestro sistema de detección de tándem vigila el uso indebido.",
     },
     category: "legal",
   },
@@ -87,7 +87,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Park in designated areas shown in the app. These are typically cycle-rack zones or marked parking areas. Keep pavements clear for pedestrians and accessibility.",
-      es: "Aparca en las zonas designadas que muestra la app, normalmente aparcamientos de bicis o zonas señalizadas. Deja las aceras libres para los peatones y la accesibilidad.",
+      es: "Aparca en las zonas habilitadas que muestra la app, normalmente aparcamientos de bicis o zonas señalizadas. Deja las aceras libres para los peatones y la accesibilidad.",
     },
     category: "safety",
   },
@@ -120,7 +120,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "The Rido Pass is our rider membership — unlimited unlocks and a reduced per-minute rate for frequent riders. Exact pricing will be announced at launch.",
-      es: "El Rido Pass es nuestra membresía para usuarios frecuentes: desbloqueos ilimitados y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
+      es: "El Rido Pass es nuestro abono para usuarios frecuentes: desbloqueos ilimitados y una tarifa por minuto reducida. El precio exacto se anunciará en el lanzamiento.",
     },
     category: "pricing",
   },
@@ -131,7 +131,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Yes! We offer free refunds of unused balance. No minimum top-up required, and you can request a refund at any time through the app. See our Terms of Service for details.",
-      es: "¡Sí! Devolvemos el saldo no utilizado de forma gratuita. No hay recarga mínima y puedes solicitar el reembolso en cualquier momento desde la app. Consulta nuestros Términos de Servicio para más detalles.",
+      es: "¡Sí! Devolvemos el saldo no utilizado de forma gratuita. No hay recarga mínima y puedes solicitar el reembolso en cualquier momento desde la app. Consulta nuestros Términos del servicio para más detalles.",
     },
     category: "pricing",
   },
@@ -142,7 +142,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.",
-      es: "La app muestra el nivel de batería en tiempo real para que elijas un vehículo con carga completa. Si la batería se queda baja durante el trayecto, puedes terminarlo en cualquier zona de aparcamiento designada, sin coste extra.",
+      es: "La app muestra el nivel de batería en tiempo real para que elijas un vehículo con carga completa. Si la batería se queda baja durante el trayecto, puedes terminarlo en cualquier zona de aparcamiento habilitada, sin coste extra.",
     },
     category: "safety",
   },
@@ -153,7 +153,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Our vehicles have zero direct emissions. From the first ride we will offset 100% of our operational emissions through verified carbon credits and green energy, use swappable batteries that are recycled at end of life, and recycle every vehicle. We will publish audited figures after our first year.",
-      es: "Nuestros vehículos no tienen emisiones directas. Desde el primer viaje compensaremos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde, usaremos baterías intercambiables que se reciclan al final de su vida útil y reciclaremos cada vehículo. Publicaremos cifras auditadas tras el primer año.",
+      es: "Nuestros vehículos no tienen emisiones directas. Desde el primer trayecto compensaremos el 100% de nuestras emisiones operativas con créditos de carbono verificados y energía verde, usaremos baterías intercambiables que se reciclan al final de su vida útil y reciclaremos cada vehículo. Publicaremos cifras auditadas tras el primer año.",
     },
     category: "safety",
   },
@@ -164,7 +164,7 @@ const faqSources: readonly FaqSource[] = [
     },
     answer: {
       en: "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.",
-      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas están asegurados frente a responsabilidad civil. Para más detalles, consulta nuestros Términos de Servicio.",
+      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
     },
     category: "legal",
   },

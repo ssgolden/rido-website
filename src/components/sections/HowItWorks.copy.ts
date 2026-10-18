@@ -28,10 +28,10 @@ export const howItWorksCopy: Record<Locale, HowItWorksCopy> = {
     stepsLabel: "Pasos",
     goTo: "Ir al paso {n}: {title}",
     steps: [
-      { title: "Regístrate pronto", description: "Únete ya a la lista de espera y sé de los primeros cuando llegue la app de Rido. Crea tu cuenta en segundos cuando esté lista." },
-      { title: "Escanea y desbloquea", description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo para circular." },
+      { title: "Apúntate ya", description: "Únete ya a la lista de espera y sé de los primeros cuando llegue la app de Rido. Crea tu cuenta en segundos cuando esté lista." },
+      { title: "Escanea y desbloquea", description: "Encuentra un Rido cerca en el mapa, escanea el código QR del manillar y listo: ya puedes circular." },
       { title: "Monta y disfruta", description: "Respeta las normas de tráfico, usa los carriles bici y disfruta del trayecto. Casco puesto: es obligatorio y lo incluimos." },
-      { title: "Aparca y termina", description: "Aparca de forma responsable en las zonas indicadas en la app. Termina el viaje y paga solo por lo que uses." },
+      { title: "Aparca y termina", description: "Aparca de forma responsable en las zonas indicadas en la app. Termina el trayecto y paga solo por lo que uses." },
     ],
   },
 };

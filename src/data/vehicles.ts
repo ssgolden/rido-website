@@ -105,7 +105,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
   "e-scooter": {
     tagline: "Deslízate por la ciudad",
     description:
-      "Plataforma ancha, freno delantero y trasero y hasta 45 km de autonomía, con un casco certificado acoplado en la barra. Pensado para moverte por la ciudad.",
+      "Plataforma ancha, frenos delantero y trasero y hasta 45 km de autonomía, con un casco certificado acoplado en la barra. Pensado para moverte por la ciudad.",
     specs: [
       { label: "Autonomía", value: "45 km" },
       { label: "Velocidad máxima", value: "25 km/h" },
@@ -123,7 +123,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
       "Ruedas antipinchazos de ≥203 mm",
       "Intermitentes",
       "Modo principiante (15 km/h)",
-      "GPS y geocercado",
+      "GPS y geofencing",
     ],
     imageAlt: "Patinete eléctrico Rido",
   },
@@ -144,7 +144,7 @@ const vehicleCopyEs: Record<VehicleId, VehicleCopy> = {
       "Sillín de altura ajustable",
       "Cesta de carga delantera",
       "Neumáticos antipinchazos",
-      "Cuadro de acceso bajo",
+      "Cuadro abierto (step-through)",
     ],
     imageAlt: "Bici eléctrica de pedaleo asistido Rido",
   },

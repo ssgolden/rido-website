@@ -26,9 +26,9 @@ const copy = {
     label: "Dónde arrancamos",
     title: "Primero Torrevieja. Después, la Costa del Sol.",
     intro:
-      "Somos un equipo local, a pocos kilómetros en Orihuela Costa. Rido llega a Torrevieja en las próximas semanas con patinetes y bicis eléctricas compartidas.",
+      "Somos un equipo local, con base en Orihuela Costa, a pocos kilómetros por la costa. Rido llega a Torrevieja en las próximas semanas con patinetes y bicis eléctricas compartidas.",
     soon: "En las próximas semanas",
-    planned: (n: number) => `${n} localidades previstas — muy pronto`,
+    planned: (n: number) => `${n} localidades previstas — las anunciaremos muy pronto`,
     cityLink: (name: string) => `Rido en ${name}`,
     hearFirst: "Únete a la lista y entérate primero",
   },

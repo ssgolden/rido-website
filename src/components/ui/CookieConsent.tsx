@@ -22,9 +22,9 @@ const copy: Record<"en" | "es", typeof en> = {
   en,
   es: {
     title: "Tu privacidad nos importa",
-    body: "Las analíticas sin cookies solo se cargan si aceptas. Sin publicidad ni rastreo entre sitios. Tu elección se guarda en este dispositivo.",
+    body: "La analítica sin cookies solo se carga si aceptas. Sin publicidad ni rastreo entre sitios. Tu elección se guarda en este dispositivo.",
     learnMore: "Lee nuestra política de cookies",
-    accept: "Aceptar analíticas",
+    accept: "Aceptar analítica",
     decline: "Rechazar",
     close: "Cerrar",
   },

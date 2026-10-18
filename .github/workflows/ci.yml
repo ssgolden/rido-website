@@ -95,7 +95,9 @@ jobs:
         # the CSP). One step so both run against the same server. Visual QA
         # screenshots every key page at phone/tablet/desktop and fails on any
         # page error (e.g. a hydration mismatch) or CSP violation, with motion
-        # on or off. QA_STATIC skips the server-only /coming-soon page.
+        # on or off. The sweep fails on console errors, sideways scroll,
+        # broken internal links, images without alt and unlabeled sections.
+        # QA_STATIC skips the server-only /coming-soon page.
         env:
           QA_STATIC: "1"
         run: |
@@ -104,6 +106,7 @@ jobs:
           curl -sf -o /dev/null http://localhost:3000/ || { echo "server did not start"; exit 1; }
           node scripts/a11y-audit.mjs http://localhost:3000
           node scripts/visual-qa.mjs http://localhost:3000 visual-qa
+          node scripts/sweep.mjs http://localhost:3000
 
       - name: Upload visual QA screenshots
         if: always()
