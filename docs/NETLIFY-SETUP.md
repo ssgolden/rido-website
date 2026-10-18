@@ -262,6 +262,14 @@ To make CI a hard gate for Netlify as well, protect `master` so changes can only
 
 Netlify deploy previews of pull requests are unaffected.
 
+## 8b. Live site check
+
+Nothing above looks at what Netlify actually serves. `.github/workflows/live-site-check.yml` does: a GitHub Actions bot runs `scripts/live-site-check.mjs` against `https://www.rido.bike` every day at 07:20 UTC, on demand (**Actions → Live site check → Run workflow**), and about 90 seconds after every successful **Deploy** run on `master` (Netlify builds `master` on its own, so that gap lets it publish first).
+
+It checks: every public page answers 200 as HTML with the right `<html lang>`, a `<title>`, the favicon/icon links, `apple-touch-icon` and manifest link; the icon files, `/manifest.json` (every icon fetches, `theme_color` matches the repo) and `/llms.txt`; the security headers from `public/_headers` and `immutable` caching on `/fonts/*`; the apex `https://rido.bike` → `https://www.rido.bike` redirect; that no planned (unannounced) town name reaches any page; and that `/api/waitlist` answers `{ ok: false }` to an invalid email.
+
+On failure the bot opens an issue "Live site check failed <date>" with the label `live-site` (or comments on the open one) containing the PASS/FAIL list; when the check passes again it comments "Passing again" and closes the issue. To run it yourself: `npm run check:live` (needs network access to the live site), or against a local export with `LIVE_CHECK_LOCAL=1 node scripts/live-site-check.mjs http://localhost:4321` after `node scripts/serve-export.mjs 4321`.
+
 ## 9. Quick Reference
 
 | Item              | Value / Instruction                           |

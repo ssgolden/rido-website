@@ -1,0 +1,88 @@
+name: Live site check
+
+# Checks the LIVE site (Netlify, https://www.rido.bike) from a GitHub runner:
+# pages, icons, manifest, security headers, font caching, the apex redirect,
+# the town-leak rule and the waitlist API. See scripts/live-site-check.mjs.
+#
+# Runs daily, on demand, and after every successful "Deploy" run on master
+# (Netlify builds master on its own, so we wait a little for it to publish).
+# On failure it opens (or comments on) an issue labelled `live-site`; when the
+# site passes again it closes that issue.
+
+on:
+  schedule:
+    - cron: "20 7 * * *"
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy"]
+    types: [completed]
+    branches: [master]
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: live-site-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check www.rido.bike
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+
+      - name: Wait for Netlify to publish
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 90
+
+      - name: Run live site check
+        id: check
+        shell: bash
+        run: |
+          set +e
+          node scripts/live-site-check.mjs https://www.rido.bike 2>&1 | tee live-site-check.log
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the live-site issue
+        uses: actions/github-script@v7
+        env:
+          CHECK_STATUS: ${{ steps.check.outputs.status }}
+        with:
+          script: |
+            const fs = require('fs');
+            const label = 'live-site';
+            const failed = process.env.CHECK_STATUS !== '0';
+            const log = fs.readFileSync('live-site-check.log', 'utf8').trim().slice(-60000);
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const date = new Date().toISOString().slice(0, 10);
+            const { owner, repo } = context.repo;
+
+            const { data: open } = await github.rest.issues.listForRepo({ owner, repo, state: 'open', labels: label, per_page: 1 });
+            const existing = open[0];
+            const report = `Run: ${runUrl} (${context.eventName}, ${date})\n\n\`\`\`\n${log}\n\`\`\``;
+
+            if (failed) {
+              if (existing) {
+                await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body: `Still failing.\n\n${report}` });
+                core.setFailed(`Live site check failed — see #${existing.number}`);
+              } else {
+                const { data: issue } = await github.rest.issues.create({
+                  owner, repo, labels: [label],
+                  title: `Live site check failed ${date}`,
+                  body: `The scheduled check of https://www.rido.bike found a problem.\n\n${report}\n\nThis issue is closed automatically when the check passes again.`,
+                });
+                core.setFailed(`Live site check failed — opened #${issue.number}`);
+              }
+            } else if (existing) {
+              await github.rest.issues.createComment({ owner, repo, issue_number: existing.number, body: `Passing again.\n\n${report}` });
+              await github.rest.issues.update({ owner, repo, issue_number: existing.number, state: 'closed', state_reason: 'completed' });
+              core.info(`Closed #${existing.number}`);
+            }
