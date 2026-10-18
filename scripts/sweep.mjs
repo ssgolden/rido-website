@@ -14,6 +14,8 @@
  * QA_STATIC=1 skips server-only routes, as in visual-qa.mjs.
  */
 import { chromium } from "playwright-core";
+import { existsSync } from "node:fs";
+import { execSync } from "node:child_process";
 
 const B = (process.argv[2] ?? "http://localhost:3000").replace(/\/$/, "");
 const PAGES = [
@@ -29,9 +31,25 @@ const VIEWPORTS = [
 // Third-party hosts the sandbox or CI may block; never a site defect.
 const IGNORED_CONSOLE = /openfreemap|ERR_TUNNEL|net::ERR|ERR_NAME_NOT_RESOLVED/;
 
-const browser = await chromium.launch({
-  executablePath: process.env.PW_CHROMIUM ?? "/opt/pw-browsers/chromium",
-});
+// Same lookup as visual-qa.mjs and a11y-audit.mjs: the sandbox's bundled
+// Chromium, a system one, else playwright-core's own resolution (CI).
+function findChromium() {
+  if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  for (const c of ["/opt/pw-browsers/chromium", "/usr/bin/chromium", "/usr/bin/chromium-browser", "/usr/bin/google-chrome"]) {
+    if (!existsSync(c)) continue;
+    try {
+      if (execSync(`test -d ${c} && echo dir || echo file`).toString().trim() !== "dir") return c;
+      const bin = execSync(`find ${c} -maxdepth 3 -name chrome -o -maxdepth 3 -name chromium 2>/dev/null | head -1`).toString().trim();
+      if (bin) return bin;
+    } catch {
+      /* keep looking */
+    }
+  }
+  return null;
+}
+
+const executablePath = findChromium();
+const browser = await chromium.launch(executablePath ? { executablePath } : {});
 const failures = [];
 const warnings = [];
 const internalLinks = new Set();
