@@ -100,7 +100,7 @@ const copy = {
 } as const satisfies Record<Locale, Record<string, string>>;
 
 const linkClass =
-  "nav-link inline-flex items-center min-h-8 text-sm text-muted hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer";
+  "nav-link nav-link-tall inline-flex items-center min-h-11 text-sm text-muted hover:text-rido-magenta-light transition-colors duration-200 cursor-pointer";
 
 export function Footer({ locale = "en" }: { locale?: Locale }) {
   const t = copy[locale];
@@ -109,8 +109,8 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
   return (
     <footer className="border-t border-white/10 bg-navy-deep">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
-          <div className="col-span-2">
+        <div className="grid grid-cols-2 min-[360px]:grid-cols-3 md:grid-cols-5 gap-x-6 gap-y-10 sm:gap-10">
+          <div className="col-span-2 min-[360px]:col-span-3 md:col-span-2">
             <RidoLogo variant="full" size="md" />
             <p className="mt-4 text-sm text-muted leading-relaxed max-w-sm">{t.tagline}</p>
             <address className="mt-5 not-italic text-sm text-muted-weak leading-relaxed flex gap-2">
@@ -140,14 +140,14 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
           </div>
           {columns.map((column) => (
             <nav key={column.heading} aria-label={column.heading}>
-              <h2 className="font-display text-sm font-semibold text-white mb-4">{column.heading}</h2>
-              <ul className="space-y-1">
+              <h2 className="font-display text-sm font-semibold text-white mb-1">{column.heading}</h2>
+              <ul>
                 {column.links.map((link) => (
                   <li key={link.label}>
                     {link.href.startsWith("mailto:") || link.href.includes("#") ? (
                       <a href={link.href} className={linkClass}>{link.label}</a>
                     ) : (
-                      <Link href={link.href} className={linkClass}>{link.label}</Link>
+                      <Link href={link.href} prefetch={false} className={linkClass}>{link.label}</Link>
                     )}
                   </li>
                 ))}

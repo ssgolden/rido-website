@@ -380,6 +380,10 @@
     transform-origin: left center;
     transition: transform 200ms cubic-bezier(0.22, 1, 0.36, 1);
   }
+  /* Links padded to a 44px target: keep the underline hugging the text. */
+  .nav-link-tall::after {
+    bottom: calc(50% - 0.95em);
+  }
   .nav-link:hover::after,
   .nav-link:focus-visible::after,
   .nav-link[aria-current="true"]::after {

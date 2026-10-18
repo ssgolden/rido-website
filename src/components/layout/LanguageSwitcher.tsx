@@ -16,7 +16,7 @@ const EN_ONLY_PATHS = new Set([
 
 const linkClass = (active: boolean) =>
   cn(
-    "nav-link inline-block py-2 -my-2 px-1 -mx-1 text-xs transition-colors duration-200 cursor-pointer",
+    "nav-link nav-link-tall inline-flex items-center min-h-11 px-1 -mx-1 text-xs transition-colors duration-200 cursor-pointer",
     active ? "text-white font-semibold" : "text-muted-weak hover:text-rido-magenta-light"
   );
 
@@ -44,6 +44,7 @@ export function LanguageSwitcher() {
     >
       <Link
         href={enHref}
+        prefetch={false}
         lang="en"
         hrefLang="en"
         aria-label="View this page in English"
@@ -57,6 +58,7 @@ export function LanguageSwitcher() {
       </span>
       <Link
         href={esHref}
+        prefetch={false}
         lang="es"
         hrefLang="es"
         aria-label="Ver esta página en español"

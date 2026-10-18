@@ -7,8 +7,8 @@
  * - horizontal overflow of the scroll lane (the page scrolls sideways)
  * - broken internal links and in-page #anchors
  * - <img> without alt, <section> without id or an accessible name
- * Tap targets under 24px are reported as warnings only; links inside running
- * text are skipped (WCAG 2.5.8 allows inline links to be small).
+ * Tap targets under 44px are reported as warnings only; links inside running
+ * text only need 24px (WCAG 2.5.8 allows inline links to be small).
  *
  * Usage: node scripts/sweep.mjs [baseUrl]   (default http://localhost:3000)
  * QA_STATIC=1 skips server-only routes, as in visual-qa.mjs.
@@ -84,8 +84,10 @@ for (const vp of VIEWPORTS) {
       const small = [...document.querySelectorAll("a,button,summary,input,select")]
         .filter((e) => {
           const b = e.getBoundingClientRect();
-          if (e.tagName === "A" && e.closest("p, li, dd, td, label, blockquote")) return false;
-          return b.width > 0 && getComputedStyle(e).visibility !== "hidden" && (b.height < 24 || b.width < 24);
+          if (b.width === 0 || getComputedStyle(e).visibility === "hidden") return false;
+          // Inline links in running text may be 24px; standalone controls get 44px.
+          const min = e.tagName === "A" && e.closest("p, dd, td, label, blockquote, .legal-toc") ? 24 : 44;
+          return b.height < min || b.width < min;
         })
         .map((e) => `${e.tagName.toLowerCase()} "${(e.textContent || e.getAttribute("aria-label") || "").trim().slice(0, 24)}"`);
       const imgsNoAlt = document.querySelectorAll("img:not([alt])").length;
