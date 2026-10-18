@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { ArrowUp } from "lucide-react";
 import { useScrollRootNode, useScrollTo } from "@/components/ui/SmoothScrollProvider";
+import { readConsent, subscribeConsent } from "@/lib/consent";
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
   const root = useScrollRootNode();
   const scrollTo = useScrollTo();
+  // Stays hidden while the consent card is up: both sit in the bottom corner.
+  const consentPending = useSyncExternalStore(subscribeConsent, () => readConsent() === "unset", () => false);
 
   useEffect(() => {
     const target: HTMLElement | Window = root ?? window;
@@ -28,8 +31,8 @@ export function BackToTop() {
     <button
       type="button"
       onClick={() => scrollTo(0)}
-      data-open={visible ? "" : undefined}
-      className="pop fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 sm:bottom-6 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-rido-magenta text-white flex items-center justify-center shadow-lg shadow-rido-magenta/30 hover:bg-rido-magenta-dark hover:shadow-xl hover:shadow-rido-magenta/30 hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
+      data-open={visible && !consentPending ? "" : undefined}
+      className="pop fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 sm:bottom-6 sm:right-6 z-50 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-rido-magenta text-white flex items-center justify-center shadow-lg shadow-black/30 hover:bg-rido-magenta-dark hover:-translate-y-0.5 active:scale-[0.98] cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy"
       aria-label="Scroll to top"
     >
       <ArrowUp className="w-5 h-5" aria-hidden="true" />

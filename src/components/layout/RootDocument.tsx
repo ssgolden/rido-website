@@ -64,12 +64,13 @@ export function RootDocument({
         >
           {lang === "es" ? "Saltar al contenido" : "Skip to content"}
         </a>
+        {/* First in the tab order after the skip link: consent is reachable before the page. */}
+        <ClientCookieConsent />
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <RevealObserver />
         {/* Vercel Analytics only works on Vercel's hosting (it loads /_vercel/insights,
             which Netlify does not serve). VERCEL is set by Vercel's build environment. */}
         {process.env.VERCEL ? <ConsentAwareAnalytics /> : null}
-        <ClientCookieConsent />
       </body>
     </html>
   );

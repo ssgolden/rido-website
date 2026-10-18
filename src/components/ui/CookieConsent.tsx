@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react";
 import { readConsent, saveConsent, subscribeConsent } from "@/lib/consent";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Cookie, X } from "lucide-react";
+import { Cookie } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 
@@ -13,20 +13,23 @@ import { Button } from "@/components/ui/Button";
 const en = {
   title: "We value your privacy",
   body: "Cookieless analytics load only if you accept. No advertising or cross-site tracking. Your choice is saved on this device.",
+  /** Phones: one sentence, so the card stays clear of the hero form. */
+  short: "Cookieless analytics, only if you accept.",
   learnMore: "Read our cookie policy",
+  learnMoreShort: "Cookie policy",
   accept: "Accept analytics",
   decline: "Decline",
-  close: "Close",
 };
 const copy: Record<"en" | "es", typeof en> = {
   en,
   es: {
     title: "Tu privacidad nos importa",
     body: "La analítica sin cookies solo se carga si aceptas. Sin publicidad ni rastreo entre sitios. Tu elección se guarda en este dispositivo.",
+    short: "Analítica sin cookies, solo si aceptas.",
     learnMore: "Lee nuestra política de cookies",
+    learnMoreShort: "Política de cookies",
     accept: "Aceptar analítica",
     decline: "Rechazar",
-    close: "Cerrar",
   },
 };
 
@@ -40,6 +43,12 @@ function useShouldShowConsent() {
   );
 }
 
+/**
+ * Consent card. Mounted first in <body> (RootDocument) so keyboard users reach
+ * it before the page. On phones it is one sentence and two buttons, sitting
+ * above the home indicator; the full card shows from `sm`. Declining is one
+ * action (no extra close control).
+ */
 export function CookieConsent() {
   const pathname = usePathname() ?? "/";
   const t = pathname === "/es" || pathname.startsWith("/es/") ? copy.es : copy.en;
@@ -51,38 +60,35 @@ export function CookieConsent() {
   return (
     visible && (
         <div
-          className="enter-up fixed bottom-0 left-0 right-0 z-[100] p-3 sm:p-6"
+          className="enter-up fixed bottom-0 left-0 right-0 z-[100] p-3 max-sm:pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:p-6"
           role="dialog"
           aria-modal="false"
           aria-labelledby="cookie-consent-title"
         >
-          {/* Solid on phones: a full-width blur over the scrolling page is re-rendered every frame. */}
-          <div className="max-w-4xl mx-auto glass-strong max-sm:bg-rido-navy/95 max-sm:backdrop-blur-none rounded-2xl p-4 sm:p-6 shadow-2xl shadow-black/40">
+          <div className="consent-card max-w-4xl mx-auto rounded-2xl p-3 sm:p-6 shadow-2xl shadow-black/40">
             <div className="flex items-start gap-4">
-              {/* Icon is decorative; dropped on phones so the card stays compact and the hero CTAs stay visible. */}
               <div className="hidden sm:flex w-10 h-10 rounded-xl bg-rido-magenta/10 items-center justify-center shrink-0" aria-hidden="true">
                 <Cookie className="w-5 h-5 text-rido-magenta" />
               </div>
               <div className="flex-1 min-w-0">
-                <h3 id="cookie-consent-title" className="font-bold text-white mb-1">{t.title}</h3>
-                <p className="text-sm text-muted-strong leading-relaxed">
+                <h3 id="cookie-consent-title" className="sr-only sm:not-sr-only font-semibold text-white sm:mb-1">{t.title}</h3>
+                <p className="hidden sm:block text-sm text-muted-strong leading-relaxed">
                   {t.body}{" "}
                   <Link href="/politica-cookies" prefetch={false} className="text-white underline cursor-pointer hover:text-rido-magenta-light transition-colors">
                     {t.learnMore}
                   </Link>
                 </p>
-                <div className="mt-3 sm:mt-4 flex flex-row gap-2">
-                  <Button size="sm" onClick={handleAccept} className="flex-1 sm:flex-none">{t.accept}</Button>
-                  <Button size="sm" variant="secondary" onClick={handleDecline} className="flex-1 sm:flex-none">{t.decline}</Button>
+                <p className="sm:hidden text-sm text-muted-strong leading-snug">
+                  {t.short}{" "}
+                  <Link href="/politica-cookies" prefetch={false} className="text-white underline cursor-pointer hover:text-rido-magenta-light transition-colors">
+                    {t.learnMoreShort}
+                  </Link>
+                </p>
+                <div className="mt-2.5 sm:mt-4 flex flex-row gap-2">
+                  <Button size="sm" onClick={handleAccept} className="flex-1 sm:flex-none min-h-11">{t.accept}</Button>
+                  <Button size="sm" variant="secondary" onClick={handleDecline} className="flex-1 sm:flex-none min-h-11">{t.decline}</Button>
                 </div>
               </div>
-              <button
-                onClick={handleDecline}
-                className="text-muted-strong hover:text-white transition-colors cursor-pointer p-1 shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-rido-navy rounded"
-                aria-label={t.close}
-              >
-                <X className="w-4 h-4" />
-              </button>
             </div>
           </div>
         </div>

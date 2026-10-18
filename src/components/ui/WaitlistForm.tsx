@@ -71,6 +71,7 @@ export function WaitlistForm({
   const errorId = `${inputId}-error`;
   const formRef = useRef<HTMLFormElement>(null);
   const honeypotRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLParagraphElement>(null);
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -115,6 +116,7 @@ export function WaitlistForm({
     if (!isValidEmail(email)) {
       setStatus("error");
       setErrorKey("invalid");
+      inputRef.current?.focus();
       track("waitlist_error", { placement, locale, detail: "invalid" });
       return;
     }
@@ -187,6 +189,7 @@ export function WaitlistForm({
       ref={formRef}
       onSubmit={handleSubmit}
       noValidate
+      aria-busy={status === "loading"}
       className={cn("w-full", !/\bmax-w-/.test(className ?? "") && "max-w-md", align === "center" ? "mx-auto" : "", className)}
     >
       {/* Honeypot for bots: off-screen, skipped by keyboard and screen readers. */}
@@ -201,9 +204,11 @@ export function WaitlistForm({
         <div className="relative flex-1">
           <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-weak pointer-events-none" aria-hidden="true" />
           <input
+            ref={inputRef}
             id={inputId}
             type="email"
             inputMode="email"
+            enterKeyHint="send"
             autoComplete="email"
             name="email"
             value={email}
@@ -212,7 +217,8 @@ export function WaitlistForm({
               if (status === "error") setStatus("idle");
             }}
             placeholder={t.emailPlaceholder}
-            disabled={status === "loading"}
+            // readOnly, not disabled: disabling blurs the field on iOS and drops the keyboard.
+            readOnly={status === "loading"}
             aria-invalid={status === "error"}
             aria-describedby={status === "error" ? errorId : undefined}
             className="field w-full min-h-12 pl-11 pr-4 rounded-xl bg-white/[0.06] ring-1 ring-white/15 sm:bg-transparent sm:ring-0 text-white text-base placeholder:text-muted-weak focus:outline-none focus-visible:ring-2 focus-visible:ring-rido-magenta cursor-text disabled:opacity-60"
@@ -225,8 +231,8 @@ export function WaitlistForm({
         >
           {status === "loading" ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
-              <span className="sr-only">{t.sending}</span>
+              <Loader2 className="w-4 h-4 animate-spin motion-reduce:hidden" aria-hidden="true" />
+              <span className="sr-only motion-reduce:not-sr-only">{t.sending}</span>
             </>
           ) : (
             <>

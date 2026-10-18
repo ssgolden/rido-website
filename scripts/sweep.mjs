@@ -110,6 +110,53 @@ for (const vp of VIEWPORTS) {
   }
 }
 
+// Interaction gates on phones: the consent card must leave the hero form clear
+// on a short phone, and the mobile menu must behave as a modal.
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 667 }, isMobile: true, hasTouch: true });
+  await page.goto(B + "/", { waitUntil: "networkidle" });
+  const banner = page.locator('[role="dialog"][aria-labelledby="cookie-consent-title"] > div');
+  if (await banner.count()) {
+    const card = await banner.boundingBox();
+    const submit = await page.locator("#hero form button[type=submit]").first().boundingBox();
+    if (card && submit && submit.y + submit.height > card.y) {
+      failures.push(`390x667 /: consent card (top ${Math.round(card.y)}px) covers the hero form (bottom ${Math.round(submit.y + submit.height)}px)`);
+    }
+    if (card && card.height > 180) warnings.push(`390x667 /: consent card is ${Math.round(card.height)}px tall`);
+  } else {
+    failures.push("390x667 /: consent card did not render");
+  }
+  await page.close();
+}
+{
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  await page.addInitScript(() => localStorage.setItem("rido-cookie-consent", JSON.stringify({ accepted: false, timestamp: 1 })));
+  await page.goto(B + "/", { waitUntil: "networkidle" });
+  const burger = page.locator("button[aria-controls='mobile-menu']");
+  if (!(await burger.count())) {
+    failures.push("390 /: the hamburger has no aria-controls=mobile-menu");
+  } else {
+    await burger.click();
+    await page.waitForTimeout(300);
+    if (!(await page.evaluate(() => document.getElementById("page-scroll")?.hasAttribute("inert")))) {
+      failures.push("390 /: the page is not inert while the menu is open");
+    }
+    let escaped = false;
+    for (let i = 0; i < 12 && !escaped; i++) {
+      await page.keyboard.press("Tab");
+      escaped = !(await page.evaluate(() => Boolean(document.activeElement?.closest("nav"))));
+    }
+    if (escaped) failures.push("390 /: focus leaves the open menu on Tab");
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(200);
+    const closed = await page.evaluate(
+      () => !document.getElementById("mobile-menu") && document.activeElement?.getAttribute("aria-controls") === "mobile-menu"
+    );
+    if (!closed) failures.push("390 /: Escape does not close the menu and return focus to the hamburger");
+  }
+  await page.close();
+}
+
 const probe = await browser.newPage();
 for (const l of [...internalLinks].sort()) {
   const res = await probe.request.get(B + l);
