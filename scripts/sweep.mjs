@@ -120,9 +120,12 @@ for (const vp of VIEWPORTS) {
   const banner = page.locator('[role="dialog"][aria-labelledby="cookie-consent-title"] > div');
   if (await banner.count()) {
     const card = await banner.boundingBox();
-    const submit = await page.locator("#hero a[href^='http']").first().boundingBox();
-    if (card && submit && submit.y + submit.height > card.y) {
-      failures.push(`390x667 /: consent card (top ${Math.round(card.y)}px) covers the hero store badges (bottom ${Math.round(submit.y + submit.height)}px)`);
+    const badgesLocator = page.locator('#hero ul[aria-label="Get the Rido app"]');
+    const badges = await badgesLocator.count() ? await badgesLocator.boundingBox() : null;
+    if (card && !badges) {
+      failures.push("390x667 /: hero app store badges did not render");
+    } else if (card && badges && badges.y + badges.height > card.y) {
+      failures.push(`390x667 /: consent card (top ${Math.round(card.y)}px) covers the hero store badges (bottom ${Math.round(badges.y + badges.height)}px)`);
     }
     if (card && card.height > 180) warnings.push(`390x667 /: consent card is ${Math.round(card.height)}px tall`);
   } else {
