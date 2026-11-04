@@ -1,34 +1,34 @@
 # Rido
 
-> Rido is a shared e-scooter and e-bike micro-mobility service launching in Torrevieja (Costa Blanca, Spain) in the coming weeks, with the Costa del Sol to follow. Zero-emission shared vehicles available via a mobile app. Operated by Go2 Place S.L.
+> Rido is a shared e-scooter micro-mobility service, live in Torrevieja (Costa Blanca, Spain), with the Costa del Sol to follow. Zero-emission shared e-scooters via the Rido app for iPhone and Android. Operated by Go2 Place S.L.
 
 ## About
-Rido is a shared micro-mobility company providing e-scooters and e-bikes for rent by the minute via a mobile app. The first launch is Torrevieja on the Costa Blanca, in the coming weeks. Five more towns are planned on the Costa del Sol; those towns will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
+Rido is a shared micro-mobility company providing e-scooters for rent by the minute via a mobile app, live in Torrevieja on the Costa Blanca. E-bikes are planned for later. Five more towns are planned on the Costa del Sol; those towns will be announced soon. The company is committed to zero-emission transport, swappable batteries, and carbon-neutral operations.
 
 ## How It Works
-1. Join the waitlist at https://www.rido.bike#download
-2. Download the Rido app (launching soon on iOS and Android)
-3. Find a Rido vehicle near you on the in-app map
+1. Download the Rido app: App Store https://apps.apple.com/app/id6800788222 or Google Play https://play.google.com/store/apps/details?id=ride.rido.app (or https://www.rido.bike/app on a phone)
+2. Create your account in the app
+3. Find a Rido e-scooter near you on the in-app map
 4. Scan the QR code on the handlebar to unlock
 5. Ride following traffic rules and bike lanes
 6. Park in a designated area shown in the app
 7. End the ride and pay only for what you used
 
 ## Pricing
-Fares will be announced at launch. Until then, the promise is the same as on the site: you see the price before every ride. No hidden fees, no minimum top-up, free refund of unused balance.
+Current fares are shown in the Rido app, not on the website. You see the price before every ride. No hidden fees, no minimum top-up, free refund of unused balance.
 
-Plan names only — amounts are not public yet:
+Plan names only — see the app for amounts:
 - **Pay as you go**: No commitment. Ride when you need it.
-- **Rido Pass**: Frequent-rider membership. Exact pricing announced at launch.
-- **Day Pass**: Aimed at visitors who want a full day. Exact pricing announced at launch.
+- **Rido Pass**: Frequent-rider membership. Pricing in the app.
+- **Day Pass**: Aimed at visitors who want a full day. Pricing in the app.
 
 ## Vehicles
 - **Rido Scooter** (e-scooter): 45 km range, 25 km/h top speed, 120 kg weight limit, swappable battery, dual brakes, turn signals, GPS tracking, beginner mode.
-- **Rido Bike** (e-bike): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
+- **Rido Bike** (e-bike, coming later): 60 km range, 25 km/h pedal assist, 130 kg weight limit, swappable battery, electric pedal assist, front cargo basket, step-through frame.
 
-## Cities (all coming soon)
-- Torrevieja, Costa Blanca (Alicante) — launching in the coming weeks (e-scooters + e-bikes) — https://www.rido.bike/torrevieja
-- 5 launch towns on the Costa del Sol — announced soon (e-scooters + e-bikes)
+## Cities
+- Torrevieja, Costa Blanca (Alicante) — live now (e-scooters) — https://www.rido.bike/torrevieja
+- 5 towns on the Costa del Sol — coming next, announced soon
 
 ## Safety
 - Helmet included with every scooter
@@ -59,7 +59,9 @@ Plan names only — amounts are not public yet:
 - [Safety](https://www.rido.bike#safety)
 - [FAQ](https://www.rido.bike#faq)
 - [Partners](https://www.rido.bike/partners)
-- [Join waitlist](https://www.rido.bike#download)
+- [Get the app](https://www.rido.bike/app)
+- [App Store](https://apps.apple.com/app/id6800788222)
+- [Google Play](https://play.google.com/store/apps/details?id=ride.rido.app)
 - [Terms of Service](https://www.rido.bike/terms)
 - [Privacy Policy](https://www.rido.bike/privacy)
 - [Cookie Policy](https://www.rido.bike/politica-cookies)
@@ -69,7 +71,7 @@ Plan names only — amounts are not public yet:
 - Language: English
 - Region: Spain (Torrevieja on the Costa Blanca, Valencian Community; Costa del Sol, Andalusia)
 - Currency: EUR
-- Launch status: Pre-launch / waitlist
-- Service type: Shared e-scooter and e-bike rental
-- Target cities: Torrevieja (launching in the coming weeks); 5 Costa del Sol towns, announced soon
+- Launch status: Live in Torrevieja; Costa del Sol next
+- Service type: Shared e-scooter rental
+- Cities: Torrevieja (live); 5 Costa del Sol towns, announced soon
 - Primary entity: Go2 Place S.L. operating the "Rido" brand

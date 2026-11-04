@@ -20,9 +20,10 @@ const loadMapLibre = () =>
 
 const copy = {
   en: {
-    mapAria: "Map of Rido launch towns — launching soon",
+    mapAria: "Map of where Rido operates",
     regionMapAria: "Map of the Costa del Sol region — Rido launch towns announced soon",
     launchingSoon: "Launching soon",
+    liveNow: "Live now",
     /** Sea label on the poster. */
     sea: "Mediterranean",
     exploreMap: "Explore map",
@@ -33,9 +34,10 @@ const copy = {
     eBike: "E-Bike",
   },
   es: {
-    mapAria: "Mapa de las ciudades de lanzamiento de Rido — muy pronto",
+    mapAria: "Mapa de dónde funciona Rido",
     regionMapAria: "Mapa de la región de la Costa del Sol — las ciudades de lanzamiento de Rido se anunciarán muy pronto",
     launchingSoon: "Próximamente",
+    liveNow: "Ya disponible",
     sea: "Mediterráneo",
     exploreMap: "Explorar el mapa",
     loadingMap: "Cargando el mapa…",
@@ -165,12 +167,10 @@ function buildPopupContent(city: City, t: Copy): HTMLElement {
 
   const meta = document.createElement("div");
   meta.className = "coverage-popup-meta";
-  if (city.comingSoon) {
-    const badge = document.createElement("span");
-    badge.className = "coverage-popup-badge";
-    badge.textContent = t.launchingSoon;
-    meta.appendChild(badge);
-  }
+  const badge = document.createElement("span");
+  badge.className = "coverage-popup-badge";
+  badge.textContent = city.comingSoon ? t.launchingSoon : t.liveNow;
+  meta.appendChild(badge);
   for (const v of city.vehicles) {
     const chip = document.createElement("span");
     chip.className = "coverage-popup-chip";
@@ -385,6 +385,7 @@ type MapStatus = "idle" | "loading" | "ready" | "fallback";
  */
 export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}) {
   const showCities = towns.length > 0;
+  const anyLive = towns.some((c) => !c.comingSoon);
   const wrapRef = useRef<HTMLDivElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibreMap | null>(null);
@@ -605,7 +606,7 @@ export function CoverageMap({ towns = announcedCities }: { towns?: City[] } = {}
 
       {status === "ready" && (
         <div className="pointer-events-none absolute top-3 left-3 z-10 rounded-full bg-rido-navy/80 border border-rido-magenta/30 px-3 py-1 text-[11px] font-bold text-rido-magenta-light backdrop-blur-sm">
-          {t.launchingSoon}
+          {anyLive ? t.liveNow : t.launchingSoon}
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import type { Locale } from "@/lib/i18n/config";
 const en = {
   findNearby: "Find a Rido near you",
   createAccount: "Create your account",
-  firstInLine: "Be first in line at launch",
+  firstInLine: "Ready to ride in Torrevieja",
   signUp: "Sign up",
   scanToUnlock: "Scan to unlock",
   pointAtQr: "Point at the QR code",
@@ -29,7 +29,7 @@ export const phoneCopy: Record<Locale, PhoneCopy> = {
   es: {
     findNearby: "Encuentra un Rido cerca",
     createAccount: "Crea tu cuenta",
-    firstInLine: "Sé de los primeros en el lanzamiento",
+    firstInLine: "Listo para montar en Torrevieja",
     signUp: "Regístrate",
     scanToUnlock: "Escanea para desbloquear",
     pointAtQr: "Apunta al código QR",

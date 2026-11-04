@@ -4,34 +4,34 @@
 
 ---
 
-# Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain
+# Rido — Shared E-Scooters in Torrevieja, Costa Blanca, Spain
 
-Rido is a shared e-scooter and e-bike micro-mobility service launching in Torrevieja on the Costa Blanca, Spain, in the coming weeks, with the Costa del Sol to follow. The service provides zero-emission shared vehicles available via a mobile app. Users can find, unlock, ride, and park vehicles using the Rido app.
+Rido is a shared e-scooter micro-mobility service, live in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow. The service provides zero-emission shared e-scooters through the Rido app for iPhone (App Store: https://apps.apple.com/app/id6800788222) and Android (Google Play: https://play.google.com/store/apps/details?id=ride.rido.app). Users can find, unlock, ride, and park vehicles using the Rido app.
 
 Operated by Go2 Place S.L. (NIF B01745405), based in Orihuela Costa, Alicante, Spain.
 
 ## Hero Section
 
-**Headline**: Move Freely Along the Coast
+**Headline**: Shared e-scooters in Torrevieja.
 
-**Subheadline**: Cheaper than a taxi, cleaner than a rental car, and run by people who live here. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.
+**Subheadline**: Cheaper than a taxi, cleaner than a rental car, and run by people who live here. Live now in Torrevieja on the Costa Blanca — the Costa del Sol is next.
 
-**Stats**: 6 Planned Cities | 2 Vehicle Types | Zero Direct Emissions
+**Badge**: Now riding in Torrevieja
 
-**Badge**: Launching soon in Torrevieja
+**Main action**: App Store and Google Play badges
 
 ---
 
 ## How It Works
 
-### Step 1: Sign Up Early
-Join the waitlist now and be first in line when the Rido app launches. Create your account in seconds when it's ready.
+### Step 1: Download Rido
+Get the free Rido app on the App Store or Google Play and create your account in seconds.
 
 ### Step 2: Scan & Unlock
-Find a Rido nearby on the map, scan the QR code on the handlebar, and you're ready to roll.
+Find a Rido e-scooter nearby on the map, scan the QR code on the handlebar, and you're ready to roll.
 
 ### Step 3: Ride & Enjoy
-Follow traffic rules, use bike lanes, and enjoy the ride. Helmet recommended for your safety.
+Follow traffic rules, use bike lanes, and enjoy the ride. Helmet on — it's the law for e-scooter riders in Spain, and we include one.
 
 ### Step 4: Park & End Ride
 Park responsibly in designated areas shown in the app. End your ride and pay only for what you used.
@@ -49,7 +49,7 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 - **Battery**: Swappable
 - **Features**: Certified helmet docked on the stem, front and rear lights with brake light and reflectors, dual brakes (front and rear), beginner mode (15 km/h), GPS tracking and geofencing
 
-### Rido Bike (E-Bike)
+### Rido Bike (E-Bike, coming later)
 - **Tagline**: Pedal further, effort less
 - **Description**: Our electric-assist bike with smooth pedal support, an adjustable saddle, and a sturdy front basket. Perfect for longer commutes and carrying essentials.
 - **Range**: 60 km
@@ -60,10 +60,10 @@ Park responsibly in designated areas shown in the app. End your ride and pay onl
 
 ---
 
-## Cities (all coming soon)
+## Cities
 
-- **Torrevieja** (Costa Blanca, Alicante) — launching in the coming weeks. E-scooters and e-bikes. https://www.rido.bike/torrevieja
-- **Costa del Sol** — five more launch towns planned; the towns will be announced soon. E-scooters and e-bikes.
+- **Torrevieja** (Costa Blanca, Alicante) — live now. Shared e-scooters. https://www.rido.bike/torrevieja
+- **Costa del Sol** — five more towns planned; the towns will be announced soon.
 
 ---
 
@@ -103,19 +103,19 @@ Every Rido ride replaces a car trip. Here's the impact we're projected to make.
 
 ## Pricing
 
-Fares will be announced at launch. The public site does not list unlock fees, per-minute rates, or day-pass prices.
+Current fares are shown in the Rido app. The public site does not list unlock fees, per-minute rates, or day-pass prices.
 
 ### Pay as you go
 - No commitment. Ride when you need it.
-- Price: announced at launch.
+- Price: shown in the app.
 
 ### Rido Pass (Most Popular)
 - Frequent-rider membership.
-- Price: announced at launch.
+- Price: shown in the app.
 
 ### Day Pass (Best for Tourists)
 - A full day of riding.
-- Price: announced at launch.
+- Price: shown in the app.
 
 **No-Surprise Guarantee**: No minimum top-up required, no hidden fees after your ride, free refund of unused balance, exact pricing shown before every ride.
 
@@ -126,8 +126,8 @@ Fares will be announced at launch. The public site does not list unlock fees, pe
 ### What age do I need to be to ride a Rido?
 Spanish law sets the minimum age for riding an e-scooter at 15 (Royal Decree 518/2026, in force since 1 October 2026) and sets no minimum for pedal-assist e-bikes. Rido's own minimum is 18 for both, because every ride is a rental contract with insurance cover. You'll verify your age when you create your account in the app.
 
-### How do I find and unlock a Rido vehicle?
-Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.
+### How do I find and unlock a Rido e-scooter?
+Download the Rido app from the App Store or Google Play, find a scooter near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.
 
 ### Do I need a driver's license?
 For e-scooters: no license is required in most Spanish cities for speeds up to 25 km/h. For e-bikes: no license is required as they are classified as pedal-assist bicycles under Spanish law. Always check local regulations.
@@ -145,7 +145,7 @@ Park in designated areas shown in the app. These are typically bike rack zones o
 Yes. Since 1 October 2026, Spain's VMP rules make helmets mandatory for e-scooter riders nationwide. We include a helmet with every scooter and offer helmet rewards in the app.
 
 ### How much does it cost?
-Fares will be announced at launch. What will not change: you always see the price before every ride, there is no minimum top-up and no hidden fees, and any unused balance is refundable.
+Current fares are shown in the Rido app. You always see the price before every ride, there is no minimum top-up and no hidden fees, and any unused balance is refundable.
 
 ### What if the battery dies during my ride?
 Our app shows real-time battery levels so you can choose a fully charged vehicle. If a battery runs low during your ride, you can end it at any designated parking area — no extra charge.
@@ -159,11 +159,11 @@ Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bik
 
 Rido was founded with a simple belief. We saw empty bike lanes, crowded roads, and cities that deserve better air.
 
-So we're building a fleet of shared e-scooters and e-bikes designed for coastal towns — their streets, their weather, and their people. Every vehicle will be serviced in-house, every ride will be insured, and every kilometre replaces a car trip.
+So we built a fleet of shared e-scooters designed for coastal towns, with e-bikes to follow — their streets, their weather, and their people. Every vehicle is serviced in-house, every ride is insured, and every kilometre replaces a car trip.
 
 ### Milestones
 - 2025: Rido founded in Spain
-- 2026: Torrevieja launch on the Costa Blanca
+- 2026: Live in Torrevieja on the Costa Blanca
 - Next: Costa del Sol — 5 towns planned
 
 ### Values
@@ -173,13 +173,15 @@ So we're building a fleet of shared e-scooters and e-bikes designed for coastal 
 
 ---
 
-## Waitlist
+## Get the app
 
-Join the waitlist and be first to ride when Rido launches in Torrevieja — and on the Costa del Sol after that. No payment required to join.
+- iOS app: https://apps.apple.com/app/id6800788222
+- Android app: https://play.google.com/store/apps/details?id=ride.rido.app
+- Smart link for phones: https://www.rido.bike/app
 
-- iOS app: Coming soon
-- Android app: Coming soon
-- Free to join, no credit card needed
+## Next towns
+
+Not in Torrevieja? Leave your email on rido.bike and Rido will tell you when it reaches a new town on the Costa del Sol. No payment required.
 
 ---
 

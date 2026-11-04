@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
   return (
     <LegalPage
       title="Privacy Policy"
-      lastUpdated="October 2026"
+      lastUpdated="November 2026"
       esIntro="Política de privacidad de Rido (Go2 Place S.L., NIF B01745405): qué datos personales recogemos, para qué los usamos, con quién los compartimos y cuáles son tus derechos según el RGPD y la LOPDGDD."
     >
       <script
@@ -81,7 +81,7 @@ export default function PrivacyPolicyPage() {
 
       <h3 id="3-2-waitlist">3.2 Website Waitlist</h3>
       <p>
-        Before the App launches, you can join the Rido waitlist on this website. We store the email address you enter, the language of the page, and the time you signed up. We then send you one email asking you to confirm the address, and record whether and when you confirmed it; if you do not confirm, we will not send you launch news. We use it only to tell you when Rido launches near you and to share launch details. <em>Legal basis:</em> your consent (Art. 6.1.a GDPR), which you can withdraw at any time by emailing <a href="mailto:info@rido.bike">info@rido.bike</a>. We keep this data until you withdraw consent or ask us to delete it.
+        You can join the Rido waitlist on this website to hear when Rido reaches a new town. We store the email address you enter, the language of the page, and the time you signed up. We then send you one email asking you to confirm the address, and record whether and when you confirmed it; if you do not confirm, we will not send you launch news. We use it only to tell you when Rido launches in a town near you, including a one-off email when a launch you signed up for happens, and to share launch details. <em>Legal basis:</em> your consent (Art. 6.1.a GDPR), which you can withdraw at any time by emailing <a href="mailto:info@rido.bike">info@rido.bike</a>. We keep this data until you withdraw consent or ask us to delete it.
       </p>
 
       <h3>3.3 Special Categories of Data</h3>

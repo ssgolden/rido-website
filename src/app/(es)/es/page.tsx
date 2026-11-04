@@ -44,9 +44,9 @@ const FAQ = dynamic(() => import("@/components/sections/FAQ").then((m) => ({ def
 const Footer = dynamic(() => import("@/components/layout/Footer").then((m) => ({ default: m.Footer })), { loading });
 
 export const metadata: Metadata = {
-  title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
+  title: "Rido — Patinetes eléctricos compartidos en Torrevieja, ya disponibles",
   description:
-    "Patinetes y bicicletas eléctricas compartidas que llegan a Torrevieja, en la Costa Blanca, en las próximas semanas, y después a la Costa del Sol. Únete a la lista de espera de Rido y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
+    "Patinetes eléctricos compartidos, ya disponibles en Torrevieja, en la Costa Blanca, y después en la Costa del Sol. Descarga la app de Rido en el App Store o Google Play y monta hoy. Cero emisiones, cero complicaciones.",
   alternates: {
     canonical: `${SITE_ORIGIN}/es`,
     languages: {
@@ -56,9 +56,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
+    title: "Rido — Patinetes eléctricos compartidos en Torrevieja, ya disponibles",
     description:
-      "Llegamos a Torrevieja en las próximas semanas. Únete a la lista de espera y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
+      "Ya disponibles en Torrevieja. Descarga la app de Rido y monta hoy en patinete eléctrico compartido. Cero emisiones, cero complicaciones.",
     type: "website",
     url: `${SITE_ORIGIN}/es`,
     siteName: "Rido",
@@ -69,16 +69,16 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
+        alt: "Rido — Patinetes eléctricos compartidos, ya en Torrevieja",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol",
+    title: "Rido — Patinetes eléctricos compartidos en Torrevieja, ya disponibles",
     description:
-      "Llegamos a Torrevieja en las próximas semanas. Únete a la lista de espera y sé de los primeros en montar. Cero emisiones, cero complicaciones.",
+      "Ya disponibles en Torrevieja. Descarga la app de Rido y monta hoy en patinete eléctrico compartido. Cero emisiones, cero complicaciones.",
     images: ["/images/og/rido-og.jpg"],
   },
 };
@@ -93,9 +93,9 @@ export default function HomeEs() {
         <JsonLd schemas={getHomeSchemas("es")} />
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Patinetes y bicis eléctricas compartidas en Torrevieja y la Costa del Sol</h1>
-            <p>Únete a la lista de espera y sé de los primeros en montar con los patinetes y bicicletas eléctricas compartidas de Rido. Cero emisiones, cero complicaciones.</p>
-            <p>Llegamos a Torrevieja, en la Costa Blanca, en las próximas semanas, y después a la Costa del Sol.</p>
+            <h1>Rido — Patinetes eléctricos compartidos en Torrevieja, ya disponibles</h1>
+            <p>Descarga la app de Rido en el App Store o Google Play y monta hoy en patinete eléctrico compartido. Cero emisiones, cero complicaciones.</p>
+            <p>Ya disponibles en Torrevieja, en la Costa Blanca. Después, la Costa del Sol.</p>
           </div>
         </noscript>
         {/* Order: Hero → How it works → Fleet → Launch map → Safety → FAQ → Waitlist. Keep the Navbar links in sync. */}

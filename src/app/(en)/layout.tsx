@@ -1,3 +1,4 @@
+import { APP_STORE_ID } from "@/data/apps";
 import type { Metadata } from "next";
 import { RootDocument, rootViewport } from "@/components/layout/RootDocument";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
@@ -8,24 +9,21 @@ export const viewport = rootViewport;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
-  title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
+  title: "Rido — Shared E-Scooters in Torrevieja, Live Now",
   description:
-    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
+    "Shared e-scooters, live now in Torrevieja on the Costa Blanca, with the Costa del Sol to follow. Download the Rido app on the App Store or Google Play and ride today. Zero emissions, zero hassle.",
   keywords: [
     "rido",
     "e-scooter",
-    "e-bike",
     "shared mobility",
     "Spain",
     "Torrevieja",
     "Costa Blanca",
     "Costa del Sol",
     "electric scooter",
-    "electric bike",
     "micromobility",
     "rent scooter Spain",
     "alquiler patinete",
-    "alquiler bici eléctrica",
     "alquiler patinete Torrevieja",
     "e-scooter Torrevieja",
   ],
@@ -39,10 +37,12 @@ export const metadata: Metadata = {
     apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
   manifest: "/manifest.json",
+  // iPhone Safari shows the Smart App Banner ("Open in the App Store").
+  itunes: { appId: APP_STORE_ID },
   openGraph: {
-    title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
+    title: "Rido — Shared E-Scooters in Torrevieja, Live Now",
     description:
-      "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride shared e-scooters and e-bikes. Zero emissions, zero hassle.",
+      "Live now in Torrevieja. Download the Rido app and ride shared e-scooters today. Zero emissions, zero hassle.",
     type: "website",
     url: SITE_ORIGIN,
     siteName: "Rido",
@@ -53,15 +53,15 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Rido — Shared e-scooters and e-bikes, launching soon in Torrevieja",
+        alt: "Rido — Shared e-scooters, live now in Torrevieja",
         type: "image/jpeg",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol",
-    description: "Launching in Torrevieja in the coming weeks. Join the waitlist and be first to ride. Zero emissions, zero hassle.",
+    title: "Rido — Shared E-Scooters in Torrevieja, Live Now",
+    description: "Live now in Torrevieja. Download the Rido app and ride shared e-scooters today. Zero emissions, zero hassle.",
     images: ["/images/og/rido-og.jpg"],
   },
   other: primaryCity

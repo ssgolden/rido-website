@@ -15,18 +15,18 @@ import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { primaryCity } from "@/data/cities";
 
 // Section anchors follow the homepage order: Hero → How it works → Fleet →
-// Launch (#cities, see Launch.tsx) → Safety → FAQ → Waitlist (#download).
+// Where to ride (#cities, see Launch.tsx) → Safety → FAQ → Get the app (#download).
 const en = {
   homeAria: "Rido home",
-  joinWaitlist: "Join the waitlist",
-  joinShort: "Join",
+  joinWaitlist: "Get the app",
+  joinShort: "Get app",
   openMenu: "Open menu",
   closeMenu: "Close menu",
   language: "Language",
   navLinks: [
     { label: "How it works", href: "#how-it-works" },
     { label: "Fleet", href: "#vehicles" },
-    { label: "Launch", href: "#cities" },
+    { label: "Where to ride", href: "#cities" },
     { label: "Safety", href: "#safety" },
     { label: "FAQ", href: "#faq" },
   ],
@@ -41,15 +41,15 @@ const copy: Record<Locale, typeof en> = {
   en,
   es: {
     homeAria: "Inicio de Rido",
-    joinWaitlist: "Únete a la lista",
-    joinShort: "Únete",
+    joinWaitlist: "Descarga la app",
+    joinShort: "App",
     openMenu: "Abrir menú",
     closeMenu: "Cerrar menú",
     language: "Idioma",
     navLinks: [
       { label: "Cómo funciona", href: "#how-it-works" },
       { label: "Flota", href: "#vehicles" },
-      { label: "Lanzamiento", href: "#cities" },
+      { label: "Dónde montar", href: "#cities" },
       { label: "Seguridad", href: "#safety" },
       { label: "Preguntas", href: "#faq" },
     ],

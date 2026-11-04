@@ -7,22 +7,21 @@ import { vehicles } from "@/data/vehicles";
 const town = primaryCity?.name ?? "Torrevieja";
 
 const en = {
-  waitlistKicker: "Waitlist now open",
-  waitlistSingular: "{count} person on the waitlist",
-  waitlistPlural: "{count} people on the waitlist",
-  badge: `Launching soon in ${town}`,
+  locale: "en" as Locale,
+  liveKicker: "Download the app and ride today",
+  badge: `Now riding in ${town}`,
   /** Last `highlightCount` words in solid brand magenta: the town. */
-  headlineWords: ["E-scooters", "and", "e-bikes", "in", `${town}.`],
+  headlineWords: ["Shared", "e-scooters", "in", `${town}.`],
   highlightCount: 1,
   subheadline:
-    "Move freely along the coast. Shared e-scooters and e-bikes, run by people who live here. Cheaper than a taxi, cleaner than a rental car. Launching first in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
+    "Move freely along the coast. Shared e-scooters, run by people who live here. Cheaper than a taxi, cleaner than a rental car. Live now in Torrevieja on the Costa Blanca — the Costa del Sol is next.",
   /** Phones: the headline already names the product and the town, so one line. */
-  subheadlineShort: "Move freely along the coast: cheaper than a taxi, cleaner than a rental car.",
-  microcopy: "No spam. One email when we launch near you.",
+  subheadlineShort: "Live now. Cheaper than a taxi, cleaner than a rental car.",
+  microcopy: "Free to download. You see the price before every ride.",
   secondary: "See how it works",
   imageAlt: "The Rido e-scooter in brand magenta, with its helmet docked on the stem",
   chipsLabel: "Highlights",
-  chips: ["Helmet included", "DGT certified", `${town} launch`],
+  chips: ["Helmet included", "DGT certified", `Live in ${town}`],
 };
 
 export type HeroCopy = typeof en;
@@ -30,20 +29,19 @@ export type HeroCopy = typeof en;
 export const heroCopy: Record<Locale, HeroCopy> = {
   en,
   es: {
-    waitlistKicker: "Lista de espera abierta",
-    waitlistSingular: "{count} persona en la lista de espera",
-    waitlistPlural: "{count} personas en la lista de espera",
-    badge: `Muy pronto en ${town}`,
-    headlineWords: ["Patinetes", "y", "bicis", "eléctricas", "en", `${town}.`],
+    locale: "es",
+    liveKicker: "Descarga la app y monta hoy",
+    badge: `Ya en ${town}`,
+    headlineWords: ["Patinetes", "eléctricos", "compartidos", "en", `${town}.`],
     highlightCount: 1,
     subheadline:
-      "Muévete libre por la costa. Patinetes y bicis eléctricas compartidas, gestionadas por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler. Arrancamos en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
-    subheadlineShort: "Muévete libre por la costa: más barato que un taxi, más limpio que un coche de alquiler.",
-    microcopy: "Sin spam. Un correo cuando lleguemos a tu zona.",
+      "Muévete libre por la costa. Patinetes eléctricos compartidos, gestionados por gente que vive aquí. Más barato que un taxi, más limpio que un coche de alquiler. Ya disponibles en Torrevieja, en la Costa Blanca — la Costa del Sol, después.",
+    subheadlineShort: "Ya disponibles. Más barato que un taxi, más limpio que un coche de alquiler.",
+    microcopy: "Descarga gratuita. Ves el precio antes de cada trayecto.",
     secondary: "Cómo funciona",
     imageAlt: "El patinete eléctrico Rido en magenta, con el casco acoplado en la barra",
     chipsLabel: "Lo esencial",
-    chips: ["Casco incluido", "Certificado DGT", `Lanzamiento en ${town}`],
+    chips: ["Casco incluido", "Certificado DGT", `Ya en ${town}`],
   },
 };
 

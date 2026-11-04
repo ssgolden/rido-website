@@ -27,12 +27,34 @@ interface FaqSource {
 const faqSources: readonly FaqSource[] = [
   {
     question: {
+      en: "Where can I ride Rido right now?",
+      es: "¿Dónde puedo montar en Rido ahora mismo?",
+    },
+    answer: {
+      en: "Rido shared e-scooters are live in Torrevieja on the Costa Blanca. The app shows every available scooter and where you can ride and park. The Costa del Sol is next: leave your email on this page and we'll tell you when Rido reaches your town.",
+      es: "Los patinetes eléctricos compartidos de Rido ya funcionan en Torrevieja, en la Costa Blanca. La app muestra todos los patinetes disponibles y dónde puedes circular y aparcar. La Costa del Sol viene después: déjanos tu correo en esta página y te avisaremos cuando Rido llegue a tu localidad.",
+    },
+    category: "getting-started",
+  },
+  {
+    question: {
+      en: "Where do I get the Rido app?",
+      es: "¿Dónde consigo la app de Rido?",
+    },
+    answer: {
+      en: "Rido is free on the App Store for iPhone and on Google Play for Android. On your phone, rido.bike/app takes you straight to the right store.",
+      es: "Rido es gratis en el App Store para iPhone y en Google Play para Android. Desde el móvil, rido.bike/app te lleva directamente a la tienda correcta.",
+    },
+    category: "getting-started",
+  },
+  {
+    question: {
       en: "How much does it cost?",
       es: "¿Cuánto cuesta?",
     },
     answer: {
-      en: "Fares will be announced at launch. What won't change: you'll always see the price before every ride, there's no minimum top-up and no hidden fees, and any unused balance is refundable.",
-      es: "Las tarifas se anunciarán en el lanzamiento. Lo que no cambia: siempre verás el precio antes de cada trayecto, no hay recarga mínima ni costes ocultos, y el saldo que no uses es reembolsable.",
+      en: "Current fares are shown in the Rido app. You always see the price before every ride, there's no minimum top-up and no hidden fees, and any unused balance is refundable.",
+      es: "Las tarifas actuales aparecen en la app de Rido. Siempre ves el precio antes de cada trayecto, no hay recarga mínima ni costes ocultos, y el saldo que no uses es reembolsable.",
     },
     category: "pricing",
   },
@@ -49,12 +71,12 @@ const faqSources: readonly FaqSource[] = [
   },
   {
     question: {
-      en: "How do I find and unlock a Rido vehicle?",
-      es: "¿Cómo encuentro y desbloqueo un vehículo de Rido?",
+      en: "How do I find and unlock a Rido e-scooter?",
+      es: "¿Cómo encuentro y desbloqueo un patinete de Rido?",
     },
     answer: {
-      en: "Open the Rido app, find a vehicle near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.",
-      es: "Abre la app de Rido, localiza un vehículo cerca de ti en el mapa, escanea el código QR del manillar y listo: ya puedes circular. La app muestra la disponibilidad y el nivel de batería en tiempo real.",
+      en: "Download the Rido app from the App Store or Google Play, find a scooter near you on the map, scan the QR code on the handlebar, and you're ready to ride. The app shows real-time availability and battery levels.",
+      es: "Descarga la app de Rido en el App Store o Google Play, localiza un patinete cerca de ti en el mapa, escanea el código QR del manillar y listo: ya puedes circular. La app muestra la disponibilidad y el nivel de batería en tiempo real.",
     },
     category: "getting-started",
   },
@@ -119,8 +141,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Está asegurado mi trayecto?",
     },
     answer: {
-      en: "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.",
-      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
+      en: "Yes, every Rido ride includes basic insurance coverage. Every Rido e-scooter is insured against third-party liability. For full details, see our Terms of Service.",
+      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Cada patinete Rido cuenta con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
     },
     category: "legal",
   },

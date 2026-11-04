@@ -11,26 +11,28 @@ import { STAGGER } from "@/lib/motion";
 
 const copy = {
   en: {
-    aria: "Where Rido is launching",
-    label: "Where we're launching",
+    aria: "Where Rido operates",
+    label: "Where to ride",
     title: "Torrevieja first. The\u00A0Costa del Sol next.",
     intro:
-      "We're a local team, based just down the coast in Orihuela Costa. Rido launches in Torrevieja in the coming weeks with shared e-scooters and e-bikes.",
-    soon: "Launching in the coming weeks",
+      "We're a local team, based just down the coast in Orihuela Costa. Rido is live in Torrevieja with shared e-scooters: open the app to see every scooter near you.",
+    live: "Live now · e-scooters",
+    soon: "Launching soon",
     planned: (n: number) => `${n} towns planned — announced soon`,
     cityLink: (name: string) => `Rido in ${name}`,
-    hearFirst: "Join the waitlist to hear first",
+    hearFirst: "Get the app and ride",
   },
   es: {
-    aria: "Dónde llega Rido",
-    label: "Dónde arrancamos",
+    aria: "Dónde está Rido",
+    label: "Dónde montar",
     title: "Primero Torrevieja. Después, la Costa del Sol.",
     intro:
-      "Somos un equipo local, con base en Orihuela Costa, a pocos kilómetros por la costa. Rido llega a Torrevieja en las próximas semanas con patinetes y bicis eléctricas compartidas.",
-    soon: "En las próximas semanas",
+      "Somos un equipo local, con base en Orihuela Costa, a pocos kilómetros por la costa. Rido ya funciona en Torrevieja con patinetes eléctricos compartidos: abre la app para ver los patinetes cerca de ti.",
+    live: "Ya disponible · patinetes",
+    soon: "Muy pronto",
     planned: (n: number) => `${n} localidades previstas — las anunciaremos muy pronto`,
     cityLink: (name: string) => `Rido en ${name}`,
-    hearFirst: "Únete a la lista y entérate primero",
+    hearFirst: "Descarga la app y monta",
   },
 } satisfies Record<Locale, Record<string, unknown>>;
 
@@ -63,7 +65,7 @@ export function Launch({ locale }: { locale: Locale }) {
                     <span className="block font-display text-xl font-bold text-white">
                       {city.name} <span className="font-sans text-base font-medium text-muted">· {city.region}</span>
                     </span>
-                    <span className="block text-sm text-muted">{t.soon}</span>
+                    <span className={city.comingSoon ? "block text-sm text-muted" : "block text-sm font-semibold text-rido-green"}>{city.comingSoon ? t.soon : t.live}</span>
                   </span>
                   <ArrowRight className="w-5 h-5 text-muted transition-transform duration-200 group-hover:translate-x-1 group-hover:text-rido-magenta-light" aria-hidden="true" />
                 </Link>

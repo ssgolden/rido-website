@@ -1,6 +1,7 @@
 import { vehicles } from "@/data/vehicles";
 import { pricingTiers } from "@/data/pricing";
 import { announcedCities, primaryCity, regionsWithUnannouncedTowns } from "@/data/cities";
+import { APP_STORE_ID, PLAY_PACKAGE, storeListingName, storeUrl } from "@/data/apps";
 import { faqItemsByLocale } from "@/data/faq";
 import type { Locale } from "@/lib/i18n/config";
 import { SITE_LAST_MODIFIED, SITE_ORIGIN } from "@/lib/site";
@@ -82,7 +83,7 @@ export const brandSchema = {
   "@id": brandId,
   name: "Rido",
   description:
-    "Rido is a shared e-scooter and e-bike micro-mobility brand launching in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow.",
+    "Rido is a shared e-scooter micro-mobility brand, live in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow.",
   logo: logoUrl,
   url: baseUrl,
   parentOrganization: { "@id": orgId },
@@ -102,9 +103,9 @@ export const webPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": `${baseUrl}/`,
-  name: "Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain",
+  name: "Rido — Shared E-Scooters in Torrevieja, Costa Blanca, Spain",
   description:
-    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
+    "Shared e-scooters, live now in Torrevieja on the Costa Blanca, with the Costa del Sol to follow. Download the Rido app on the App Store or Google Play and ride today. Zero emissions, zero hassle.",
   url: baseUrl,
   isPartOf: { "@id": websiteId },
   about: { "@id": brandId },
@@ -121,12 +122,12 @@ export const localBusinessSchema = {
   name: "Rido",
   alternateName: "Go2 Place S.L.",
   description:
-    "Shared e-scooters and e-bikes launching in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow. Zero-emission micro-mobility via a mobile app. Launching 2026.",
+    "Shared e-scooters, live in Torrevieja on the Costa Blanca, Spain, with the Costa del Sol to follow. Zero-emission micro-mobility via the Rido app for iPhone and Android.",
   url: baseUrl,
   logo: logoUrl,
   image: heroImage,
   email: "info@rido.bike",
-  // Pre-launch: priceRange removed until fares are public.
+  // No priceRange: fares are shown in the app, not on the site.
   currenciesAccepted: "EUR",
   paymentAccepted: "Credit Card, Apple Pay, Google Pay, Debit Card",
   address: {
@@ -156,24 +157,24 @@ export const localBusinessSchema = {
     })),
     ...regionsWithUnannouncedTowns.map((region) => ({ "@type": "AdministrativeArea", name: region })),
   ],
-  serviceType: ["E-Scooter Rental", "E-Bike Rental"],
+  serviceType: ["E-Scooter Rental"],
   potentialAction: {
-    "@type": "ReserveAction",
-    target: `${baseUrl}/#download`,
-    name: "Join the waitlist",
+    "@type": "DownloadAction",
+    target: [storeUrl.ios, storeUrl.android],
+    name: "Get the Rido app",
   },
   hasOfferCatalog: {
     "@type": "OfferCatalog",
     name: "Rido Vehicle Rentals",
-    // Pre-launch: prices not yet public. List plan names only — no per-offer prices.
+    // Fares live in the app: plan names only, no per-offer prices.
     itemListElement: pricingTiers.map((tier) => ({
       "@type": "Offer",
       name: tier.name,
       description: tier.description,
-      availability: "https://schema.org/PreOrder",
+      availability: "https://schema.org/InStock",
       itemOffered: {
         "@type": "Service",
-        name: "E-Scooter & E-Bike Rental",
+        name: "E-Scooter Rental",
         provider: { "@id": `${baseUrl}/#localbusiness` },
       },
     })),
@@ -184,16 +185,16 @@ export const localBusinessSchema = {
 export const howToSchema = {
   "@context": "https://schema.org",
   "@type": "HowTo",
-  name: "How to Ride a Rido E-Scooter or E-Bike",
+  name: "How to Ride a Rido E-Scooter",
   description:
-    "A step-by-step guide to finding, unlocking, riding, and parking a Rido shared e-scooter or e-bike.",
+    "A step-by-step guide to downloading the app, then finding, unlocking, riding and parking a Rido shared e-scooter.",
   totalTime: "PT15M",
   step: [
     {
       "@type": "HowToStep",
       position: 1,
-      name: "Sign Up Early",
-      text: "Join the waitlist and be first in line when the Rido app launches. Create your account in seconds when it's ready.",
+      name: "Download Rido",
+      text: "Get the free Rido app on the App Store or Google Play and create your account in seconds.",
       url: `${baseUrl}/#download`,
     },
     {
@@ -231,8 +232,9 @@ export const productSchemas = vehicles.map((vehicle) => ({
   image: `${baseUrl}${vehicle.image}`,
   offers: {
     "@type": "AggregateOffer",
-    availability: "https://schema.org/PreOrder",
-    // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
+    // The scooter rides in Torrevieja now; the e-bike comes later.
+    availability: vehicle.type === "e-scooter" ? "https://schema.org/InStock" : "https://schema.org/PreOrder",
+    // No lowPrice/highPrice: fares are shown in the app.
     offerCount: pricingTiers.length.toString(),
   },
   additionalProperty: vehicle.specs.map((spec) => ({
@@ -243,7 +245,21 @@ export const productSchemas = vehicles.map((vehicle) => ({
   isRelatedTo: { "@id": `${baseUrl}/#localbusiness` },
 }));
 
-// No SoftwareApplication markup until the app is actually published.
+// --- Rider app (live in both stores) ----------------------------------------
+export const mobileAppSchemas = (["ios", "android"] as const).map((store) => ({
+  "@context": "https://schema.org",
+  "@type": "MobileApplication",
+  "@id": `${baseUrl}/#app-${store}`,
+  name: storeListingName[store],
+  operatingSystem: store === "ios" ? "iOS" : "Android",
+  applicationCategory: "TravelApplication",
+  url: storeUrl[store],
+  ...(store === "ios" ? { identifier: APP_STORE_ID } : { identifier: PLAY_PACKAGE }),
+  installUrl: storeUrl[store],
+  offers: { "@type": "Offer", price: "0", priceCurrency: "EUR" },
+  publisher: { "@id": orgId },
+  description: "Find, unlock and pay for Rido shared e-scooters nearby, with a real-time map.",
+}));
 
 // --- Breadcrumbs -----------------------------------------------------------
 export const breadcrumbSchema = {
@@ -264,7 +280,7 @@ export const speakableSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": `${baseUrl}/#speakable`,
-  name: "Rido — Shared E-Scooters & E-Bikes in Torrevieja and the Costa del Sol, Spain",
+  name: "Rido — Shared E-Scooters in Torrevieja, Costa Blanca, Spain",
   url: baseUrl,
   speakable: {
     "@type": "SpeakableSpecification",
@@ -292,11 +308,11 @@ export const cityServiceSchemas = [
         containedInPlace: { "@type": "AdministrativeArea", name: city.region },
       },
     },
-    description: `Shared ${city.vehicles.map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike")).join(" and ")} rental in ${city.name}, ${city.region}. Launching in the coming weeks.`,
+    description: `Shared ${city.vehicles.map((v) => (v === "e-scooter" ? "e-scooter" : "e-bike")).join(" and ")} rental in ${city.name}, ${city.region}. ${city.comingSoon ? "Launching in the coming weeks." : "Live now."}`,
     offers: {
       "@type": "AggregateOffer",
-      availability: "https://schema.org/PreOrder",
-      // Pre-launch: prices not yet public — no lowPrice/highPrice until announcement.
+      availability: city.comingSoon ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
+      // No lowPrice/highPrice: fares are shown in the app.
     },
   })),
   ...regionsWithUnannouncedTowns.map((region) => ({
@@ -364,8 +380,7 @@ export function getSiteSchemas() {
  * JSON-LD for the homepage only (EN at /, ES at /es): its FAQ, how-to,
  * products and services describe content visible on that page, as Google's
  * structured-data guidelines require. Town pages emit their own Service and
- * FAQPage. No JobPosting (no open roles), no SearchAction (no site search),
- * no SoftwareApplication (no app yet).
+ * FAQPage. No JobPosting (no open roles), no SearchAction (no site search).
  */
 export function getHomeSchemas(locale: Locale = "en") {
   return [
@@ -377,5 +392,6 @@ export function getHomeSchemas(locale: Locale = "en") {
     sustainabilitySchema,
     ...productSchemas,
     ...cityServiceSchemas,
+    ...mobileAppSchemas,
   ];
 }

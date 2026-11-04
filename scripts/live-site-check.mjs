@@ -41,6 +41,7 @@ const PAGES = [
   { path: "/politica-cookies", lang: "en" },
   { path: "/partners", lang: "en" },
   { path: "/careers", lang: "en" },
+  { path: "/app", lang: "en" },
   { path: "/404-nope", status: 404 },
 ];
 
@@ -59,7 +60,16 @@ const ASSETS = [
   { path: "/icons/icon-192.png", type: "image/png" },
   { path: "/icons/icon-512.png", type: "image/png" },
   { path: "/apple-touch-icon.png", type: "image/png" },
+  { path: "/images/badges/app-store-en.svg", type: "image/svg+xml" },
+  { path: "/images/badges/app-store-es.svg", type: "image/svg+xml" },
+  { path: "/images/badges/google-play-en.svg", type: "image/svg+xml" },
+  { path: "/images/badges/google-play-es.svg", type: "image/svg+xml" },
 ];
+
+/** The store listings every launched page links to (src/data/apps.ts). */
+const APP_STORE_URL = "https://apps.apple.com/app/id6800788222";
+const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=ride.rido.app";
+const APP_LINK_PAGES = ["/", "/es", "/torrevieja", "/es/torrevieja", "/app"];
 
 const SECURITY_HEADERS = ["content-security-policy", "x-content-type-options"];
 if (!LOCAL) SECURITY_HEADERS.push("strict-transport-security");
@@ -191,6 +201,20 @@ async function main() {
     expect((res.headers.get("content-type") ?? "").startsWith("text/plain"), `content-type "${res.headers.get("content-type")}"`);
     expect(res.body.length > 0, "empty body");
     return `${res.body.length} bytes`;
+  });
+
+  // App store links: every launched page links both stores; the homepage
+  // carries the Smart App Banner tag.
+  await check("store links on launched pages", async () => {
+    const missing = [];
+    for (const path of APP_LINK_PAGES) {
+      const html = htmlByPath.get(path) ?? (await request(ORIGIN + path)).body.toString("utf8");
+      for (const url of [APP_STORE_URL, PLAY_STORE_URL]) if (!html.includes(url)) missing.push(`${path} → ${url}`);
+    }
+    expect(missing.length === 0, `missing: ${missing.join("; ")}`);
+    const home = htmlByPath.get("/") ?? "";
+    expect(/<meta\b[^>]*name=["']apple-itunes-app["'][^>]*app-id=6800788222/i.test(home), "no apple-itunes-app meta on /");
+    return `${APP_LINK_PAGES.length} pages link both stores`;
   });
 
   // 3. Headers

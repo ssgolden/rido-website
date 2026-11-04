@@ -5,8 +5,7 @@ import { createPortal } from "react-dom";
 import { withBase } from "@/lib/basePath";
 import { STAGGER } from "@/lib/motion";
 import type { HeroCopy } from "@/components/sections/Hero.copy";
-import { WaitlistProof } from "@/components/ui/WaitlistProof";
-import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import { ImageFrame } from "@/components/ui/ImageFrame";
 import { useHeroBackdropEl } from "@/components/ui/SmoothScrollProvider";
 import { useScrollFrame } from "@/hooks/useScrollFrame";
@@ -102,9 +101,7 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
               </span>
               {t.badge}
             </span>
-            <span className="hidden sm:inline text-xs sm:text-sm text-muted">
-              <WaitlistProof singular={t.waitlistSingular} plural={t.waitlistPlural} fallbackKicker={t.waitlistKicker} />
-            </span>
+            <span className="hidden sm:inline text-xs sm:text-sm text-muted">{t.liveKicker}</span>
           </div>
 
           <h1 id="hero-heading" className="text-display-2xl font-black text-balance">
@@ -131,7 +128,7 @@ export function Hero({ t, image }: { t: HeroCopy; image: string }) {
           </p>
 
           <div className="hero-rise mt-8 flex justify-center lg:justify-start" style={delay(0.36)}>
-            <WaitlistForm placement="hero" className="max-w-lg" />
+            <StoreBadges locale={t.locale} placement="hero" size="lg" className="justify-center lg:justify-start" />
           </div>
 
           <div

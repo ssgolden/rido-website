@@ -1,7 +1,7 @@
 {
-  "name": "Rido — Shared E-Scooters & E-Bikes in Spain",
+  "name": "Rido — Shared E-Scooters in Spain",
   "short_name": "Rido",
-  "description": "Shared e-scooters and e-bikes launching in Torrevieja and the Costa del Sol, Spain. Join the Rido waitlist and be first to ride. Zero emissions, zero hassle.",
+  "description": "Shared e-scooters, live now in Torrevieja on the Costa Blanca, with the Costa del Sol to follow. Get the Rido app on the App Store or Google Play.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#0F172A",
@@ -39,5 +39,17 @@
     "lifestyle"
   ],
   "lang": "en",
-  "dir": "ltr"
+  "dir": "ltr",
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=ride.rido.app",
+      "id": "ride.rido.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/id6800788222"
+    }
+  ],
+  "prefer_related_applications": false
 }

@@ -12,6 +12,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { ImageFrame } from "@/components/ui/ImageFrame";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import { withBase } from "@/lib/basePath";
 import { vehicles } from "@/data/vehicles";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
@@ -39,6 +40,11 @@ function regionNeighbours(city: City): string[] {
 
 /** "Torrevieja is Rido's launch town on the Costa Blanca" / "... one of 3 launch towns ..., alongside A and B". */
 function launchTownSentence(city: City, locale: Locale): string {
+  if (!city.comingSoon) {
+    return locale === "es"
+      ? `Rido ya funciona en ${city.name}, en la ${city.region}.`
+      : `Rido is live in ${city.name} on the ${city.region}.`;
+  }
   const others = regionNeighbours(city);
   if (locale === "es") {
     return others.length === 0
@@ -65,10 +71,9 @@ function vehicleNoun(city: City, locale: Locale): string {
   return both ? "e-scooters and e-bikes" : "e-scooters";
 }
 
-// Pre-launch: no fares anywhere on the site until they are announced
-// (see the Pricing section and src/data/pricing.ts).
+// No fares on the site: riders see current prices in the app.
 
-// --- FAQ (honest: every town is comingSoon — never claim live availability) --
+// --- FAQ (honest: live towns say so; comingSoon towns never claim availability) --
 export interface CityFaqItem {
   question: string;
   answer: string;
@@ -76,6 +81,51 @@ export interface CityFaqItem {
 
 export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
   const both = city.vehicles.length === 2;
+
+  if (!city.comingSoon) {
+    if (locale === "es") {
+      return [
+        {
+          question: `¿Rido ya funciona en ${city.name}?`,
+          answer: `Sí. Los ${vehicleNoun(city, "es")} compartidos de Rido ya circulan por ${city.name}. Descarga la app en el App Store o Google Play, encuentra uno en el mapa y escanea para desbloquear.`,
+        },
+        {
+          question: `¿Dónde puedo circular y aparcar en ${city.name}?`,
+          answer: `La app muestra las zonas exactas para circular y aparcar en ${city.name}, y qué vehículos están libres cerca de ti.`,
+        },
+        {
+          question: `¿Cuánto cuesta montar en ${city.name}?`,
+          answer: "Las tarifas actuales aparecen en la app de Rido. Ves el precio exacto antes de cada trayecto, sin recarga mínima y sin costes ocultos.",
+        },
+        {
+          question: `¿Qué vehículos hay en ${city.name}?`,
+          answer: both
+            ? `Patinetes eléctricos y bicicletas eléctricas compartidos. La app muestra la disponibilidad y el nivel de batería en tiempo real.`
+            : `Patinetes eléctricos compartidos, cada uno con un casco certificado acoplado en la barra. La app muestra la disponibilidad y el nivel de batería en tiempo real.`,
+        },
+      ];
+    }
+    return [
+      {
+        question: `Is Rido live in ${city.name}?`,
+        answer: `Yes. Rido shared ${vehicleNoun(city, "en")} are riding in ${city.name} now. Download the app on the App Store or Google Play, find one on the map and scan to unlock.`,
+      },
+      {
+        question: `Where can I ride and park in ${city.name}?`,
+        answer: `The app shows the exact riding and parking zones in ${city.name}, and which vehicles are free near you.`,
+      },
+      {
+        question: `How much does a ride in ${city.name} cost?`,
+        answer: "Current fares are shown in the Rido app. You'll see the exact price before every ride, with no minimum top-up and no hidden fees.",
+      },
+      {
+        question: `Which vehicles are available in ${city.name}?`,
+        answer: both
+          ? `Shared e-scooters and e-bikes. The app shows real-time availability and battery levels.`
+          : `Shared e-scooters, each with a certified helmet docked on the stem. The app shows real-time availability and battery levels.`,
+      },
+    ];
+  }
 
   if (locale === "es") {
     return [
@@ -136,8 +186,11 @@ export function getCityMetadata(city: City, locale: Locale): Metadata {
     locale === "es"
       ? `Alquiler de patinetes eléctricos en ${city.name} — Rido`
       : `E-Scooter Rental in ${city.name} — Rido`;
-  const description =
-    locale === "es"
+  const description = !city.comingSoon
+    ? locale === "es"
+      ? `${noun[0].toUpperCase()}${noun.slice(1)} compartidos de Rido, ya disponibles en ${city.name}, en la ${city.region}. Descarga la app en el App Store o Google Play y monta hoy.`
+      : `Rido shared ${noun}, live now in ${city.name} on the ${city.region}. Download the app on the App Store or Google Play and ride today.`
+    : locale === "es"
       ? `Rido trae ${noun} compartidos a ${city.name}, en la ${city.region}. Lanzamiento muy pronto: únete a la lista de espera y sé de los primeros en montar.`
       : `Rido is bringing shared ${noun} to ${city.name} on the ${city.region}. Launching soon — join the waitlist and be first to ride.`;
 
@@ -214,12 +267,12 @@ export function getCitySchemas(city: City, locale: Locale) {
     },
     description:
       locale === "es"
-        ? `Alquiler compartido de ${vehicleNoun(city, "es")} en ${city.name}, ${city.region}. Muy pronto.`
-        : `Shared ${vehicleNoun(city, "en")} rental in ${city.name}, ${city.region}. Launching soon.`,
+        ? `Alquiler compartido de ${vehicleNoun(city, "es")} en ${city.name}, ${city.region}. ${city.comingSoon ? "Muy pronto." : "Ya disponible."}`
+        : `Shared ${vehicleNoun(city, "en")} rental in ${city.name}, ${city.region}. ${city.comingSoon ? "Launching soon." : "Live now."}`,
     offers: {
       "@type": "AggregateOffer",
-      availability: "https://schema.org/PreOrder",
-      // Pre-launch: no lowPrice/highPrice until fares are public.
+      availability: city.comingSoon ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
+      // No lowPrice/highPrice: fares are shown in the app, not on the site.
     },
   };
 
@@ -242,6 +295,14 @@ export function getCitySchemas(city: City, locale: Locale) {
 const uiCopy = {
   en: {
     badge: "Launching in the coming weeks",
+    badgeLive: "Live now",
+    heroBodyLive: (city: City) =>
+      `Rido's shared, zero-emission ${vehicleNoun(city, "en")} are on the streets of ${city.name} now. Download the app, find one on the map and scan to unlock.`,
+    vehiclesLabelLive: "Vehicles",
+    coverageLabelLive: "Where to ride",
+    coverageBodyLive: (city: City) =>
+      `${launchTownSentence(city, "en")} The app shows the exact riding and parking zones, and every vehicle free near you.`,
+    heroAriaLive: (city: City) => `Rido in ${city.name}`,
     heroTitle: (city: City) =>
       city.vehicles.length === 2 ? `E-scooter and e-bike sharing in ${city.name}` : `E-scooter sharing in ${city.name}`,
     heroBody: (city: City) =>
@@ -271,6 +332,14 @@ const uiCopy = {
   },
   es: {
     badge: "En las próximas semanas",
+    badgeLive: "Ya disponible",
+    heroBodyLive: (city: City) =>
+      `Los ${vehicleNoun(city, "es")} compartidos y de cero emisiones de Rido ya circulan por ${city.name}. Descarga la app, encuentra uno en el mapa y escanea para desbloquear.`,
+    vehiclesLabelLive: "Vehículos",
+    coverageLabelLive: "Dónde montar",
+    coverageBodyLive: (city: City) =>
+      `${launchTownSentence(city, "es")} La app muestra las zonas exactas para circular y aparcar, y todos los vehículos libres cerca de ti.`,
+    heroAriaLive: (city: City) => `Rido en ${city.name}`,
     heroTitle: (city: City) =>
       city.vehicles.length === 2
         ? `Patinetes y bicis eléctricas compartidas en ${city.name}`
@@ -304,9 +373,10 @@ const uiCopy = {
 
 // --- Page ----------------------------------------------------------------------
 /**
- * Launch-town landing page (the page local search lands on). Same design
- * language as the homepage: split hero with the inline waitlist form, sand
- * coverage band, local-team strip, FAQ, closing waitlist block.
+ * Town landing page (the page local search lands on). Same design language
+ * as the homepage: split hero (store badges for a live town, the waitlist
+ * form for a comingSoon one), sand coverage band, local-team strip, FAQ,
+ * closing download block.
  */
 export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
   const t = uiCopy[locale];
@@ -314,6 +384,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
   const faq = getCityFaq(city, locale);
   const homeHref = locale === "es" ? "/es" : "/";
   const cityPath = locale === "es" ? `/es/${city.slug}` : `/${city.slug}`;
+  const live = !city.comingSoon;
 
   return (
     <LocaleProvider locale={locale}>
@@ -331,7 +402,7 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
             reveals): it is above the fold and holds the LCP element. */}
         <section
           id="city-hero"
-          aria-label={t.heroAria(city)}
+          aria-label={live ? t.heroAriaLive(city) : t.heroAria(city)}
           className="relative overflow-hidden pt-8 sm:pt-16 pb-16 sm:pb-24 px-4 sm:px-6"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-rido-navy via-rido-navy to-rido-magenta/15" aria-hidden="true" />
@@ -346,14 +417,18 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
             <div className="text-center lg:text-left">
               <span className="inline-flex items-center gap-2 rounded-full bg-rido-magenta/15 border border-rido-magenta/25 px-3 py-1 text-xs sm:text-sm font-medium text-rido-magenta-light">
                 <span className="h-1.5 w-1.5 rounded-full bg-rido-green" aria-hidden="true" />
-                {t.badge}
+                {live ? t.badgeLive : t.badge}
               </span>
               <h1 className="mt-6 font-display text-4xl sm:text-5xl md:text-6xl font-black text-balance">{t.heroTitle(city)}</h1>
-              <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">{t.heroBody(city)}</p>
+              <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">{live ? t.heroBodyLive(city) : t.heroBody(city)}</p>
               <div className="mt-8 flex justify-center lg:justify-start">
-                <WaitlistForm placement="city-hero" sharePath={cityPath} className="max-w-lg" />
+                {live ? (
+                  <StoreBadges locale={locale} placement="city-hero" size="lg" className="justify-center lg:justify-start" />
+                ) : (
+                  <WaitlistForm placement="city-hero" sharePath={cityPath} className="max-w-lg" />
+                )}
               </div>
-              <ul className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted" aria-label={t.vehiclesLabel}>
+              <ul className="mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-sm text-muted" aria-label={live ? t.vehiclesLabelLive : t.vehiclesLabel}>
                 {city.vehicles.map((v) => (
                   <li key={v} className="inline-flex items-center gap-1.5">
                     {v === "e-scooter" ? <Zap className="w-4 h-4 text-rido-magenta-light" aria-hidden="true" /> : <Bike className="w-4 h-4 text-rido-green" aria-hidden="true" />}
@@ -392,9 +467,9 @@ export function CityLanding({ city, locale }: { city: City; locale: Locale }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div>
               <SectionHeader
-                label={t.coverageLabel}
+                label={live ? t.coverageLabelLive : t.coverageLabel}
                 title={t.coverageTitle(city)}
-                intro={t.coverageBody(city)}
+                intro={live ? t.coverageBodyLive(city) : t.coverageBody(city)}
                 align="left"
                 tone="sand"
                 className="!mb-6"

@@ -25,9 +25,9 @@ interface PricingTierSource extends Omit<PricingTier, "name" | "description"> {
  * Single source of truth for the pricing tiers. Both locales live side by
  * side so copy can never drift.
  *
- * Pre-launch: NO fare amounts live in this repo. Every surface (Pricing
- * section, FAQ, city pages, JSON-LD, llms.txt) says "announced at launch".
- * Add price fields back here only once the amounts are public.
+ * NO fare amounts live in this repo: riders see current fares in the app. Every surface (Pricing
+ * section, FAQ, city pages, JSON-LD, llms.txt) says "shown in the app".
+ * Add price fields here only if fares are ever published on the site.
  */
 const tierSources: readonly PricingTierSource[] = [
   {

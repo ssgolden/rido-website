@@ -6,12 +6,12 @@ import { OG_LOCALE_EN, SITE_ORIGIN } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Careers — Rido",
   description:
-    "Rido is launching shared e-scooters and e-bikes in Torrevieja and on the Costa del Sol. No roles are listed right now. Send a CV to info@rido.bike with the subject Careers.",
+    "Rido runs shared e-scooters in Torrevieja and is expanding to the Costa del Sol. No roles are listed right now. Send a CV to info@rido.bike with the subject Careers.",
   alternates: { canonical: `${SITE_ORIGIN}/careers` },
   openGraph: {
     title: "Careers — Rido",
     description:
-      "No roles are listed right now. Rido is launching in Torrevieja and on the Costa del Sol. Send a CV to info@rido.bike with the subject Careers.",
+      "No roles are listed right now. Rido is live in Torrevieja and expanding to the Costa del Sol. Send a CV to info@rido.bike with the subject Careers.",
     url: `${SITE_ORIGIN}/careers`,
     locale: OG_LOCALE_EN,
   },
@@ -43,7 +43,7 @@ export default function CareersPage() {
             <h2 className="!mt-0 !mb-0 text-white font-bold">No open roles right now</h2>
           </div>
           <p className="!mb-0">
-            Rido is launching shared e-scooters and e-bikes in Torrevieja and on the Costa del Sol. We are not listing any roles yet.
+            Rido runs shared e-scooters in Torrevieja and is expanding to the Costa del Sol. We are not listing any roles yet.
           </p>
         </div>
         <p>

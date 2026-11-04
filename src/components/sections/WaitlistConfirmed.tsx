@@ -6,6 +6,7 @@ import { ArrowRight, CircleAlert, CircleCheck, Loader2, MailCheck } from "lucide
 import { Section } from "@/components/ui/Section";
 import { ShareInvite } from "@/components/ui/ShareInvite";
 import { WaitlistForm } from "@/components/ui/WaitlistForm";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import { useLocale } from "@/lib/i18n/locale-context";
 import type { Locale } from "@/lib/i18n/config";
 import { primaryCity } from "@/data/cities";
@@ -21,7 +22,7 @@ const copy = {
     confirm: "Confirm my email",
     confirming: "Confirming…",
     okTitle: "You're confirmed.",
-    okBody: `Your place on the Rido waitlist is saved. We'll email you the moment Rido launches in ${town}.`,
+    okBody: `You're on the list. Rido is already live in ${town}, so get the app and ride today; we'll email you when Rido reaches a new town.`,
     badTitle: "That link didn't work.",
     badBody: "It may be incomplete or out of date. Enter your email again and we'll send a fresh link.",
     errorRetry: "We couldn't confirm just now. Please try again in a moment.",
@@ -35,7 +36,7 @@ const copy = {
     confirm: "Confirmar mi correo",
     confirming: "Confirmando…",
     okTitle: "Correo confirmado.",
-    okBody: `Tu plaza en la lista de espera de Rido está guardada. Te escribiremos en cuanto Rido llegue a ${town}.`,
+    okBody: `Ya estás en la lista. Rido ya funciona en ${town}: descarga la app y monta hoy. Te escribiremos cuando Rido llegue a una nueva localidad.`,
     badTitle: "Ese enlace no ha funcionado.",
     badBody: "Puede que esté incompleto o caducado. Vuelve a introducir tu correo y te enviaremos uno nuevo.",
     errorRetry: "No hemos podido confirmar ahora mismo. Inténtalo de nuevo en un momento.",
@@ -119,6 +120,7 @@ export function WaitlistConfirmed() {
             <CircleCheck className="mx-auto w-12 h-12 text-rido-green" aria-hidden="true" />
             <h1 ref={headingRef} tabIndex={-1} className={heading}>{t.okTitle}</h1>
             <p className="mt-4 text-base sm:text-lg text-muted leading-relaxed">{t.okBody}</p>
+            <StoreBadges locale={locale} placement="confirmed" size="lg" className="mt-8 justify-center" />
             <ShareInvite placement="confirmed" align="center" className="mt-8" />
           </>
         ) : (
