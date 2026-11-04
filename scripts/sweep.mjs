@@ -112,7 +112,7 @@ for (const vp of VIEWPORTS) {
   }
 }
 
-// Interaction gates on phones: the consent card must leave the hero form clear
+// Interaction gates on phones: the consent card must leave the hero store badges clear
 // on a short phone, and the mobile menu must behave as a modal.
 {
   const page = await browser.newPage({ viewport: { width: 390, height: 667 }, isMobile: true, hasTouch: true });
@@ -120,9 +120,9 @@ for (const vp of VIEWPORTS) {
   const banner = page.locator('[role="dialog"][aria-labelledby="cookie-consent-title"] > div');
   if (await banner.count()) {
     const card = await banner.boundingBox();
-    const submit = await page.locator("#hero form button[type=submit]").first().boundingBox();
+    const submit = await page.locator("#hero a[href^='http']").first().boundingBox();
     if (card && submit && submit.y + submit.height > card.y) {
-      failures.push(`390x667 /: consent card (top ${Math.round(card.y)}px) covers the hero form (bottom ${Math.round(submit.y + submit.height)}px)`);
+      failures.push(`390x667 /: consent card (top ${Math.round(card.y)}px) covers the hero store badges (bottom ${Math.round(submit.y + submit.height)}px)`);
     }
     if (card && card.height > 180) warnings.push(`390x667 /: consent card is ${Math.round(card.height)}px tall`);
   } else {
