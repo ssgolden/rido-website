@@ -50,7 +50,10 @@ export function Vehicles({ t, fleet }: { t: VehiclesCopy; fleet: FleetItem[] }) 
                 {i === active && (
                   <span className="absolute inset-0 rounded-full bg-ink" aria-hidden="true" />
                 )}
-                <span className="relative z-10">{vehicle.name}</span>
+                <span className="relative z-10">
+                  {vehicle.name}
+                  {vehicle.later ? <span className="ml-1.5 text-xs font-medium opacity-70">· {t.later}</span> : null}
+                </span>
               </button>
             ))}
           </div>

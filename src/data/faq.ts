@@ -141,8 +141,8 @@ const faqSources: readonly FaqSource[] = [
       es: "¿Está asegurado mi trayecto?",
     },
     answer: {
-      en: "Yes, every Rido ride includes basic insurance coverage. Our e-scooters and e-bikes are insured against third-party liability. For full details, see our Terms of Service.",
-      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Nuestros patinetes y bicis eléctricas cuentan con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
+      en: "Yes, every Rido ride includes basic insurance coverage. Every Rido e-scooter is insured against third-party liability. For full details, see our Terms of Service.",
+      es: "Sí, cada trayecto con Rido incluye una cobertura de seguro básica. Cada patinete Rido cuenta con seguro de responsabilidad civil. Para más detalles, consulta nuestros Términos del servicio.",
     },
     category: "legal",
   },

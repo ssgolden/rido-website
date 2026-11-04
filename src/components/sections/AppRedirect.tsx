@@ -30,16 +30,13 @@ function detectStore(): Store | null {
   return null;
 }
 
-const readLocale = (): Locale => (/^es\b/i.test(navigator.language) ? "es" : "en");
-
 /**
  * The rido.bike/app smart link for QR stickers, flyers and social bios.
  * Phones go straight to their store; everything else sees both badges.
  * The static HTML is the both-badges page, so it works without JavaScript.
  */
-export function AppRedirect() {
+export function AppRedirect({ locale }: { locale: Locale }) {
   const store = useSyncExternalStore(() => () => {}, detectStore, () => null);
-  const locale = useSyncExternalStore(() => () => {}, readLocale, () => "en" as Locale);
   const t = copy[locale];
 
   useEffect(() => {

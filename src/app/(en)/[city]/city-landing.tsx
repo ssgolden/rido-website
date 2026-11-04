@@ -95,7 +95,7 @@ export function getCityFaq(city: City, locale: Locale): CityFaqItem[] {
         },
         {
           question: `¿Cuánto cuesta montar en ${city.name}?`,
-          answer: "Las tarifas actuales aparecen en la app de Rido. Verás el precio exacto antes de cada trayecto, sin recarga mínima y sin costes ocultos.",
+          answer: "Las tarifas actuales aparecen en la app de Rido. Ves el precio exacto antes de cada trayecto, sin recarga mínima y sin costes ocultos.",
         },
         {
           question: `¿Qué vehículos hay en ${city.name}?`,
@@ -297,7 +297,7 @@ const uiCopy = {
     badge: "Launching in the coming weeks",
     badgeLive: "Live now",
     heroBodyLive: (city: City) =>
-      `Rido shared, zero-emission ${vehicleNoun(city, "en")} are riding in ${city.name} now. Download the app, find one on the map and scan to unlock.`,
+      `Rido's shared, zero-emission ${vehicleNoun(city, "en")} are on the streets of ${city.name} now. Download the app, find one on the map and scan to unlock.`,
     vehiclesLabelLive: "Vehicles",
     coverageLabelLive: "Where to ride",
     coverageBodyLive: (city: City) =>

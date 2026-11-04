@@ -6,8 +6,8 @@ import type { Locale } from "@/lib/i18n/config";
 import { storeUrl, type Store } from "@/data/apps";
 
 const copy = {
-  en: { group: "Get the Rido app", ios: "Download Rido on the App Store", android: "Get Rido on Google Play" },
-  es: { group: "Descarga la app de Rido", ios: "Descarga Rido en el App Store", android: "Consigue Rido en Google Play" },
+  en: { group: "Get the Rido app", ios: "Download Rido on the App Store (opens in a new tab)", android: "Get Rido on Google Play (opens in a new tab)" },
+  es: { group: "Descarga la app de Rido", ios: "Descarga Rido en el App Store (se abre en una pestaña nueva)", android: "Consigue Rido en Google Play (se abre en una pestaña nueva)" },
 } as const satisfies Record<Locale, unknown>;
 
 // Official artwork (public/images/badges), never recoloured or redrawn.

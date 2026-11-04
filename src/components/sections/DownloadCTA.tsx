@@ -35,7 +35,7 @@ const copy = {
   },
   es: {
     sectionAria: "Descarga la app de Rido",
-    title: `Monta en Rido en ${town} hoy.`,
+    title: `Súbete a un Rido en ${town} hoy mismo.`,
     intro: "Descarga la app gratuita, encuentra un patinete en el mapa y escanea para desbloquear.",
     benefitsLabel: "En la app",
     benefits: [

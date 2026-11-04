@@ -49,7 +49,7 @@ const copy: Record<Locale, typeof en> = {
     navLinks: [
       { label: "Cómo funciona", href: "#how-it-works" },
       { label: "Flota", href: "#vehicles" },
-      { label: "Dónde", href: "#cities" },
+      { label: "Dónde montar", href: "#cities" },
       { label: "Seguridad", href: "#safety" },
       { label: "Preguntas", href: "#faq" },
     ],

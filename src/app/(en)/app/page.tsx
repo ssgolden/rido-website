@@ -9,13 +9,14 @@ export const metadata: Metadata = {
   title: "Get the Rido app",
   description: "Download Rido on the App Store or Google Play. Shared e-scooters, live now in Torrevieja.",
   robots: { index: false, follow: true },
+  alternates: { languages: { en: "/app", es: "/es/app" } },
 };
 
 export default function AppPage() {
   return (
     <SiteShell header={<Navbar />}>
       <main id="main-content">
-        <AppRedirect />
+        <AppRedirect locale="en" />
       </main>
       <Footer />
     </SiteShell>

@@ -19,7 +19,7 @@ export default function CookiePolicyPage() {
   return (
     <LegalPage
       title="Cookie Policy"
-      lastUpdated="October 2026"
+      lastUpdated="November 2026"
       esIntro="Política de cookies del sitio web de Rido (Go2 Place S.L., NIF B01745405): qué cookies y tecnologías similares utilizamos, con qué fin y cómo gestionar o retirar tu consentimiento."
     >
       <script
@@ -65,7 +65,7 @@ export default function CookiePolicyPage() {
           <strong>Consent-based, cookieless analytics (Vercel Analytics)</strong>: Only if you click &quot;Accept&quot; on our consent banner, and only on pages served from Vercel&apos;s hosting, we measure aggregate website traffic (page views, visit counts) using Vercel Analytics. Our main site at www.rido.bike is served by Netlify and does not load it. If you decline — or simply do not respond to the banner — the analytics script is never loaded and no measurement takes place. Even when active, Vercel Analytics operates <strong>without cookies</strong> and without storing identifiers on your device; it does not track you across websites, and the data we receive is anonymous and aggregated.
         </li>
         <li>
-          <strong>Consent-based, anonymous conversion counts (first-party)</strong>: Only if you click &quot;Accept&quot;, our own server counts how often the waitlist form is seen, submitted and shared, recording the event, the page and the page language. No cookies are set, and no IP address, device identifier or email address is stored with these counts. If you decline or do not respond, nothing is sent.
+          <strong>Consent-based, anonymous conversion counts (first-party)</strong>: Only if you click &quot;Accept&quot;, our own server counts how often the waitlist form is seen, submitted and shared, and how often the App Store and Google Play buttons are tapped (and which store), recording the event, the page and the page language. No cookies are set, and no IP address, device identifier or email address is stored with these counts. If you decline or do not respond, nothing is sent.
         </li>
         <li>
           <strong>Self-hosted fonts</strong>: The typefaces used on our website are hosted on our own servers and delivered together with the rest of the website. No font files are requested from Google Fonts or any other third party, no cookies are set, and your IP address is not transmitted to any external font provider.

@@ -27,7 +27,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
         heading: "Producto",
         links: [
           { label: "Patinete eléctrico", href: `${home}#vehicles` },
-          { label: "Descarga la app", href: "/app" },
+          { label: "Descarga la app", href: "/es/app" },
           ...(town ? [{ label: `Rido en ${town.name}`, href: `${prefix}/${town.slug}` }] : []),
           { label: "Preguntas frecuentes", href: `${home}#faq` },
         ],
