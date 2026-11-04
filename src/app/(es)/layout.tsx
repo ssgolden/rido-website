@@ -1,3 +1,4 @@
+import { APP_STORE_ID } from "@/data/apps";
 import type { Metadata } from "next";
 import { RootDocument, rootViewport } from "@/components/layout/RootDocument";
 import { OG_LOCALE_EN, OG_LOCALE_ES, SITE_ORIGIN } from "@/lib/site";
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
     apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
   },
   manifest: "/manifest.json",
+  itunes: { appId: APP_STORE_ID },
   openGraph: {
     siteName: "Rido",
     locale: OG_LOCALE_ES,
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
         url: "/images/og/rido-og.jpg",
         width: 1200,
         height: 630,
-        alt: "Rido — Patinetes y bicis eléctricas compartidas, muy pronto en Torrevieja",
+        alt: "Rido — Patinetes eléctricos compartidos, ya en Torrevieja",
         type: "image/jpeg",
       },
     ],

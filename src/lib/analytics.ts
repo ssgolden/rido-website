@@ -19,10 +19,11 @@ export type AnalyticsEvent =
   | "waitlist_submit"
   | "waitlist_success"
   | "waitlist_error"
-  | "share_click";
+  | "share_click"
+  | "store_click";
 
 /** Where on the page the form or button sits, so placements can be compared. */
-export type Placement = "hero" | "closing" | "city-hero" | "confirmed";
+export type Placement = "hero" | "closing" | "city-hero" | "confirmed" | "navbar" | "footer" | "app-link";
 
 const EVENTS_URL = "/api/events";
 

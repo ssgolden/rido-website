@@ -9,6 +9,7 @@ export interface City {
   lat: number;
   lng: number;
   vehicles: ("e-scooter" | "e-bike")[];
+  /** Not riding yet: the map and pages say "launching soon". Omit once the town is live. */
   comingSoon?: boolean;
 }
 
@@ -27,8 +28,8 @@ export interface City {
  * reach).
  */
 export const announcedCities: City[] = [
-  // Costa Blanca — first launch.
-  { name: "Torrevieja", region: "Costa Blanca", isoRegion: "ES-A", slug: "torrevieja", lat: 37.9787, lng: -0.6822, vehicles: ["e-scooter", "e-bike"], comingSoon: true },
+  // Costa Blanca — live: shared e-scooters, riding now.
+  { name: "Torrevieja", region: "Costa Blanca", isoRegion: "ES-A", slug: "torrevieja", lat: 37.9787, lng: -0.6822, vehicles: ["e-scooter"] },
 ];
 
 /** Planned towns per region whose names are not public yet (counts only). */
@@ -40,6 +41,9 @@ export const regionsWithUnannouncedTowns: LaunchRegion[] = plannedTowns.filter((
 /** Number of not-yet-announced towns planned in a region. */
 export const plannedTownCount = (region: LaunchRegion): number =>
   plannedTowns.find((r) => r.region === region)?.count ?? 0;
+
+/** Towns where riders can ride today. */
+export const liveCities: City[] = announcedCities.filter((c) => !c.comingSoon);
 
 /** The first announced town; drives homepage geo meta and JSON-LD geo. */
 export const primaryCity: City | undefined = announcedCities[0];

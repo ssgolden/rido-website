@@ -15,7 +15,7 @@ const copy = {
     copied: "Link copied",
     whatsapp: "WhatsApp",
     whatsappAria: "Share Rido on WhatsApp (opens in a new tab)",
-    message: "Rido is launching shared e-scooters and e-bikes in Torrevieja. I've joined the waitlist:",
+    message: "Rido shared e-scooters are live in Torrevieja. Get the app:",
   },
   es: {
     prompt: "¿Conoces a alguien que se apuntaría? Compártelo.",
@@ -23,7 +23,7 @@ const copy = {
     copied: "Enlace copiado",
     whatsapp: "WhatsApp",
     whatsappAria: "Compartir Rido por WhatsApp (se abre en una pestaña nueva)",
-    message: "Rido trae patinetes y bicis eléctricas compartidas a Torrevieja. Yo ya estoy en la lista de espera:",
+    message: "Los patinetes eléctricos compartidos de Rido ya están en Torrevieja. Descarga la app:",
   },
 } as const satisfies Record<Locale, Record<string, string>>;
 

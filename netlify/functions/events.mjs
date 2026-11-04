@@ -15,8 +15,8 @@
  */
 import { getStore } from "@netlify/blobs";
 
-const EVENTS = new Set(["waitlist_view", "waitlist_submit", "waitlist_success", "waitlist_error", "share_click"]);
-const PLACEMENTS = new Set(["hero", "closing", "city-hero", "confirmed"]);
+const EVENTS = new Set(["waitlist_view", "waitlist_submit", "waitlist_success", "waitlist_error", "share_click", "store_click"]);
+const PLACEMENTS = new Set(["hero", "closing", "city-hero", "confirmed", "navbar", "footer", "app-link"]);
 const PATH_RE = /^\/[a-z0-9\-/]{0,80}$/i;
 const DETAIL_RE = /^[a-z0-9_-]{1,24}$/;
 const MAX_BODY_BYTES = 1024;

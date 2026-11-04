@@ -1,4 +1,5 @@
 import { RidoLogo } from "@/components/ui/RidoLogo";
+import { StoreBadges } from "@/components/ui/StoreBadges";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
 import type { Locale } from "@/lib/i18n/config";
@@ -26,7 +27,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
         heading: "Producto",
         links: [
           { label: "Patinete eléctrico", href: `${home}#vehicles` },
-          { label: "Bici eléctrica", href: `${home}#vehicles` },
+          { label: "Descarga la app", href: "/app" },
           ...(town ? [{ label: `Rido en ${town.name}`, href: `${prefix}/${town.slug}` }] : []),
           { label: "Preguntas frecuentes", href: `${home}#faq` },
         ],
@@ -56,7 +57,7 @@ function columnsFor(locale: Locale): FooterColumn[] {
       heading: "Product",
       links: [
         { label: "E-scooter", href: `${home}#vehicles` },
-        { label: "E-bike", href: `${home}#vehicles` },
+        { label: "Get the app", href: "/app" },
         ...(town ? [{ label: `Rido in ${town.name}`, href: `/${town.slug}` }] : []),
         { label: "FAQ", href: `${home}#faq` },
       ],
@@ -84,16 +85,14 @@ function columnsFor(locale: Locale): FooterColumn[] {
 
 const copy = {
   en: {
-    tagline: "Shared e-scooters and e-bikes for the Costa Blanca and Costa del Sol. Built and run by a local team.",
-    joinWaitlist: "Join the waitlist",
+    tagline: "Shared e-scooters, live in Torrevieja on the Costa Blanca, with the Costa del Sol next. Built and run by a local team.",
     emailAria: "Email Rido",
     rights: "All rights reserved.",
     addressLabel: "Registered office",
     cookieSettings: "Cookie settings",
   },
   es: {
-    tagline: "Patinetes y bicis eléctricas compartidas para la Costa Blanca y la Costa del Sol. Creado y gestionado por un equipo local.",
-    joinWaitlist: "Únete a la lista",
+    tagline: "Patinetes eléctricos compartidos, ya en Torrevieja, en la Costa Blanca, y después en la Costa del Sol. Creado y gestionado por un equipo local.",
     emailAria: "Escribir a Rido",
     rights: "Todos los derechos reservados.",
     addressLabel: "Domicilio social",
@@ -107,7 +106,6 @@ const linkClass =
 export function Footer({ locale = "en" }: { locale?: Locale }) {
   const t = copy[locale];
   const columns = columnsFor(locale);
-  const home = locale === "es" ? "/es" : "/";
   return (
     <footer className="border-t border-white/10 bg-navy-deep">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14 sm:py-20">
@@ -123,13 +121,8 @@ export function Footer({ locale = "en" }: { locale?: Locale }) {
                 03189 Orihuela Costa (Alicante)
               </span>
             </address>
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <a
-                href={`${home}#download`}
-                className="btn-lift inline-flex items-center gap-2 px-4 min-h-[44px] rounded-xl bg-rido-magenta text-white text-sm font-semibold hover:brightness-110 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-navy-deep"
-              >
-                {t.joinWaitlist}
-              </a>
+            <StoreBadges locale={locale} placement="footer" size="sm" className="mt-6" />
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <a
                 href="mailto:info@rido.bike"
                 aria-label={t.emailAria}

@@ -7,10 +7,10 @@ import { vehicles, getVehicleCopy, type Vehicle, type VehicleCopy } from "@/data
 const en = {
   ariaLabel: "Our vehicles",
   label: "The fleet",
-  title: "Choose your ride",
+  title: "Meet the Rido e-scooter",
   tabsLabel: "Choose a vehicle",
   badgeScooter: "E-scooter",
-  badgeBike: "E-bike",
+  badgeBike: "E-bike · coming later",
   imageUnavailable: "Image unavailable",
   /** {name} and {n} are filled in by the component. */
   thumbAlt: "{name} view {n}",
@@ -25,10 +25,10 @@ export const vehiclesCopy: Record<Locale, VehiclesCopy> = {
   es: {
     ariaLabel: "Nuestros vehículos",
     label: "La flota",
-    title: "Elige tu vehículo",
+    title: "Conoce el patinete Rido",
     tabsLabel: "Elige un vehículo",
     badgeScooter: "Patinete eléctrico",
-    badgeBike: "Bici eléctrica",
+    badgeBike: "Bici eléctrica · más adelante",
     imageUnavailable: "Imagen no disponible",
     thumbAlt: "{name}, vista {n}",
     specsLabel: "Especificaciones",

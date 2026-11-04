@@ -65,9 +65,9 @@ export default function Home() {
         <JsonLd schemas={getHomeSchemas("en")} />
         <noscript>
           <div style={{ padding: "2rem", textAlign: "center", color: "#fff" }}>
-            <h1>Rido — Shared E-Scooters & E-Bikes in Torrevieja & the Costa del Sol</h1>
-            <p>Join the waitlist and be first to ride with Rido&apos;s shared e-scooters and e-bikes. Zero emissions, zero hassle.</p>
-            <p>Launching in Torrevieja on the Costa Blanca in the coming weeks, with the Costa del Sol to follow.</p>
+            <h1>Rido — Shared E-Scooters in Torrevieja, Live Now</h1>
+            <p>Download the Rido app on the App Store or Google Play and ride shared e-scooters today. Zero emissions, zero hassle.</p>
+            <p>Live now in Torrevieja on the Costa Blanca, with the Costa del Sol to follow.</p>
           </div>
         </noscript>
         {/* Order: Hero → How it works → Fleet → Launch map → Safety → FAQ → Waitlist. Keep the Navbar links in sync. */}
